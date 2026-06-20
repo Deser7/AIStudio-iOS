@@ -26,23 +26,23 @@ struct Logo: View {
             .clipShape(Circle())
             
             IconGenerate(color: .accent)
-                .frame(width: size * 0.6, height: size * 0.6)
+                .frame(width: size * 0.6125, height: size * 0.6125)
         }
     }
 }
 
 #Preview {
-    VStack {
+    HStack {
         Logo(
-            size: 20,
+            size: 40,
             colorOne: .logoBlueOne,
             colorTwo: .logoBlueTwo
         )
         
         Logo(
-            size: 40,
-            colorOne: .logoPinkOne,
-            colorTwo: .logoPinkTwo
+            size: 32,
+            colorOne: .logoBlueOne,
+            colorTwo: .logoBlueTwo
         )
         
         Logo(
@@ -52,7 +52,31 @@ struct Logo: View {
         )
         
         Logo(
+            size: 32,
+            colorOne: .logoGreenOne,
+            colorTwo: .logoGreenTwo
+        )
+        
+        Logo(
             size: 40,
+            colorOne: .logoPinkOne,
+            colorTwo: .logoPinkTwo
+        )
+        
+        Logo(
+            size: 32,
+            colorOne: .logoPinkOne,
+            colorTwo: .logoPinkTwo
+        )
+        
+        Logo(
+            size: 40,
+            colorOne: .logoPurpleOne,
+            colorTwo: .logoPurpleTwo
+        )
+        
+        Logo(
+            size: 32,
             colorOne: .logoPurpleOne,
             colorTwo: .logoPurpleTwo
         )
