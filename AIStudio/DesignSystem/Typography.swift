@@ -95,5 +95,4 @@ extension View {
         }
         .padding(24)
     }
-//    .background(Color.background)
 }
