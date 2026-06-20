@@ -25,7 +25,7 @@ struct Logo: View {
             .frame(width: size, height: size)
             .clipShape(Circle())
             
-            IconGenerate(color: .accent)
+            GenerateIcon(color: .accent)
                 .frame(width: size * 0.6125, height: size * 0.6125)
         }
     }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct IconGenerate: View {
+struct GenerateIcon: View {
     let color: Color
     
     var body: some View {
@@ -94,6 +94,6 @@ struct IconGenerate: View {
 }
 
 #Preview {
-    IconGenerate(color: .accentColor)
+    GenerateIcon(color: .black)
         .frame(width: 100, height: 100)
 }
