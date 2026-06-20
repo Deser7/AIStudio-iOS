@@ -6,13 +6,14 @@
 import SwiftUI
 
 struct GenerationButton: View {
+    static let defaultSize: CGFloat = 40
+
     private enum Layout {
-        static let defaultSize: CGFloat = 40
         static let iconScale: CGFloat = 0.6
         static let strokeScale: CGFloat = 0.1
     }
 
-    var size: CGFloat = Layout.defaultSize
+    var size: CGFloat = GenerationButton.defaultSize
     let action: () -> Void
 
     @Environment(\.isEnabled) private var isEnabled

@@ -13,32 +13,35 @@ struct SectionButton: View {
         case secondary
     }
 
+    static let defaultSize: CGFloat = 50
+
     private enum Layout {
-        static let height: CGFloat = 50
-        static let cornerRadius: CGFloat = 24
-        static let padding: CGFloat = 12
+        static let cornerRadiusRatio: CGFloat = 24 / 50
+        static let paddingRatio: CGFloat = 12 / 50
+        static let fontSizeRatio: CGFloat = 16 / 50
     }
 
     let title: String
+    var size: CGFloat = SectionButton.defaultSize
     var style: Style = .primary
     let action: () -> Void
 
     @Environment(\.isEnabled) private var isEnabled
 
+    private var cornerRadius: CGFloat { size * Layout.cornerRadiusRatio }
+    private var horizontalPadding: CGFloat { size * Layout.paddingRatio }
+    private var fontSize: CGFloat { size * Layout.fontSizeRatio }
+
     var body: some View {
         Button(action: action) {
             Text(title)
-                .typography(Typography.semiBold16)
+                .font(AppFont.font(weight: .semiBold, size: fontSize))
                 .foregroundStyle(foregroundColor)
-                .padding(.horizontal, Layout.padding)
+                .padding(.horizontal, horizontalPadding)
                 .frame(maxWidth: .infinity)
-                .frame(height: Layout.height)
+                .frame(height: size)
                 .background { background }
-                .clipShape(
-                    RoundedRectangle(
-                        cornerRadius: Layout.cornerRadius
-                    )
-                )
+                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
         }
         .buttonStyle(.plain)
     }
@@ -57,7 +60,7 @@ struct SectionButton: View {
     }
 
     private var foregroundColor: Color {
-        guard isEnabled else { return .accent.opacity(0.6) }
+        guard isEnabled else { return .black.opacity(0.3) }
 
         switch style {
         case .primary, .secondary:
@@ -68,12 +71,12 @@ struct SectionButton: View {
 
 #Preview("buttonSection") {
     VStack(spacing: 16) {
-        SectionButton(title: "Label", style: .primary) {}
+        SectionButton(title: "Label", size: 50, style: .primary) {}
 
-        SectionButton(title: "Label", style: .primary) {}
+        SectionButton(title: "Label", size: 50, style: .primary) {}
             .disabled(true)
 
-        SectionButton(title: "Label", style: .secondary) {}
+        SectionButton(title: "Label", size: 56, style: .secondary) {}
     }
     .padding(24)
     .background(Color.background)
