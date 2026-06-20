@@ -2,23 +2,20 @@
 //  ContentView.swift
 //  AIStudio
 //
-//  Created by Наташа Спиридонова on 19.06.2026.
+//  Created by Андрей Спиридонов on 19.06.2026.
 //
 
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        Text("test")
+        
+        Logo(size: 400, colorOne: .logoGreenOne, colorTwo: .logoGreenTwo)
     }
 }
 
 #Preview {
     ContentView()
+        
 }

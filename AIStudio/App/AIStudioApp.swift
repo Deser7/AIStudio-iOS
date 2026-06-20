@@ -2,7 +2,7 @@
 //  AIStudioApp.swift
 //  AIStudio
 //
-//  Created by Наташа Спиридонова on 19.06.2026.
+//  Created by Андрей Спиридонов on 19.06.2026.
 //
 
 import SwiftUI
