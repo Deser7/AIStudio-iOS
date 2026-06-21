@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct CloseButton: View {
+    enum Style {
+        case surface
+        case light
+    }
+
     static let defaultSize: CGFloat = 24
 
     private enum Layout {
@@ -15,20 +20,28 @@ struct CloseButton: View {
     }
 
     var size: CGFloat = CloseButton.defaultSize
+    var style: Style = .surface
     let action: () -> Void
 
     @Environment(\.isEnabled) private var isEnabled
 
     private var iconSize: CGFloat { size * Layout.iconScale }
 
+    private var mainGradient: LinearGradient {
+        LinearGradient(
+            colors: [.aiBlue, .aiPink],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+    }
+
     var body: some View {
         Button(action: action) {
             ZStack {
                 Circle()
-                    .fill(Color.surface)
+                    .fill(backgroundColor)
 
-                CloseIcon()
-                    .fill(Color.accent)
+                iconView
                     .frame(width: iconSize, height: iconSize)
             }
             .frame(width: size, height: size)
@@ -36,18 +49,47 @@ struct CloseButton: View {
         .buttonStyle(.plain)
         .opacity(isEnabled ? 1 : 0.6)
     }
+
+    @ViewBuilder
+    private var iconView: some View {
+        switch style {
+        case .surface:
+            CloseIcon()
+                .fill(Color.accent)
+        case .light:
+            CloseIcon()
+                .fill(mainGradient)
+        }
+    }
+
+    private var backgroundColor: Color {
+        switch style {
+        case .surface:
+            return .surface
+        case .light:
+            return .accent
+        }
+    }
 }
 
 #Preview("button/close") {
-    CloseButton(size: 200) {}
-        .padding(24)
-        .background(Color.green)
+    HStack(spacing: 24) {
+        CloseButton(style: .surface) {}
+        CloseButton(style: .light) {}
+    }
+    .padding(24)
+    .background(Color.background)
 }
 
 #Preview("button/close — scaled") {
     GeometryReader { geo in
-        CloseButton(size: geo.size.width * 0.064) {}
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.background)
+        let size = geo.size.width * 0.064
+
+        HStack(spacing: size) {
+            CloseButton(size: size, style: .surface) {}
+            CloseButton(size: size, style: .light) {}
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.background)
     }
 }
