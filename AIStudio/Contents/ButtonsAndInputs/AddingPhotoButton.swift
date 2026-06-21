@@ -12,7 +12,7 @@ struct AddingPhotoButton: View {
 
     private enum Layout {
         static let paddingRatio: CGFloat = 12 / 40
-        static let iconScale: CGFloat = (40 - 24) / 40
+        static let iconScale: CGFloat = 24 / 40
         static let strokeScale: CGFloat = 0.09
         static let blurRatio: CGFloat = 182.21 / 40
     }

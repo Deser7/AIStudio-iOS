@@ -87,8 +87,8 @@ struct AppToggleStyle: ToggleStyle {
 
         var body: some View {
             VStack(spacing: 24) {
-                AppToggle(size: 31, isOn: $isOnTop)
-                AppToggle(size: 40, isOn: $isOnBottom)
+                AppToggle(size: 200, isOn: $isOnTop)
+                AppToggle(size: 100, isOn: $isOnBottom)
             }
             .padding(24)
             .background(Color.background)
