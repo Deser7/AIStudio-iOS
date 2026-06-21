@@ -1,5 +1,5 @@
 //
-//  PaperPlaneIcon.swift
+//  CheckIcon.swift
 //  AIStudio
 //
 //  Created by Андрей Спиридонов on 21.06.2026.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PaperPlaneIcon: Shape {
+struct CheckIcon: Shape {
     func path(in rect: CGRect) -> Path {
         let width = rect.width
         let height = rect.height
@@ -75,7 +75,7 @@ struct PaperPlaneIcon: Shape {
 }
 
 #Preview {
-    PaperPlaneIcon()
+    CheckIcon()
         .fill(.black, style: FillStyle(eoFill: true))
         .frame(width: 120, height: 120)
 }
