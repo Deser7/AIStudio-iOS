@@ -25,7 +25,7 @@ struct CloseButton: View {
         Button(action: action) {
             ZStack {
                 Circle()
-                    .fill(Color.toggleThumb)
+                    .fill(Color.surface)
 
                 CloseIcon()
                     .fill(Color.accent)

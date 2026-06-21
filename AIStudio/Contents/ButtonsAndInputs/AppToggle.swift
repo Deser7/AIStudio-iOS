@@ -55,7 +55,7 @@ struct AppToggle: View {
 
     private var thumb: some View {
         Circle()
-            .fill(isOn ? Color.toggleThumb : Color.accent)
+            .fill(isOn ? Color.surface : Color.accent)
             .frame(width: thumbSize, height: thumbSize)
             .shadow(
                 color: .black.opacity(0.06),
