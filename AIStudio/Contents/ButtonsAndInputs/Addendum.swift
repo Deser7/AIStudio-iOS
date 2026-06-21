@@ -92,7 +92,9 @@ struct Addendum: View {
     @ViewBuilder
     private var tileContent: some View {
         ZStack {
-            background
+            if needsBlurBackground {
+                blurBackground
+            }
 
             switch content {
             case .add:
@@ -113,7 +115,12 @@ struct Addendum: View {
         }
     }
 
-    private var background: some View {
+    private var needsBlurBackground: Bool {
+        if case .loading = content { return true }
+        return false
+    }
+
+    private var blurBackground: some View {
         ZStack {
             BackdropBlurView()
                 .frame(
@@ -160,7 +167,7 @@ private struct BackdropBlurView: UIViewRepresentable {
         )
     }
     .padding(24)
-    .background(Color.cyan)
+    .background(Color.gray)
 }
 
 #Preview("Addendum — scaled") {
