@@ -2,7 +2,7 @@
 //  SendIcon.swift
 //  AIStudio
 //
-//  Created by Наташа Спиридонова on 21.06.2026.
+//  Created by Андрей Спиридонов on 21.06.2026.
 //
 
 import SwiftUI
