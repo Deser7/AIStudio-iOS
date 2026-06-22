@@ -12,12 +12,11 @@ struct SpinnerView: View {
 
     private enum Layout {
         static let segmentCount = 8
-        static let opacities: [CGFloat] = [1, 0.85, 0.7, 0.55, 0.4, 0.3, 0.2, 0.12]
+        static let revolutionDuration: TimeInterval = 0.85
+        static let opacities: [CGFloat] = [1, 0.6, 0.35, 0.22, 0.15, 0.1, 0.07, 0.05]
     }
 
     var size: CGFloat = SpinnerView.defaultSize
-
-    @State private var rotation: Double = 0
 
     private var mainGradient: LinearGradient {
         LinearGradient(
@@ -28,19 +27,26 @@ struct SpinnerView: View {
     }
 
     var body: some View {
-        SpinnerIcon()
-            .fill(mainGradient)
-            .frame(width: size, height: size)
-            .rotationEffect(.degrees(rotation))
-            .mask { spinnerMask }
-            .onAppear {
-                withAnimation(.linear(duration: 0.9).repeatForever(autoreverses: false)) {
-                    rotation = 360
+        TimelineView(.animation(minimumInterval: 1 / 60)) { timeline in
+            let elapsed = timeline.date.timeIntervalSinceReferenceDate
+            let progress = elapsed
+                .truncatingRemainder(dividingBy: Layout.revolutionDuration)
+                / Layout.revolutionDuration
+            let maskRotation = progress * 360
+
+            SpinnerIcon()
+                .fill(mainGradient)
+                .frame(width: size, height: size)
+                .mask {
+                    opacityMask
+                        .frame(width: size, height: size)
+                        .rotationEffect(.degrees(maskRotation))
                 }
-            }
+        }
     }
 
-    private var spinnerMask: some View {
+    /// Маска неподвижна относительно экрана, иконка стоит на месте — «бегущая» прозрачность.
+    private var opacityMask: some View {
         AngularGradient(
             gradient: Gradient(
                 stops: (0 ..< Layout.segmentCount).map { index in
@@ -59,7 +65,7 @@ struct SpinnerView: View {
 }
 
 #Preview("Spinner / Size 3") {
-    SpinnerView(size: 200)
+    SpinnerView(size: 50)
         .padding(24)
         .background(Color.background)
 }
