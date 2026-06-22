@@ -42,14 +42,6 @@ struct AppInput: View {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
     }
 
-    private var borderGradient: LinearGradient {
-        LinearGradient(
-            colors: [.aiBlue, .aiPink],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
-    }
-
     private func pixelAligned(_ value: CGFloat) -> CGFloat {
         (value * displayScale).rounded() / displayScale
     }
@@ -104,13 +96,13 @@ struct AppInput: View {
 
         return ZStack {
             shape
-                .strokeBorder(borderGradient, lineWidth: borderWidth)
+                .strokeBorder(AppGradient.main, lineWidth: borderWidth)
                 .mask(mask)
                 .blur(radius: borderWidth * 0.75)
                 .opacity(0.55)
 
             shape
-                .strokeBorder(borderGradient, lineWidth: borderWidth)
+                .strokeBorder(AppGradient.main, lineWidth: borderWidth)
                 .mask(mask)
         }
     }

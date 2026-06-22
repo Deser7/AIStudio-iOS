@@ -27,14 +27,6 @@ struct CloseButton: View {
 
     private var iconSize: CGFloat { size * Layout.iconScale }
 
-    private var mainGradient: LinearGradient {
-        LinearGradient(
-            colors: [.aiBlue, .aiPink],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
-    }
-
     var body: some View {
         Button(action: action) {
             ZStack {
@@ -58,7 +50,7 @@ struct CloseButton: View {
                 .fill(Color.accent)
         case .light:
             CloseIcon()
-                .fill(mainGradient)
+                .fill(AppGradient.main)
         }
     }
 

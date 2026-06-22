@@ -46,14 +46,6 @@ struct Addendum: View {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
     }
 
-    private var borderGradient: LinearGradient {
-        LinearGradient(
-            colors: [.aiBlue, .aiPink],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
-    }
-
     private func pixelAligned(_ value: CGFloat) -> CGFloat {
         (value * displayScale).rounded() / displayScale
     }
@@ -141,7 +133,7 @@ struct Addendum: View {
 
     private var gradientBorder: some View {
         shape
-            .strokeBorder(borderGradient, lineWidth: borderWidth)
+            .strokeBorder(AppGradient.main, lineWidth: borderWidth)
     }
 }
 

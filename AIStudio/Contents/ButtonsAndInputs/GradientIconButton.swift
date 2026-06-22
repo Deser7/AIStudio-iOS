@@ -39,11 +39,7 @@ struct GradientIconButton: View {
     var body: some View {
         Button(action: action) {
             ZStack {
-                LinearGradient(
-                    colors: [.aiBlue, .aiPink],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
+                AppGradient.main
 
                 iconView
                     .frame(width: iconSize, height: iconSize)

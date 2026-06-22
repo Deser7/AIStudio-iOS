@@ -49,11 +49,7 @@ struct SectionButton: View {
     @ViewBuilder
     private var background: some View {
         if isEnabled, style == .primary {
-            LinearGradient(
-                colors: [.aiBlue, .aiPink],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
+            AppGradient.main
         } else {
             Color.card
         }

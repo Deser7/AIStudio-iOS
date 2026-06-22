@@ -18,14 +18,6 @@ struct SpinnerView: View {
 
     var size: CGFloat = SpinnerView.defaultSize
 
-    private var mainGradient: LinearGradient {
-        LinearGradient(
-            colors: [.aiBlue, .aiPink],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
-    }
-
     var body: some View {
         TimelineView(.animation(minimumInterval: 1 / 60)) { timeline in
             let elapsed = timeline.date.timeIntervalSinceReferenceDate
@@ -35,7 +27,7 @@ struct SpinnerView: View {
             let maskRotation = progress * 360
 
             SpinnerIcon()
-                .fill(mainGradient)
+                .fill(AppGradient.main)
                 .frame(width: size, height: size)
                 .mask {
                     opacityMask

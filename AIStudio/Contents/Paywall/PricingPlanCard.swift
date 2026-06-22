@@ -46,14 +46,6 @@ struct PricingPlanCard: View {
     private var textSpacing: CGFloat { size * Layout.textSpacingRatio }
     private var borderWidth: CGFloat { max(size * Layout.borderWidthRatio, 1) }
 
-    private var gradient: LinearGradient {
-        LinearGradient(
-            colors: [.aiBlue, .aiPink],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
-    }
-
     var body: some View {
         Button(action: action) {
             HStack {
@@ -87,7 +79,7 @@ struct PricingPlanCard: View {
                             .vertical,
                             size * Layout.badgeVerticalPaddingRatio
                         )
-                        .background(gradient)
+                        .background(AppGradient.main)
                         .clipShape(Capsule())
                 }
             }
@@ -99,7 +91,7 @@ struct PricingPlanCard: View {
             .overlay {
                 if isSelected {
                     RoundedRectangle(cornerRadius: cornerRadius)
-                        .strokeBorder(gradient, lineWidth: borderWidth)
+                        .strokeBorder(AppGradient.main, lineWidth: borderWidth)
                 } else {
                     RoundedRectangle(cornerRadius: cornerRadius)
                         .strokeBorder(Color.accent.opacity(0.25), lineWidth: borderWidth)

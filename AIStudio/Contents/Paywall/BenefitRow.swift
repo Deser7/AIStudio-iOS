@@ -17,8 +17,6 @@ struct BenefitRow: View {
 
     let title: String
     var size: CGFloat = BenefitRow.defaultSize
-    var colorOne: Color = .aiBlue
-    var colorTwo: Color = .aiPink
 
     private var fontSize: CGFloat { size }
     private var iconSize: CGFloat { size * Layout.iconSizeRatio }
@@ -27,13 +25,7 @@ struct BenefitRow: View {
     var body: some View {
         HStack(spacing: spacing) {
             GenerateIcon()
-                .fill(
-                    LinearGradient(
-                        colors: [colorOne, colorTwo],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+                .fill(AppGradient.main)
                 .frame(width: iconSize, height: iconSize)
 
             Text(title)
