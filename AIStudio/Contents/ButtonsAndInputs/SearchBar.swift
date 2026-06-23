@@ -17,7 +17,6 @@ struct SearchBar: View {
         static let iconSizeRatio: CGFloat = 24 / 56
         static let cornerRadiusRatio: CGFloat = 24 / 56
         static let borderWidthRatio: CGFloat = 1 / 56
-        static let backgroundOpacity: CGFloat = 0.6
         static let placeholderOpacity: CGFloat = 0.5
     }
 
@@ -67,7 +66,7 @@ struct SearchBar: View {
         .frame(height: size)
         .background {
             shape
-                .fill(Color.card.opacity(Layout.backgroundOpacity))
+                .fill(Color.card.opacity(AppSurface.CardOpacity.fill))
         }
         .clipShape(shape)
         .overlay {

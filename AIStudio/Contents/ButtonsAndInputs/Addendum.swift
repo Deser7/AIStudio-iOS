@@ -22,7 +22,6 @@ struct Addendum: View {
         static let spinnerSizeRatio: CGFloat = 32 / 100
         static let closeSizeRatio: CGFloat = 24 / 100
         static let closeOffsetRatio: CGFloat = 6 / 100
-        static let blurRatio: CGFloat = 182.21 / 100
         static let borderWidthRatio: CGFloat = 1 / 100
     }
 
@@ -37,7 +36,9 @@ struct Addendum: View {
     private var spinnerSize: CGFloat { size * Layout.spinnerSizeRatio }
     private var closeSize: CGFloat { size * Layout.closeSizeRatio }
     private var closeOffset: CGFloat { size * Layout.closeOffsetRatio }
-    private var blurRadius: CGFloat { size * Layout.blurRatio }
+    private var blurRadius: CGFloat {
+        AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
+    }
     private var borderWidth: CGFloat {
         pixelAligned(max(size * Layout.borderWidthRatio, 1 / displayScale))
     }
@@ -121,7 +122,7 @@ struct Addendum: View {
                 )
 
             shape
-                .fill(Color.card.opacity(0.4))
+                .fill(Color.card.opacity(AppSurface.CardOpacity.compact))
         }
     }
 

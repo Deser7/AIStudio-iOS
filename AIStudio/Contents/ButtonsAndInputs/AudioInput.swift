@@ -37,6 +37,9 @@ struct AudioInput: View {
     private var cornerRadius: CGFloat { size * Layout.cornerRadiusRatio }
     private var buttonSize: CGFloat { size * Layout.buttonSizeRatio }
     private var waveformHeight: CGFloat { size * Layout.waveformHeightRatio }
+    private var blurRadius: CGFloat {
+        AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
+    }
     private var dividerWidth: CGFloat {
         pixelAligned(max(size * Layout.dividerWidthRatio, 1 / displayScale))
     }
@@ -71,12 +74,23 @@ struct AudioInput: View {
         .padding(.vertical, verticalPadding)
         .frame(maxWidth: .infinity)
         .frame(height: size)
-        .background {
-            shape
-                .fill(Color.card)
-        }
+        .background { background }
         .clipShape(shape)
         .opacity(isEnabled ? 1 : 0.6)
+    }
+
+    private var background: some View {
+        ZStack {
+            BackdropBlurView()
+                .frame(
+                    width: blurRadius * 4,
+                    height: size + blurRadius * 2
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            shape
+                .fill(Color.card.opacity(AppSurface.CardOpacity.blurOverlay))
+        }
     }
 
     private var playbackButton: some View {
@@ -86,6 +100,14 @@ struct AudioInput: View {
             action: onPlayPause
         )
     }
+}
+
+private struct BackdropBlurView: UIViewRepresentable {
+    func makeUIView(context: Context) -> UIVisualEffectView {
+        UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))
+    }
+
+    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {}
 }
 
 // MARK: - Waveform
@@ -142,9 +164,13 @@ private struct AudioWaveform: View {
 // MARK: - Previews
 
 #Preview("input") {
-    AudioInputPreview()
-        .padding(24)
-        .background(Color.background)
+    ZStack {
+        Color.mint
+            .ignoresSafeArea()
+
+        AudioInputPreview()
+            .padding(24)
+    }
 }
 
 #Preview("input — scaled") {

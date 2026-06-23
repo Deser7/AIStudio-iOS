@@ -17,7 +17,6 @@ struct AppInput: View {
         static let iconSizeRatio: CGFloat = 24 / 56
         static let cornerRadiusRatio: CGFloat = 24 / 56
         static let borderWidthRatio: CGFloat = 2 / 56
-        static let blurRatio: CGFloat = 182.21 / 56
         static let placeholderOpacity: CGFloat = 0.5
     }
 
@@ -36,7 +35,9 @@ struct AppInput: View {
     private var borderWidth: CGFloat {
         pixelAligned(max(size * Layout.borderWidthRatio, 1 / displayScale))
     }
-    private var blurRadius: CGFloat { size * Layout.blurRatio }
+    private var blurRadius: CGFloat {
+        AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
+    }
 
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
@@ -87,7 +88,7 @@ struct AppInput: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             shape
-                .fill(Color.card.opacity(0.7))
+                .fill(Color.card.opacity(AppSurface.CardOpacity.blurOverlay))
         }
     }
 
@@ -142,7 +143,7 @@ private struct BackdropBlurView: UIViewRepresentable {
 #Preview("input") {
     AppInputPreview()
         .padding(24)
-        .background(Color.background)
+        .background(Color.green)
 }
 
 #Preview("input — scaled") {

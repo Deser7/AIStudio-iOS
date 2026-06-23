@@ -14,7 +14,6 @@ struct AddingPhotoButton: View {
         static let paddingRatio: CGFloat = 12 / 40
         static let iconScale: CGFloat = 24 / 40
         static let strokeScale: CGFloat = 0.09
-        static let blurRatio: CGFloat = 182.21 / 40
     }
 
     var size: CGFloat = AddingPhotoButton.defaultSize
@@ -24,7 +23,9 @@ struct AddingPhotoButton: View {
 
     private var padding: CGFloat { size * Layout.paddingRatio }
     private var iconSize: CGFloat { size * Layout.iconScale }
-    private var blurRadius: CGFloat { size * Layout.blurRatio }
+    private var blurRadius: CGFloat {
+        AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
+    }
 
     var body: some View {
         Button(action: action) {
@@ -56,7 +57,7 @@ struct AddingPhotoButton: View {
                 )
 
             Circle()
-                .fill(Color.card.opacity(0.4))
+                .fill(Color.card.opacity(AppSurface.CardOpacity.compact))
         }
     }
 
