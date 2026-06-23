@@ -10,13 +10,34 @@ import SwiftUI
 enum GradientIconButtonIcon {
     case generation
     case done
+    case play
+    case pause
+
+    func iconFrameSize(relativeTo buttonSize: CGFloat) -> CGSize {
+        let base = GradientIconButton.defaultSize
+
+        switch self {
+        case .generation, .done:
+            let side = buttonSize * 24 / base
+            return CGSize(width: side, height: side)
+        case .play:
+            return CGSize(
+                width: buttonSize * 14 / base,
+                height: buttonSize * 16 / base
+            )
+        case .pause:
+            return CGSize(
+                width: buttonSize * 12 / base,
+                height: buttonSize * 16 / base
+            )
+        }
+    }
 }
 
 struct GradientIconButton: View {
     static let defaultSize: CGFloat = 40
 
     private enum Layout {
-        static let iconScale: CGFloat = 24 / 40
         static let strokeScale: CGFloat = 0.1
     }
 
@@ -27,9 +48,9 @@ struct GradientIconButton: View {
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.displayScale) private var displayScale
 
-    private var iconSize: CGFloat { size * Layout.iconScale }
+    private var iconFrameSize: CGSize { icon.iconFrameSize(relativeTo: size) }
     private var strokeWidth: CGFloat {
-        pixelAligned(iconSize * Layout.strokeScale)
+        pixelAligned(min(iconFrameSize.width, iconFrameSize.height) * Layout.strokeScale)
     }
 
     private func pixelAligned(_ value: CGFloat) -> CGFloat {
@@ -42,7 +63,7 @@ struct GradientIconButton: View {
                 AppGradient.main
 
                 iconView
-                    .frame(width: iconSize, height: iconSize)
+                    .frame(width: iconFrameSize.width, height: iconFrameSize.height)
             }
             .frame(width: size, height: size)
             .clipShape(Circle())
@@ -67,13 +88,21 @@ struct GradientIconButton: View {
         case .done:
             CheckIcon()
                 .fill(Color.accent)
+        case .play:
+            PlayIcon()
+                .fill(Color.accent)
+        case .pause:
+            PauseIcon()
+                .fill(Color.accent)
         }
     }
 }
 
 #Preview("button/generation") {
-    GradientIconButton(size: 300, icon: .generation) {}
-    GradientIconButton(size: 300, icon: .done) {}
+    GradientIconButton(size: 100, icon: .generation) {}
+    GradientIconButton(size: 100, icon: .done) {}
+    GradientIconButton(size: 100, icon: .play) {}
+    GradientIconButton(size: 100, icon: .pause) {}
 }
 
 #Preview("gradient icon buttons — scaled") {
@@ -83,6 +112,8 @@ struct GradientIconButton: View {
         HStack(spacing: size * 0.6) {
             GradientIconButton(size: size, icon: .generation) {}
             GradientIconButton(size: size, icon: .done) {}
+            GradientIconButton(size: size, icon: .play) {}
+            GradientIconButton(size: size, icon: .pause) {}
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.background)
