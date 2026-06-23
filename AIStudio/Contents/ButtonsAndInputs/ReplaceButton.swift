@@ -24,7 +24,6 @@ struct ReplaceButton: View {
     var size: CGFloat = ReplaceButton.defaultSize
     let action: () -> Void
 
-    @Environment(\.isEnabled) private var isEnabled
     @Environment(\.displayScale) private var displayScale
 
     private var horizontalPadding: CGFloat { size * Layout.horizontalPaddingRatio }

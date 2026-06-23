@@ -23,8 +23,6 @@ struct AvatarButton: View {
     var kind: AvatarButtonKind
     let action: () -> Void
 
-    @Environment(\.isEnabled) private var isEnabled
-
     private var iconSize: CGFloat { size * Layout.iconScale }
 
     var body: some View {
@@ -38,7 +36,7 @@ struct AvatarButton: View {
             .frame(width: size, height: size)
         }
         .buttonStyle(.plain)
-        .opacity(isEnabled ? 1 : 0.6)
+        .appDisabledOpacity()
     }
 
     @ViewBuilder

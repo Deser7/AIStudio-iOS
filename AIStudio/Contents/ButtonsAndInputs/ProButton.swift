@@ -22,8 +22,6 @@ struct ProButton: View {
     var size: CGFloat = ProButton.defaultSize
     let action: () -> Void
 
-    @Environment(\.isEnabled) private var isEnabled
-
     private var horizontalPadding: CGFloat { size * Layout.horizontalPaddingRatio }
     private var verticalPadding: CGFloat { size * Layout.verticalPaddingRatio }
     private var gap: CGFloat { size * Layout.gapRatio }
@@ -48,7 +46,7 @@ struct ProButton: View {
             .fixedSize(horizontal: true, vertical: false)
         }
         .buttonStyle(.plain)
-        .opacity(isEnabled ? 1 : 0.6)
+        .appDisabledOpacity()
     }
 }
 

@@ -23,8 +23,6 @@ struct CloseButton: View {
     var style: Style = .surface
     let action: () -> Void
 
-    @Environment(\.isEnabled) private var isEnabled
-
     private var iconSize: CGFloat { size * Layout.iconScale }
 
     var body: some View {
@@ -39,7 +37,7 @@ struct CloseButton: View {
             .frame(width: size, height: size)
         }
         .buttonStyle(.plain)
-        .opacity(isEnabled ? 1 : 0.6)
+        .appDisabledOpacity()
     }
 
     @ViewBuilder

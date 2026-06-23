@@ -25,6 +25,17 @@ enum AppSurface {
         static let paddingMultiplier: CGFloat = 2
     }
 
+    enum DissolvingBorder {
+        static let blurMultiplier: CGFloat = 0.75
+        static let softOpacity: CGFloat = 0.55
+        static let fadeStartMultiplier: CGFloat = 0.45
+        static let solidStartMultiplier: CGFloat = 1.15
+    }
+
+    enum Interaction {
+        static let disabledOpacity: CGFloat = 0.6
+    }
+
     static func scaledBlurRadius(for size: CGFloat, referenceSize: CGFloat) -> CGFloat {
         size * blurRadius / referenceSize
     }

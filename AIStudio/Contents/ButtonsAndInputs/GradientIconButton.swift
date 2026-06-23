@@ -45,7 +45,6 @@ struct GradientIconButton: View {
     var icon: GradientIconButtonIcon = .generation
     let action: () -> Void
 
-    @Environment(\.isEnabled) private var isEnabled
     @Environment(\.displayScale) private var displayScale
 
     private var iconFrameSize: CGSize { icon.iconFrameSize(relativeTo: size) }
@@ -66,7 +65,7 @@ struct GradientIconButton: View {
             .clipShape(Circle())
         }
         .buttonStyle(.plain)
-        .opacity(isEnabled ? 1 : 0.6)
+        .appDisabledOpacity()
     }
 
     @ViewBuilder

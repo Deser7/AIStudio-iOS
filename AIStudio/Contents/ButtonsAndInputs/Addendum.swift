@@ -28,7 +28,6 @@ struct Addendum: View {
     var size: CGFloat = Addendum.defaultSize
     let content: AddendumContent
 
-    @Environment(\.isEnabled) private var isEnabled
     @Environment(\.displayScale) private var displayScale
 
     private var cornerRadius: CGFloat { size * Layout.cornerRadiusRatio }
@@ -76,7 +75,7 @@ struct Addendum: View {
             }
         }
         .frame(width: size, height: size)
-        .opacity(isEnabled ? 1 : 0.6)
+        .appDisabledOpacity()
     }
 
     @ViewBuilder

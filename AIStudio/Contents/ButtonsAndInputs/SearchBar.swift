@@ -8,69 +8,43 @@
 import SwiftUI
 
 struct SearchBar: View {
-    static let defaultSize: CGFloat = 56
+    static let defaultSize: CGFloat = InputFieldMetrics.referenceSize
 
     private enum Layout {
-        static let paddingRatio: CGFloat = 16 / 56
-        static let gapRatio: CGFloat = 16 / 56
-        static let fontSizeRatio: CGFloat = 16 / 56
-        static let iconSizeRatio: CGFloat = 24 / 56
-        static let cornerRadiusRatio: CGFloat = 24 / 56
-        static let borderWidthRatio: CGFloat = 1 / 56
-        static let placeholderOpacity: CGFloat = 0.5
+        static let borderWidthRatio: CGFloat = 1 / InputFieldMetrics.referenceSize
     }
 
     var placeholder: String = "Ask anything..."
     var size: CGFloat = SearchBar.defaultSize
     @Binding var text: String
 
-    @Environment(\.isEnabled) private var isEnabled
     @Environment(\.displayScale) private var displayScale
 
-    private var padding: CGFloat { size * Layout.paddingRatio }
-    private var gap: CGFloat { size * Layout.gapRatio }
-    private var fontSize: CGFloat { size * Layout.fontSizeRatio }
-    private var iconSize: CGFloat { size * Layout.iconSizeRatio }
-    private var cornerRadius: CGFloat { size * Layout.cornerRadiusRatio }
+    private var metrics: InputFieldMetrics { InputFieldMetrics(size: size) }
     private var borderWidth: CGFloat {
         max(size * Layout.borderWidthRatio, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
 
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-    }
-
     var body: some View {
-        HStack(spacing: gap) {
-            SearchIcon()
-                .fill(Color.accent)
-                .frame(width: iconSize, height: iconSize)
-
-            TextField(
-                "",
-                text: $text,
-                prompt: Text(placeholder)
-                    .font(AppFont.font(weight: .regular, size: fontSize))
-                    .foregroundColor(Color.accent.opacity(Layout.placeholderOpacity))
-            )
-            .font(AppFont.font(weight: .regular, size: fontSize))
-            .foregroundColor(Color.accent)
-            .tint(Color.accent)
-        }
-        .padding(padding)
-        .frame(maxWidth: .infinity)
-        .frame(height: size)
-        .background {
-            shape
-                .fill(Color.card.opacity(AppSurface.CardOpacity.fill))
-        }
-        .clipShape(shape)
-        .overlay {
-            shape
-                .strokeBorder(Color.accent, lineWidth: borderWidth)
-        }
-        .opacity(isEnabled ? 1 : 0.6)
+        TextFieldBar(
+            placeholder: placeholder,
+            size: size,
+            text: $text,
+            icon: {
+                SearchIcon()
+                    .fill(Color.accent)
+                    .frame(width: metrics.iconSize, height: metrics.iconSize)
+            },
+            background: {
+                metrics.shape
+                    .fill(Color.card.opacity(AppSurface.CardOpacity.fill))
+            },
+            border: {
+                metrics.shape
+                    .strokeBorder(Color.accent, lineWidth: borderWidth)
+            }
+        )
     }
 }
 

@@ -27,7 +27,6 @@ struct CircularIconButton: View {
     let icon: CircularIconButtonIcon
     let action: () -> Void
 
-    @Environment(\.isEnabled) private var isEnabled
     @Environment(\.displayScale) private var displayScale
 
     private var padding: CGFloat { size * Layout.paddingRatio }
@@ -52,7 +51,7 @@ struct CircularIconButton: View {
                 }
         }
         .buttonStyle(.plain)
-        .opacity(isEnabled ? 1 : 0.6)
+        .appDisabledOpacity()
     }
 
     @ViewBuilder

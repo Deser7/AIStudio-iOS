@@ -19,8 +19,6 @@ struct AddingPhotoButton: View {
     var size: CGFloat = AddingPhotoButton.defaultSize
     let action: () -> Void
 
-    @Environment(\.isEnabled) private var isEnabled
-
     private var padding: CGFloat { size * Layout.paddingRatio }
     private var iconSize: CGFloat { size * Layout.iconScale }
     private var blurRadius: CGFloat {
@@ -45,7 +43,7 @@ struct AddingPhotoButton: View {
                 .clipShape(Circle())
         }
         .buttonStyle(.plain)
-        .opacity(isEnabled ? 1 : 0.6)
+        .appDisabledOpacity()
     }
 
     private var background: some View {

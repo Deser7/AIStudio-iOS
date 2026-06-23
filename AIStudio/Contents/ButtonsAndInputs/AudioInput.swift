@@ -28,7 +28,6 @@ struct AudioInput: View {
     var progress: CGFloat
     let onPlayPause: () -> Void
 
-    @Environment(\.isEnabled) private var isEnabled
     @Environment(\.displayScale) private var displayScale
 
     private var horizontalPadding: CGFloat { size * Layout.horizontalPaddingRatio }
@@ -73,7 +72,7 @@ struct AudioInput: View {
         .frame(height: size)
         .background { background }
         .clipShape(shape)
-        .opacity(isEnabled ? 1 : 0.6)
+        .appDisabledOpacity()
     }
 
     private var background: some View {
