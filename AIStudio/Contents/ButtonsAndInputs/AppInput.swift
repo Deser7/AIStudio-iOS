@@ -132,14 +132,6 @@ struct AppInput: View {
     }
 }
 
-private struct BackdropBlurView: UIViewRepresentable {
-    func makeUIView(context: Context) -> UIVisualEffectView {
-        UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))
-    }
-
-    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {}
-}
-
 #Preview("input") {
     AppInputPreview()
         .padding(24)
