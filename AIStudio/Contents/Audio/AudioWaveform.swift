@@ -22,24 +22,35 @@ struct AudioWaveform: View {
     var body: some View {
         GeometryReader { geo in
             let width = geo.size.width
+            let playedWidth = width * clampedProgress
+            let unplayedWidth = width - playedWidth
 
-            ZStack {
-                EqualizerIcon()
-                    .fill(Color.accent.opacity(inactiveOpacity))
+            ZStack(alignment: .leading) {
+                if clampedProgress < 1 {
+                    EqualizerIcon()
+                        .fill(Color.accent.opacity(inactiveOpacity))
+                        .frame(width: width, height: height)
+                        .mask(alignment: .trailing) {
+                            Rectangle()
+                                .frame(width: unplayedWidth)
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                        }
+                }
 
-                AppGradient.main
-                    .frame(width: width, height: height)
-                    .mask(alignment: .leading) {
-                        Rectangle()
-                            .frame(width: width * clampedProgress)
-                    }
-                    .mask {
-                        EqualizerIcon()
-                    }
+                if clampedProgress > 0 {
+                    AppGradient.main
+                        .frame(width: width, height: height)
+                        .mask {
+                            EqualizerIcon()
+                                .frame(width: width, height: height)
+                        }
+                        .frame(width: playedWidth, height: height, alignment: .leading)
+                        .clipped()
+                }
 
                 segmentDividers(width: width, height: height)
             }
-            .frame(width: width, height: height)
+            .frame(width: width, height: height, alignment: .leading)
         }
         .frame(height: height)
     }
@@ -61,7 +72,19 @@ struct AudioWaveform: View {
 }
 
 #Preview {
-    AudioWaveform(progress: 0.42, height: 40)
-        .padding(.horizontal, 24)
+    AudioWaveformPreview()
+        .padding(24)
         .background(Color.background)
+}
+
+private struct AudioWaveformPreview: View {
+    @State private var progress: CGFloat = 0.42
+
+    var body: some View {
+        VStack(spacing: 24) {
+            AudioWaveform(progress: progress, height: 40)
+
+            Slider(value: $progress, in: 0...1)
+        }
+    }
 }
