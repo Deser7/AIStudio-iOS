@@ -33,7 +33,8 @@ struct AppInput: View {
     private var iconSize: CGFloat { size * Layout.iconSizeRatio }
     private var cornerRadius: CGFloat { size * Layout.cornerRadiusRatio }
     private var borderWidth: CGFloat {
-        pixelAligned(max(size * Layout.borderWidthRatio, 1 / displayScale))
+        max(size * Layout.borderWidthRatio, 1 / displayScale)
+            .pixelAligned(to: displayScale)
     }
     private var blurRadius: CGFloat {
         AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
@@ -41,10 +42,6 @@ struct AppInput: View {
 
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-    }
-
-    private func pixelAligned(_ value: CGFloat) -> CGFloat {
-        (value * displayScale).rounded() / displayScale
     }
 
     var body: some View {
@@ -79,17 +76,13 @@ struct AppInput: View {
     }
 
     private var background: some View {
-        ZStack {
-            BackdropBlurView()
-                .frame(
-                    width: blurRadius * 4,
-                    height: size + blurRadius * 2
-                )
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-            shape
-                .fill(Color.card.opacity(AppSurface.CardOpacity.blurOverlay))
-        }
+        BlurCardBackground(
+            style: .bar,
+            size: size,
+            blurRadius: blurRadius,
+            cardOpacity: AppSurface.CardOpacity.blurOverlay,
+            shape: shape
+        )
     }
 
     private func dissolvingBorder(width: CGFloat) -> some View {

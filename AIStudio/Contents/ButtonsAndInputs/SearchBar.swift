@@ -33,15 +33,12 @@ struct SearchBar: View {
     private var iconSize: CGFloat { size * Layout.iconSizeRatio }
     private var cornerRadius: CGFloat { size * Layout.cornerRadiusRatio }
     private var borderWidth: CGFloat {
-        pixelAligned(max(size * Layout.borderWidthRatio, 1 / displayScale))
+        max(size * Layout.borderWidthRatio, 1 / displayScale)
+            .pixelAligned(to: displayScale)
     }
 
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-    }
-
-    private func pixelAligned(_ value: CGFloat) -> CGFloat {
-        (value * displayScale).rounded() / displayScale
     }
 
     var body: some View {

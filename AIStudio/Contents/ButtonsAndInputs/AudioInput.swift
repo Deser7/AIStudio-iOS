@@ -41,7 +41,8 @@ struct AudioInput: View {
         AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
     }
     private var dividerWidth: CGFloat {
-        pixelAligned(max(size * Layout.dividerWidthRatio, 1 / displayScale))
+        max(size * Layout.dividerWidthRatio, 1 / displayScale)
+            .pixelAligned(to: displayScale)
     }
 
     private var clampedProgress: CGFloat {
@@ -50,10 +51,6 @@ struct AudioInput: View {
 
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-    }
-
-    private func pixelAligned(_ value: CGFloat) -> CGFloat {
-        (value * displayScale).rounded() / displayScale
     }
 
     var body: some View {
@@ -80,17 +77,13 @@ struct AudioInput: View {
     }
 
     private var background: some View {
-        ZStack {
-            BackdropBlurView()
-                .frame(
-                    width: blurRadius * 4,
-                    height: size + blurRadius * 2
-                )
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-            shape
-                .fill(Color.card.opacity(AppSurface.CardOpacity.blurOverlay))
-        }
+        BlurCardBackground(
+            style: .bar,
+            size: size,
+            blurRadius: blurRadius,
+            cardOpacity: AppSurface.CardOpacity.blurOverlay,
+            shape: shape
+        )
     }
 
     private var playbackButton: some View {

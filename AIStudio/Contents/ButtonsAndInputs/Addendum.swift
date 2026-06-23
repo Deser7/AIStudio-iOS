@@ -40,15 +40,12 @@ struct Addendum: View {
         AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
     }
     private var borderWidth: CGFloat {
-        pixelAligned(max(size * Layout.borderWidthRatio, 1 / displayScale))
+        max(size * Layout.borderWidthRatio, 1 / displayScale)
+            .pixelAligned(to: displayScale)
     }
 
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-    }
-
-    private func pixelAligned(_ value: CGFloat) -> CGFloat {
-        (value * displayScale).rounded() / displayScale
     }
 
     var body: some View {
@@ -114,16 +111,13 @@ struct Addendum: View {
     }
 
     private var blurBackground: some View {
-        ZStack {
-            BackdropBlurView()
-                .frame(
-                    width: size + blurRadius * 2,
-                    height: size + blurRadius * 2
-                )
-
-            shape
-                .fill(Color.card.opacity(AppSurface.CardOpacity.compact))
-        }
+        BlurCardBackground(
+            style: .compact,
+            size: size,
+            blurRadius: blurRadius,
+            cardOpacity: AppSurface.CardOpacity.compact,
+            shape: shape
+        )
     }
 
     private var plusIcon: some View {

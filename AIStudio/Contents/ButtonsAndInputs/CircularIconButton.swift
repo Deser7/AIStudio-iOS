@@ -33,14 +33,11 @@ struct CircularIconButton: View {
     private var padding: CGFloat { size * Layout.paddingRatio }
     private var iconSize: CGFloat { size * Layout.iconScale }
     private var borderWidth: CGFloat {
-        pixelAligned(max(size * Layout.borderWidthRatio, 1 / displayScale))
+        max(size * Layout.borderWidthRatio, 1 / displayScale)
+            .pixelAligned(to: displayScale)
     }
     private var strokeWidth: CGFloat {
-        pixelAligned(iconSize * Layout.strokeScale)
-    }
-
-    private func pixelAligned(_ value: CGFloat) -> CGFloat {
-        (value * displayScale).rounded() / displayScale
+        (iconSize * Layout.strokeScale).pixelAligned(to: displayScale)
     }
 
     var body: some View {

@@ -34,11 +34,7 @@ struct ReplaceButton: View {
     private var iconSize: CGFloat { size * Layout.iconSizeRatio }
     private var cornerRadius: CGFloat { size * Layout.cornerRadiusRatio }
     private var strokeWidth: CGFloat {
-        pixelAligned(iconSize * Layout.strokeScale)
-    }
-
-    private func pixelAligned(_ value: CGFloat) -> CGFloat {
-        (value * displayScale).rounded() / displayScale
+        (iconSize * Layout.strokeScale).pixelAligned(to: displayScale)
     }
 
     var body: some View {

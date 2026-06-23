@@ -50,11 +50,8 @@ struct GradientIconButton: View {
 
     private var iconFrameSize: CGSize { icon.iconFrameSize(relativeTo: size) }
     private var strokeWidth: CGFloat {
-        pixelAligned(min(iconFrameSize.width, iconFrameSize.height) * Layout.strokeScale)
-    }
-
-    private func pixelAligned(_ value: CGFloat) -> CGFloat {
-        (value * displayScale).rounded() / displayScale
+        (min(iconFrameSize.width, iconFrameSize.height) * Layout.strokeScale)
+            .pixelAligned(to: displayScale)
     }
 
     var body: some View {

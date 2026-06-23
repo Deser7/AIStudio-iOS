@@ -49,16 +49,13 @@ struct AddingPhotoButton: View {
     }
 
     private var background: some View {
-        ZStack {
-            BackdropBlurView()
-                .frame(
-                    width: size + blurRadius * 2,
-                    height: size + blurRadius * 2
-                )
-
-            Circle()
-                .fill(Color.card.opacity(AppSurface.CardOpacity.compact))
-        }
+        BlurCardBackground(
+            style: .compact,
+            size: size,
+            blurRadius: blurRadius,
+            cardOpacity: AppSurface.CardOpacity.compact,
+            shape: Circle()
+        )
     }
 
     private var iconColor: Color {

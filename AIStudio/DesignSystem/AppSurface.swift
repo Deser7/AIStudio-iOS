@@ -20,6 +20,11 @@ enum AppSurface {
         static let compact: CGFloat = 0.4
     }
 
+    enum BlurFrame {
+        static let barWidthMultiplier: CGFloat = 4
+        static let paddingMultiplier: CGFloat = 2
+    }
+
     static func scaledBlurRadius(for size: CGFloat, referenceSize: CGFloat) -> CGFloat {
         size * blurRadius / referenceSize
     }
