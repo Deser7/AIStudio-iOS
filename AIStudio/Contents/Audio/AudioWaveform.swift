@@ -11,9 +11,8 @@ struct AudioWaveform: View {
     var progress: CGFloat
     var height: CGFloat
     var inactiveOpacity: CGFloat = 0.2
-    var dividerOpacity: CGFloat = 0.15
-    var dividerWidth: CGFloat = 1
-    var segmentCount: Int = 4
+
+    private var segmentCount: Int { EqualizerIcon.Layout.segmentCount }
 
     private var clampedProgress: CGFloat {
         min(max(progress, 0), 1)
@@ -38,36 +37,68 @@ struct AudioWaveform: View {
                 }
 
                 if clampedProgress > 0 {
-                    AppGradient.main
-                        .frame(width: width, height: height)
-                        .mask {
-                            EqualizerIcon()
-                                .frame(width: width, height: height)
+                    ZStack(alignment: .leading) {
+                        ForEach(0..<segmentCount, id: \.self) { index in
+                            playedSegment(
+                                index: index,
+                                totalWidth: width
+                            )
                         }
-                        .frame(width: playedWidth, height: height, alignment: .leading)
-                        .clipped()
+                    }
                 }
-
-                segmentDividers(width: width, height: height)
             }
             .frame(width: width, height: height, alignment: .leading)
         }
         .frame(height: height)
     }
 
-    private func segmentDividers(width: CGFloat, height: CGFloat) -> some View {
-        ZStack {
-            ForEach(1..<segmentCount, id: \.self) { index in
-                Rectangle()
-                    .fill(Color.accent.opacity(dividerOpacity))
-                    .frame(width: dividerWidth, height: height)
-                    .position(
-                        x: width * CGFloat(index) / CGFloat(segmentCount),
-                        y: height / 2
+    private func segmentStart(in totalWidth: CGFloat, at index: Int) -> CGFloat {
+        totalWidth * EqualizerIcon.Layout.segmentStart(at: index)
+    }
+
+    private func segmentWidth(in totalWidth: CGFloat, at index: Int) -> CGFloat {
+        totalWidth * (EqualizerIcon.Layout.segmentEnd(at: index) - EqualizerIcon.Layout.segmentStart(at: index))
+    }
+
+    private func segmentPlayedWidth(index: Int, totalWidth: CGFloat) -> CGFloat {
+        let start = segmentStart(in: totalWidth, at: index)
+        let width = segmentWidth(in: totalWidth, at: index)
+        let playedWidth = totalWidth * clampedProgress
+        return max(0, min(playedWidth - start, width))
+    }
+
+    @ViewBuilder
+    private func playedSegment(index: Int, totalWidth: CGFloat) -> some View {
+        let start = segmentStart(in: totalWidth, at: index)
+        let width = segmentWidth(in: totalWidth, at: index)
+        let played = segmentPlayedWidth(index: index, totalWidth: totalWidth)
+
+        if played > 0 {
+            AppGradient.main
+                .frame(width: width, height: height)
+                .mask(alignment: .leading) {
+                    equalizerSegmentMask(
+                        totalWidth: totalWidth,
+                        segmentStart: start,
+                        segmentWidth: width
                     )
-            }
+                }
+                .frame(width: played, height: height, alignment: .leading)
+                .clipped()
+                .frame(width: width, height: height, alignment: .leading)
+                .offset(x: start)
         }
-        .allowsHitTesting(false)
+    }
+
+    private func equalizerSegmentMask(
+        totalWidth: CGFloat,
+        segmentStart: CGFloat,
+        segmentWidth: CGFloat
+    ) -> some View {
+        EqualizerIcon()
+            .frame(width: totalWidth, height: height)
+            .offset(x: -segmentStart)
+            .frame(width: segmentWidth, height: height, alignment: .leading)
     }
 }
 

@@ -18,17 +18,12 @@ struct AudioInput: View {
         static let buttonSizeRatio: CGFloat = 40 / 88
         static let waveformHeightRatio: CGFloat = 40 / 88
         static let inactiveWaveformOpacity: CGFloat = 0.2
-        static let dividerOpacity: CGFloat = 0.15
-        static let dividerWidthRatio: CGFloat = 1 / 88
-        static let segmentCount: Int = 4
     }
 
     var size: CGFloat = AudioInput.defaultSize
     var isPlaying: Bool
     var progress: CGFloat
     let onPlayPause: () -> Void
-
-    @Environment(\.displayScale) private var displayScale
 
     private var horizontalPadding: CGFloat { size * Layout.horizontalPaddingRatio }
     private var verticalPadding: CGFloat { size * Layout.verticalPaddingRatio }
@@ -38,10 +33,6 @@ struct AudioInput: View {
     private var waveformHeight: CGFloat { size * Layout.waveformHeightRatio }
     private var blurRadius: CGFloat {
         AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
-    }
-    private var dividerWidth: CGFloat {
-        max(size * Layout.dividerWidthRatio, 1 / displayScale)
-            .pixelAligned(to: displayScale)
     }
 
     private var clampedProgress: CGFloat {
@@ -59,10 +50,7 @@ struct AudioInput: View {
             AudioWaveform(
                 progress: clampedProgress,
                 height: waveformHeight,
-                inactiveOpacity: Layout.inactiveWaveformOpacity,
-                dividerOpacity: Layout.dividerOpacity,
-                dividerWidth: dividerWidth,
-                segmentCount: Layout.segmentCount
+                inactiveOpacity: Layout.inactiveWaveformOpacity
             )
             .frame(maxWidth: .infinity)
         }
@@ -112,13 +100,12 @@ struct AudioInput: View {
 
 private struct AudioInputPreview: View {
     @State private var isPlaying = true
-    @State private var progress: CGFloat = 0.35
 
     var body: some View {
         VStack(spacing: 24) {
             AudioInput(
                 isPlaying: isPlaying,
-                progress: progress,
+                progress: 0.35,
                 onPlayPause: { isPlaying.toggle() }
             )
 
@@ -129,11 +116,9 @@ private struct AudioInputPreview: View {
                 onPlayPause: {}
             )
 
-            Slider(value: $progress, in: 0...1)
-
             AudioInput(
-                isPlaying: isPlaying,
-                progress: progress,
+                isPlaying: true,
+                progress: 0.35,
                 onPlayPause: {}
             )
             .disabled(true)

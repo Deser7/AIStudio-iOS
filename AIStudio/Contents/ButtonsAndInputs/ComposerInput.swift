@@ -31,7 +31,6 @@ struct ComposerInput: View {
         static let fontSizeRatio: CGFloat = 16 / 88
         static let addendumSizeRatio: CGFloat = 100 / 88
         static let waveformHeightRatio: CGFloat = 40 / 88
-        static let waveformDividerWidthRatio: CGFloat = 1 / 88
         static let placeholderRed: CGFloat = 96 / 255
     }
 
@@ -60,10 +59,6 @@ struct ComposerInput: View {
     private var fontSize: CGFloat { size * Layout.fontSizeRatio }
     private var addendumSize: CGFloat { size * Layout.addendumSizeRatio }
     private var waveformHeight: CGFloat { size * Layout.waveformHeightRatio }
-    private var waveformDividerWidth: CGFloat {
-        max(size * Layout.waveformDividerWidthRatio, 1 / displayScale)
-            .pixelAligned(to: displayScale)
-    }
     private var blurRadius: CGFloat {
         AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
     }
@@ -182,8 +177,7 @@ struct ComposerInput: View {
 
             AudioWaveform(
                 progress: voiceProgress,
-                height: waveformHeight,
-                dividerWidth: waveformDividerWidth
+                height: waveformHeight
             )
             .frame(maxWidth: .infinity)
 
