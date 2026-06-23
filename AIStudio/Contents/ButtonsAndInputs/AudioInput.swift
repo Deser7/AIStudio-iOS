@@ -94,57 +94,6 @@ struct AudioInput: View {
     }
 }
 
-// MARK: - Waveform
-
-private struct AudioWaveform: View {
-    var progress: CGFloat
-    var height: CGFloat
-    var inactiveOpacity: CGFloat
-    var dividerOpacity: CGFloat
-    var dividerWidth: CGFloat
-    var segmentCount: Int
-
-    var body: some View {
-        GeometryReader { geo in
-            let width = geo.size.width
-
-            ZStack {
-                EqualizerIcon()
-                    .fill(Color.accent.opacity(inactiveOpacity))
-
-                AppGradient.main
-                    .frame(width: width, height: height)
-                    .mask(alignment: .leading) {
-                        Rectangle()
-                            .frame(width: width * progress)
-                    }
-                    .mask {
-                        EqualizerIcon()
-                    }
-
-                segmentDividers(width: width, height: height)
-            }
-            .frame(width: width, height: height)
-        }
-        .frame(height: height)
-    }
-
-    private func segmentDividers(width: CGFloat, height: CGFloat) -> some View {
-        ZStack {
-            ForEach(1..<segmentCount, id: \.self) { index in
-                Rectangle()
-                    .fill(Color.accent.opacity(dividerOpacity))
-                    .frame(width: dividerWidth, height: height)
-                    .position(
-                        x: width * CGFloat(index) / CGFloat(segmentCount),
-                        y: height / 2
-                    )
-            }
-        }
-        .allowsHitTesting(false)
-    }
-}
-
 // MARK: - Previews
 
 #Preview("input") {
