@@ -10,8 +10,6 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         Text("test")
-        
-        Logo(size: 400, colorOne: .logoGreenOne, colorTwo: .logoGreenTwo)
     }
 }
 

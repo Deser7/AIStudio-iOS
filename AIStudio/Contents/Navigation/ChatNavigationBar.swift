@@ -16,8 +16,7 @@ struct ChatNavigationBar: View {
 
     let title: String
     let subtitle: String
-    var logoColorOne: Color = .logoBlueOne
-    var logoColorTwo: Color = .logoBlueTwo
+    var preset = AppGradient.Preset.blue
     let onBack: () -> Void
     let onRegenerate: () -> Void
 
@@ -26,11 +25,7 @@ struct ChatNavigationBar: View {
             backButton
 
             HStack(spacing: Layout.contentSpacing) {
-                Logo(
-                    size: 32,
-                    colorOne: logoColorOne,
-                    colorTwo: logoColorTwo
-                )
+                Logo(size: 32, preset: .blue)
 
                 OnboardingTitleSection(
                     title: title,
@@ -110,8 +105,7 @@ struct ChatNavigationBar: View {
         ChatNavigationBar(
             title: "AI Chat",
             subtitle: "26.03.2026",
-            logoColorOne: .logoBlueOne,
-            logoColorTwo: .logoBlueTwo,
+            preset: .blue,
             onBack: {},
             onRegenerate: {}
         )
@@ -119,8 +113,7 @@ struct ChatNavigationBar: View {
         ChatNavigationBar(
             title: "AI Chat",
             subtitle: "26.03.2026",
-            logoColorOne: .logoPurpleOne,
-            logoColorTwo: .logoPurpleTwo,
+            preset: .purple,
             onBack: {},
             onRegenerate: {}
         )

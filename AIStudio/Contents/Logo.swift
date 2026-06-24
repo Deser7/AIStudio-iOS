@@ -9,12 +9,11 @@ import SwiftUI
 
 struct Logo: View {
     var size: CGFloat
-    var colorOne: Color
-    var colorTwo: Color
+    var preset = AppGradient.Preset.main
     
     var body: some View {
         ZStack {
-            AppGradient.linear(from: colorOne, to: colorTwo)
+            AppGradient.linear(preset)
                 .frame(width: size, height: size)
                 .clipShape(Circle())
             
@@ -26,53 +25,12 @@ struct Logo: View {
 }
 
 #Preview {
-    HStack {
-        Logo(
-            size: 40,
-            colorOne: .logoBlueOne,
-            colorTwo: .logoBlueTwo
-        )
-        
-        Logo(
-            size: 32,
-            colorOne: .logoBlueOne,
-            colorTwo: .logoBlueTwo
-        )
-        
-        Logo(
-            size: 40,
-            colorOne: .logoGreenOne,
-            colorTwo: .logoGreenTwo
-        )
-        
-        Logo(
-            size: 32,
-            colorOne: .logoGreenOne,
-            colorTwo: .logoGreenTwo
-        )
-        
-        Logo(
-            size: 40,
-            colorOne: .logoPinkOne,
-            colorTwo: .logoPinkTwo
-        )
-        
-        Logo(
-            size: 32,
-            colorOne: .logoPinkOne,
-            colorTwo: .logoPinkTwo
-        )
-        
-        Logo(
-            size: 40,
-            colorOne: .logoPurpleOne,
-            colorTwo: .logoPurpleTwo
-        )
-        
-        Logo(
-            size: 32,
-            colorOne: .logoPurpleOne,
-            colorTwo: .logoPurpleTwo
-        )
+    HStack(spacing: 16) {
+        ForEach(AppGradient.Preset.allCases, id: \.self) { preset in
+            VStack(spacing: 8) {
+                Logo(size: 40, preset: preset)
+                Logo(size: 32, preset: preset)
+            }
+        }
     }
 }
