@@ -34,6 +34,8 @@ enum AppSurface {
 
     enum Interaction {
         static let disabledOpacity: CGFloat = 0.6
+        /// Navigation bar subtitle — Figma: #FFFFFF @ 30%.
+        static let subtitleOpacity: CGFloat = 0.3
     }
 
     static func scaledBlurRadius(for size: CGFloat, referenceSize: CGFloat) -> CGFloat {
