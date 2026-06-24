@@ -8,23 +8,17 @@
 import SwiftUI
 
 struct BenefitRow: View {
-    static let defaultSize: CGFloat = 20
-
     let title: String
-    var size: CGFloat = BenefitRow.defaultSize
-
-    private var fontSize: CGFloat { size }
-    private var iconSize: CGFloat { size * 1.4 }
-    private var spacing: CGFloat { size * 0.6 }
+    var size: CGFloat = 20
 
     var body: some View {
-        HStack(spacing: spacing) {
+        HStack(spacing: size * 0.6) {
             GenerateIcon()
                 .fill(AppGradient.main)
-                .frame(width: iconSize, height: iconSize)
+                .frame(width: size * 1.4, height: size * 1.4)
 
             Text(title)
-                .font(AppFont.font(weight: .semiBold, size: fontSize))
+                .font(AppFont.font(weight: .semiBold, size: size))
                 .foregroundStyle(Color.accent)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }

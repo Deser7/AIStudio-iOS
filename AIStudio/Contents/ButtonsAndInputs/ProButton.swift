@@ -8,31 +8,23 @@
 import SwiftUI
 
 struct ProButton: View {
-    static let defaultSize: CGFloat = 32
-
     var title: String = "PRO"
-    var size: CGFloat = ProButton.defaultSize
+    var size: CGFloat = 32
     let action: () -> Void
-
-    private var horizontalPadding: CGFloat { size * 8 / 32 }
-    private var verticalPadding: CGFloat { size * 4 / 32 }
-    private var gap: CGFloat { size * 4 / 32 }
-    private var fontSize: CGFloat { size * 16 / 32 }
-    private var iconSize: CGFloat { size * 24 / 32 }
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: gap) {
+            HStack(spacing: size * 4 / 32) {
                 Text(title)
-                    .font(AppFont.font(weight: .regular, size: fontSize))
+                    .font(AppFont.font(weight: .regular, size: size * 16 / 32))
                     .foregroundStyle(Color.background)
                     .lineLimit(1)
 
                 Color.clear
-                    .frame(width: iconSize, height: iconSize)
+                    .frame(width: size * 24 / 32, height: size * 24 / 32)
             }
-            .padding(.horizontal, horizontalPadding)
-            .padding(.vertical, verticalPadding)
+            .padding(.horizontal, size * 8 / 32)
+            .padding(.vertical, size * 4 / 32)
             .frame(height: size)
             .background(Color.accent, in: Capsule())
             .fixedSize(horizontal: true, vertical: false)

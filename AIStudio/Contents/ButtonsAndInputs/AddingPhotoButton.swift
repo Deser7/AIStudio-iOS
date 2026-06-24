@@ -8,50 +8,36 @@
 import SwiftUI
 
 struct AddingPhotoButton: View {
-    static let defaultSize: CGFloat = 40
-
-    var size: CGFloat = AddingPhotoButton.defaultSize
+    var size: CGFloat = 40
     let action: () -> Void
-
-    private var padding: CGFloat { size * 12 / 40 }
-    private var iconSize: CGFloat { size * 24 / 40 }
-    private var blurRadius: CGFloat {
-        AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
-    }
 
     var body: some View {
         Button(action: action) {
             SettingsIcon()
                 .stroke(
-                    iconColor,
+                    Color.accent.opacity(0.5),
                     style: StrokeStyle(
-                        lineWidth: iconSize * 0.09,
+                        lineWidth: size * 24 / 40 * 0.09,
                         lineCap: .round,
                         lineJoin: .round
                     )
                 )
-                .frame(width: iconSize, height: iconSize)
-                .padding(padding)
+                .frame(width: size * 24 / 40, height: size * 24 / 40)
+                .padding(size * 12 / 40)
                 .frame(width: size, height: size)
-                .background { background }
+                .background {
+                    BlurCardBackground(
+                        style: .compact,
+                        size: size,
+                        blurRadius: AppSurface.scaledBlurRadius(for: size, referenceSize: 40),
+                        cardOpacity: AppSurface.CardOpacity.compact,
+                        shape: Circle()
+                    )
+                }
                 .clipShape(Circle())
         }
         .buttonStyle(.plain)
         .appDisabledOpacity()
-    }
-
-    private var background: some View {
-        BlurCardBackground(
-            style: .compact,
-            size: size,
-            blurRadius: blurRadius,
-            cardOpacity: AppSurface.CardOpacity.compact,
-            shape: Circle()
-        )
-    }
-
-    private var iconColor: Color {
-        .accent.opacity(0.5)
     }
 }
 

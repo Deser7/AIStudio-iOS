@@ -13,49 +13,31 @@ struct SectionButton: View {
         case secondary
     }
 
-    static let defaultSize: CGFloat = 50
-
     let title: String
-    var size: CGFloat = SectionButton.defaultSize
+    var size: CGFloat = 50
     var style: Style = .primary
     let action: () -> Void
 
     @Environment(\.isEnabled) private var isEnabled
 
-    private var cornerRadius: CGFloat { size * 24 / 50 }
-    private var horizontalPadding: CGFloat { size * 12 / 50 }
-    private var fontSize: CGFloat { size * 16 / 50 }
-
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(AppFont.font(weight: .semiBold, size: fontSize))
-                .foregroundStyle(foregroundColor)
-                .padding(.horizontal, horizontalPadding)
+                .font(AppFont.font(weight: .semiBold, size: size * 16 / 50))
+                .foregroundStyle(isEnabled ? Color.accent : Color.black.opacity(0.3))
+                .padding(.horizontal, size * 12 / 50)
                 .frame(maxWidth: .infinity)
                 .frame(height: size)
-                .background { background }
-                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+                .background {
+                    if isEnabled, style == .primary {
+                        AppGradient.main
+                    } else {
+                        Color.card
+                    }
+                }
+                .clipShape(RoundedRectangle(cornerRadius: size * 24 / 50))
         }
         .buttonStyle(.plain)
-    }
-
-    @ViewBuilder
-    private var background: some View {
-        if isEnabled, style == .primary {
-            AppGradient.main
-        } else {
-            Color.card
-        }
-    }
-
-    private var foregroundColor: Color {
-        guard isEnabled else { return .black.opacity(0.3) }
-
-        switch style {
-        case .primary, .secondary:
-            return .accent
-        }
     }
 }
 
