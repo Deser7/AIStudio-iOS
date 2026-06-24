@@ -21,11 +21,15 @@ struct BlurCardBackground<S: Shape>: View {
     var cardOpacity: CGFloat
     var shape: S
 
+    private var blurMaxWidth: CGFloat? {
+        style == .bar ? .infinity : nil
+    }
+
     var body: some View {
         ZStack {
             BackdropBlurView()
                 .frame(width: blurWidth, height: blurHeight)
-                .frame(maxWidth: style == .bar ? .infinity : nil, maxHeight: .infinity)
+                .frame(maxWidth: blurMaxWidth, maxHeight: .infinity)
 
             shape
                 .fill(Color.card.opacity(cardOpacity))

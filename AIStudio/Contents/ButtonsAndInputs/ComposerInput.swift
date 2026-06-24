@@ -89,14 +89,16 @@ struct ComposerInput: View {
         }
     }
 
+    private var showsGeneratingContent: Bool {
+        state == .generating
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: sectionGap) {
             attachmentSection
 
-            if state == .generating {
-                AddendumLoader(size: addendumSize)
-
-                Spacer(minLength: 0)
+            if showsGeneratingContent {
+                generatingSection
             }
 
             HStack(alignment: .bottom, spacing: buttonGap) {
@@ -118,6 +120,13 @@ struct ComposerInput: View {
         .background { background }
         .clipShape(shape)
         .appDisabledOpacity()
+    }
+
+    @ViewBuilder
+    private var generatingSection: some View {
+        AddendumLoader(size: addendumSize)
+
+        Spacer(minLength: 0)
     }
 
     @ViewBuilder

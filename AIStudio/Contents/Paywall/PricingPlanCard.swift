@@ -32,6 +32,8 @@ struct PricingPlanCard: View {
     private var badgeFontSize: CGFloat { size * 14 / 72 }
     private var textSpacing: CGFloat { size * 4 / 72 }
     private var borderWidth: CGFloat { max(size * 1 / 72, 1) }
+    private var badgeHorizontalPadding: CGFloat { size * 10 / 72 }
+    private var badgeVerticalPadding: CGFloat { size * 6 / 72 }
 
     var body: some View {
         Button(action: action) {
@@ -58,8 +60,8 @@ struct PricingPlanCard: View {
                         .font(AppFont.font(weight: .medium, size: badgeFontSize))
                         .foregroundStyle(Color.accent)
                         .textCase(.uppercase)
-                        .padding(.horizontal, size * 10 / 72)
-                        .padding(.vertical, size * 6 / 72)
+                        .padding(.horizontal, badgeHorizontalPadding)
+                        .padding(.vertical, badgeVerticalPadding)
                         .background(AppGradient.main)
                         .clipShape(Capsule())
                 }
@@ -69,17 +71,20 @@ struct PricingPlanCard: View {
             .frame(maxWidth: .infinity, minHeight: size, alignment: .leading)
             .background(Color.card)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .overlay {
-                if isSelected {
-                    RoundedRectangle(cornerRadius: cornerRadius)
-                        .strokeBorder(AppGradient.main, lineWidth: borderWidth)
-                } else {
-                    RoundedRectangle(cornerRadius: cornerRadius)
-                        .strokeBorder(Color.accent.opacity(0.25), lineWidth: borderWidth)
-                }
-            }
+            .overlay { borderOverlay }
         }
         .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    private var borderOverlay: some View {
+        if isSelected {
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .strokeBorder(AppGradient.main, lineWidth: borderWidth)
+        } else {
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .strokeBorder(Color.accent.opacity(0.25), lineWidth: borderWidth)
+        }
     }
 }
 

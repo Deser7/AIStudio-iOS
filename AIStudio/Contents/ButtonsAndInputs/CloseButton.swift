@@ -17,27 +17,36 @@ struct CloseButton: View {
     var style: Style = .surface
     let action: () -> Void
 
+    private var backgroundColor: Color {
+        style == .surface ? Color.surface : Color.accent
+    }
+
+    private var iconSize: CGFloat { size * 16 / 24 }
+
     var body: some View {
         Button(action: action) {
             ZStack {
                 Circle()
-                    .fill(style == .surface ? Color.surface : Color.accent)
+                    .fill(backgroundColor)
 
-                Group {
-                    if style == .surface {
-                        CloseIcon()
-                            .fill(Color.accent)
-                    } else {
-                        CloseIcon()
-                            .fill(AppGradient.main)
-                    }
-                }
-                .frame(width: size * 16 / 24, height: size * 16 / 24)
+                iconView
+                    .frame(width: iconSize, height: iconSize)
             }
             .frame(width: size, height: size)
         }
         .buttonStyle(.plain)
         .appDisabledOpacity()
+    }
+
+    @ViewBuilder
+    private var iconView: some View {
+        if style == .surface {
+            CloseIcon()
+                .fill(Color.accent)
+        } else {
+            CloseIcon()
+                .fill(AppGradient.main)
+        }
     }
 }
 

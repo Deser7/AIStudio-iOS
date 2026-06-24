@@ -23,6 +23,8 @@ struct BottomBar: View {
     private var iconSize: CGFloat { size * 16 / 50 }
     private var iconTextGap: CGFloat { size * 6 / 50 }
     private var secondaryFontSize: CGFloat { size * 12 / 50 }
+    private var bottomPadding: CGFloat { verticalSpacing * 0.5 }
+    private var iconStrokeWidth: CGFloat { iconSize * 0.1 }
 
     var body: some View {
         VStack(spacing: verticalSpacing) {
@@ -39,7 +41,7 @@ struct BottomBar: View {
         }
         .padding(.horizontal, horizontalPadding)
         .padding(.top, verticalSpacing)
-        .padding(.bottom, verticalSpacing * 0.5)
+        .padding(.bottom, bottomPadding)
         .frame(maxWidth: .infinity)
         .background(Color.background)
     }
@@ -50,7 +52,7 @@ struct BottomBar: View {
                 .stroke(
                     secondaryColor,
                     style: StrokeStyle(
-                        lineWidth: iconSize * 0.1,
+                        lineWidth: iconStrokeWidth,
                         lineCap: .round,
                         lineJoin: .round
                     )

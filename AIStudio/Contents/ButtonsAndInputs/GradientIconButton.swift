@@ -13,24 +13,26 @@ enum GradientIconButtonIcon {
     case play
     case pause
 
-    func iconFrameSize(relativeTo buttonSize: CGFloat) -> CGSize {
-        let base = GradientIconButton.defaultSize
-
+    private var referenceSize: CGSize {
         switch self {
         case .generation, .done:
-            let side = buttonSize * 24 / base
-            return CGSize(width: side, height: side)
+            CGSize(width: 24, height: 24)
         case .play:
-            return CGSize(
-                width: buttonSize * 14 / base,
-                height: buttonSize * 16 / base
-            )
+            CGSize(width: 14, height: 16)
         case .pause:
-            return CGSize(
-                width: buttonSize * 12 / base,
-                height: buttonSize * 16 / base
-            )
+            CGSize(width: 12, height: 16)
         }
+    }
+
+    func iconFrameSize(relativeTo buttonSize: CGFloat) -> CGSize {
+        CGSize(
+            width: scaled(referenceSize.width, buttonSize: buttonSize),
+            height: scaled(referenceSize.height, buttonSize: buttonSize)
+        )
+    }
+
+    private func scaled(_ value: CGFloat, buttonSize: CGFloat) -> CGFloat {
+        buttonSize * value / GradientIconButton.defaultSize
     }
 }
 

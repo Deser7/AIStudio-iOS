@@ -10,16 +10,18 @@ import SwiftUI
 struct Logo: View {
     var size: CGFloat
     var preset = AppGradient.Preset.main
-    
+
+    private var iconSize: CGFloat { size * 0.6125 }
+
     var body: some View {
         ZStack {
             AppGradient.linear(preset)
                 .frame(width: size, height: size)
                 .clipShape(Circle())
-            
+
             GenerateIcon()
                 .fill(.accent)
-                .frame(width: size * 0.6125, height: size * 0.6125)
+                .frame(width: iconSize, height: iconSize)
         }
     }
 }

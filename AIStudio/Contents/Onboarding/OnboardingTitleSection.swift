@@ -17,6 +17,14 @@ struct OnboardingTitleSection: View {
     let subtitle: String
     var style: OnboardingTitleSectionStyle = .onboarding
 
+    private var expandsHorizontally: Bool {
+        style == .onboarding
+    }
+
+    private var horizontalMaxWidth: CGFloat? {
+        expandsHorizontally ? .infinity : nil
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: textSpacing) {
             Text(title)
@@ -24,15 +32,15 @@ struct OnboardingTitleSection: View {
                 .tracking(titleTracking)
                 .foregroundStyle(Color.accent)
                 .lineLimit(lineLimit)
-                .frame(maxWidth: expandsHorizontally ? .infinity : nil, alignment: .leading)
+                .frame(maxWidth: horizontalMaxWidth, alignment: .leading)
 
             Text(subtitle)
                 .typography(subtitleTypography)
                 .foregroundStyle(subtitleColor)
                 .lineLimit(lineLimit)
-                .frame(maxWidth: expandsHorizontally ? .infinity : nil, alignment: .leading)
+                .frame(maxWidth: horizontalMaxWidth, alignment: .leading)
         }
-        .frame(maxWidth: expandsHorizontally ? .infinity : nil, alignment: .leading)
+        .frame(maxWidth: horizontalMaxWidth, alignment: .leading)
     }
 
     private var textSpacing: CGFloat {
@@ -69,10 +77,6 @@ struct OnboardingTitleSection: View {
 
     private var lineLimit: Int? {
         style == .navigation ? 1 : nil
-    }
-
-    private var expandsHorizontally: Bool {
-        style == .onboarding
     }
 }
 

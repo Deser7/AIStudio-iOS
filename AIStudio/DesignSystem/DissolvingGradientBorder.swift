@@ -13,19 +13,25 @@ struct DissolvingGradientBorder<S: InsettableShape>: View {
     let lineWidth: CGFloat
     let cornerRadius: CGFloat
 
-    var body: some View {
-        let mask = borderMask
+    private var softBlurRadius: CGFloat {
+        lineWidth * AppSurface.DissolvingBorder.blurMultiplier
+    }
 
+    private var softLayerOpacity: CGFloat {
+        AppSurface.DissolvingBorder.softOpacity
+    }
+
+    var body: some View {
         ZStack {
             shape
                 .strokeBorder(AppGradient.main, lineWidth: lineWidth)
-                .mask(mask)
-                .blur(radius: lineWidth * AppSurface.DissolvingBorder.blurMultiplier)
-                .opacity(AppSurface.DissolvingBorder.softOpacity)
+                .mask(borderMask)
+                .blur(radius: softBlurRadius)
+                .opacity(softLayerOpacity)
 
             shape
                 .strokeBorder(AppGradient.main, lineWidth: lineWidth)
-                .mask(mask)
+                .mask(borderMask)
         }
     }
 

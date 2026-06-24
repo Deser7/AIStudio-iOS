@@ -17,22 +17,32 @@ struct AvatarButton: View {
     var kind: AvatarButtonKind
     let action: () -> Void
 
+    private var iconSize: CGFloat { size * 18 / 32 }
+
+    private var showsUserIcon: Bool {
+        if case .user = kind { true } else { false }
+    }
+
     var body: some View {
         Button(action: action) {
             ZStack {
                 Circle()
                     .fill(Color.accent)
 
-                if case .user = kind {
-                    UserIcon()
-                        .fill(Color.surface)
-                        .frame(width: size * 18 / 32, height: size * 18 / 32)
+                if showsUserIcon {
+                    userIcon
                 }
             }
             .frame(width: size, height: size)
         }
         .buttonStyle(.plain)
         .appDisabledOpacity()
+    }
+
+    private var userIcon: some View {
+        UserIcon()
+            .fill(Color.surface)
+            .frame(width: iconSize, height: iconSize)
     }
 }
 

@@ -22,6 +22,25 @@ struct AppToggle: View {
     private var thumbInset: CGFloat { size * 2 / 31 }
     private var thumbOffsetOn: CGFloat { size * 22 / 31 }
 
+    private var thumbOffsetX: CGFloat {
+        isOn ? thumbOffsetOn : thumbInset
+    }
+
+    private var trackFill: Color {
+        isOn ? Color.accent : Color.toggleTrackSecondary
+    }
+
+    private var thumbFill: Color {
+        isOn ? Color.surface : Color.accent
+    }
+
+    private var thumbShadowYOffset: CGFloat {
+        size * Layout.shadowYOffsetRatio
+    }
+
+    private var thumbShadowRadiusSoft: CGFloat { size * 0.5 / 31 }
+    private var thumbShadowRadiusHard: CGFloat { size * 4 / 31 }
+
     var body: some View {
         Button {
             withAnimation(.spring(duration: 0.25, bounce: 0.2)) {
@@ -32,7 +51,7 @@ struct AppToggle: View {
                 track
 
                 thumb
-                    .offset(x: isOn ? thumbOffsetOn : thumbInset)
+                    .offset(x: thumbOffsetX)
             }
             .frame(width: width, height: size)
         }
@@ -43,25 +62,25 @@ struct AppToggle: View {
 
     private var track: some View {
         Capsule()
-            .fill(isOn ? Color.accent : Color.toggleTrackSecondary)
+            .fill(trackFill)
             .frame(width: width, height: size)
     }
 
     private var thumb: some View {
         Circle()
-            .fill(isOn ? Color.surface : Color.accent)
+            .fill(thumbFill)
             .frame(width: thumbSize, height: thumbSize)
             .shadow(
                 color: .black.opacity(0.06),
-                radius: size * 0.5 / 31,
+                radius: thumbShadowRadiusSoft,
                 x: 0,
-                y: size * Layout.shadowYOffsetRatio
+                y: thumbShadowYOffset
             )
             .shadow(
                 color: .black.opacity(0.15),
-                radius: size * 4 / 31,
+                radius: thumbShadowRadiusHard,
                 x: 0,
-                y: size * Layout.shadowYOffsetRatio
+                y: thumbShadowYOffset
             )
     }
 }

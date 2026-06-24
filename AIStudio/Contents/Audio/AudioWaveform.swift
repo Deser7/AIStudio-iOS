@@ -14,42 +14,59 @@ struct AudioWaveform: View {
 
     private var segmentCount: Int { EqualizerIcon.Layout.segmentCount }
 
-    private var clampedProgress: CGFloat {
-        min(max(progress, 0), 1)
+    private var clampedProgress: CGFloat { min(max(progress, 0), 1) }
+
+    private var inactiveFill: Color {
+        Color.accent.opacity(inactiveOpacity)
     }
+
+    private var showsUnplayedLayer: Bool { clampedProgress < 1 }
+
+    private var showsPlayedLayer: Bool { clampedProgress > 0 }
 
     var body: some View {
         GeometryReader { geo in
-            let width = geo.size.width
-            let playedWidth = width * clampedProgress
-            let unplayedWidth = width - playedWidth
+            waveformContent(width: geo.size.width)
+        }
+        .frame(height: height)
+    }
 
-            ZStack(alignment: .leading) {
-                if clampedProgress < 1 {
-                    EqualizerIcon()
-                        .fill(Color.accent.opacity(inactiveOpacity))
-                        .frame(width: width, height: height)
-                        .mask(alignment: .trailing) {
-                            Rectangle()
-                                .frame(width: unplayedWidth)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                        }
-                }
+    @ViewBuilder
+    private func waveformContent(width: CGFloat) -> some View {
+        let unplayedWidth = self.unplayedWidth(in: width)
 
-                if clampedProgress > 0 {
-                    ZStack(alignment: .leading) {
-                        ForEach(0..<segmentCount, id: \.self) { index in
-                            playedSegment(
-                                index: index,
-                                totalWidth: width
-                            )
-                        }
+        ZStack(alignment: .leading) {
+            if showsUnplayedLayer {
+                EqualizerIcon()
+                    .fill(inactiveFill)
+                    .frame(width: width, height: height)
+                    .mask(alignment: .trailing) {
+                        Rectangle()
+                            .frame(width: unplayedWidth)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                    }
+            }
+
+            if showsPlayedLayer {
+                ZStack(alignment: .leading) {
+                    ForEach(0..<segmentCount, id: \.self) { index in
+                        playedSegment(
+                            index: index,
+                            totalWidth: width
+                        )
                     }
                 }
             }
-            .frame(width: width, height: height, alignment: .leading)
         }
-        .frame(height: height)
+        .frame(width: width, height: height, alignment: .leading)
+    }
+
+    private func playedWidth(in totalWidth: CGFloat) -> CGFloat {
+        totalWidth * clampedProgress
+    }
+
+    private func unplayedWidth(in totalWidth: CGFloat) -> CGFloat {
+        totalWidth - playedWidth(in: totalWidth)
     }
 
     private func segmentStart(in totalWidth: CGFloat, at index: Int) -> CGFloat {

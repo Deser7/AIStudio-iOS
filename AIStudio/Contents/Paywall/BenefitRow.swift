@@ -11,11 +11,14 @@ struct BenefitRow: View {
     let title: String
     var size: CGFloat = 20
 
+    private var rowSpacing: CGFloat { size * 0.6 }
+    private var iconSize: CGFloat { size * 1.4 }
+
     var body: some View {
-        HStack(spacing: size * 0.6) {
+        HStack(spacing: rowSpacing) {
             GenerateIcon()
                 .fill(AppGradient.main)
-                .frame(width: size * 1.4, height: size * 1.4)
+                .frame(width: iconSize, height: iconSize)
 
             Text(title)
                 .font(AppFont.font(weight: .semiBold, size: size))

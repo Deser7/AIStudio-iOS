@@ -8,24 +8,31 @@
 import SwiftUI
 
 struct ChatNavigationBar: View {
-    private enum Layout {
-        static let contentSpacing: CGFloat = 10
-        static let regenerateIconSize: CGFloat = 24
-        static let actionTapSize: CGFloat = 44
-    }
-
     let title: String
     let subtitle: String
     var preset = AppGradient.Preset.blue
     let onBack: () -> Void
     let onRegenerate: () -> Void
 
+    private let contentSpacing: CGFloat = 10
+    private let horizontalPadding: CGFloat = 16
+    private let barHeight: CGFloat = 75
+    private let logoSize: CGFloat = 32
+    private let regenerateIconSize: CGFloat = 24
+    private let actionTapSize: CGFloat = 44
+    private let backIconSize: CGFloat = 17
+    private let borderHeight: CGFloat = 0.5
+
+    private var borderColor: Color {
+        Color.accent.opacity(0.1)
+    }
+
     var body: some View {
-        HStack(spacing: Layout.contentSpacing) {
+        HStack(spacing: contentSpacing) {
             backButton
 
-            HStack(spacing: Layout.contentSpacing) {
-                Logo(size: 32, preset: .blue)
+            HStack(spacing: contentSpacing) {
+                Logo(size: logoSize, preset: preset)
 
                 OnboardingTitleSection(
                     title: title,
@@ -36,13 +43,13 @@ struct ChatNavigationBar: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            Spacer(minLength: Layout.contentSpacing)
+            Spacer(minLength: contentSpacing)
 
             regenerateButton
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, horizontalPadding)
         .frame(maxWidth: .infinity)
-        .frame(height: 75)
+        .frame(height: barHeight)
         .background { background }
         .overlay(alignment: .bottom) { bottomBorder }
     }
@@ -50,9 +57,9 @@ struct ChatNavigationBar: View {
     private var backButton: some View {
         Button(action: onBack) {
             Image(systemName: "chevron.left")
-                .font(.system(size: 17, weight: .semibold))
+                .font(.system(size: backIconSize, weight: .semibold))
                 .foregroundStyle(Color.accent)
-                .frame(width: Layout.actionTapSize, height: Layout.actionTapSize, alignment: .leading)
+                .frame(width: actionTapSize, height: actionTapSize, alignment: .leading)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text("Back"))
@@ -62,8 +69,8 @@ struct ChatNavigationBar: View {
         Button(action: onRegenerate) {
             RegenerateIcon()
                 .fill(Color.accent)
-                .frame(width: Layout.regenerateIconSize, height: Layout.regenerateIconSize)
-                .frame(width: Layout.actionTapSize, height: Layout.actionTapSize)
+                .frame(width: regenerateIconSize, height: regenerateIconSize)
+                .frame(width: actionTapSize, height: actionTapSize)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text("Regenerate"))
@@ -79,8 +86,8 @@ struct ChatNavigationBar: View {
 
     private var bottomBorder: some View {
         Rectangle()
-            .fill(Color.accent.opacity(0.1))
-            .frame(height: 0.5)
+            .fill(borderColor)
+            .frame(height: borderHeight)
     }
 }
 
