@@ -17,14 +17,7 @@ struct ChatNavigationBar: View {
         static let regenerateIconSize: CGFloat = 24
         static let actionTapSize: CGFloat = 44
         static let backIconSize: CGFloat = 17
-        static let overlayOpacity: CGFloat = 0.4
-        static let subtitleOpacity: CGFloat = 0.3
         static let bottomBorderWidth: CGFloat = 0.5
-        static let overlayColor = Color(
-            red: 31 / 255,
-            green: 25 / 255,
-            blue: 31 / 255
-        )
     }
 
     let title: String
@@ -68,7 +61,7 @@ struct ChatNavigationBar: View {
 
             Text(subtitle)
                 .typography(Typography.regular14)
-                .foregroundStyle(Color.accent.opacity(Layout.subtitleOpacity))
+                .foregroundStyle(Color.accent.opacity(AppSurface.CardOpacity.compact))
                 .lineLimit(1)
         }
     }
@@ -99,8 +92,7 @@ struct ChatNavigationBar: View {
         ZStack {
             BackdropBlurView()
 
-            Layout.overlayColor
-                .opacity(Layout.overlayOpacity)
+            Color.card.opacity(AppSurface.CardOpacity.compact)
         }
     }
 
