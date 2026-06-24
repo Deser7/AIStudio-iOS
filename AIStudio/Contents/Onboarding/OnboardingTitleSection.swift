@@ -7,29 +7,78 @@
 
 import SwiftUI
 
+enum OnboardingTitleSectionStyle {
+    case onboarding
+    case navigation
+}
+
 struct OnboardingTitleSection: View {
     private enum Layout {
-        static let textSpacing: CGFloat = 8
+        static let onboardingTextSpacing: CGFloat = 8
+        static let navigationTextSpacing: CGFloat = 2
         static let titleTracking: CGFloat = 0.4
     }
 
     let title: String
     let subtitle: String
+    var style: OnboardingTitleSectionStyle = .onboarding
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Layout.textSpacing) {
+        VStack(alignment: .leading, spacing: textSpacing) {
             Text(title)
-                .typography(Typography.bold28)
-                .tracking(Layout.titleTracking)
+                .typography(titleTypography)
+                .tracking(titleTracking)
                 .foregroundStyle(Color.accent)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .lineLimit(lineLimit)
+                .frame(maxWidth: expandsHorizontally ? .infinity : nil, alignment: .leading)
 
             Text(subtitle)
-                .typography(Typography.regular16)
-                .foregroundStyle(Color.price)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .typography(subtitleTypography)
+                .foregroundStyle(subtitleColor)
+                .lineLimit(lineLimit)
+                .frame(maxWidth: expandsHorizontally ? .infinity : nil, alignment: .leading)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: expandsHorizontally ? .infinity : nil, alignment: .leading)
+    }
+
+    private var textSpacing: CGFloat {
+        switch style {
+        case .onboarding: Layout.onboardingTextSpacing
+        case .navigation: Layout.navigationTextSpacing
+        }
+    }
+
+    private var titleTypography: TypographyStyle {
+        switch style {
+        case .onboarding: Typography.bold28
+        case .navigation: Typography.semiBold20
+        }
+    }
+
+    private var subtitleTypography: TypographyStyle {
+        switch style {
+        case .onboarding: Typography.regular16
+        case .navigation: Typography.regular14
+        }
+    }
+
+    private var subtitleColor: Color {
+        switch style {
+        case .onboarding: Color.price
+        case .navigation: Color.accent.opacity(AppSurface.CardOpacity.compact)
+        }
+    }
+
+    private var titleTracking: CGFloat {
+        style == .onboarding ? Layout.titleTracking : 0
+    }
+
+    private var lineLimit: Int? {
+        style == .navigation ? 1 : nil
+    }
+
+    private var expandsHorizontally: Bool {
+        style == .onboarding
     }
 }
 
@@ -39,6 +88,17 @@ struct OnboardingTitleSection: View {
     OnboardingTitleSection(
         title: "Title",
         subtitle: "Subtitle here"
+    )
+    .padding(.horizontal, 24)
+    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    .background(Color.background)
+}
+
+#Preview("onboardingTitleSection — navigation") {
+    OnboardingTitleSection(
+        title: "AI Chat",
+        subtitle: "26.03.2026",
+        style: .navigation
     )
     .padding(.horizontal, 24)
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)

@@ -11,7 +11,6 @@ struct ChatNavigationBar: View {
     private enum Layout {
         static let horizontalPadding: CGFloat = 16
         static let contentSpacing: CGFloat = 10
-        static let titleSpacing: CGFloat = 2
         static let barHeight: CGFloat = 75
         static let logoSize: CGFloat = 32
         static let regenerateIconSize: CGFloat = 24
@@ -38,8 +37,14 @@ struct ChatNavigationBar: View {
                     colorTwo: logoColorTwo
                 )
 
-                titleSection
+                OnboardingTitleSection(
+                    title: title,
+                    subtitle: subtitle,
+                    style: .navigation
+                )
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             Spacer(minLength: Layout.contentSpacing)
 
@@ -50,20 +55,6 @@ struct ChatNavigationBar: View {
         .frame(height: Layout.barHeight)
         .background { background }
         .overlay(alignment: .bottom) { bottomBorder }
-    }
-
-    private var titleSection: some View {
-        VStack(alignment: .leading, spacing: Layout.titleSpacing) {
-            Text(title)
-                .typography(Typography.semiBold20)
-                .foregroundStyle(Color.accent)
-                .lineLimit(1)
-
-            Text(subtitle)
-                .typography(Typography.regular14)
-                .foregroundStyle(Color.accent.opacity(AppSurface.CardOpacity.compact))
-                .lineLimit(1)
-        }
     }
 
     private var backButton: some View {
