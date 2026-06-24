@@ -18,6 +18,8 @@ enum AppSurface {
         static let fill: CGFloat = 0.6
         /// Addendum, replace button, adding photo
         static let compact: CGFloat = 0.4
+        /// AI response typing bubble — Figma: #1F191F @ 50%.
+        static let responseBubble: CGFloat = 0.5
     }
 
     enum BlurFrame {
@@ -36,6 +38,8 @@ enum AppSurface {
         static let disabledOpacity: CGFloat = 0.6
         /// Navigation bar subtitle — Figma: #FFFFFF @ 30%.
         static let subtitleOpacity: CGFloat = 0.3
+        /// Typing indicator inactive dot — Figma: accent @ 10%.
+        static let typingDotInactiveOpacity: CGFloat = 0.1
     }
 
     static func scaledBlurRadius(for size: CGFloat, referenceSize: CGFloat) -> CGFloat {
