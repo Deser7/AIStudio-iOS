@@ -14,16 +14,9 @@ struct Logo: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    colorOne,
-                    colorTwo
-                ],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-            .frame(width: size, height: size)
-            .clipShape(Circle())
+            AppGradient.linear(from: colorOne, to: colorTwo)
+                .frame(width: size, height: size)
+                .clipShape(Circle())
             
             GenerateIcon()
                 .fill(.accent)
