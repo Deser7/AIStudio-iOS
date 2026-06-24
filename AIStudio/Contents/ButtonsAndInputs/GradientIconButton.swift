@@ -37,10 +37,6 @@ enum GradientIconButtonIcon {
 struct GradientIconButton: View {
     static let defaultSize: CGFloat = 40
 
-    private enum Layout {
-        static let strokeScale: CGFloat = 0.1
-    }
-
     var size: CGFloat = GradientIconButton.defaultSize
     var icon: GradientIconButtonIcon = .generation
     let action: () -> Void
@@ -49,7 +45,7 @@ struct GradientIconButton: View {
 
     private var iconFrameSize: CGSize { icon.iconFrameSize(relativeTo: size) }
     private var strokeWidth: CGFloat {
-        (min(iconFrameSize.width, iconFrameSize.height) * Layout.strokeScale)
+        (min(iconFrameSize.width, iconFrameSize.height) * 0.1)
             .pixelAligned(to: displayScale)
     }
 

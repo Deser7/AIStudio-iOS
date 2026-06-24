@@ -10,17 +10,11 @@ import SwiftUI
 struct AddingPhotoButton: View {
     static let defaultSize: CGFloat = 40
 
-    private enum Layout {
-        static let paddingRatio: CGFloat = 12 / 40
-        static let iconScale: CGFloat = 24 / 40
-        static let strokeScale: CGFloat = 0.09
-    }
-
     var size: CGFloat = AddingPhotoButton.defaultSize
     let action: () -> Void
 
-    private var padding: CGFloat { size * Layout.paddingRatio }
-    private var iconSize: CGFloat { size * Layout.iconScale }
+    private var padding: CGFloat { size * 12 / 40 }
+    private var iconSize: CGFloat { size * 24 / 40 }
     private var blurRadius: CGFloat {
         AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
     }
@@ -31,7 +25,7 @@ struct AddingPhotoButton: View {
                 .stroke(
                     iconColor,
                     style: StrokeStyle(
-                        lineWidth: iconSize * Layout.strokeScale,
+                        lineWidth: iconSize * 0.09,
                         lineCap: .round,
                         lineJoin: .round
                     )

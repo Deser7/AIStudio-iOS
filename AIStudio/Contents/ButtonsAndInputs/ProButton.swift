@@ -10,23 +10,15 @@ import SwiftUI
 struct ProButton: View {
     static let defaultSize: CGFloat = 32
 
-    private enum Layout {
-        static let horizontalPaddingRatio: CGFloat = 8 / 32
-        static let verticalPaddingRatio: CGFloat = 4 / 32
-        static let gapRatio: CGFloat = 4 / 32
-        static let fontSizeRatio: CGFloat = 16 / 32
-        static let iconSizeRatio: CGFloat = 24 / 32
-    }
-
     var title: String = "PRO"
     var size: CGFloat = ProButton.defaultSize
     let action: () -> Void
 
-    private var horizontalPadding: CGFloat { size * Layout.horizontalPaddingRatio }
-    private var verticalPadding: CGFloat { size * Layout.verticalPaddingRatio }
-    private var gap: CGFloat { size * Layout.gapRatio }
-    private var fontSize: CGFloat { size * Layout.fontSizeRatio }
-    private var iconSize: CGFloat { size * Layout.iconSizeRatio }
+    private var horizontalPadding: CGFloat { size * 8 / 32 }
+    private var verticalPadding: CGFloat { size * 4 / 32 }
+    private var gap: CGFloat { size * 4 / 32 }
+    private var fontSize: CGFloat { size * 16 / 32 }
+    private var iconSize: CGFloat { size * 24 / 32 }
 
     var body: some View {
         Button(action: action) {

@@ -13,12 +13,6 @@ enum OnboardingTitleSectionStyle {
 }
 
 struct OnboardingTitleSection: View {
-    private enum Layout {
-        static let onboardingTextSpacing: CGFloat = 8
-        static let navigationTextSpacing: CGFloat = 2
-        static let titleTracking: CGFloat = 0.4
-    }
-
     let title: String
     let subtitle: String
     var style: OnboardingTitleSectionStyle = .onboarding
@@ -43,8 +37,8 @@ struct OnboardingTitleSection: View {
 
     private var textSpacing: CGFloat {
         switch style {
-        case .onboarding: Layout.onboardingTextSpacing
-        case .navigation: Layout.navigationTextSpacing
+        case .onboarding: 8
+        case .navigation: 2
         }
     }
 
@@ -70,7 +64,7 @@ struct OnboardingTitleSection: View {
     }
 
     private var titleTracking: CGFloat {
-        style == .onboarding ? Layout.titleTracking : 0
+        style == .onboarding ? 0.4 : 0
     }
 
     private var lineLimit: Int? {

@@ -10,10 +10,6 @@ import SwiftUI
 struct AppInput: View {
     static let defaultSize: CGFloat = InputFieldMetrics.referenceSize
 
-    private enum Layout {
-        static let borderWidthRatio: CGFloat = 2 / InputFieldMetrics.referenceSize
-    }
-
     var placeholder: String = "Ask anything..."
     var size: CGFloat = AppInput.defaultSize
     @Binding var text: String
@@ -22,7 +18,7 @@ struct AppInput: View {
 
     private var metrics: InputFieldMetrics { InputFieldMetrics(size: size) }
     private var borderWidth: CGFloat {
-        max(size * Layout.borderWidthRatio, 1 / displayScale)
+        max(size * 2 / InputFieldMetrics.referenceSize, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
     private var blurRadius: CGFloat {

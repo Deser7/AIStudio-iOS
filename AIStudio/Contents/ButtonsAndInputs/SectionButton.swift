@@ -15,12 +15,6 @@ struct SectionButton: View {
 
     static let defaultSize: CGFloat = 50
 
-    private enum Layout {
-        static let cornerRadiusRatio: CGFloat = 24 / 50
-        static let paddingRatio: CGFloat = 12 / 50
-        static let fontSizeRatio: CGFloat = 16 / 50
-    }
-
     let title: String
     var size: CGFloat = SectionButton.defaultSize
     var style: Style = .primary
@@ -28,9 +22,9 @@ struct SectionButton: View {
 
     @Environment(\.isEnabled) private var isEnabled
 
-    private var cornerRadius: CGFloat { size * Layout.cornerRadiusRatio }
-    private var horizontalPadding: CGFloat { size * Layout.paddingRatio }
-    private var fontSize: CGFloat { size * Layout.fontSizeRatio }
+    private var cornerRadius: CGFloat { size * 24 / 50 }
+    private var horizontalPadding: CGFloat { size * 12 / 50 }
+    private var fontSize: CGFloat { size * 16 / 50 }
 
     var body: some View {
         Button(action: action) {

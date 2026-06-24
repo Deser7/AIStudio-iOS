@@ -10,15 +10,6 @@ import SwiftUI
 struct BottomBar: View {
     static let defaultSize: CGFloat = 50
 
-    private enum Layout {
-        static let horizontalPaddingRatio: CGFloat = 24 / 50
-        static let verticalSpacingRatio: CGFloat = 16 / 50
-        static let iconSizeRatio: CGFloat = 16 / 50
-        static let iconStrokeRatio: CGFloat = 0.1
-        static let iconTextGapRatio: CGFloat = 6 / 50
-        static let secondaryFontRatio: CGFloat = 12 / 50
-    }
-
     var size: CGFloat = BottomBar.defaultSize
     var cancelText: String = "Cancel Anytime"
     var buttonTitle: String = "Label"
@@ -27,11 +18,11 @@ struct BottomBar: View {
     var onRestoreTap: () -> Void
     var onTermsTap: () -> Void
 
-    private var horizontalPadding: CGFloat { size * Layout.horizontalPaddingRatio }
-    private var verticalSpacing: CGFloat { size * Layout.verticalSpacingRatio }
-    private var iconSize: CGFloat { size * Layout.iconSizeRatio }
-    private var iconTextGap: CGFloat { size * Layout.iconTextGapRatio }
-    private var secondaryFontSize: CGFloat { size * Layout.secondaryFontRatio }
+    private var horizontalPadding: CGFloat { size * 24 / 50 }
+    private var verticalSpacing: CGFloat { size * 16 / 50 }
+    private var iconSize: CGFloat { size * 16 / 50 }
+    private var iconTextGap: CGFloat { size * 6 / 50 }
+    private var secondaryFontSize: CGFloat { size * 12 / 50 }
 
     var body: some View {
         VStack(spacing: verticalSpacing) {
@@ -59,7 +50,7 @@ struct BottomBar: View {
                 .stroke(
                     secondaryColor,
                     style: StrokeStyle(
-                        lineWidth: iconSize * Layout.iconStrokeRatio,
+                        lineWidth: iconSize * 0.1,
                         lineCap: .round,
                         lineJoin: .round
                     )

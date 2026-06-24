@@ -10,10 +10,6 @@ import SwiftUI
 struct SearchBar: View {
     static let defaultSize: CGFloat = InputFieldMetrics.referenceSize
 
-    private enum Layout {
-        static let borderWidthRatio: CGFloat = 1 / InputFieldMetrics.referenceSize
-    }
-
     var placeholder: String = "Ask anything..."
     var size: CGFloat = SearchBar.defaultSize
     @Binding var text: String
@@ -22,7 +18,7 @@ struct SearchBar: View {
 
     private var metrics: InputFieldMetrics { InputFieldMetrics(size: size) }
     private var borderWidth: CGFloat {
-        max(size * Layout.borderWidthRatio, 1 / displayScale)
+        max(size * 1 / InputFieldMetrics.referenceSize, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
 

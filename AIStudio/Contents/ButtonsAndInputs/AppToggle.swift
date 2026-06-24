@@ -11,22 +11,16 @@ struct AppToggle: View {
     static let defaultSize: CGFloat = 31
 
     private enum Layout {
-        static let aspectRatio: CGFloat = 51 / 31
-        static let thumbSizeRatio: CGFloat = 27 / 31
-        static let thumbInsetRatio: CGFloat = 2 / 31
-        static let thumbOffsetOnRatio: CGFloat = 22 / 31
         static let shadowYOffsetRatio: CGFloat = 3 / 31
-        static let shadowBlurSmallRatio: CGFloat = 0.5 / 31
-        static let shadowBlurLargeRatio: CGFloat = 4 / 31
     }
 
     var size: CGFloat = AppToggle.defaultSize
     @Binding var isOn: Bool
 
-    private var width: CGFloat { size * Layout.aspectRatio }
-    private var thumbSize: CGFloat { size * Layout.thumbSizeRatio }
-    private var thumbInset: CGFloat { size * Layout.thumbInsetRatio }
-    private var thumbOffsetOn: CGFloat { size * Layout.thumbOffsetOnRatio }
+    private var width: CGFloat { size * 51 / 31 }
+    private var thumbSize: CGFloat { size * 27 / 31 }
+    private var thumbInset: CGFloat { size * 2 / 31 }
+    private var thumbOffsetOn: CGFloat { size * 22 / 31 }
 
     var body: some View {
         Button {
@@ -59,13 +53,13 @@ struct AppToggle: View {
             .frame(width: thumbSize, height: thumbSize)
             .shadow(
                 color: .black.opacity(0.06),
-                radius: size * Layout.shadowBlurSmallRatio,
+                radius: size * 0.5 / 31,
                 x: 0,
                 y: size * Layout.shadowYOffsetRatio
             )
             .shadow(
                 color: .black.opacity(0.15),
-                radius: size * Layout.shadowBlurLargeRatio,
+                radius: size * 4 / 31,
                 x: 0,
                 y: size * Layout.shadowYOffsetRatio
             )

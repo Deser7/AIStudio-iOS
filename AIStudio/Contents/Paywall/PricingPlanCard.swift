@@ -17,19 +17,6 @@ struct PricingPlanItem: Identifiable, Equatable {
 struct PricingPlanCard: View {
     static let defaultSize: CGFloat = 72
 
-    private enum Layout {
-        static let cornerRadiusRatio: CGFloat = 24 / 72
-        static let horizontalPaddingRatio: CGFloat = 16 / 72
-        static let verticalPaddingRatio: CGFloat = 14 / 72
-        static let titleFontRatio: CGFloat = 16 / 72
-        static let priceFontRatio: CGFloat = 14 / 72
-        static let badgeFontRatio: CGFloat = 14 / 72
-        static let textSpacingRatio: CGFloat = 4 / 72
-        static let badgeHorizontalPaddingRatio: CGFloat = 10 / 72
-        static let badgeVerticalPaddingRatio: CGFloat = 6 / 72
-        static let borderWidthRatio: CGFloat = 1 / 72
-    }
-
     let periodLabel: String
     let price: String
     var badge: String? = nil
@@ -37,14 +24,14 @@ struct PricingPlanCard: View {
     var size: CGFloat = PricingPlanCard.defaultSize
     let action: () -> Void
 
-    private var cornerRadius: CGFloat { size * Layout.cornerRadiusRatio }
-    private var horizontalPadding: CGFloat { size * Layout.horizontalPaddingRatio }
-    private var verticalPadding: CGFloat { size * Layout.verticalPaddingRatio }
-    private var titleFontSize: CGFloat { size * Layout.titleFontRatio }
-    private var priceFontSize: CGFloat { size * Layout.priceFontRatio }
-    private var badgeFontSize: CGFloat { size * Layout.badgeFontRatio }
-    private var textSpacing: CGFloat { size * Layout.textSpacingRatio }
-    private var borderWidth: CGFloat { max(size * Layout.borderWidthRatio, 1) }
+    private var cornerRadius: CGFloat { size * 24 / 72 }
+    private var horizontalPadding: CGFloat { size * 16 / 72 }
+    private var verticalPadding: CGFloat { size * 14 / 72 }
+    private var titleFontSize: CGFloat { size * 16 / 72 }
+    private var priceFontSize: CGFloat { size * 14 / 72 }
+    private var badgeFontSize: CGFloat { size * 14 / 72 }
+    private var textSpacing: CGFloat { size * 4 / 72 }
+    private var borderWidth: CGFloat { max(size * 1 / 72, 1) }
 
     var body: some View {
         Button(action: action) {
@@ -71,14 +58,8 @@ struct PricingPlanCard: View {
                         .font(AppFont.font(weight: .medium, size: badgeFontSize))
                         .foregroundStyle(Color.accent)
                         .textCase(.uppercase)
-                        .padding(
-                            .horizontal,
-                            size * Layout.badgeHorizontalPaddingRatio
-                        )
-                        .padding(
-                            .vertical,
-                            size * Layout.badgeVerticalPaddingRatio
-                        )
+                        .padding(.horizontal, size * 10 / 72)
+                        .padding(.vertical, size * 6 / 72)
                         .background(AppGradient.main)
                         .clipShape(Capsule())
                 }

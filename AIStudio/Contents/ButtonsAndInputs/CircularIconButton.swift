@@ -16,27 +16,20 @@ enum CircularIconButtonIcon {
 struct CircularIconButton: View {
     static let defaultSize: CGFloat = 40
 
-    private enum Layout {
-        static let paddingRatio: CGFloat = 12 / 40
-        static let iconScale: CGFloat = 24 / 40
-        static let strokeScale: CGFloat = 0.09
-        static let borderWidthRatio: CGFloat = 1 / 40
-    }
-
     var size: CGFloat = CircularIconButton.defaultSize
     let icon: CircularIconButtonIcon
     let action: () -> Void
 
     @Environment(\.displayScale) private var displayScale
 
-    private var padding: CGFloat { size * Layout.paddingRatio }
-    private var iconSize: CGFloat { size * Layout.iconScale }
+    private var padding: CGFloat { size * 12 / 40 }
+    private var iconSize: CGFloat { size * 24 / 40 }
     private var borderWidth: CGFloat {
-        max(size * Layout.borderWidthRatio, 1 / displayScale)
+        max(size * 1 / 40, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
     private var strokeWidth: CGFloat {
-        (iconSize * Layout.strokeScale).pixelAligned(to: displayScale)
+        (iconSize * 0.09).pixelAligned(to: displayScale)
     }
 
     var body: some View {

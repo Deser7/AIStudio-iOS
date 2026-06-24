@@ -15,15 +15,11 @@ struct CloseButton: View {
 
     static let defaultSize: CGFloat = 24
 
-    private enum Layout {
-        static let iconScale: CGFloat = 16 / 24
-    }
-
     var size: CGFloat = CloseButton.defaultSize
     var style: Style = .surface
     let action: () -> Void
 
-    private var iconSize: CGFloat { size * Layout.iconScale }
+    private var iconSize: CGFloat { size * 16 / 24 }
 
     var body: some View {
         Button(action: action) {

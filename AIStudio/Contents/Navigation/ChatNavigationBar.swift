@@ -9,14 +9,9 @@ import SwiftUI
 
 struct ChatNavigationBar: View {
     private enum Layout {
-        static let horizontalPadding: CGFloat = 16
         static let contentSpacing: CGFloat = 10
-        static let barHeight: CGFloat = 75
-        static let logoSize: CGFloat = 32
         static let regenerateIconSize: CGFloat = 24
         static let actionTapSize: CGFloat = 44
-        static let backIconSize: CGFloat = 17
-        static let bottomBorderWidth: CGFloat = 0.5
     }
 
     let title: String
@@ -32,7 +27,7 @@ struct ChatNavigationBar: View {
 
             HStack(spacing: Layout.contentSpacing) {
                 Logo(
-                    size: Layout.logoSize,
+                    size: 32,
                     colorOne: logoColorOne,
                     colorTwo: logoColorTwo
                 )
@@ -50,9 +45,9 @@ struct ChatNavigationBar: View {
 
             regenerateButton
         }
-        .padding(.horizontal, Layout.horizontalPadding)
+        .padding(.horizontal, 16)
         .frame(maxWidth: .infinity)
-        .frame(height: Layout.barHeight)
+        .frame(height: 75)
         .background { background }
         .overlay(alignment: .bottom) { bottomBorder }
     }
@@ -60,7 +55,7 @@ struct ChatNavigationBar: View {
     private var backButton: some View {
         Button(action: onBack) {
             Image(systemName: "chevron.left")
-                .font(.system(size: Layout.backIconSize, weight: .semibold))
+                .font(.system(size: 17, weight: .semibold))
                 .foregroundStyle(Color.accent)
                 .frame(width: Layout.actionTapSize, height: Layout.actionTapSize, alignment: .leading)
         }
@@ -90,7 +85,7 @@ struct ChatNavigationBar: View {
     private var bottomBorder: some View {
         Rectangle()
             .fill(Color.accent.opacity(0.1))
-            .frame(height: Layout.bottomBorderWidth)
+            .frame(height: 0.5)
     }
 }
 

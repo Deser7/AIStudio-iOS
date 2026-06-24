@@ -16,30 +16,21 @@ enum AddendumContent {
 struct Addendum: View {
     static let defaultSize: CGFloat = 100
 
-    private enum Layout {
-        static let cornerRadiusRatio: CGFloat = 16 / 100
-        static let plusSizeRatio: CGFloat = 32 / 100
-        static let spinnerSizeRatio: CGFloat = 32 / 100
-        static let closeSizeRatio: CGFloat = 24 / 100
-        static let closeOffsetRatio: CGFloat = 6 / 100
-        static let borderWidthRatio: CGFloat = 1 / 100
-    }
-
     var size: CGFloat = Addendum.defaultSize
     let content: AddendumContent
 
     @Environment(\.displayScale) private var displayScale
 
-    private var cornerRadius: CGFloat { size * Layout.cornerRadiusRatio }
-    private var plusSize: CGFloat { size * Layout.plusSizeRatio }
-    private var spinnerSize: CGFloat { size * Layout.spinnerSizeRatio }
-    private var closeSize: CGFloat { size * Layout.closeSizeRatio }
-    private var closeOffset: CGFloat { size * Layout.closeOffsetRatio }
+    private var cornerRadius: CGFloat { size * 16 / 100 }
+    private var plusSize: CGFloat { size * 32 / 100 }
+    private var spinnerSize: CGFloat { size * 32 / 100 }
+    private var closeSize: CGFloat { size * 24 / 100 }
+    private var closeOffset: CGFloat { size * 6 / 100 }
     private var blurRadius: CGFloat {
         AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
     }
     private var borderWidth: CGFloat {
-        max(size * Layout.borderWidthRatio, 1 / displayScale)
+        max(size * 1 / 100, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
 

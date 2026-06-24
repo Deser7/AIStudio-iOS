@@ -20,17 +20,6 @@ struct ComposerInput: View {
     static let defaultSize: CGFloat = 88
 
     private enum Layout {
-        static let referenceMinHeight: CGFloat = 88
-        static let referenceGeneratingHeight: CGFloat = 229
-        static let horizontalPaddingRatio: CGFloat = 16 / 88
-        static let verticalPaddingRatio: CGFloat = 24 / 88
-        static let sectionGapRatio: CGFloat = 24 / 88
-        static let buttonGapRatio: CGFloat = 16 / 88
-        static let buttonSizeRatio: CGFloat = 40 / 88
-        static let cornerRadiusRatio: CGFloat = 24 / 88
-        static let fontSizeRatio: CGFloat = 16 / 88
-        static let addendumSizeRatio: CGFloat = 100 / 88
-        static let waveformHeightRatio: CGFloat = 40 / 88
         static let placeholderRed: CGFloat = 96 / 255
     }
 
@@ -50,15 +39,15 @@ struct ComposerInput: View {
 
     @Environment(\.displayScale) private var displayScale
 
-    private var horizontalPadding: CGFloat { size * Layout.horizontalPaddingRatio }
-    private var verticalPadding: CGFloat { size * Layout.verticalPaddingRatio }
-    private var sectionGap: CGFloat { size * Layout.sectionGapRatio }
-    private var buttonGap: CGFloat { size * Layout.buttonGapRatio }
-    private var buttonSize: CGFloat { size * Layout.buttonSizeRatio }
-    private var cornerRadius: CGFloat { size * Layout.cornerRadiusRatio }
-    private var fontSize: CGFloat { size * Layout.fontSizeRatio }
-    private var addendumSize: CGFloat { size * Layout.addendumSizeRatio }
-    private var waveformHeight: CGFloat { size * Layout.waveformHeightRatio }
+    private var horizontalPadding: CGFloat { size * 16 / 88 }
+    private var verticalPadding: CGFloat { size * 24 / 88 }
+    private var sectionGap: CGFloat { size * 24 / 88 }
+    private var buttonGap: CGFloat { size * 16 / 88 }
+    private var buttonSize: CGFloat { size * 40 / 88 }
+    private var cornerRadius: CGFloat { size * 24 / 88 }
+    private var fontSize: CGFloat { size * 16 / 88 }
+    private var addendumSize: CGFloat { size * 100 / 88 }
+    private var waveformHeight: CGFloat { size * 40 / 88 }
     private var blurRadius: CGFloat {
         AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
     }
@@ -94,7 +83,7 @@ struct ComposerInput: View {
     private var containerMinHeight: CGFloat {
         switch state {
         case .generating:
-            size * Layout.referenceGeneratingHeight / Layout.referenceMinHeight
+            size * 229 / 88
         default:
             size
         }

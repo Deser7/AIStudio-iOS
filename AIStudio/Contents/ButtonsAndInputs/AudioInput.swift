@@ -10,27 +10,17 @@ import SwiftUI
 struct AudioInput: View {
     static let defaultSize: CGFloat = 88
 
-    private enum Layout {
-        static let horizontalPaddingRatio: CGFloat = 16 / 88
-        static let verticalPaddingRatio: CGFloat = 24 / 88
-        static let gapRatio: CGFloat = 16 / 88
-        static let cornerRadiusRatio: CGFloat = 24 / 88
-        static let buttonSizeRatio: CGFloat = 40 / 88
-        static let waveformHeightRatio: CGFloat = 40 / 88
-        static let inactiveWaveformOpacity: CGFloat = 0.2
-    }
-
     var size: CGFloat = AudioInput.defaultSize
     var isPlaying: Bool
     var progress: CGFloat
     let onPlayPause: () -> Void
 
-    private var horizontalPadding: CGFloat { size * Layout.horizontalPaddingRatio }
-    private var verticalPadding: CGFloat { size * Layout.verticalPaddingRatio }
-    private var gap: CGFloat { size * Layout.gapRatio }
-    private var cornerRadius: CGFloat { size * Layout.cornerRadiusRatio }
-    private var buttonSize: CGFloat { size * Layout.buttonSizeRatio }
-    private var waveformHeight: CGFloat { size * Layout.waveformHeightRatio }
+    private var horizontalPadding: CGFloat { size * 16 / 88 }
+    private var verticalPadding: CGFloat { size * 24 / 88 }
+    private var gap: CGFloat { size * 16 / 88 }
+    private var cornerRadius: CGFloat { size * 24 / 88 }
+    private var buttonSize: CGFloat { size * 40 / 88 }
+    private var waveformHeight: CGFloat { size * 40 / 88 }
     private var blurRadius: CGFloat {
         AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
     }
@@ -50,7 +40,7 @@ struct AudioInput: View {
             AudioWaveform(
                 progress: clampedProgress,
                 height: waveformHeight,
-                inactiveOpacity: Layout.inactiveWaveformOpacity
+                inactiveOpacity: 0.2
             )
             .frame(maxWidth: .infinity)
         }

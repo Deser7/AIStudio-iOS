@@ -10,30 +10,20 @@ import SwiftUI
 struct ReplaceButton: View {
     static let defaultSize: CGFloat = 40
 
-    private enum Layout {
-        static let horizontalPaddingRatio: CGFloat = 12 / 40
-        static let verticalPaddingRatio: CGFloat = 8 / 40
-        static let gapRatio: CGFloat = 8 / 40
-        static let fontSizeRatio: CGFloat = 14 / 40
-        static let iconSizeRatio: CGFloat = 24 / 40
-        static let cornerRadiusRatio: CGFloat = 24 / 40
-        static let strokeScale: CGFloat = 0.09
-    }
-
     var title: String = "Replace"
     var size: CGFloat = ReplaceButton.defaultSize
     let action: () -> Void
 
     @Environment(\.displayScale) private var displayScale
 
-    private var horizontalPadding: CGFloat { size * Layout.horizontalPaddingRatio }
-    private var verticalPadding: CGFloat { size * Layout.verticalPaddingRatio }
-    private var gap: CGFloat { size * Layout.gapRatio }
-    private var fontSize: CGFloat { size * Layout.fontSizeRatio }
-    private var iconSize: CGFloat { size * Layout.iconSizeRatio }
-    private var cornerRadius: CGFloat { size * Layout.cornerRadiusRatio }
+    private var horizontalPadding: CGFloat { size * 12 / 40 }
+    private var verticalPadding: CGFloat { size * 8 / 40 }
+    private var gap: CGFloat { size * 8 / 40 }
+    private var fontSize: CGFloat { size * 14 / 40 }
+    private var iconSize: CGFloat { size * 24 / 40 }
+    private var cornerRadius: CGFloat { size * 24 / 40 }
     private var strokeWidth: CGFloat {
-        (iconSize * Layout.strokeScale).pixelAligned(to: displayScale)
+        (iconSize * 0.09).pixelAligned(to: displayScale)
     }
 
     var body: some View {

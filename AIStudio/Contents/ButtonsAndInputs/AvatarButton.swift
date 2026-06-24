@@ -15,15 +15,11 @@ enum AvatarButtonKind {
 struct AvatarButton: View {
     static let defaultSize: CGFloat = 32
 
-    private enum Layout {
-        static let iconScale: CGFloat = 18 / 32
-    }
-
     var size: CGFloat = AvatarButton.defaultSize
     var kind: AvatarButtonKind
     let action: () -> Void
 
-    private var iconSize: CGFloat { size * Layout.iconScale }
+    private var iconSize: CGFloat { size * 18 / 32 }
 
     var body: some View {
         Button(action: action) {

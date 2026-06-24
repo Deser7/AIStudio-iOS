@@ -10,17 +10,12 @@ import SwiftUI
 struct BenefitRow: View {
     static let defaultSize: CGFloat = 20
 
-    private enum Layout {
-        static let iconSizeRatio: CGFloat = 1.4
-        static let spacingRatio: CGFloat = 0.6
-    }
-
     let title: String
     var size: CGFloat = BenefitRow.defaultSize
 
     private var fontSize: CGFloat { size }
-    private var iconSize: CGFloat { size * Layout.iconSizeRatio }
-    private var spacing: CGFloat { size * Layout.spacingRatio }
+    private var iconSize: CGFloat { size * 1.4 }
+    private var spacing: CGFloat { size * 0.6 }
 
     var body: some View {
         HStack(spacing: spacing) {
