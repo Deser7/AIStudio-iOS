@@ -16,7 +16,7 @@ enum AppSurface {
         static let blurOverlay: CGFloat = 0.7
         /// Search bar
         static let fill: CGFloat = 0.6
-        /// Addendum, replace button, adding photo
+        /// Addendum, replace button, adding photo, toast notification — Figma: #1F191F @ 40%.
         static let compact: CGFloat = 0.4
         /// AI response typing bubble — Figma: #1F191F @ 50%.
         static let responseBubble: CGFloat = 0.5
