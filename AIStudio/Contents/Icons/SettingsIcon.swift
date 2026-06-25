@@ -176,6 +176,4 @@ struct SettingsIcon: Shape {
             style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round)
         )
         .frame(width: 48, height: 48)
-        .padding(24)
-        .background(Color.background)
 }

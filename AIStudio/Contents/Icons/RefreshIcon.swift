@@ -57,6 +57,4 @@ struct RefreshIcon: Shape {
             style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round)
         )
         .frame(width: 48, height: 48)
-        .padding(24)
-        .background(Color.background)
 }

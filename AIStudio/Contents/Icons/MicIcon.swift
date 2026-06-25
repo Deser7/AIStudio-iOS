@@ -2,7 +2,7 @@
 //  MicIcon.swift
 //  AIStudio
 //
-//  Created by Наташа Спиридонова on 21.06.2026.
+//  Created by Андрей Спиридонов on 21.06.2026.
 //
 
 import SwiftUI
@@ -14,7 +14,6 @@ struct MicIcon: Shape {
 
         var path = Path()
 
-        // MARK: - Capsule (mic head)
         path.move(to: CGPoint(x: 0.33333 * width, y: 0.20833 * height))
         path.addCurve(
             to: CGPoint(x: 0.5 * width, y: 0.04167 * height),
@@ -39,7 +38,6 @@ struct MicIcon: Shape {
         )
         path.closeSubpath()
 
-        // MARK: - Inner hole
         path.move(to: CGPoint(x: 0.5 * width, y: 0.10417 * height))
         path.addCurve(
             to: CGPoint(x: 0.39583 * width, y: 0.20833 * height),
@@ -65,7 +63,6 @@ struct MicIcon: Shape {
         )
         path.closeSubpath()
 
-        // MARK: - Bottom arc + stem
         path.move(to: CGPoint(x: 0.21875 * width, y: 0.45833 * height))
         path.addCurve(
             to: CGPoint(x: 0.25 * width, y: 0.48958 * height),
@@ -141,8 +138,6 @@ struct MicIcon: Shape {
 
 #Preview {
     MicIcon()
-        .fill(.black, style: FillStyle(eoFill: true))
+        .fill(.black)
         .frame(width: 48, height: 48)
-        .padding(24)
-        .background(Color.background)
 }

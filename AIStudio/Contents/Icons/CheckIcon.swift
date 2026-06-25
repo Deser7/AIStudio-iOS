@@ -76,8 +76,6 @@ struct CheckIcon: Shape {
 
 #Preview {
     CheckIcon()
-        .fill(.black, style: FillStyle(eoFill: true))
+        .fill(.black)
         .frame(width: 48, height: 48)
-        .padding(24)
-        .background(Color.background)
 }
