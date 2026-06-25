@@ -21,7 +21,6 @@ struct Addendum: View {
 
     private var cornerRadius: CGFloat { size * 16 / 100 }
     private var plusSize: CGFloat { size * 32 / 100 }
-    private var spinnerSize: CGFloat { size * 32 / 100 }
     private var closeSize: CGFloat { size * 24 / 100 }
     private var closeOffset: CGFloat { size * 6 / 100 }
     private var blurRadius: CGFloat { size * AppSurface.blurRadius / 100 }
@@ -76,7 +75,7 @@ struct Addendum: View {
             case .add:
                 plusIcon
             case .loading:
-                SpinnerView(size: spinnerSize)
+                SpinnerView(size: plusSize)
             case .photo:
                 EmptyView()
             }

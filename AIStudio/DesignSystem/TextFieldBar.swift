@@ -15,9 +15,7 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
     @ViewBuilder var background: () -> Background
     @ViewBuilder var border: () -> Border
 
-    private var padding: CGFloat { size * 2 / 7 }
-    private var gap: CGFloat { size * 2 / 7 }
-    private var fontSize: CGFloat { size * 2 / 7 }
+    private var spacing: CGFloat { size * 2 / 7 }
     private var cornerRadius: CGFloat { size * 3 / 7 }
 
     private var shape: RoundedRectangle {
@@ -25,21 +23,21 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
     }
 
     var body: some View {
-        HStack(spacing: gap) {
+        HStack(spacing: spacing) {
             icon()
 
             TextField(
                 "",
                 text: $text,
                 prompt: Text(placeholder)
-                    .font(AppFont.font(weight: .regular, size: fontSize))
+                    .font(AppFont.font(weight: .regular, size: spacing))
                     .foregroundColor(Color.accent.opacity(0.5))
             )
-            .font(AppFont.font(weight: .regular, size: fontSize))
+            .font(AppFont.font(weight: .regular, size: spacing))
             .foregroundColor(Color.accent)
             .tint(Color.accent)
         }
-        .padding(padding)
+        .padding(spacing)
         .frame(maxWidth: .infinity)
         .frame(height: size)
         .background { background() }

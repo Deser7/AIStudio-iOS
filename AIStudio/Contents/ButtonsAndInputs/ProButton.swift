@@ -12,15 +12,14 @@ struct ProButton: View {
     var size: CGFloat
     let action: () -> Void
 
-    private var contentSpacing: CGFloat { size * 4 / 32 }
+    private var spacing: CGFloat { size * 4 / 32 }
     private var fontSize: CGFloat { size * 16 / 32 }
     private var iconPlaceholderSize: CGFloat { size * 24 / 32 }
     private var horizontalPadding: CGFloat { size * 8 / 32 }
-    private var verticalPadding: CGFloat { size * 4 / 32 }
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: contentSpacing) {
+            HStack(spacing: spacing) {
                 Text(title)
                     .font(AppFont.font(weight: .regular, size: fontSize))
                     .foregroundStyle(Color.background)
@@ -30,7 +29,7 @@ struct ProButton: View {
                     .frame(width: iconPlaceholderSize, height: iconPlaceholderSize)
             }
             .padding(.horizontal, horizontalPadding)
-            .padding(.vertical, verticalPadding)
+            .padding(.vertical, spacing)
             .frame(height: size)
             .background(Color.accent, in: Capsule())
             .fixedSize(horizontal: true, vertical: false)

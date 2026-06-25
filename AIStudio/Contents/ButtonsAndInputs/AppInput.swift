@@ -15,7 +15,6 @@ struct AppInput: View {
     @Environment(\.displayScale) private var displayScale
 
     private var iconSize: CGFloat { size * 3 / 7 }
-    private var cornerRadius: CGFloat { size * 3 / 7 }
     private var borderWidth: CGFloat {
         max(size * 1 / 28, 1 / displayScale)
             .pixelAligned(to: displayScale)
@@ -23,7 +22,7 @@ struct AppInput: View {
     private var blurRadius: CGFloat { size * AppSurface.blurRadius / 56 }
 
     private var fieldShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: iconSize, style: .continuous)
     }
 
     var body: some View {
@@ -51,7 +50,7 @@ struct AppInput: View {
                         shape: fieldShape,
                         containerWidth: geo.size.width,
                         lineWidth: borderWidth,
-                        cornerRadius: cornerRadius
+                        cornerRadius: iconSize
                     )
                 }
                 .allowsHitTesting(false)

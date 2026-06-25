@@ -18,11 +18,10 @@ struct BottomBar: View {
 
     private var horizontalPadding: CGFloat { size * 24 / 50 }
     private var verticalSpacing: CGFloat { size * 16 / 50 }
-    private var iconSize: CGFloat { size * 16 / 50 }
     private var iconTextGap: CGFloat { size * 6 / 50 }
     private var secondaryFontSize: CGFloat { size * 12 / 50 }
     private var bottomPadding: CGFloat { verticalSpacing * 1 / 2 }
-    private var iconStrokeWidth: CGFloat { iconSize * 1 / 10 }
+    private var iconStrokeWidth: CGFloat { verticalSpacing * 1 / 10 }
 
     var body: some View {
         VStack(spacing: verticalSpacing) {
@@ -55,7 +54,7 @@ struct BottomBar: View {
                         lineJoin: .round
                     )
                 )
-                .frame(width: iconSize, height: iconSize)
+                .frame(width: verticalSpacing, height: verticalSpacing)
 
             Text(cancelText)
                 .font(AppFont.font(weight: .medium, size: secondaryFontSize))

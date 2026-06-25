@@ -18,17 +18,13 @@ struct AppNotification: View {
     let content: AppNotificationContent
     var size: CGFloat
 
-    private var horizontalPadding: CGFloat { size * 16 / 239 }
-    private var verticalPadding: CGFloat { size * 24 / 239 }
+    private var titleFontSize: CGFloat { size * 16 / 239 }
+    private var cornerRadius: CGFloat { size * 24 / 239 }
     private var successContentSpacing: CGFloat { size * 8 / 239 }
     private var errorContentSpacing: CGFloat { size * 12 / 239 }
     private var titleSubtitleSpacing: CGFloat { size * 4 / 239 }
-    private var cornerRadius: CGFloat { size * 24 / 239 }
-    private var titleFontSize: CGFloat { size * 16 / 239 }
     private var subtitleFontSize: CGFloat { size * 14 / 239 }
-    private var checkIconWidth: CGFloat { size * 40 / 239 }
-    private var checkIconHeight: CGFloat { size * 40 / 239 }
-    private var errorCloseIconSize: CGFloat { size * 40 / 239 }
+    private var iconSize: CGFloat { size * 40 / 239 }
     private var messageTextHeight: CGFloat { size * 38 / 239 }
     private var errorTitleHeight: CGFloat { size * 19 / 239 }
     private var errorSubtitleHeight: CGFloat { size * 17 / 239 }
@@ -64,8 +60,8 @@ struct AppNotification: View {
 
             textContent
         }
-        .padding(.horizontal, horizontalPadding)
-        .padding(.vertical, verticalPadding)
+        .padding(.horizontal, titleFontSize)
+        .padding(.vertical, cornerRadius)
         .frame(width: size, height: cardHeight)
         .background { notificationBackground }
         .clipShape(shape)
@@ -104,12 +100,12 @@ struct AppNotification: View {
         case .textCopied, .videoSaved:
             CheckIcon()
                 .fill(AppGradient.main, style: FillStyle(eoFill: true))
-                .frame(width: checkIconWidth, height: checkIconHeight)
+                .frame(width: iconSize, height: iconSize)
 
         case .fileTooLarge:
             CloseIcon()
                 .fill(Color.errorIcon)
-                .frame(width: errorCloseIconSize, height: errorCloseIconSize)
+                .frame(width: iconSize, height: iconSize)
         }
     }
 

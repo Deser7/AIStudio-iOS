@@ -15,18 +15,16 @@ struct ReplaceButton: View {
     @Environment(\.displayScale) private var displayScale
 
     private var horizontalPadding: CGFloat { size * 12 / 40 }
-    private var verticalPadding: CGFloat { size * 8 / 40 }
-    private var gap: CGFloat { size * 8 / 40 }
+    private var spacing: CGFloat { size * 8 / 40 }
     private var fontSize: CGFloat { size * 14 / 40 }
     private var iconSize: CGFloat { size * 24 / 40 }
-    private var cornerRadius: CGFloat { size * 24 / 40 }
     private var strokeWidth: CGFloat {
         (iconSize * 9 / 100).pixelAligned(to: displayScale)
     }
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: gap) {
+            HStack(spacing: spacing) {
                 RefreshIcon()
                     .stroke(
                         Color.accent,
@@ -44,11 +42,11 @@ struct ReplaceButton: View {
                     .lineLimit(1)
             }
             .padding(.horizontal, horizontalPadding)
-            .padding(.vertical, verticalPadding)
+            .padding(.vertical, spacing)
             .frame(height: size)
             .background(
                 Color.card.opacity(AppSurface.CardOpacity.compact),
-                in: RoundedRectangle(cornerRadius: cornerRadius)
+                in: RoundedRectangle(cornerRadius: iconSize)
             )
             .fixedSize(horizontal: true, vertical: false)
         }

@@ -13,12 +13,9 @@ struct AudioInput: View {
     var progress: CGFloat
     let onPlayPause: () -> Void
 
-    private var horizontalPadding: CGFloat { size * 2 / 11 }
-    private var verticalPadding: CGFloat { size * 3 / 11 }
-    private var gap: CGFloat { size * 2 / 11 }
-    private var cornerRadius: CGFloat { size * 3 / 11 }
+    private var spacing: CGFloat { size * 2 / 11 }
+    private var sectionSpacing: CGFloat { size * 3 / 11 }
     private var buttonSize: CGFloat { size * 5 / 11 }
-    private var waveformHeight: CGFloat { size * 5 / 11 }
     private var blurRadius: CGFloat { size * AppSurface.blurRadius / 88 }
 
     private var clampedProgress: CGFloat {
@@ -26,22 +23,22 @@ struct AudioInput: View {
     }
 
     private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: sectionSpacing, style: .continuous)
     }
 
     var body: some View {
-        HStack(spacing: gap) {
+        HStack(spacing: spacing) {
             playbackButton
 
             AudioWaveform(
                 progress: clampedProgress,
-                height: waveformHeight,
+                height: buttonSize,
                 inactiveOpacity: 0.2
             )
             .frame(maxWidth: .infinity)
         }
-        .padding(.horizontal, horizontalPadding)
-        .padding(.vertical, verticalPadding)
+        .padding(.horizontal, spacing)
+        .padding(.vertical, sectionSpacing)
         .frame(maxWidth: .infinity)
         .frame(height: size)
         .background { background }

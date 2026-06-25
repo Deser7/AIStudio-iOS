@@ -37,19 +37,14 @@ struct ComposerInput: View {
 
     @Environment(\.displayScale) private var displayScale
 
-    private var horizontalPadding: CGFloat { size * 2 / 11 }
-    private var verticalPadding: CGFloat { size * 3 / 11 }
-    private var sectionGap: CGFloat { size * 3 / 11 }
-    private var buttonGap: CGFloat { size * 2 / 11 }
+    private var spacing: CGFloat { size * 2 / 11 }
+    private var sectionSpacing: CGFloat { size * 3 / 11 }
     private var buttonSize: CGFloat { size * 5 / 11 }
-    private var cornerRadius: CGFloat { size * 3 / 11 }
-    private var fontSize: CGFloat { size * 2 / 11 }
     private var addendumSize: CGFloat { size * 25 / 22 }
-    private var waveformHeight: CGFloat { size * 5 / 11 }
     private var blurRadius: CGFloat { size * AppSurface.blurRadius / 88 }
 
     private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: sectionSpacing, style: .continuous)
     }
 
     private var placeholderColor: Color {
@@ -90,14 +85,14 @@ struct ComposerInput: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: sectionGap) {
+        VStack(alignment: .leading, spacing: sectionSpacing) {
             attachmentSection
 
             if showsGeneratingContent {
                 generatingSection
             }
 
-            HStack(alignment: .bottom, spacing: buttonGap) {
+            HStack(alignment: .bottom, spacing: spacing) {
                 textInput
                     .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -110,8 +105,8 @@ struct ComposerInput: View {
                 voiceRow
             }
         }
-        .padding(.horizontal, horizontalPadding)
-        .padding(.vertical, verticalPadding)
+        .padding(.horizontal, spacing)
+        .padding(.vertical, sectionSpacing)
         .frame(maxWidth: .infinity, minHeight: containerMinHeight, alignment: .top)
         .background { background }
         .clipShape(shape)
@@ -142,12 +137,12 @@ struct ComposerInput: View {
             "",
             text: $text,
             prompt: Text(placeholder)
-                .font(AppFont.font(weight: .regular, size: fontSize))
+                .font(AppFont.font(weight: .regular, size: spacing))
                 .foregroundColor(placeholderColor),
             axis: .vertical
         )
         .lineLimit(1...10)
-        .font(AppFont.font(weight: .regular, size: fontSize))
+        .font(AppFont.font(weight: .regular, size: spacing))
         .foregroundColor(Color.accent)
         .tint(Color.accent)
         .disabled(isTextInputDisabled)
@@ -158,7 +153,7 @@ struct ComposerInput: View {
         if showsSendButton {
             GradientIconButton(size: buttonSize, icon: .generation, action: handleSend)
         } else {
-            HStack(spacing: buttonGap) {
+            HStack(spacing: spacing) {
                 CircularIconButton(size: buttonSize, icon: .photo, action: handleImport)
                 CircularIconButton(size: buttonSize, icon: .micro, action: handleMicrophone)
             }
@@ -166,12 +161,12 @@ struct ComposerInput: View {
     }
 
     private var voiceRow: some View {
-        HStack(spacing: buttonGap) {
+        HStack(spacing: spacing) {
             CircularIconButton(size: buttonSize, icon: .cross, action: handleVoiceCancel)
 
             AudioWaveform(
                 progress: voiceProgress,
-                height: waveformHeight
+                height: buttonSize
             )
             .frame(maxWidth: .infinity)
 

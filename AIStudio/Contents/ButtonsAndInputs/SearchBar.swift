@@ -15,14 +15,13 @@ struct SearchBar: View {
     @Environment(\.displayScale) private var displayScale
 
     private var iconSize: CGFloat { size * 3 / 7 }
-    private var cornerRadius: CGFloat { size * 3 / 7 }
     private var borderWidth: CGFloat {
         max(size * 1 / 56, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
 
     private var fieldShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: iconSize, style: .continuous)
     }
 
     var body: some View {

@@ -23,11 +23,8 @@ struct PricingPlanCard: View {
     let action: () -> Void
 
     private var cornerRadius: CGFloat { size * 1 / 3 }
-    private var horizontalPadding: CGFloat { size * 2 / 9 }
-    private var verticalPadding: CGFloat { size * 7 / 36 }
     private var titleFontSize: CGFloat { size * 2 / 9 }
-    private var priceFontSize: CGFloat { size * 7 / 36 }
-    private var badgeFontSize: CGFloat { size * 7 / 36 }
+    private var secondaryFontSize: CGFloat { size * 7 / 36 }
     private var textSpacing: CGFloat { size * 1 / 18 }
     private var borderWidth: CGFloat { max(size * 1 / 72, 1) }
     private var badgeHorizontalPadding: CGFloat { size * 5 / 36 }
@@ -47,7 +44,7 @@ struct PricingPlanCard: View {
                     .foregroundStyle(Color.accent)
 
                     Text(price)
-                        .font(AppFont.font(weight: .regular, size: priceFontSize))
+                        .font(AppFont.font(weight: .regular, size: secondaryFontSize))
                         .foregroundStyle(Color.price)
                 }
 
@@ -55,7 +52,7 @@ struct PricingPlanCard: View {
 
                 if let badge {
                     Text(badge)
-                        .font(AppFont.font(weight: .medium, size: badgeFontSize))
+                        .font(AppFont.font(weight: .medium, size: secondaryFontSize))
                         .foregroundStyle(Color.accent)
                         .textCase(.uppercase)
                         .padding(.horizontal, badgeHorizontalPadding)
@@ -64,8 +61,8 @@ struct PricingPlanCard: View {
                         .clipShape(Capsule())
                 }
             }
-            .padding(.horizontal, horizontalPadding)
-            .padding(.vertical, verticalPadding)
+            .padding(.horizontal, titleFontSize)
+            .padding(.vertical, secondaryFontSize)
             .frame(maxWidth: .infinity, minHeight: size, alignment: .leading)
             .background(Color.card)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
