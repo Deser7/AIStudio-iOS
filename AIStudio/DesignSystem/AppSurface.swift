@@ -40,6 +40,8 @@ enum AppSurface {
         static let subtitleOpacity: CGFloat = 0.3
         /// Typing indicator inactive dot — Figma: accent @ 10%.
         static let typingDotInactiveOpacity: CGFloat = 0.1
+        /// Notification error subtitle — Figma: accent @ 50%.
+        static let notificationSubtitleOpacity: CGFloat = 0.5
     }
 
     static func scaledBlurRadius(for size: CGFloat, referenceSize: CGFloat) -> CGFloat {
