@@ -9,14 +9,14 @@ import SwiftUI
 
 struct ProButton: View {
     var title: String = "PRO"
-    var size: CGFloat = 32
+    var size: CGFloat
     let action: () -> Void
 
-    private var contentSpacing: CGFloat { size * 4 / 32 }
-    private var fontSize: CGFloat { size * 16 / 32 }
-    private var iconPlaceholderSize: CGFloat { size * 24 / 32 }
-    private var horizontalPadding: CGFloat { size * 8 / 32 }
-    private var verticalPadding: CGFloat { size * 4 / 32 }
+    private var contentSpacing: CGFloat { size * 0.125 }
+    private var fontSize: CGFloat { size * 0.5 }
+    private var iconPlaceholderSize: CGFloat { size * 0.75 }
+    private var horizontalPadding: CGFloat { size * 0.25 }
+    private var verticalPadding: CGFloat { size * 0.125 }
 
     var body: some View {
         Button(action: action) {

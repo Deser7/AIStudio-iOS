@@ -14,15 +14,15 @@ struct SectionButton: View {
     }
 
     let title: String
-    var size: CGFloat = 50
+    var size: CGFloat
     var style: Style = .primary
     let action: () -> Void
 
     @Environment(\.isEnabled) private var isEnabled
 
-    private var fontSize: CGFloat { size * 16 / 50 }
-    private var horizontalPadding: CGFloat { size * 12 / 50 }
-    private var cornerRadius: CGFloat { size * 24 / 50 }
+    private var fontSize: CGFloat { size * 0.32 }
+    private var horizontalPadding: CGFloat { size * 0.24 }
+    private var cornerRadius: CGFloat { size * 0.48 }
 
     private var titleColor: Color {
         isEnabled ? Color.accent : Color.black.opacity(0.3)

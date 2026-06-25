@@ -14,18 +14,16 @@ enum CircularIconButtonIcon {
 }
 
 struct CircularIconButton: View {
-    static let defaultSize: CGFloat = 40
-
-    var size: CGFloat = CircularIconButton.defaultSize
+    var size: CGFloat
     let icon: CircularIconButtonIcon
     let action: () -> Void
 
     @Environment(\.displayScale) private var displayScale
 
-    private var padding: CGFloat { size * 12 / 40 }
-    private var iconSize: CGFloat { size * 24 / 40 }
+    private var padding: CGFloat { size * 0.3 }
+    private var iconSize: CGFloat { size * 0.6 }
     private var borderWidth: CGFloat {
-        max(size * 1 / 40, 1 / displayScale)
+        max(size * 0.025, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
     private var strokeWidth: CGFloat {
@@ -71,7 +69,7 @@ struct CircularIconButton: View {
 }
 
 #Preview {
-    let size = CircularIconButton.defaultSize
+    let size: CGFloat = 40
 
     HStack(spacing: size * 0.6) {
         CircularIconButton(size: size, icon: .photo) {}

@@ -13,11 +13,11 @@ enum AvatarButtonKind {
 }
 
 struct AvatarButton: View {
-    var size: CGFloat = 32
+    var size: CGFloat
     var kind: AvatarButtonKind
     let action: () -> Void
 
-    private var iconSize: CGFloat { size * 18 / 32 }
+    private var iconSize: CGFloat { size * 0.5625 }
 
     private var showsUserIcon: Bool {
         if case .user = kind { true } else { false }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BenefitRow: View {
     let title: String
-    var size: CGFloat = 20
+    var size: CGFloat
 
     private var rowSpacing: CGFloat { size * 0.6 }
     private var iconSize: CGFloat { size * 1.4 }

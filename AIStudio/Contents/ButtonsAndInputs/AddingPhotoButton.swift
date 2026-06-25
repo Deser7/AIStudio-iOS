@@ -8,15 +8,13 @@
 import SwiftUI
 
 struct AddingPhotoButton: View {
-    var size: CGFloat = 40
+    var size: CGFloat
     let action: () -> Void
 
-    private var iconSize: CGFloat { size * 24 / 40 }
-    private var padding: CGFloat { size * 12 / 40 }
+    private var iconSize: CGFloat { size * 0.6 }
+    private var padding: CGFloat { size * 0.3 }
     private var strokeWidth: CGFloat { iconSize * 0.09 }
-    private var blurRadius: CGFloat {
-        AppSurface.scaledBlurRadius(for: size, referenceSize: 40)
-    }
+    private var blurRadius: CGFloat { size * AppSurface.blurRadius * 0.025 }
 
     private var iconStrokeColor: Color {
         Color.accent.opacity(0.5)
@@ -53,7 +51,9 @@ struct AddingPhotoButton: View {
 }
 
 #Preview {
-    AddingPhotoButton(size: 40) {}
+    let size: CGFloat = 40
+
+    AddingPhotoButton(size: size) {}
         .padding(24)
         .background(Color.background)
 }

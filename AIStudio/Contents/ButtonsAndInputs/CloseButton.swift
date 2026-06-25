@@ -13,7 +13,7 @@ struct CloseButton: View {
         case light
     }
 
-    var size: CGFloat = 24
+    var size: CGFloat
     var style: Style = .surface
     let action: () -> Void
 
@@ -21,7 +21,7 @@ struct CloseButton: View {
         style == .surface ? Color.surface : Color.accent
     }
 
-    private var iconSize: CGFloat { size * 16 / 24 }
+    private var iconSize: CGFloat { size * 0.667 }
 
     var body: some View {
         Button(action: action) {
