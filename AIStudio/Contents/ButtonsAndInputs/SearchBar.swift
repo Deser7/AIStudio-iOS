@@ -8,18 +8,21 @@
 import SwiftUI
 
 struct SearchBar: View {
-    static let defaultSize: CGFloat = InputFieldMetrics.referenceSize
-
     var placeholder: String = "Ask anything..."
-    var size: CGFloat = SearchBar.defaultSize
+    var size: CGFloat
     @Binding var text: String
 
     @Environment(\.displayScale) private var displayScale
 
-    private var metrics: InputFieldMetrics { InputFieldMetrics(size: size) }
+    private var iconSize: CGFloat { size * 3 / 7 }
+    private var cornerRadius: CGFloat { size * 3 / 7 }
     private var borderWidth: CGFloat {
-        max(size * 1 / InputFieldMetrics.referenceSize, 1 / displayScale)
+        max(size / 8 / 7, 1 / displayScale)
             .pixelAligned(to: displayScale)
+    }
+
+    private var fieldShape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
     }
 
     var body: some View {
@@ -30,14 +33,14 @@ struct SearchBar: View {
             icon: {
                 SearchIcon()
                     .fill(Color.accent)
-                    .frame(width: metrics.iconSize, height: metrics.iconSize)
+                    .frame(width: iconSize, height: iconSize)
             },
             background: {
-                metrics.shape
+                fieldShape
                     .fill(Color.card.opacity(AppSurface.CardOpacity.fill))
             },
             border: {
-                metrics.shape
+                fieldShape
                     .strokeBorder(Color.accent, lineWidth: borderWidth)
             }
         )
@@ -52,7 +55,7 @@ private struct SearchBarPreview: View {
     @State private var text = ""
 
     var body: some View {
-        let size = SearchBar.defaultSize
+        let size: CGFloat = 56
 
         VStack(spacing: size * 0.24) {
             SearchBar(size: size, text: $text)

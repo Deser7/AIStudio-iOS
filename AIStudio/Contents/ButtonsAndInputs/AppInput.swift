@@ -8,21 +8,22 @@
 import SwiftUI
 
 struct AppInput: View {
-    static let defaultSize: CGFloat = InputFieldMetrics.referenceSize
-
     var placeholder: String = "Ask anything..."
-    var size: CGFloat = AppInput.defaultSize
+    var size: CGFloat
     @Binding var text: String
 
     @Environment(\.displayScale) private var displayScale
 
-    private var metrics: InputFieldMetrics { InputFieldMetrics(size: size) }
+    private var iconSize: CGFloat { size * 3 / 7 }
+    private var cornerRadius: CGFloat { size * 3 / 7 }
     private var borderWidth: CGFloat {
-        max(size * 2 / InputFieldMetrics.referenceSize, 1 / displayScale)
+        max(size / 4 / 7, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
-    private var blurRadius: CGFloat {
-        AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
+    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 8 / 7 }
+
+    private var fieldShape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
     }
 
     var body: some View {
@@ -33,7 +34,7 @@ struct AppInput: View {
             icon: {
                 GenerateIcon()
                     .fill(Color.accent, style: FillStyle(eoFill: true))
-                    .frame(width: metrics.iconSize, height: metrics.iconSize)
+                    .frame(width: iconSize, height: iconSize)
             },
             background: {
                 BlurCardBackground(
@@ -41,16 +42,16 @@ struct AppInput: View {
                     size: size,
                     blurRadius: blurRadius,
                     cardOpacity: AppSurface.CardOpacity.blurOverlay,
-                    shape: metrics.shape
+                    shape: fieldShape
                 )
             },
             border: {
                 GeometryReader { geo in
                     DissolvingGradientBorder(
-                        shape: metrics.shape,
+                        shape: fieldShape,
                         containerWidth: geo.size.width,
                         lineWidth: borderWidth,
-                        cornerRadius: metrics.cornerRadius
+                        cornerRadius: cornerRadius
                     )
                 }
                 .allowsHitTesting(false)
@@ -67,7 +68,7 @@ private struct AppInputPreview: View {
     @State private var text = ""
 
     var body: some View {
-        let size = AppInput.defaultSize
+        let size: CGFloat = 56
 
         VStack(spacing: size * 0.24) {
             AppInput(size: size, text: $text)
