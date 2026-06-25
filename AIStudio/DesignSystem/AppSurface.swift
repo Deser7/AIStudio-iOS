@@ -38,9 +38,11 @@ enum AppSurface {
         static let disabledOpacity: CGFloat = 0.6
         /// Navigation bar subtitle — Figma: #FFFFFF @ 30%.
         static let subtitleOpacity: CGFloat = 0.3
-        /// Typing indicator inactive dot — Figma: accent @ 10%.
-        static let typingDotInactiveOpacity: CGFloat = 0.1
+        /// Figma @ 10% — typing dot (accent), response divider (#D9D9D9).
+        static let faintOpacity: CGFloat = 0.1
         /// Notification error subtitle — Figma: accent @ 50%.
         static let notificationSubtitleOpacity: CGFloat = 0.5
+        /// AI response body text — Figma: #FFFFFF @ 80%.
+        static let responseBodyTextOpacity: CGFloat = 0.8
     }
 }

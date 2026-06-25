@@ -27,7 +27,7 @@ struct AIResponseIndicator: View {
     private var blurRadius: CGFloat { size * AppSurface.blurRadius / 51 }
 
     private var inactiveDotColor: Color {
-        Color.accent.opacity(AppSurface.Interaction.typingDotInactiveOpacity)
+        Color.accent.opacity(AppSurface.Interaction.faintOpacity)
     }
 
     private var dotDiameters: [CGFloat] {
