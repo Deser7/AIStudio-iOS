@@ -16,11 +16,11 @@ enum GradientIconButtonIcon {
     func iconFrameSize(relativeTo buttonSize: CGFloat) -> CGSize {
         switch self {
         case .generation, .done:
-            CGSize(width: buttonSize * 0.6, height: buttonSize * 0.6)
+            CGSize(width: buttonSize * 24 / 40, height: buttonSize * 24 / 40)
         case .play:
-            CGSize(width: buttonSize * 0.35, height: buttonSize * 0.4)
+            CGSize(width: buttonSize * 14 / 40, height: buttonSize * 16 / 40)
         case .pause:
-            CGSize(width: buttonSize * 0.3, height: buttonSize * 0.4)
+            CGSize(width: buttonSize * 12 / 40, height: buttonSize * 16 / 40)
         }
     }
 }
@@ -34,7 +34,7 @@ struct GradientIconButton: View {
 
     private var iconFrameSize: CGSize { icon.iconFrameSize(relativeTo: size) }
     private var strokeWidth: CGFloat {
-        (min(iconFrameSize.width, iconFrameSize.height) * 0.1)
+        (min(iconFrameSize.width, iconFrameSize.height) * 1 / 10)
             .pixelAligned(to: displayScale)
     }
 
@@ -82,7 +82,7 @@ struct GradientIconButton: View {
 #Preview {
     let size: CGFloat = 40
 
-    HStack(spacing: size * 0.6) {
+    HStack(spacing: size * 24 / 40) {
         GradientIconButton(size: size, icon: .generation) {}
         GradientIconButton(size: size, icon: .done) {}
         GradientIconButton(size: size, icon: .play) {}

@@ -8,19 +8,16 @@
 import SwiftUI
 
 struct AppToggle: View {
-    static let defaultSize: CGFloat = 31
-
-    private enum Layout {
-        static let shadowYOffsetRatio: CGFloat = 3 / 31
-    }
-
-    var size: CGFloat = AppToggle.defaultSize
+    var size: CGFloat
     @Binding var isOn: Bool
 
     private var width: CGFloat { size * 51 / 31 }
     private var thumbSize: CGFloat { size * 27 / 31 }
     private var thumbInset: CGFloat { size * 2 / 31 }
     private var thumbOffsetOn: CGFloat { size * 22 / 31 }
+    private var thumbShadowYOffset: CGFloat { size * 3 / 31 }
+    private var thumbShadowRadiusSoft: CGFloat { size * 1 / 62 }
+    private var thumbShadowRadiusHard: CGFloat { size * 4 / 31 }
 
     private var thumbOffsetX: CGFloat {
         isOn ? thumbOffsetOn : thumbInset
@@ -33,13 +30,6 @@ struct AppToggle: View {
     private var thumbFill: Color {
         isOn ? Color.surface : Color.accent
     }
-
-    private var thumbShadowYOffset: CGFloat {
-        size * Layout.shadowYOffsetRatio
-    }
-
-    private var thumbShadowRadiusSoft: CGFloat { size * 0.5 / 31 }
-    private var thumbShadowRadiusHard: CGFloat { size * 4 / 31 }
 
     var body: some View {
         Button {
@@ -86,7 +76,7 @@ struct AppToggle: View {
 }
 
 struct AppToggleStyle: ToggleStyle {
-    var size: CGFloat = AppToggle.defaultSize
+    var size: CGFloat
 
     func makeBody(configuration: Configuration) -> some View {
         AppToggle(size: size, isOn: configuration.$isOn)
@@ -99,7 +89,7 @@ struct AppToggleStyle: ToggleStyle {
         @State private var isOnBottom = false
         @State private var isToggleStyleOn = true
 
-                var body: some View {
+        var body: some View {
             let largeSize: CGFloat = 155
             let mediumSize: CGFloat = 78
 

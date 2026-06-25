@@ -15,13 +15,8 @@ enum AppNotificationContent {
 
 /// Toast-уведомление (Figma «notification»).
 struct AppNotification: View {
-    static let defaultSize: CGFloat = 239
-
-    private static let successHeight: CGFloat = 134
-    private static let errorHeight: CGFloat = 140
-
     let content: AppNotificationContent
-    var size: CGFloat = AppNotification.defaultSize
+    var size: CGFloat
 
     private var horizontalPadding: CGFloat { size * 16 / 239 }
     private var verticalPadding: CGFloat { size * 24 / 239 }
@@ -37,16 +32,14 @@ struct AppNotification: View {
     private var messageTextHeight: CGFloat { size * 38 / 239 }
     private var errorTitleHeight: CGFloat { size * 19 / 239 }
     private var errorSubtitleHeight: CGFloat { size * 17 / 239 }
-    private var blurRadius: CGFloat {
-        AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
-    }
+    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 239 }
 
     private var cardHeight: CGFloat {
         switch content {
         case .fileTooLarge:
-            size * Self.errorHeight / Self.defaultSize
+            size * 140 / 239
         default:
-            size * Self.successHeight / Self.defaultSize
+            size * 134 / 239
         }
     }
 
@@ -134,7 +127,7 @@ struct AppNotification: View {
 }
 
 #Preview {
-    let size = AppNotification.defaultSize
+    let size: CGFloat = 239
 
     VStack(spacing: 24) {
         AppNotification(

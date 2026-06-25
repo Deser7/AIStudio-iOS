@@ -43,8 +43,4 @@ enum AppSurface {
         /// Notification error subtitle — Figma: accent @ 50%.
         static let notificationSubtitleOpacity: CGFloat = 0.5
     }
-
-    static func scaledBlurRadius(for size: CGFloat, referenceSize: CGFloat) -> CGFloat {
-        size * blurRadius / referenceSize
-    }
 }

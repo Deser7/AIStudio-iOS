@@ -11,10 +11,10 @@ struct AddingPhotoButton: View {
     var size: CGFloat
     let action: () -> Void
 
-    private var iconSize: CGFloat { size * 0.6 }
-    private var padding: CGFloat { size * 0.3 }
-    private var strokeWidth: CGFloat { iconSize * 0.09 }
-    private var blurRadius: CGFloat { size * AppSurface.blurRadius * 0.025 }
+    private var iconSize: CGFloat { size * 24 / 40 }
+    private var padding: CGFloat { size * 12 / 40 }
+    private var strokeWidth: CGFloat { iconSize * 9 / 100 }
+    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 40 }
 
     private var iconStrokeColor: Color {
         Color.accent.opacity(0.5)

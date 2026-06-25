@@ -15,25 +15,23 @@ struct PricingPlanItem: Identifiable, Equatable {
 }
 
 struct PricingPlanCard: View {
-    static let defaultSize: CGFloat = 72
-
     let periodLabel: String
     let price: String
     var badge: String? = nil
     var isSelected: Bool = false
-    var size: CGFloat = PricingPlanCard.defaultSize
+    var size: CGFloat
     let action: () -> Void
 
-    private var cornerRadius: CGFloat { size * 24 / 72 }
-    private var horizontalPadding: CGFloat { size * 16 / 72 }
-    private var verticalPadding: CGFloat { size * 14 / 72 }
-    private var titleFontSize: CGFloat { size * 16 / 72 }
-    private var priceFontSize: CGFloat { size * 14 / 72 }
-    private var badgeFontSize: CGFloat { size * 14 / 72 }
-    private var textSpacing: CGFloat { size * 4 / 72 }
+    private var cornerRadius: CGFloat { size * 1 / 3 }
+    private var horizontalPadding: CGFloat { size * 2 / 9 }
+    private var verticalPadding: CGFloat { size * 7 / 36 }
+    private var titleFontSize: CGFloat { size * 2 / 9 }
+    private var priceFontSize: CGFloat { size * 7 / 36 }
+    private var badgeFontSize: CGFloat { size * 7 / 36 }
+    private var textSpacing: CGFloat { size * 1 / 18 }
     private var borderWidth: CGFloat { max(size * 1 / 72, 1) }
-    private var badgeHorizontalPadding: CGFloat { size * 10 / 72 }
-    private var badgeVerticalPadding: CGFloat { size * 6 / 72 }
+    private var badgeHorizontalPadding: CGFloat { size * 5 / 36 }
+    private var badgeVerticalPadding: CGFloat { size * 1 / 12 }
 
     var body: some View {
         Button(action: action) {
@@ -91,11 +89,11 @@ struct PricingPlanCard: View {
 struct PricingPlans: View {
     let plans: [PricingPlanItem]
     @Binding var selectedPlanID: String
-    var size: CGFloat = PricingPlanCard.defaultSize
+    var size: CGFloat
     var spacing: CGFloat?
 
     private var planSpacing: CGFloat {
-        spacing ?? size * (16 / 72)
+        spacing ?? size * 2 / 9
     }
 
     var body: some View {
@@ -134,11 +132,11 @@ struct PricingPlans: View {
             )
         ]
 
-                var body: some View {
+        var body: some View {
             PricingPlans(
                 plans: plans,
                 selectedPlanID: $selectedPlanID,
-                size: PricingPlanCard.defaultSize
+                size: 72
             )
             .padding(.horizontal, 24)
             .padding(.vertical, 24)

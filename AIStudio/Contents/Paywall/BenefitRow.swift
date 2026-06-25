@@ -11,8 +11,8 @@ struct BenefitRow: View {
     let title: String
     var size: CGFloat
 
-    private var rowSpacing: CGFloat { size * 0.6 }
-    private var iconSize: CGFloat { size * 1.4 }
+    private var rowSpacing: CGFloat { size * 12 / 20 }
+    private var iconSize: CGFloat { size * 28 / 20 }
 
     var body: some View {
         HStack(spacing: rowSpacing) {
@@ -31,9 +31,9 @@ struct BenefitRow: View {
 #Preview {
     let size: CGFloat = 20
 
-    VStack(alignment: .leading, spacing: size * 0.8) {
+    VStack(alignment: .leading, spacing: size * 16 / 20) {
         BenefitRow(title: "Unlimited tracking", size: size)
-        BenefitRow(title: "Unlimited tracking", size: size * 1.2)
+        BenefitRow(title: "Unlimited tracking", size: size * 24 / 20)
     }
     .padding(.horizontal, 24)
     .padding(.vertical, 24)

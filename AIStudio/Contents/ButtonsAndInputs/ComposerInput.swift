@@ -17,14 +17,12 @@ enum ComposerInputState: Equatable {
 }
 
 struct ComposerInput: View {
-    static let defaultSize: CGFloat = 88
-
     private enum Layout {
         static let placeholderRed: CGFloat = 96 / 255
     }
 
     var placeholder: String = "How can I help you?"
-    var size: CGFloat = ComposerInput.defaultSize
+    var size: CGFloat
     @Binding var state: ComposerInputState
     @Binding var voiceProgress: CGFloat
     @Binding var text: String
@@ -39,18 +37,16 @@ struct ComposerInput: View {
 
     @Environment(\.displayScale) private var displayScale
 
-    private var horizontalPadding: CGFloat { size * 16 / 88 }
-    private var verticalPadding: CGFloat { size * 24 / 88 }
-    private var sectionGap: CGFloat { size * 24 / 88 }
-    private var buttonGap: CGFloat { size * 16 / 88 }
-    private var buttonSize: CGFloat { size * 40 / 88 }
-    private var cornerRadius: CGFloat { size * 24 / 88 }
-    private var fontSize: CGFloat { size * 16 / 88 }
-    private var addendumSize: CGFloat { size * 100 / 88 }
-    private var waveformHeight: CGFloat { size * 40 / 88 }
-    private var blurRadius: CGFloat {
-        AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
-    }
+    private var horizontalPadding: CGFloat { size * 2 / 11 }
+    private var verticalPadding: CGFloat { size * 3 / 11 }
+    private var sectionGap: CGFloat { size * 3 / 11 }
+    private var buttonGap: CGFloat { size * 2 / 11 }
+    private var buttonSize: CGFloat { size * 5 / 11 }
+    private var cornerRadius: CGFloat { size * 3 / 11 }
+    private var fontSize: CGFloat { size * 2 / 11 }
+    private var addendumSize: CGFloat { size * 25 / 22 }
+    private var waveformHeight: CGFloat { size * 5 / 11 }
+    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 88 }
 
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
@@ -242,7 +238,7 @@ private struct ComposerInputPreview: View {
 
     var body: some View {
         ComposerInput(
-            size: ComposerInput.defaultSize,
+            size: 88,
             state: $state,
             voiceProgress: $voiceProgress,
             text: $text,

@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct SpinnerView: View {
-    static let defaultSize: CGFloat = 32
-
     private enum Layout {
         static let segmentCount = 8
         static let revolutionDuration: TimeInterval = 0.85
@@ -17,7 +15,7 @@ struct SpinnerView: View {
         static let opacities: [CGFloat] = [1, 0.6, 0.35, 0.22, 0.15, 0.1, 0.07, 0.05]
     }
 
-    var size: CGFloat = SpinnerView.defaultSize
+    var size: CGFloat
 
     var body: some View {
         TimelineView(.animation(minimumInterval: Layout.animationMinimumInterval)) { timeline in
@@ -60,7 +58,7 @@ struct SpinnerView: View {
 }
 
 #Preview {
-    SpinnerView(size: SpinnerView.defaultSize)
+    SpinnerView(size: 32)
         .padding(24)
         .background(Color.background)
 }

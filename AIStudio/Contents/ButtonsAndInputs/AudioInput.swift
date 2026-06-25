@@ -8,22 +8,18 @@
 import SwiftUI
 
 struct AudioInput: View {
-    static let defaultSize: CGFloat = 88
-
-    var size: CGFloat = AudioInput.defaultSize
+    var size: CGFloat
     var isPlaying: Bool
     var progress: CGFloat
     let onPlayPause: () -> Void
 
-    private var horizontalPadding: CGFloat { size * 16 / 88 }
-    private var verticalPadding: CGFloat { size * 24 / 88 }
-    private var gap: CGFloat { size * 16 / 88 }
-    private var cornerRadius: CGFloat { size * 24 / 88 }
-    private var buttonSize: CGFloat { size * 40 / 88 }
-    private var waveformHeight: CGFloat { size * 40 / 88 }
-    private var blurRadius: CGFloat {
-        AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
-    }
+    private var horizontalPadding: CGFloat { size * 2 / 11 }
+    private var verticalPadding: CGFloat { size * 3 / 11 }
+    private var gap: CGFloat { size * 2 / 11 }
+    private var cornerRadius: CGFloat { size * 3 / 11 }
+    private var buttonSize: CGFloat { size * 5 / 11 }
+    private var waveformHeight: CGFloat { size * 5 / 11 }
+    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 88 }
 
     private var clampedProgress: CGFloat {
         min(max(progress, 0), 1)
@@ -72,8 +68,6 @@ struct AudioInput: View {
     }
 }
 
-// MARK: - Previews
-
 #Preview {
     AudioInputPreview()
 }
@@ -82,9 +76,9 @@ private struct AudioInputPreview: View {
     @State private var isPlaying = true
 
     var body: some View {
-        let size = AudioInput.defaultSize
+        let size: CGFloat = 88
 
-        VStack(spacing: size * 0.22) {
+        VStack(spacing: size * 11 / 50) {
             AudioInput(
                 size: size,
                 isPlaying: isPlaying,
@@ -93,7 +87,7 @@ private struct AudioInputPreview: View {
             )
 
             AudioInput(
-                size: size * 0.5,
+                size: size * 1 / 2,
                 isPlaying: false,
                 progress: 0.65,
                 onPlayPause: {}

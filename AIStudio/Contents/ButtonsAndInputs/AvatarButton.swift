@@ -17,7 +17,7 @@ struct AvatarButton: View {
     var kind: AvatarButtonKind
     let action: () -> Void
 
-    private var iconSize: CGFloat { size * 0.5625 }
+    private var iconSize: CGFloat { size * 18 / 32 }
 
     private var showsUserIcon: Bool {
         if case .user = kind { true } else { false }
@@ -49,7 +49,7 @@ struct AvatarButton: View {
 #Preview {
     let size: CGFloat = 32
 
-    HStack(spacing: size * 0.5) {
+    HStack(spacing: size * 1 / 2) {
         AvatarButton(size: size, kind: .ai) {}
         AvatarButton(size: size, kind: .user) {}
     }

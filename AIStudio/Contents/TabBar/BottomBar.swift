@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct BottomBar: View {
-    static let defaultSize: CGFloat = 50
-
-    var size: CGFloat = BottomBar.defaultSize
+    var size: CGFloat
     var cancelText: String = "Cancel Anytime"
     var buttonTitle: String = "Label"
     var onButtonTap: () -> Void
@@ -23,8 +21,8 @@ struct BottomBar: View {
     private var iconSize: CGFloat { size * 16 / 50 }
     private var iconTextGap: CGFloat { size * 6 / 50 }
     private var secondaryFontSize: CGFloat { size * 12 / 50 }
-    private var bottomPadding: CGFloat { verticalSpacing * 0.5 }
-    private var iconStrokeWidth: CGFloat { iconSize * 0.1 }
+    private var bottomPadding: CGFloat { verticalSpacing * 1 / 2 }
+    private var iconStrokeWidth: CGFloat { iconSize * 1 / 10 }
 
     var body: some View {
         VStack(spacing: verticalSpacing) {
@@ -95,7 +93,7 @@ struct BottomBar: View {
 
 #Preview {
     BottomBar(
-        size: BottomBar.defaultSize,
+        size: 50,
         onButtonTap: {},
         onPrivacyTap: {},
         onRestoreTap: {},

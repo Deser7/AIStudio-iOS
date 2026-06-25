@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddendumLoader: View {
-    var size: CGFloat = Addendum.defaultSize
+    var size: CGFloat
 
     var body: some View {
         Addendum(size: size, content: .loading)
@@ -16,7 +16,7 @@ struct AddendumLoader: View {
 }
 
 #Preview {
-    AddendumLoader(size: Addendum.defaultSize)
+    AddendumLoader(size: 100)
         .padding(24)
         .background(Color.background)
 }

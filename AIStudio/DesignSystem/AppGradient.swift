@@ -56,7 +56,7 @@ enum AppGradient {
 #Preview {
     let iconSize: CGFloat = 56
 
-    HStack(spacing: iconSize * 0.3) {
+    HStack(spacing: iconSize * 3 / 10) {
         ForEach(AppGradient.Preset.allCases, id: \.self) { preset in
             AppGradient.linear(preset)
                 .frame(width: iconSize, height: iconSize)

@@ -11,7 +11,7 @@ struct Logo: View {
     var size: CGFloat
     var preset = AppGradient.Preset.main
 
-    private var iconSize: CGFloat { size * 0.6125 }
+    private var iconSize: CGFloat { size * 49 / 80 }
 
     var body: some View {
         ZStack {
@@ -29,11 +29,11 @@ struct Logo: View {
 #Preview {
     let size: CGFloat = 40
 
-    HStack(spacing: size * 0.4) {
+    HStack(spacing: size * 2 / 5) {
         ForEach(AppGradient.Preset.allCases, id: \.self) { preset in
-            VStack(spacing: size * 0.2) {
+            VStack(spacing: size * 1 / 5) {
                 Logo(size: size, preset: preset)
-                Logo(size: size * 0.8, preset: preset)
+                Logo(size: size * 4 / 5, preset: preset)
             }
         }
     }

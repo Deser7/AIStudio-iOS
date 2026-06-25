@@ -21,7 +21,7 @@ struct CloseButton: View {
         style == .surface ? Color.surface : Color.accent
     }
 
-    private var iconSize: CGFloat { size * 0.667 }
+    private var iconSize: CGFloat { size * 16 / 24 }
 
     var body: some View {
         Button(action: action) {

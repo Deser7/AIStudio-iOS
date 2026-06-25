@@ -14,9 +14,7 @@ enum AddendumContent {
 }
 
 struct Addendum: View {
-    static let defaultSize: CGFloat = 100
-
-    var size: CGFloat = Addendum.defaultSize
+    var size: CGFloat
     let content: AddendumContent
 
     @Environment(\.displayScale) private var displayScale
@@ -26,9 +24,7 @@ struct Addendum: View {
     private var spinnerSize: CGFloat { size * 32 / 100 }
     private var closeSize: CGFloat { size * 24 / 100 }
     private var closeOffset: CGFloat { size * 6 / 100 }
-    private var blurRadius: CGFloat {
-        AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
-    }
+    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 100 }
     private var borderWidth: CGFloat {
         max(size * 1 / 100, 1 / displayScale)
             .pixelAligned(to: displayScale)
@@ -123,9 +119,9 @@ struct Addendum: View {
 }
 
 #Preview {
-    let size = Addendum.defaultSize
+    let size: CGFloat = 100
 
-    VStack(spacing: size * 0.24) {
+    VStack(spacing: size * 24 / 100) {
         Addendum(size: size, content: .add {})
         Addendum(size: size, content: .loading)
         Addendum(

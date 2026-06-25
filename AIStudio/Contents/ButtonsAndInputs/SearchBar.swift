@@ -17,7 +17,7 @@ struct SearchBar: View {
     private var iconSize: CGFloat { size * 3 / 7 }
     private var cornerRadius: CGFloat { size * 3 / 7 }
     private var borderWidth: CGFloat {
-        max(size / 8 / 7, 1 / displayScale)
+        max(size * 1 / 56, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
 
@@ -57,9 +57,9 @@ private struct SearchBarPreview: View {
     var body: some View {
         let size: CGFloat = 56
 
-        VStack(spacing: size * 0.24) {
+        VStack(spacing: size * 12 / 50) {
             SearchBar(size: size, text: $text)
-            SearchBar(size: size * 0.7, text: $text)
+            SearchBar(size: size * 7 / 10, text: $text)
             SearchBar(size: size, text: $text)
                 .disabled(true)
         }

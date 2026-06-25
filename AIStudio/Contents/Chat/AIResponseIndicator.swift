@@ -9,9 +9,7 @@ import SwiftUI
 
 /// Индикатор «AI печатает» — пузырь с тремя точками (Figma «AI's response»).
 struct AIResponseIndicator: View {
-    static let defaultSize: CGFloat = 51
-
-    var size: CGFloat = AIResponseIndicator.defaultSize
+    var size: CGFloat
 
     /// Пауза на каждой точке перед переходом к следующей.
     private let stepDuration: TimeInterval = 0.33
@@ -26,9 +24,7 @@ struct AIResponseIndicator: View {
     private var mediumDotSize: CGFloat { size * 15 / 51 }
     private var smallDotSize: CGFloat { size * 10 / 51 }
     private var cornerRadius: CGFloat { size * 24 / 51 }
-    private var blurRadius: CGFloat {
-        AppSurface.scaledBlurRadius(for: size, referenceSize: Self.defaultSize)
-    }
+    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 51 }
 
     private var inactiveDotColor: Color {
         Color.accent.opacity(AppSurface.Interaction.typingDotInactiveOpacity)
@@ -109,7 +105,7 @@ private struct AIResponseBubbleShape: Shape {
 }
 
 #Preview {
-    AIResponseIndicator(size: AIResponseIndicator.defaultSize)
+    AIResponseIndicator(size: 51)
         .padding(.horizontal, 24)
         .padding(.vertical, 24)
         .frame(maxWidth: .infinity, alignment: .topLeading)

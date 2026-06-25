@@ -17,10 +17,10 @@ struct AppInput: View {
     private var iconSize: CGFloat { size * 3 / 7 }
     private var cornerRadius: CGFloat { size * 3 / 7 }
     private var borderWidth: CGFloat {
-        max(size / 4 / 7, 1 / displayScale)
+        max(size * 1 / 28, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
-    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 8 / 7 }
+    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 56 }
 
     private var fieldShape: RoundedRectangle {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
@@ -70,9 +70,9 @@ private struct AppInputPreview: View {
     var body: some View {
         let size: CGFloat = 56
 
-        VStack(spacing: size * 0.24) {
+        VStack(spacing: size * 12 / 50) {
             AppInput(size: size, text: $text)
-            AppInput(size: size * 0.7, text: $text)
+            AppInput(size: size * 7 / 10, text: $text)
             AppInput(size: size, text: $text)
                 .disabled(true)
         }

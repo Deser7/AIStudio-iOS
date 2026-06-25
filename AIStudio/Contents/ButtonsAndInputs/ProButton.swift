@@ -12,11 +12,11 @@ struct ProButton: View {
     var size: CGFloat
     let action: () -> Void
 
-    private var contentSpacing: CGFloat { size * 0.125 }
-    private var fontSize: CGFloat { size * 0.5 }
-    private var iconPlaceholderSize: CGFloat { size * 0.75 }
-    private var horizontalPadding: CGFloat { size * 0.25 }
-    private var verticalPadding: CGFloat { size * 0.125 }
+    private var contentSpacing: CGFloat { size * 4 / 32 }
+    private var fontSize: CGFloat { size * 16 / 32 }
+    private var iconPlaceholderSize: CGFloat { size * 24 / 32 }
+    private var horizontalPadding: CGFloat { size * 8 / 32 }
+    private var verticalPadding: CGFloat { size * 4 / 32 }
 
     var body: some View {
         Button(action: action) {
@@ -43,7 +43,7 @@ struct ProButton: View {
 #Preview {
     let size: CGFloat = 32
 
-    VStack(spacing: size * 0.5) {
+    VStack(spacing: size * 16 / 32) {
         ProButton(size: size) {}
         ProButton(size: size) {}
             .disabled(true)

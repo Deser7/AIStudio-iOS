@@ -20,9 +20,9 @@ struct SectionButton: View {
 
     @Environment(\.isEnabled) private var isEnabled
 
-    private var fontSize: CGFloat { size * 0.32 }
-    private var horizontalPadding: CGFloat { size * 0.24 }
-    private var cornerRadius: CGFloat { size * 0.48 }
+    private var fontSize: CGFloat { size * 16 / 50 }
+    private var horizontalPadding: CGFloat { size * 12 / 50 }
+    private var cornerRadius: CGFloat { size * 24 / 50 }
 
     private var titleColor: Color {
         isEnabled ? Color.accent : Color.black.opacity(0.3)
@@ -55,11 +55,11 @@ struct SectionButton: View {
 #Preview {
     let size: CGFloat = 50
 
-    VStack(spacing: size * 0.32) {
+    VStack(spacing: size * 16 / 50) {
         SectionButton(title: "Label", size: size, style: .primary) {}
         SectionButton(title: "Label", size: size, style: .primary) {}
             .disabled(true)
-        SectionButton(title: "Label", size: size * 1.12, style: .secondary) {}
+        SectionButton(title: "Label", size: size * 56 / 50, style: .secondary) {}
     }
     .padding(.horizontal, 24)
     .padding(.vertical, 24)
