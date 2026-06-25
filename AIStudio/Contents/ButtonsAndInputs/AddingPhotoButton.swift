@@ -52,16 +52,8 @@ struct AddingPhotoButton: View {
     }
 }
 
-#Preview("button/adding a photo") {
-    AddingPhotoButton(size: 200) {}
+#Preview {
+    AddingPhotoButton(size: 40) {}
         .padding(24)
-        .background(Color.mint)
-}
-
-#Preview("button/adding a photo — scaled") {
-    GeometryReader { geo in
-        AddingPhotoButton(size: geo.size.width * 0.1) {}
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.background)
-    }
+        .background(Color.background)
 }

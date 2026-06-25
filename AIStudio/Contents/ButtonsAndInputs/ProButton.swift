@@ -40,23 +40,14 @@ struct ProButton: View {
     }
 }
 
-#Preview("PRO button/with text") {
-    VStack(spacing: 16) {
-        ProButton(size: 50) {}
+#Preview {
+    let size: CGFloat = 32
 
-        ProButton {}
+    VStack(spacing: size * 0.5) {
+        ProButton(size: size) {}
+        ProButton(size: size) {}
             .disabled(true)
     }
     .padding(24)
     .background(Color.background)
-}
-
-#Preview("PRO button/with text — scaled") {
-    GeometryReader { geo in
-        let size = geo.size.width * 0.08
-
-        ProButton(size: size) {}
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.background)
-    }
 }

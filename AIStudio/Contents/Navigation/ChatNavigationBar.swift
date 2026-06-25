@@ -180,9 +180,7 @@ struct ChatNavigationBar: View {
     }
 }
 
-// MARK: - Previews
-
-#Preview("headers — all variants") {
+#Preview {
     VStack(spacing: 0) {
         ChatNavigationBar(
             title: "AI Chat",

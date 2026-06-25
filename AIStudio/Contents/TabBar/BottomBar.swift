@@ -93,26 +93,14 @@ struct BottomBar: View {
     }
 }
 
-#Preview("bottomBar") {
+#Preview {
     BottomBar(
-        size: 50,
+        size: BottomBar.defaultSize,
         onButtonTap: {},
         onPrivacyTap: {},
         onRestoreTap: {},
         onTermsTap: {}
     )
-}
-
-#Preview("bottomBar — scaled") {
-    GeometryReader { geo in
-        BottomBar(
-            size: geo.size.width * 0.13,
-            onButtonTap: {},
-            onPrivacyTap: {},
-            onRestoreTap: {},
-            onTermsTap: {}
-        )
-        .frame(maxHeight: .infinity, alignment: .bottom)
-    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
     .background(Color.background)
 }

@@ -52,15 +52,16 @@ struct SectionButton: View {
     }
 }
 
-#Preview("buttonSection") {
-    VStack(spacing: 16) {
-        SectionButton(title: "Label", size: 50, style: .primary) {}
+#Preview {
+    let size: CGFloat = 50
 
-        SectionButton(title: "Label", size: 50, style: .primary) {}
+    VStack(spacing: size * 0.32) {
+        SectionButton(title: "Label", size: size, style: .primary) {}
+        SectionButton(title: "Label", size: size, style: .primary) {}
             .disabled(true)
-
-        SectionButton(title: "Label", size: 56, style: .secondary) {}
+        SectionButton(title: "Label", size: size * 1.12, style: .secondary) {}
     }
-    .padding(24)
+    .padding(.horizontal, 24)
+    .padding(.vertical, 24)
     .background(Color.background)
 }

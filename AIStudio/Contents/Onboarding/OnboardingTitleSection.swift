@@ -80,35 +80,25 @@ struct OnboardingTitleSection: View {
     }
 }
 
-// MARK: - Previews
+#Preview {
+    VStack(alignment: .leading, spacing: 24) {
+        OnboardingTitleSection(
+            title: "Title",
+            subtitle: "Subtitle here"
+        )
 
-#Preview("onboardingTitleSection") {
-    OnboardingTitleSection(
-        title: "Title",
-        subtitle: "Subtitle here"
-    )
-    .padding(.horizontal, 24)
-    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-    .background(Color.background)
-}
+        OnboardingTitleSection(
+            title: "AI Chat",
+            subtitle: "26.03.2026",
+            style: .navigation
+        )
 
-#Preview("onboardingTitleSection — navigation") {
-    OnboardingTitleSection(
-        title: "AI Chat",
-        subtitle: "26.03.2026",
-        style: .navigation
-    )
+        OnboardingTitleSection(
+            title: "Create stunning images with AI",
+            subtitle: "Turn your ideas into art in seconds with powerful generation tools"
+        )
+    }
     .padding(.horizontal, 24)
-    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-    .background(Color.background)
-}
-
-#Preview("onboardingTitleSection — multiline") {
-    OnboardingTitleSection(
-        title: "Create stunning images with AI",
-        subtitle: "Turn your ideas into art in seconds with powerful generation tools"
-    )
-    .padding(.horizontal, 24)
-    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    .padding(.vertical, 24)
     .background(Color.background)
 }

@@ -15,22 +15,8 @@ struct AddendumLoader: View {
     }
 }
 
-#Preview("Addendum — loading") {
-    VStack(spacing: 24) {
-        AddendumLoader()
-
-        AddendumLoader(size: 200)
-    }
-    .padding(24)
-    .background(Color.background)
-}
-
-#Preview("Addendum — loading scaled") {
-    GeometryReader { geo in
-        let size = geo.size.width * 0.25
-
-        AddendumLoader(size: size)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.background)
-    }
+#Preview {
+    AddendumLoader(size: Addendum.defaultSize)
+        .padding(24)
+        .background(Color.background)
 }

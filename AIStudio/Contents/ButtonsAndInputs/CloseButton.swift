@@ -50,24 +50,13 @@ struct CloseButton: View {
     }
 }
 
-#Preview("button/close") {
-    HStack(spacing: 24) {
-        CloseButton(style: .surface) {}
-        CloseButton(style: .light) {}
+#Preview {
+    let size: CGFloat = 24
+
+    HStack(spacing: size) {
+        CloseButton(size: size, style: .surface) {}
+        CloseButton(size: size, style: .light) {}
     }
     .padding(24)
     .background(Color.background)
-}
-
-#Preview("button/close — scaled") {
-    GeometryReader { geo in
-        let size = geo.size.width * 0.064
-
-        HStack(spacing: size) {
-            CloseButton(size: size, style: .surface) {}
-            CloseButton(size: size, style: .light) {}
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.background)
-    }
 }

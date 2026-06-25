@@ -108,18 +108,10 @@ private struct AIResponseBubbleShape: Shape {
     }
 }
 
-#Preview("AI's response") {
-    AIResponseIndicator()
-        .padding(24)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(Color.gray)
-}
-
-#Preview("AI's response — scaled") {
-    GeometryReader { geo in
-        AIResponseIndicator(size: geo.size.width * 0.2)
-            .padding(.horizontal, geo.size.width * 0.064)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .background(Color.background)
-    }
+#Preview {
+    AIResponseIndicator(size: AIResponseIndicator.defaultSize)
+        .padding(.horizontal, 24)
+        .padding(.vertical, 24)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .background(Color.background)
 }

@@ -58,25 +58,15 @@ struct ReplaceButton: View {
     }
 }
 
-#Preview("Replace") {
-    VStack(spacing: 16) {
-        ReplaceButton {}
+#Preview {
+    let size = ReplaceButton.defaultSize
 
-        ReplaceButton(size: 200) {}
-
-        ReplaceButton {}
+    VStack(spacing: size * 0.4) {
+        ReplaceButton(size: size) {}
+        ReplaceButton(size: size * 2) {}
+        ReplaceButton(size: size) {}
             .disabled(true)
     }
     .padding(24)
-    .background(Color.orange)
-}
-
-#Preview("Replace — scaled") {
-    GeometryReader { geo in
-        let size = geo.size.width * 0.1
-
-        ReplaceButton(size: size) {}
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.background)
-    }
+    .background(Color.background)
 }

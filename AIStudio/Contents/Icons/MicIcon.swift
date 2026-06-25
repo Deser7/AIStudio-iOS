@@ -142,5 +142,7 @@ struct MicIcon: Shape {
 #Preview {
     MicIcon()
         .fill(.black, style: FillStyle(eoFill: true))
-        .frame(width: 120, height: 120)
+        .frame(width: 48, height: 48)
+        .padding(24)
+        .background(Color.background)
 }

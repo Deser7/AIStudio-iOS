@@ -122,13 +122,14 @@ struct Addendum: View {
     }
 }
 
-#Preview("Addendum") {
-    VStack(spacing: 24) {
-        Addendum(content: .add {})
+#Preview {
+    let size = Addendum.defaultSize
 
-        Addendum(content: .loading)
-
+    VStack(spacing: size * 0.24) {
+        Addendum(size: size, content: .add {})
+        Addendum(size: size, content: .loading)
         Addendum(
+            size: size,
             content: .photo(
                 Image(systemName: "person.crop.rectangle.fill"),
                 onClose: {}
@@ -136,25 +137,5 @@ struct Addendum: View {
         )
     }
     .padding(24)
-    .background(Color.gray)
-}
-
-#Preview("Addendum — scaled") {
-    GeometryReader { geo in
-        let size = geo.size.width * 0.25
-
-        VStack(spacing: size * 0.24) {
-            Addendum(size: size, content: .add {})
-            Addendum(size: size, content: .loading)
-            Addendum(
-                size: size,
-                content: .photo(
-                    Image(systemName: "person.crop.rectangle.fill"),
-                    onClose: {}
-                )
-            )
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.background)
-    }
+    .background(Color.background)
 }

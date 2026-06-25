@@ -90,7 +90,9 @@ struct SpinnerIcon: Shape {
 }
 
 #Preview {
-    SpinnerView(size: 200)
+    SpinnerIcon()
+        .fill(.black)
+        .frame(width: 48, height: 48)
         .padding(24)
         .background(Color.background)
 }

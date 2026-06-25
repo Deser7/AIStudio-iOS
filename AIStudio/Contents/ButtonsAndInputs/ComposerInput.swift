@@ -230,14 +230,8 @@ struct ComposerInput: View {
 
 // MARK: - Previews
 
-#Preview("composer") {
+#Preview {
     ComposerInputPreview()
-        .padding(24)
-        .background(Color.background)
-}
-
-#Preview("composer — scaled") {
-    ComposerInputScaledPreview()
 }
 
 private struct ComposerInputPreview: View {
@@ -248,6 +242,7 @@ private struct ComposerInputPreview: View {
 
     var body: some View {
         ComposerInput(
+            size: ComposerInput.defaultSize,
             state: $state,
             voiceProgress: $voiceProgress,
             text: $text,
@@ -255,6 +250,9 @@ private struct ComposerInputPreview: View {
             onImport: simulateImageImport,
             onSend: simulateGenerating
         )
+        .padding(.horizontal, 24)
+        .padding(.vertical, 24)
+        .background(Color.background)
         .task(id: state) {
             guard state == .voiceRecording else { return }
 
@@ -282,31 +280,6 @@ private struct ComposerInputPreview: View {
             await MainActor.run {
                 state = .editing
             }
-        }
-    }
-}
-
-private struct ComposerInputScaledPreview: View {
-    @State private var state = ComposerInputState.editing
-    @State private var text = ""
-    @State private var attachedImage: Image?
-    @State private var voiceProgress: CGFloat = 0
-
-    var body: some View {
-        GeometryReader { geo in
-            let size = geo.size.width * 0.22
-
-            ComposerInput(
-                size: size,
-                state: $state,
-                voiceProgress: $voiceProgress,
-                text: $text,
-                attachedImage: $attachedImage,
-                onImport: {}
-            )
-            .padding(.horizontal, geo.size.width * 0.064)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.background)
         }
     }
 }

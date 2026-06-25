@@ -44,42 +44,24 @@ struct SearchBar: View {
     }
 }
 
-#Preview("search") {
+#Preview {
     SearchBarPreview()
-        .padding(24)
-        .background(Color.green)
-}
-
-#Preview("search — scaled") {
-    SearchBarScaledPreview()
 }
 
 private struct SearchBarPreview: View {
     @State private var text = ""
 
     var body: some View {
-        VStack(spacing: 24) {
-            SearchBar(text: $text)
+        let size = SearchBar.defaultSize
 
-            SearchBar(size: 100, text: $text)
-
-            SearchBar(text: $text)
+        VStack(spacing: size * 0.24) {
+            SearchBar(size: size, text: $text)
+            SearchBar(size: size * 0.7, text: $text)
+            SearchBar(size: size, text: $text)
                 .disabled(true)
         }
-    }
-}
-
-private struct SearchBarScaledPreview: View {
-    @State private var text = ""
-
-    var body: some View {
-        GeometryReader { geo in
-            let size = geo.size.width * 0.14
-
-            SearchBar(size: size, text: $text)
-                .padding(.horizontal, geo.size.width * 0.064)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.background)
-        }
+        .padding(.horizontal, 24)
+        .padding(.vertical, 24)
+        .background(Color.background)
     }
 }

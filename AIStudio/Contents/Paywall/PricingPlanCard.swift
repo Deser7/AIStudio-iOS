@@ -115,7 +115,7 @@ struct PricingPlans: View {
     }
 }
 
-#Preview("pricing plans") {
+#Preview {
     struct PreviewContainer: View {
         @State private var selectedPlanID = "year"
 
@@ -134,50 +134,15 @@ struct PricingPlans: View {
             )
         ]
 
-        var body: some View {
+                var body: some View {
             PricingPlans(
                 plans: plans,
                 selectedPlanID: $selectedPlanID,
-                size: 72
+                size: PricingPlanCard.defaultSize
             )
-            .padding(24)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 24)
             .background(Color.background)
-        }
-    }
-
-    return PreviewContainer()
-}
-
-#Preview("pricing plans — scaled") {
-    struct PreviewContainer: View {
-        @State private var selectedPlanID = "year"
-
-        private let plans = [
-            PricingPlanItem(
-                id: "month",
-                periodLabel: "Month $1.99",
-                price: "$ 7.99",
-                badge: nil
-            ),
-            PricingPlanItem(
-                id: "year",
-                periodLabel: "Year $1.27",
-                price: "$ 69.99",
-                badge: "SAVE 80%"
-            )
-        ]
-
-        var body: some View {
-            GeometryReader { geo in
-                PricingPlans(
-                    plans: plans,
-                    selectedPlanID: $selectedPlanID,
-                    size: geo.size.width * 0.19
-                )
-                .padding(.horizontal, geo.size.width * 0.064)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                .background(Color.background)
-            }
         }
     }
 

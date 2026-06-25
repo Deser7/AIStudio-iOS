@@ -59,16 +59,8 @@ struct SpinnerView: View {
     }
 }
 
-#Preview("Spinner / Size 3") {
-    SpinnerView(size: 50)
+#Preview {
+    SpinnerView(size: SpinnerView.defaultSize)
         .padding(24)
         .background(Color.background)
-}
-
-#Preview("Spinner / Size 3 — scaled") {
-    GeometryReader { geo in
-        SpinnerView(size: geo.size.width * 0.08)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.background)
-    }
 }

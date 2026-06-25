@@ -92,24 +92,15 @@ struct GradientIconButton: View {
     }
 }
 
-#Preview("button/generation") {
-    GradientIconButton(size: 100, icon: .generation) {}
-    GradientIconButton(size: 100, icon: .done) {}
-    GradientIconButton(size: 100, icon: .play) {}
-    GradientIconButton(size: 100, icon: .pause) {}
-}
+#Preview {
+    let size = GradientIconButton.defaultSize
 
-#Preview("gradient icon buttons — scaled") {
-    GeometryReader { geo in
-        let size = geo.size.width * 0.1
-
-        HStack(spacing: size * 0.6) {
-            GradientIconButton(size: size, icon: .generation) {}
-            GradientIconButton(size: size, icon: .done) {}
-            GradientIconButton(size: size, icon: .play) {}
-            GradientIconButton(size: size, icon: .pause) {}
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.background)
+    HStack(spacing: size * 0.6) {
+        GradientIconButton(size: size, icon: .generation) {}
+        GradientIconButton(size: size, icon: .done) {}
+        GradientIconButton(size: size, icon: .play) {}
+        GradientIconButton(size: size, icon: .pause) {}
     }
+    .padding(24)
+    .background(Color.background)
 }

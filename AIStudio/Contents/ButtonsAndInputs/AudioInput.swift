@@ -74,64 +74,41 @@ struct AudioInput: View {
 
 // MARK: - Previews
 
-#Preview("input") {
-    ZStack {
-        Color.mint
-            .ignoresSafeArea()
-
-        AudioInputPreview()
-            .padding(24)
-    }
-}
-
-#Preview("input — scaled") {
-    AudioInputScaledPreview()
+#Preview {
+    AudioInputPreview()
 }
 
 private struct AudioInputPreview: View {
     @State private var isPlaying = true
 
     var body: some View {
-        VStack(spacing: 24) {
+        let size = AudioInput.defaultSize
+
+        VStack(spacing: size * 0.22) {
             AudioInput(
+                size: size,
                 isPlaying: isPlaying,
                 progress: 0.35,
                 onPlayPause: { isPlaying.toggle() }
             )
 
             AudioInput(
-                size: 110,
+                size: size * 0.5,
                 isPlaying: false,
                 progress: 0.65,
                 onPlayPause: {}
             )
 
             AudioInput(
+                size: size,
                 isPlaying: true,
                 progress: 0.35,
                 onPlayPause: {}
             )
             .disabled(true)
         }
-    }
-}
-
-private struct AudioInputScaledPreview: View {
-    @State private var isPlaying = true
-
-    var body: some View {
-        GeometryReader { geo in
-            let size = geo.size.width * 0.22
-
-            AudioInput(
-                size: size,
-                isPlaying: isPlaying,
-                progress: 0.42,
-                onPlayPause: { isPlaying.toggle() }
-            )
-            .padding(.horizontal, geo.size.width * 0.064)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.background)
-        }
+        .padding(.horizontal, 24)
+        .padding(.vertical, 24)
+        .background(Color.background)
     }
 }

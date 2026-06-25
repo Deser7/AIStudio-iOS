@@ -59,42 +59,24 @@ struct AppInput: View {
     }
 }
 
-#Preview("input") {
+#Preview {
     AppInputPreview()
-        .padding(24)
-        .background(Color.green)
-}
-
-#Preview("input — scaled") {
-    AppInputScaledPreview()
-}
-
-private struct AppInputScaledPreview: View {
-    @State private var text = ""
-
-    var body: some View {
-        GeometryReader { geo in
-            let size = geo.size.width * 0.14
-
-            AppInput(size: size, text: $text)
-                .padding(.horizontal, geo.size.width * 0.064)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.background)
-        }
-    }
 }
 
 private struct AppInputPreview: View {
     @State private var text = ""
 
     var body: some View {
-        VStack(spacing: 24) {
-            AppInput(text: $text)
+        let size = AppInput.defaultSize
 
-            AppInput(size: 100, text: $text)
-
-            AppInput(text: $text)
+        VStack(spacing: size * 0.24) {
+            AppInput(size: size, text: $text)
+            AppInput(size: size * 0.7, text: $text)
+            AppInput(size: size, text: $text)
                 .disabled(true)
         }
+        .padding(.horizontal, 24)
+        .padding(.vertical, 24)
+        .background(Color.background)
     }
 }

@@ -70,5 +70,7 @@ struct SearchIcon: Shape {
 #Preview {
     SearchIcon()
         .fill(.black)
-        .frame(width: 200, height: 200)
+        .frame(width: 48, height: 48)
+        .padding(24)
+        .background(Color.background)
 }

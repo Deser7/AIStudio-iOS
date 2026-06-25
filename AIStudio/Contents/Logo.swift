@@ -27,12 +27,16 @@ struct Logo: View {
 }
 
 #Preview {
-    HStack(spacing: 16) {
+    let size: CGFloat = 40
+
+    HStack(spacing: size * 0.4) {
         ForEach(AppGradient.Preset.allCases, id: \.self) { preset in
-            VStack(spacing: 8) {
-                Logo(size: 40, preset: preset)
-                Logo(size: 32, preset: preset)
+            VStack(spacing: size * 0.2) {
+                Logo(size: size, preset: preset)
+                Logo(size: size * 0.8, preset: preset)
             }
         }
     }
+    .padding(24)
+    .background(Color.background)
 }

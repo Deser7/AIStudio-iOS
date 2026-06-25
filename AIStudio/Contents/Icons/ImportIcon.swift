@@ -44,11 +44,9 @@ struct ImportIcon: Shape {
     ImportIcon()
         .stroke(
             .black,
-            style: StrokeStyle(
-                lineWidth: 5,
-                lineCap: .round,
-                lineJoin: .round
-            )
+            style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round)
         )
-        .frame(width: 120, height: 120)
+        .frame(width: 48, height: 48)
+        .padding(24)
+        .background(Color.background)
 }

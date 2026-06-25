@@ -70,26 +70,14 @@ struct CircularIconButton: View {
     }
 }
 
-#Preview("circular icon buttons") {
-    VStack(spacing: 24) {
-        CircularIconButton(size: 200, icon: .photo) {}
-        CircularIconButton(size: 200, icon: .micro) {}
-        CircularIconButton(size: 200, icon: .cross) {}
+#Preview {
+    let size = CircularIconButton.defaultSize
+
+    HStack(spacing: size * 0.6) {
+        CircularIconButton(size: size, icon: .photo) {}
+        CircularIconButton(size: size, icon: .micro) {}
+        CircularIconButton(size: size, icon: .cross) {}
     }
     .padding(24)
     .background(Color.background)
-}
-
-#Preview("circular icon buttons — scaled") {
-    GeometryReader { geo in
-        let size = geo.size.width * 0.1
-
-        HStack(spacing: size * 0.6) {
-            CircularIconButton(size: size, icon: .photo) {}
-            CircularIconButton(size: size, icon: .micro) {}
-            CircularIconButton(size: size, icon: .cross) {}
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.background)
-    }
 }

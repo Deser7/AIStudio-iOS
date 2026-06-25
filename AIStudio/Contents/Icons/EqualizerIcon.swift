@@ -283,4 +283,6 @@ extension EqualizerIcon {
     EqualizerIcon()
         .fill(.black)
         .frame(width: 284, height: 40)
+        .padding(24)
+        .background(Color.background)
 }

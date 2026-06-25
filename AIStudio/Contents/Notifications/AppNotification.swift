@@ -133,41 +133,32 @@ struct AppNotification: View {
     }
 }
 
-#Preview("notification — all variants") {
+#Preview {
+    let size = AppNotification.defaultSize
+
     VStack(spacing: 24) {
         AppNotification(
             content: .textCopied(
                 message: "The text has been copied successfully"
-            )
+            ),
+            size: size
         )
 
         AppNotification(
             content: .videoSaved(
                 message: "Video has been saved to your gallery"
-            )
+            ),
+            size: size
         )
 
         AppNotification(
             content: .fileTooLarge(
                 title: "File is too large",
                 subtitle: "Maximum file size is 100 MB"
-            )
+            ),
+            size: size
         )
     }
     .padding(24)
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Color.green)
-}
-
-#Preview("notification — scaled") {
-    GeometryReader { geo in
-        AppNotification(
-            content: .videoSaved(
-                message: "Video has been saved to your gallery"
-            ),
-            size: geo.size.width * 0.6
-        )
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.background)
-    }
+    .background(Color.background)
 }

@@ -53,22 +53,16 @@ enum AppGradient {
     }
 }
 
-#Preview("AppGradient — presets") {
-    HStack(spacing: 16) {
+#Preview {
+    let iconSize: CGFloat = 56
+
+    HStack(spacing: iconSize * 0.3) {
         ForEach(AppGradient.Preset.allCases, id: \.self) { preset in
             AppGradient.linear(preset)
-                .frame(width: 56, height: 56)
+                .frame(width: iconSize, height: iconSize)
                 .clipShape(Circle())
         }
     }
     .padding(24)
     .background(Color.background)
-}
-
-#Preview("AppGradient — custom") {
-    AppGradient.linear(from: .logoPurpleOne, to: .aiPink)
-        .frame(width: 120, height: 56)
-        .clipShape(Capsule())
-        .padding(24)
-        .background(Color.background)
 }

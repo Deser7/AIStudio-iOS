@@ -93,33 +93,25 @@ struct AppToggleStyle: ToggleStyle {
     }
 }
 
-#Preview("Toggle") {
+#Preview {
     struct PreviewContainer: View {
         @State private var isOnTop = true
         @State private var isOnBottom = false
+        @State private var isToggleStyleOn = true
 
-        var body: some View {
+                var body: some View {
+            let largeSize: CGFloat = 155
+            let mediumSize: CGFloat = 78
+
             VStack(spacing: 24) {
-                AppToggle(size: 200, isOn: $isOnTop)
-                AppToggle(size: 100, isOn: $isOnBottom)
+                AppToggle(size: largeSize, isOn: $isOnTop)
+                AppToggle(size: mediumSize, isOn: $isOnBottom)
+
+                Toggle("Label", isOn: $isToggleStyleOn)
+                    .toggleStyle(AppToggleStyle(size: mediumSize))
             }
             .padding(24)
             .background(Color.background)
-        }
-    }
-
-    return PreviewContainer()
-}
-
-#Preview("ToggleStyle") {
-    struct PreviewContainer: View {
-        @State private var isOn = true
-
-        var body: some View {
-            Toggle("Label", isOn: $isOn)
-                .toggleStyle(AppToggleStyle(size: 31))
-                .padding(24)
-                .background(Color.background)
         }
     }
 

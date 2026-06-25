@@ -95,5 +95,6 @@ struct RegenerateIcon: Shape {
     RegenerateIcon()
         .fill(.black)
         .frame(width: 48, height: 48)
-        .padding()
+        .padding(24)
+        .background(Color.background)
 }

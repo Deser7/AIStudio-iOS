@@ -28,24 +28,14 @@ struct BenefitRow: View {
     }
 }
 
-#Preview("benefitRow") {
-    VStack(alignment: .leading, spacing: 16) {
-        BenefitRow(title: "Unlimited tracking", size: 20)
-        BenefitRow(title: "Unlimited tracking", size: 24)
-    }
-    .padding(24)
-    .frame(maxWidth: .infinity, alignment: .leading)
-    .background(Color.background)
-}
+#Preview {
+    let size: CGFloat = 20
 
-#Preview("benefitRow — scaled") {
-    GeometryReader { geo in
-        BenefitRow(
-            title: "Unlimited tracking",
-            size: geo.size.width * 0.053
-        )
-        .padding(.horizontal, geo.size.width * 0.064)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-        .background(Color.background)
+    VStack(alignment: .leading, spacing: size * 0.8) {
+        BenefitRow(title: "Unlimited tracking", size: size)
+        BenefitRow(title: "Unlimited tracking", size: size * 1.2)
     }
+    .padding(.horizontal, 24)
+    .padding(.vertical, 24)
+    .background(Color.background)
 }

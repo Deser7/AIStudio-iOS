@@ -54,11 +54,9 @@ struct RefreshIcon: Shape {
     RefreshIcon()
         .stroke(
             .black,
-            style: StrokeStyle(
-                lineWidth: 8,
-                lineCap: .round,
-                lineJoin: .round
-            )
+            style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round)
         )
-        .frame(width: 200, height: 200)
+        .frame(width: 48, height: 48)
+        .padding(24)
+        .background(Color.background)
 }

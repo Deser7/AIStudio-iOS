@@ -47,5 +47,7 @@ struct PauseIcon: Shape {
 #Preview {
     PauseIcon()
         .fill(.black)
-        .frame(width: 120, height: 160)
+        .frame(width: 36, height: 48)
+        .padding(24)
+        .background(Color.background)
 }
