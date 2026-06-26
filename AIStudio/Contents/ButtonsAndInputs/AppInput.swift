@@ -7,7 +7,13 @@
 
 import SwiftUI
 
+enum AppInputStyle {
+    case main
+    case search
+}
+
 struct AppInput: View {
+    var style: AppInputStyle = .main
     var placeholder: String = "Ask anything..."
     var size: CGFloat
     @Binding var text: String
@@ -16,7 +22,11 @@ struct AppInput: View {
 
     private var iconSize: CGFloat { size * 3 / 7 }
     private var borderWidth: CGFloat {
-        max(size * 1 / 28, 1 / displayScale)
+        let borderRatio: CGFloat = switch style {
+        case .main: 1 / 28
+        case .search: 1 / 56
+        }
+        return max(size * borderRatio, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
     private var blurRadius: CGFloat { size * AppSurface.blurRadius / 56 }
@@ -30,32 +40,60 @@ struct AppInput: View {
             placeholder: placeholder,
             size: size,
             text: $text,
-            icon: {
-                GenerateIcon()
-                    .fill(Color.accent, style: FillStyle(eoFill: true))
-                    .frame(width: iconSize, height: iconSize)
-            },
-            background: {
-                BlurCardBackground(
-                    style: .bar,
-                    size: size,
-                    blurRadius: blurRadius,
-                    cardOpacity: AppSurface.CardOpacity.blurOverlay,
-                    shape: fieldShape
-                )
-            },
-            border: {
-                GeometryReader { geo in
-                    DissolvingGradientBorder(
-                        shape: fieldShape,
-                        containerWidth: geo.size.width,
-                        lineWidth: borderWidth,
-                        cornerRadius: iconSize
-                    )
-                }
-                .allowsHitTesting(false)
-            }
+            icon: { iconView },
+            background: { backgroundView },
+            border: { borderView }
         )
+    }
+
+    @ViewBuilder
+    private var iconView: some View {
+        switch style {
+        case .main:
+            GenerateIcon()
+                .fill(Color.accent, style: FillStyle(eoFill: true))
+                .frame(width: iconSize, height: iconSize)
+        case .search:
+            SearchIcon()
+                .fill(Color.accent)
+                .frame(width: iconSize, height: iconSize)
+        }
+    }
+
+    @ViewBuilder
+    private var backgroundView: some View {
+        switch style {
+        case .main:
+            BlurCardBackground(
+                style: .bar,
+                size: size,
+                blurRadius: blurRadius,
+                cardOpacity: AppSurface.CardOpacity.blurOverlay,
+                shape: fieldShape
+            )
+        case .search:
+            fieldShape
+                .fill(Color.card.opacity(AppSurface.CardOpacity.fill))
+        }
+    }
+
+    @ViewBuilder
+    private var borderView: some View {
+        switch style {
+        case .main:
+            GeometryReader { geo in
+                DissolvingGradientBorder(
+                    shape: fieldShape,
+                    containerWidth: geo.size.width,
+                    lineWidth: borderWidth,
+                    cornerRadius: iconSize
+                )
+            }
+            .allowsHitTesting(false)
+        case .search:
+            fieldShape
+                .strokeBorder(Color.accent, lineWidth: borderWidth)
+        }
     }
 }
 
@@ -64,16 +102,15 @@ struct AppInput: View {
 }
 
 private struct AppInputPreview: View {
-    @State private var text = ""
+    @State private var mainText = ""
+    @State private var searchText = ""
 
     var body: some View {
         let size: CGFloat = 56
 
         VStack(spacing: size * 12 / 50) {
-            AppInput(size: size, text: $text)
-            AppInput(size: size * 7 / 10, text: $text)
-            AppInput(size: size, text: $text)
-                .disabled(true)
+            AppInput(size: size, text: $mainText)
+            AppInput(style: .search, size: size, text: $searchText)
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 24)
