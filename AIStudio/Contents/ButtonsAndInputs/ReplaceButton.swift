@@ -59,10 +59,5 @@ struct ReplaceButton: View {
 
     VStack(spacing: size * 16 / 40) {
         ReplaceButton(size: size) {}
-        ReplaceButton(size: size * 2) {}
-        ReplaceButton(size: size) {}
-            .disabled(true)
     }
-    .padding(24)
-    .background(Color.background)
 }
