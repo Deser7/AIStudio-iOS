@@ -30,7 +30,7 @@ enum Typography {
     // MARK: - Semi Bold
 
     static let semiBold20 = TypographyStyle(weight: .semiBold, size: 20, lineHeight: nil)
-    static let semiBold16 = TypographyStyle(weight: .semiBold, size: 16, lineHeight: nil)
+    static let semiBold16 = TypographyStyle(weight: .semiBold, size: 16, lineHeight: 16)
     static let semiBold14 = TypographyStyle(weight: .semiBold, size: 14, lineHeight: nil)
 
     // MARK: - Medium
@@ -43,7 +43,16 @@ enum Typography {
 
     static let regular20 = TypographyStyle(weight: .regular, size: 20, lineHeight: nil)
     static let regular16 = TypographyStyle(weight: .regular, size: 16, lineHeight: nil)
-    static let regular14 = TypographyStyle(weight: .regular, size: 14, lineHeight: nil)
+    static let regular14 = TypographyStyle(weight: .regular, size: 14, lineHeight: 14)
+
+    /// Figma line height 100%.
+    static func semiBold(size: CGFloat) -> TypographyStyle {
+        TypographyStyle(weight: .semiBold, size: size, lineHeight: size)
+    }
+
+    static func regular(size: CGFloat) -> TypographyStyle {
+        TypographyStyle(weight: .regular, size: size, lineHeight: size)
+    }
 
     static let allStyles: [(section: String, styles: [TypographyStyle])] = [
         ("Semi Bold", [semiBold16, semiBold20, semiBold14]),

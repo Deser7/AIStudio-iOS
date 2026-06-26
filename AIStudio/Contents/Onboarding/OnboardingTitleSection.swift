@@ -25,8 +25,12 @@ struct OnboardingTitleSection: View {
         expandsHorizontally ? .infinity : nil
     }
 
+    private var hasSubtitle: Bool {
+        !subtitle.isEmpty
+    }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: textSpacing) {
+        VStack(alignment: .leading, spacing: hasSubtitle ? textSpacing : 0) {
             Text(title)
                 .typography(titleTypography)
                 .tracking(titleTracking)
@@ -34,11 +38,13 @@ struct OnboardingTitleSection: View {
                 .lineLimit(lineLimit)
                 .frame(maxWidth: horizontalMaxWidth, alignment: .leading)
 
-            Text(subtitle)
-                .typography(subtitleTypography)
-                .foregroundStyle(subtitleColor)
-                .lineLimit(lineLimit)
-                .frame(maxWidth: horizontalMaxWidth, alignment: .leading)
+            if hasSubtitle {
+                Text(subtitle)
+                    .typography(subtitleTypography)
+                    .foregroundStyle(subtitleColor)
+                    .lineLimit(lineLimit)
+                    .frame(maxWidth: horizontalMaxWidth, alignment: .leading)
+            }
         }
         .frame(maxWidth: horizontalMaxWidth, alignment: .leading)
     }

@@ -34,7 +34,7 @@ enum AppFont {
     }
 
     static func font(weight: Weight, size: CGFloat) -> Font {
-        .custom(weight.postScriptName, size: size)
+        Font(uiFont(weight: weight, size: size))
     }
 
     /// Жирное начало + regular продолжение (Figma bullet: Bold/16 + Regular/16).
@@ -60,7 +60,16 @@ enum AppFont {
 
     private static func uiFont(weight: Weight, size: CGFloat) -> UIFont {
         UIFont(name: weight.postScriptName, size: size)
-            ?? .systemFont(ofSize: size, weight: weight == .bold ? .bold : .regular)
+            ?? .systemFont(ofSize: size, weight: systemWeight(for: weight))
+    }
+
+    private static func systemWeight(for weight: Weight) -> UIFont.Weight {
+        switch weight {
+        case .regular: .regular
+        case .medium: .medium
+        case .semiBold: .semibold
+        case .bold: .bold
+        }
     }
 
     private static func textAttributes(
