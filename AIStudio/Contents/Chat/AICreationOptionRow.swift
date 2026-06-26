@@ -41,16 +41,15 @@ struct AICreationOptionRow: View {
     var subtitleFontSize: CGFloat
     let action: () -> Void
 
-    /// Figma ref row height = 72.
-    private var horizontalPadding: CGFloat { size * 16 / 72 }
-    private var iconSize: CGFloat { size * 24 / 72 }
-    private var rowSpacing: CGFloat { size * 16 / 72 }
-    private var textSpacing: CGFloat { size * 4 / 72 }
-    private var cornerRadius: CGFloat { size * 24 / 72 }
+    /// Figma ref row height = 72. Базовая единица — 16px.
+    private var spacing: CGFloat { size * 16 / 72 }
+    private var cornerRadius: CGFloat { spacing * 24 / 16 }
+    private var iconSize: CGFloat { cornerRadius }
+    private var textSpacing: CGFloat { spacing * 4 / 16 }
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: rowSpacing) {
+            HStack(spacing: spacing) {
                 optionIcon
                     .frame(width: iconSize, height: iconSize)
 
@@ -70,7 +69,7 @@ struct AICreationOptionRow: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .padding(.horizontal, horizontalPadding)
+            .padding(.horizontal, spacing)
             .frame(maxWidth: .infinity, minHeight: size, alignment: .leading)
             .background(
                 Color.card,

@@ -16,11 +16,9 @@ struct AICreationMenuBubble: View {
     private var spacing: CGFloat { size * 16 / 334 }
     private var fontSize: CGFloat { spacing }
     private var subtitleFontSize: CGFloat { spacing * 14 / 16 }
-    private var topPadding: CGFloat { size * 24 / 334 }
-    private var sectionGap: CGFloat { size * 24 / 334 }
-    private var cornerRadius: CGFloat { size * 24 / 334 }
+    private var cornerRadius: CGFloat { spacing * 24 / 16 }
     private var rowHeight: CGFloat { size * 72 / 334 }
-    private var rowSpacing: CGFloat { size * 8 / 334 }
+    private var rowSpacing: CGFloat { spacing * 8 / 16 }
     private var blurRadius: CGFloat { spacing * AppSurface.blurRadius / 16 }
 
     private var bubbleShape: RoundedRectangle {
@@ -28,7 +26,7 @@ struct AICreationMenuBubble: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: sectionGap) {
+        VStack(alignment: .leading, spacing: cornerRadius) {
             Text("What do you want to create?")
                 .typography(Typography.semiBold(size: fontSize))
                 .foregroundStyle(Color.accent)
@@ -49,7 +47,7 @@ struct AICreationMenuBubble: View {
                 }
             }
         }
-        .padding(.top, topPadding)
+        .padding(.top, cornerRadius)
         .padding(.horizontal, spacing)
         .padding(.bottom, spacing)
         .frame(width: size, alignment: .leading)
