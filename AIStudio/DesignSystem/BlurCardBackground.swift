@@ -34,6 +34,7 @@ struct BlurCardBackground<S: Shape>: View {
             shape
                 .fill(Color.card.opacity(cardOpacity))
         }
+        .allowsHitTesting(false)
     }
 
     private var blurWidth: CGFloat {
