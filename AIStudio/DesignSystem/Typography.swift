@@ -29,7 +29,7 @@ enum Typography {
 
     // MARK: - Semi Bold
 
-    static let semiBold20 = TypographyStyle(weight: .semiBold, size: 20, lineHeight: nil)
+    static let semiBold20 = TypographyStyle(weight: .semiBold, size: 20, lineHeight: 20)
     static let semiBold16 = TypographyStyle(weight: .semiBold, size: 16, lineHeight: 16)
     static let semiBold14 = TypographyStyle(weight: .semiBold, size: 14, lineHeight: nil)
 
@@ -42,7 +42,7 @@ enum Typography {
     // MARK: - Regular
 
     static let regular20 = TypographyStyle(weight: .regular, size: 20, lineHeight: nil)
-    static let regular16 = TypographyStyle(weight: .regular, size: 16, lineHeight: nil)
+    static let regular16 = TypographyStyle(weight: .regular, size: 16, lineHeight: 16)
     static let regular14 = TypographyStyle(weight: .regular, size: 14, lineHeight: 14)
 
     /// Figma line height 100%.

@@ -11,6 +11,7 @@ enum OnboardingTitleSectionStyle {
     case onboarding
     case navigation
     case upload
+    case sourceOption
 }
 
 struct OnboardingTitleSection: View {
@@ -19,15 +20,22 @@ struct OnboardingTitleSection: View {
     var style: OnboardingTitleSectionStyle = .onboarding
     /// Базовая единица 16 px для `.upload`.
     var textSize: CGFloat = 16
-    /// Subtitle 14 px для `.upload`.
+    /// Title 20 px для `.sourceOption`.
+    var titleTextSize: CGFloat?
+
+    /// Subtitle 14 px для `.upload`, 16 px для `.sourceOption`.
     var subtitleTextSize: CGFloat?
+
+    private var isSourceOptionStyle: Bool {
+        style == .sourceOption
+    }
 
     private var isUploadStyle: Bool {
         style == .upload
     }
 
     private var expandsHorizontally: Bool {
-        isUploadStyle || style == .onboarding
+        isUploadStyle || style == .onboarding || isSourceOptionStyle
     }
 
     private var horizontalMaxWidth: CGFloat? {
@@ -74,7 +82,12 @@ struct OnboardingTitleSection: View {
         case .onboarding: 8
         case .navigation: 2
         case .upload: textSize * 12 / 16
+        case .sourceOption: sourceOptionTitleSize * 4 / 20
         }
+    }
+
+    private var sourceOptionTitleSize: CGFloat {
+        titleTextSize ?? textSize
     }
 
     private var titleTypography: TypographyStyle {
@@ -82,6 +95,7 @@ struct OnboardingTitleSection: View {
         case .onboarding: Typography.bold28
         case .navigation: Typography.semiBold20
         case .upload: Typography.medium(size: textSize)
+        case .sourceOption: Typography.semiBold(size: sourceOptionTitleSize)
         }
     }
 
@@ -90,6 +104,7 @@ struct OnboardingTitleSection: View {
         case .onboarding: Typography.regular16
         case .navigation: Typography.regular14
         case .upload: Typography.regular(size: uploadSubtitleSize)
+        case .sourceOption: Typography.regular(size: sourceOptionSubtitleSize)
         }
     }
 
@@ -97,18 +112,23 @@ struct OnboardingTitleSection: View {
         subtitleTextSize ?? textSize * 14 / 16
     }
 
+    private var sourceOptionSubtitleSize: CGFloat {
+        subtitleTextSize ?? sourceOptionTitleSize * 16 / 20
+    }
+
     private var subtitleColor: Color {
         switch style {
         case .onboarding: Color.price
         case .navigation: Color.accent.opacity(AppSurface.Interaction.subtitleOpacity)
         case .upload: Color.accent.opacity(AppSurface.Interaction.subtitleOpacity)
+        case .sourceOption: Color.accent.opacity(0.5)
         }
     }
 
     private var titleTracking: CGFloat {
         switch style {
         case .onboarding: 0.4
-        case .navigation, .upload: 0
+        case .navigation, .upload, .sourceOption: 0
         }
     }
 
