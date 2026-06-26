@@ -104,7 +104,7 @@ struct AppNotification: View {
 
         case .fileTooLarge:
             CloseIcon()
-                .fill(Color.errorIcon)
+                .fill(Color.error)
                 .frame(width: iconSize, height: iconSize)
         }
     }

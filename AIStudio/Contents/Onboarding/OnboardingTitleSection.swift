@@ -10,15 +10,24 @@ import SwiftUI
 enum OnboardingTitleSectionStyle {
     case onboarding
     case navigation
+    case upload
 }
 
 struct OnboardingTitleSection: View {
     let title: String
     let subtitle: String
     var style: OnboardingTitleSectionStyle = .onboarding
+    /// Базовая единица 16 px для `.upload`.
+    var textSize: CGFloat = 16
+    /// Subtitle 14 px для `.upload`.
+    var subtitleTextSize: CGFloat?
+
+    private var isUploadStyle: Bool {
+        style == .upload
+    }
 
     private var expandsHorizontally: Bool {
-        style == .onboarding
+        isUploadStyle || style == .onboarding
     }
 
     private var horizontalMaxWidth: CGFloat? {
@@ -29,30 +38,42 @@ struct OnboardingTitleSection: View {
         !subtitle.isEmpty
     }
 
+    private var contentAlignment: HorizontalAlignment {
+        isUploadStyle ? .center : .leading
+    }
+
+    private var frameAlignment: Alignment {
+        isUploadStyle ? .center : .leading
+    }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: hasSubtitle ? textSpacing : 0) {
+        VStack(alignment: contentAlignment, spacing: hasSubtitle ? textSpacing : 0) {
             Text(title)
                 .typography(titleTypography)
                 .tracking(titleTracking)
                 .foregroundStyle(Color.accent)
                 .lineLimit(lineLimit)
-                .frame(maxWidth: horizontalMaxWidth, alignment: .leading)
+                .multilineTextAlignment(isUploadStyle ? .center : .leading)
+                .frame(maxWidth: horizontalMaxWidth, alignment: frameAlignment)
 
             if hasSubtitle {
                 Text(subtitle)
                     .typography(subtitleTypography)
+                    .tracking(subtitleTracking)
                     .foregroundStyle(subtitleColor)
                     .lineLimit(lineLimit)
-                    .frame(maxWidth: horizontalMaxWidth, alignment: .leading)
+                    .multilineTextAlignment(isUploadStyle ? .center : .leading)
+                    .frame(maxWidth: horizontalMaxWidth, alignment: frameAlignment)
             }
         }
-        .frame(maxWidth: horizontalMaxWidth, alignment: .leading)
+        .frame(maxWidth: horizontalMaxWidth, alignment: frameAlignment)
     }
 
     private var textSpacing: CGFloat {
         switch style {
         case .onboarding: 8
         case .navigation: 2
+        case .upload: textSize * 12 / 16
         }
     }
 
@@ -60,6 +81,7 @@ struct OnboardingTitleSection: View {
         switch style {
         case .onboarding: Typography.bold28
         case .navigation: Typography.semiBold20
+        case .upload: Typography.medium(size: textSize)
         }
     }
 
@@ -67,19 +89,30 @@ struct OnboardingTitleSection: View {
         switch style {
         case .onboarding: Typography.regular16
         case .navigation: Typography.regular14
+        case .upload: Typography.regular(size: uploadSubtitleSize)
         }
+    }
+
+    private var uploadSubtitleSize: CGFloat {
+        subtitleTextSize ?? textSize * 14 / 16
     }
 
     private var subtitleColor: Color {
         switch style {
         case .onboarding: Color.price
         case .navigation: Color.accent.opacity(AppSurface.Interaction.subtitleOpacity)
+        case .upload: Color.accent.opacity(AppSurface.Interaction.subtitleOpacity)
         }
     }
 
     private var titleTracking: CGFloat {
-        style == .onboarding ? 0.4 : 0
+        switch style {
+        case .onboarding: 0.4
+        case .navigation, .upload: 0
+        }
     }
+
+    private var subtitleTracking: CGFloat { 0 }
 
     private var lineLimit: Int? {
         style == .navigation ? 1 : nil

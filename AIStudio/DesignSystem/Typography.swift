@@ -36,7 +36,7 @@ enum Typography {
     // MARK: - Medium
 
     static let medium20 = TypographyStyle(weight: .medium, size: 20, lineHeight: nil)
-    static let medium16 = TypographyStyle(weight: .medium, size: 16, lineHeight: nil)
+    static let medium16 = TypographyStyle(weight: .medium, size: 16, lineHeight: 16)
     static let medium12 = TypographyStyle(weight: .medium, size: 12, lineHeight: nil)
 
     // MARK: - Regular
@@ -48,6 +48,10 @@ enum Typography {
     /// Figma line height 100%.
     static func semiBold(size: CGFloat) -> TypographyStyle {
         TypographyStyle(weight: .semiBold, size: size, lineHeight: size)
+    }
+
+    static func medium(size: CGFloat) -> TypographyStyle {
+        TypographyStyle(weight: .medium, size: size, lineHeight: size)
     }
 
     static func regular(size: CGFloat) -> TypographyStyle {
