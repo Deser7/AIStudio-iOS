@@ -1,0 +1,52 @@
+//
+//  SettingsSection.swift
+//  AIStudio
+//
+//  Created by Андрей Спиридонов on 26.06.2026.
+//
+
+import SwiftUI
+
+/// Группа строк настроек (Figma grouped `Row`).
+struct SettingsSection<Rows: View>: View {
+    let title: String
+    var size: CGFloat
+    @ViewBuilder var rows: () -> Rows
+
+    private var sectionTitleSize: CGFloat { size * 13 / 390 }
+    private var titleBottomSpacing: CGFloat { size * 8 / 390 }
+    private var groupCornerRadius: CGFloat { size * 12 / 390 }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: titleBottomSpacing) {
+            Text(title)
+                .font(AppFont.font(weight: .regular, size: sectionTitleSize))
+                .foregroundStyle(Color.price)
+                .textCase(.none)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            VStack(spacing: 0) {
+                rows()
+            }
+            .background(Color.card)
+            .clipShape(RoundedRectangle(cornerRadius: groupCornerRadius, style: .continuous))
+        }
+    }
+}
+
+#Preview {
+    let size: CGFloat = 390
+    let rowHeight = size * 44 / 390
+
+    SettingsSection(title: "Support us", size: size) {
+        SettingsRow(title: "Rate app", size: rowHeight, action: {}) {
+            SettingsRowIcon(
+                systemName: "star",
+                width: rowHeight * 28 / 44,
+                height: rowHeight * 22 / 44
+            )
+        }
+    }
+    .padding(24)
+    .background(Color.background)
+}
