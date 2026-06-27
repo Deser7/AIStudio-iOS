@@ -85,7 +85,7 @@ struct FunctionCard: View {
             size: iconCircleSize,
             blurRadius: blurRadius,
             cardOpacity: AppSurface.FunctionCard.iconCircleOpacity,
-            fillColor: .white,
+            fillColor: .accent,
             shape: Circle()
         )
     }

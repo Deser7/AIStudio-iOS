@@ -115,7 +115,7 @@ struct OnboardingTitleSection: View {
         case .upload: Typography.medium(size: textSize)
         case .sourceOption: Typography.semiBold(size: sourceOptionTitleSize)
         case .functionCard: Typography.medium(size: functionCardTitleSize)
-        case .featureCard: Typography.semiBold(size: featureCardTitleSize)
+        case .featureCard: Typography.medium(size: featureCardTitleSize)
         }
     }
 

@@ -18,18 +18,24 @@ struct AIVideoCard: View {
     private var topPadding: CGFloat { size * 24 / 172 }
     private var bottomPadding: CGFloat { size * 16 / 172 }
     private var cornerRadius: CGFloat { size * 24 / 172 }
-    private var iconCircleSize: CGFloat { size * 32 / 172 }
-    private var iconContentSize: CGFloat { iconCircleSize * 20 / 32 }
+    private var iconCircleSize: CGFloat { size * 36 / 172 }
+    private var iconContentSize: CGFloat { size * 20 / 172 }
     private var titleFontSize: CGFloat { size * 20 / 172 }
     private var subtitleFontSize: CGFloat { size * 14 / 172 }
-    private var contentSpacing: CGFloat { size * 16 / 172 }
+    private var contentSpacing: CGFloat { size * AppSurface.FeatureCard.contentSpacingRatio }
     private var badgeWidth: CGFloat { size * 149 / 172 }
     private var badgeHeight: CGFloat { size * 32 / 172 }
     private var badgeFontSize: CGFloat { size * 12 / 172 }
     private var badgeHorizontalPadding: CGFloat { size * 12 / 172 }
+    private var badgeContentGap: CGFloat { size * 8 / 172 }
     private var playIconSize: CGFloat { size * 16 / 172 }
-    private var blurRadius: CGFloat { horizontalPadding * AppSurface.blurRadius / 16 }
-    private var waveHeight: CGFloat { size * 80 / 172 }
+    private var badgeTextMaxWidth: CGFloat {
+        badgeWidth - badgeHorizontalPadding * 2 - playIconSize - badgeContentGap
+    }
+
+    /// Figma ref wave frame = 293.33×440.
+    private var waveHeight: CGFloat { size * 440 / 293.33 }
+    private var waveOpacity: CGFloat { 0.5 }
 
     private var cardShape: RoundedRectangle {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
@@ -45,13 +51,7 @@ struct AIVideoCard: View {
                     endPoint: .bottomTrailing
                 )
 
-                Image("Wave")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: size, height: waveHeight)
-                    .opacity(0.5)
-                    .frame(maxHeight: .infinity, alignment: .bottom)
-                    .allowsHitTesting(false)
+                waveOverlay
 
                 VStack(alignment: .leading, spacing: 0) {
                     VStack(alignment: .leading, spacing: contentSpacing) {
@@ -67,13 +67,15 @@ struct AIVideoCard: View {
                     }
 
                     Spacer(minLength: 0)
-
-                    readinessBadge
                 }
                 .padding(.top, topPadding)
                 .padding(.bottom, bottomPadding)
                 .padding(.horizontal, horizontalPadding)
                 .frame(width: size, height: cardHeight, alignment: .topLeading)
+                .overlay(alignment: .bottom) {
+                    readinessBadge
+                        .padding(.bottom, bottomPadding)
+                }
             }
             .frame(width: size, height: cardHeight)
             .clipShape(cardShape)
@@ -81,50 +83,54 @@ struct AIVideoCard: View {
         .buttonStyle(.plain)
     }
 
-    private var featureIcon: some View {
-        ZStack {
-            Circle()
-                .fill(Color.white.opacity(0.2))
-                .frame(width: iconCircleSize, height: iconCircleSize)
+    private var waveOverlay: some View {
+        Image("Wave")
+            .resizable()
+            .scaledToFit()
+            .frame(width: size, height: waveHeight)
+            .frame(width: size, height: cardHeight, alignment: .bottom)
+            .opacity(waveOpacity)
+            .blendMode(.screen)
+            .allowsHitTesting(false)
+    }
 
-            MagicIcon()
-                .fill(Color.white)
-                .frame(width: iconContentSize, height: iconContentSize)
-        }
+    private var featureIcon: some View {
+        MagicIcon()
+            .fill(Color.accent)
+            .frame(width: iconContentSize, height: iconContentSize)
+            .frame(width: iconCircleSize, height: iconCircleSize)
+            .background { iconCircleBackground }
+            .clipShape(Circle())
+    }
+
+    private var iconCircleBackground: some View {
+        Circle()
+            .fill(Color.accent.opacity(AppSurface.FeatureCard.iconCircleOpacity))
     }
 
     private var readinessBadge: some View {
-        HStack(spacing: badgeHorizontalPadding * 0.5) {
+        HStack(spacing: badgeContentGap) {
             Text("Ready in seconds")
                 .typography(Typography.regular(size: badgeFontSize))
-                .foregroundStyle(Color.white)
-                .tracking(size * 0.06 / 172)
+                .foregroundStyle(Color.accent)
+                .tracking(badgeFontSize * AppSurface.FeatureCard.badgeLetterSpacing / 12)
                 .lineLimit(1)
-
-            Spacer(minLength: 0)
+                .minimumScaleFactor(0.85)
+                .frame(maxWidth: badgeTextMaxWidth, alignment: .leading)
 
             MediaPlayIcon()
-                .fill(Color.white)
+                .fill(Color.accent)
                 .frame(width: playIconSize, height: playIconSize)
         }
         .padding(.horizontal, badgeHorizontalPadding)
-        .frame(width: badgeWidth, height: badgeHeight)
+        .frame(width: badgeWidth, height: badgeHeight, alignment: .center)
         .background { readinessBadgeBackground }
         .clipShape(Capsule())
     }
 
     private var readinessBadgeBackground: some View {
-        ZStack {
-            BackdropBlurView()
-                .frame(
-                    width: badgeWidth + blurRadius * AppSurface.BlurFrame.paddingMultiplier,
-                    height: badgeHeight + blurRadius * AppSurface.BlurFrame.paddingMultiplier
-                )
-
-            Capsule()
-                .fill(Color.white.opacity(0.3))
-        }
-        .allowsHitTesting(false)
+        Capsule()
+            .fill(Color.accent.opacity(AppSurface.FeatureCard.badgeBackgroundOpacity))
     }
 }
 

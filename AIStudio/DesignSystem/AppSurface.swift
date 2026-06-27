@@ -34,8 +34,19 @@ enum AppSurface {
         static let solidStartMultiplier: CGFloat = 1.15
     }
 
+    enum FeatureCard {
+        /// Figma: круг под иконкой accent @ 15%.
+        static let iconCircleOpacity: CGFloat = 0.15
+        /// Figma: pill «Ready in seconds» accent @ 30%.
+        static let badgeBackgroundOpacity: CGFloat = 0.3
+        /// Figma letter spacing для 12 px.
+        static let badgeLetterSpacing: CGFloat = 0.06
+        /// Figma: gap между иконкой и текстом.
+        static let contentSpacingRatio: CGFloat = 12 / 172
+    }
+
     enum FunctionCard {
-        /// Figma: круг под иконкой #FFFFFF @ 5%.
+        /// Figma: круг под иконкой accent @ 5%.
         static let iconCircleOpacity: CGFloat = 0.05
         /// Figma subtitle letter spacing для 12 px.
         static let subtitleLetterSpacing: CGFloat = -0.08
