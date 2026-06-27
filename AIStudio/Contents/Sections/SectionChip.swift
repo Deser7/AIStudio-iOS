@@ -29,7 +29,7 @@ struct SectionChip: View {
         Color.white.opacity(
             isSelected
                 ? 1
-                : AppSurface.Interaction.notificationSubtitleOpacity
+                : 0.5
         )
     }
 
@@ -58,7 +58,7 @@ struct SectionChip: View {
                 style: .compact,
                 size: size,
                 blurRadius: blurRadius,
-                cardOpacity: AppSurface.CardOpacity.fill,
+                cardOpacity: 0.6,
                 shape: shape
             )
         }

@@ -18,7 +18,7 @@ struct DissolvingGradientBorder<S: InsettableShape>: View {
     }
 
     private var softLayerOpacity: CGFloat {
-        AppSurface.DissolvingBorder.softOpacity
+        0.55
     }
 
     var body: some View {

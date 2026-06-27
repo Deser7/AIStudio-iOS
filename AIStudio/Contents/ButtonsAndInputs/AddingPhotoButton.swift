@@ -39,7 +39,7 @@ struct AddingPhotoButton: View {
                         style: .compact,
                         size: size,
                         blurRadius: blurRadius,
-                        cardOpacity: AppSurface.CardOpacity.compact,
+                        cardOpacity: 0.4,
                         shape: Circle()
                     )
                 }

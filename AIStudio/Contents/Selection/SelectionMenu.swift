@@ -95,7 +95,7 @@ struct SelectionMenu<Option: SelectionMenuOption>: View {
     }
 
     private var rowSeparator: some View {
-        Color.white.opacity(AppSurface.Interaction.faintOpacity)
+        Color.white.opacity(0.1)
             .frame(height: separatorHeight)
     }
 
@@ -104,7 +104,7 @@ struct SelectionMenu<Option: SelectionMenuOption>: View {
             style: .bar,
             size: cardContentHeight,
             blurRadius: blurRadius,
-            cardOpacity: AppSurface.CardOpacity.fill,
+            cardOpacity: 0.6,
             shape: shape
         )
     }

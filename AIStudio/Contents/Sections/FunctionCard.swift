@@ -78,7 +78,7 @@ struct FunctionCard: View {
 
     private var iconCircleBackground: some View {
         Circle()
-            .fill(Color.white.opacity(AppSurface.FunctionCard.iconCircleOpacity))
+            .fill(Color.white.opacity(0.05))
     }
 
     @ViewBuilder

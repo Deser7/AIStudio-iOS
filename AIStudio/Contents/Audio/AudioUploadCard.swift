@@ -120,7 +120,7 @@ struct AudioUploadCard: View {
             style: .compact,
             size: cardHeight,
             blurRadius: blurRadius,
-            cardOpacity: AppSurface.CardOpacity.fill,
+            cardOpacity: 0.6,
             shape: shape
         )
     }

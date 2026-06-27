@@ -17,6 +17,6 @@ private struct AppDisabledOpacityModifier: ViewModifier {
     @Environment(\.isEnabled) private var isEnabled
 
     func body(content: Content) -> some View {
-        content.opacity(isEnabled ? 1 : AppSurface.Interaction.disabledOpacity)
+        content.opacity(isEnabled ? 1 : 0.6)
     }
 }

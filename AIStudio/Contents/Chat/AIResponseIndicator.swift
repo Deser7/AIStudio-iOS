@@ -27,7 +27,7 @@ struct AIResponseIndicator: View {
     private var blurRadius: CGFloat { size * AppSurface.blurRadius / 51 }
 
     private var inactiveDotColor: Color {
-        Color.white.opacity(AppSurface.Interaction.faintOpacity)
+        Color.white.opacity(0.1)
     }
 
     private var dotDiameters: [CGFloat] {
@@ -84,7 +84,7 @@ struct AIResponseIndicator: View {
             style: .compact,
             size: size,
             blurRadius: blurRadius,
-            cardOpacity: AppSurface.CardOpacity.responseBubble,
+            cardOpacity: 0.5,
             shape: bubbleShape
         )
     }

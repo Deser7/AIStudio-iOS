@@ -40,7 +40,7 @@ struct AppNotification: View {
     }
 
     private var subtitleColor: Color {
-        Color.white.opacity(AppSurface.Interaction.notificationSubtitleOpacity)
+        Color.white.opacity(0.5)
     }
 
     private var contentSpacing: CGFloat {
@@ -115,7 +115,7 @@ struct AppNotification: View {
                 style: .compact,
                 size: geo.size.height,
                 blurRadius: blurRadius,
-                cardOpacity: AppSurface.CardOpacity.compact,
+                cardOpacity: 0.4,
                 shape: shape
             )
         }

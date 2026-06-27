@@ -47,7 +47,7 @@ struct AIResponseBubble: View {
     }
     private var dividerColor: Color {
         Color(.divider)
-        .opacity(AppSurface.Interaction.faintOpacity)
+        .opacity(0.1)
     }
     
     private var bubbleShape: AIResponseBubbleShape {
@@ -71,7 +71,7 @@ struct AIResponseBubble: View {
     }
     
     private var bodyTextColor: Color {
-        Color.white.opacity(AppSurface.Interaction.responseBodyTextOpacity)
+        Color.white.opacity(0.8)
     }
 
     private var titleView: some View {
@@ -194,7 +194,7 @@ struct AIResponseBubble: View {
                 style: .compact,
                 size: geo.size.height,
                 blurRadius: blurRadius,
-                cardOpacity: AppSurface.CardOpacity.responseBubble,
+                cardOpacity: 0.5,
                 shape: bubbleShape
             )
         }

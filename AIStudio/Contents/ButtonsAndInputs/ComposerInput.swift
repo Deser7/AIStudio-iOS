@@ -181,7 +181,7 @@ struct ComposerInput: View {
                 style: .bar,
                 size: geo.size.height,
                 blurRadius: blurRadius,
-                cardOpacity: AppSurface.CardOpacity.blurOverlay,
+                cardOpacity: 0.7,
                 shape: shape
             )
         }

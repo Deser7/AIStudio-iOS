@@ -103,7 +103,7 @@ struct AIVideoCard: View {
 
     private var iconCircleBackground: some View {
         Circle()
-            .fill(Color.white.opacity(AppSurface.FeatureCard.iconCircleOpacity))
+            .fill(Color.white.opacity(0.15))
     }
 
     private var readinessBadge: some View {
@@ -128,7 +128,7 @@ struct AIVideoCard: View {
 
     private var readinessBadgeBackground: some View {
         Capsule()
-            .fill(Color.white.opacity(AppSurface.FeatureCard.badgeBackgroundOpacity))
+            .fill(Color.white.opacity(0.3))
     }
 }
 

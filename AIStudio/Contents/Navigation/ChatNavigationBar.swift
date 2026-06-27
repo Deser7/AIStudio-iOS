@@ -169,7 +169,7 @@ struct ChatNavigationBar: View {
         ZStack {
             BackdropBlurView()
 
-            Color.card.opacity(AppSurface.CardOpacity.compact)
+            Color.card.opacity(0.4)
         }
     }
 

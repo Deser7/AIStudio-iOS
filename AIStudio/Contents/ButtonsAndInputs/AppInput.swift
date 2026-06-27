@@ -68,12 +68,12 @@ struct AppInput: View {
                 style: .bar,
                 size: size,
                 blurRadius: blurRadius,
-                cardOpacity: AppSurface.CardOpacity.blurOverlay,
+                cardOpacity: 0.7,
                 shape: fieldShape
             )
         case .search:
             fieldShape
-                .fill(Color.card.opacity(AppSurface.CardOpacity.fill))
+                .fill(Color.card.opacity(0.6))
         }
     }
 

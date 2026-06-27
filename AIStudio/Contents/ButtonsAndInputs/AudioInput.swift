@@ -51,7 +51,7 @@ struct AudioInput: View {
             style: .bar,
             size: size,
             blurRadius: blurRadius,
-            cardOpacity: AppSurface.CardOpacity.blurOverlay,
+            cardOpacity: 0.7,
             shape: shape
         )
     }

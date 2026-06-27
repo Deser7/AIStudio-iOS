@@ -21,7 +21,7 @@ struct MediaSourcePicker: View {
     var body: some View {
         VStack(spacing: rowSpacing) {
             Capsule()
-                .fill(Color.white.opacity(AppSurface.Interaction.subtitleOpacity))
+                .fill(Color.white.opacity(0.3))
                 .frame(width: grabberWidth, height: grabberHeight)
 
             VStack(spacing: rowSpacing) {

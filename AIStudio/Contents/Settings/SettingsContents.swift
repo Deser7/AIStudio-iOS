@@ -117,7 +117,7 @@ struct SettingsContents: View {
     }
 
     private var rowSeparator: some View {
-        Color.white.opacity(AppSurface.Interaction.faintOpacity)
+        Color.white.opacity(0.1)
             .frame(height: separatorHeight)
             .padding(.leading, separatorInset)
     }

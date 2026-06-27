@@ -45,7 +45,7 @@ struct ReplaceButton: View {
             .padding(.vertical, spacing)
             .frame(height: size)
             .background(
-                Color.card.opacity(AppSurface.CardOpacity.compact),
+                Color.card.opacity(0.4),
                 in: RoundedRectangle(cornerRadius: iconSize)
             )
             .fixedSize(horizontal: true, vertical: false)

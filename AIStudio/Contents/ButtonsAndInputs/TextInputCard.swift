@@ -34,7 +34,7 @@ struct TextInputCard: View {
     private var isOverLimit: Bool { text.count > characterLimit }
 
     private var secondaryColor: Color {
-        Color.white.opacity(AppSurface.Interaction.subtitleOpacity)
+        Color.white.opacity(0.3)
     }
 
     private var editorHeight: CGFloat {
@@ -97,7 +97,7 @@ struct TextInputCard: View {
             style: .compact,
             size: cardHeight,
             blurRadius: blurRadius,
-            cardOpacity: AppSurface.CardOpacity.fill,
+            cardOpacity: 0.6,
             shape: shape
         )
     }

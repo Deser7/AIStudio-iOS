@@ -61,7 +61,7 @@ struct AICreationMenuBubble: View {
                 style: .compact,
                 size: geo.size.height,
                 blurRadius: blurRadius,
-                cardOpacity: AppSurface.CardOpacity.responseBubble,
+                cardOpacity: 0.5,
                 shape: bubbleShape
             )
         }
