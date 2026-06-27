@@ -147,17 +147,17 @@ struct OnboardingTitleSection: View {
     }
 
     private var titleColor: Color {
-        Color.accent
+        Color.white
     }
 
     private var subtitleColor: Color {
         switch style {
         case .onboarding: Color.price
-        case .navigation: Color.accent.opacity(AppSurface.Interaction.subtitleOpacity)
-        case .upload: Color.accent.opacity(AppSurface.Interaction.subtitleOpacity)
-        case .sourceOption: Color.accent.opacity(0.5)
-        case .functionCard: Color.accent.opacity(AppSurface.Interaction.notificationSubtitleOpacity)
-        case .featureCard: Color.accent.opacity(0.7)
+        case .navigation: Color.white.opacity(AppSurface.Interaction.subtitleOpacity)
+        case .upload: Color.white.opacity(AppSurface.Interaction.subtitleOpacity)
+        case .sourceOption: Color.white.opacity(0.5)
+        case .functionCard: Color.white.opacity(AppSurface.Interaction.notificationSubtitleOpacity)
+        case .featureCard: Color.white.opacity(0.7)
         }
     }
 

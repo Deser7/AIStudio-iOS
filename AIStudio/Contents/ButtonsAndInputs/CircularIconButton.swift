@@ -38,7 +38,7 @@ struct CircularIconButton: View {
                 .frame(width: size, height: size)
                 .overlay {
                     Circle()
-                        .strokeBorder(Color.accent.opacity(0.1), lineWidth: borderWidth)
+                        .strokeBorder(Color.white.opacity(0.1), lineWidth: borderWidth)
                 }
         }
         .buttonStyle(.plain)
@@ -51,7 +51,7 @@ struct CircularIconButton: View {
         case .photo:
             ImportIcon()
                 .stroke(
-                    Color.accent,
+                    Color.white,
                     style: StrokeStyle(
                         lineWidth: strokeWidth,
                         lineCap: .round,
@@ -60,10 +60,10 @@ struct CircularIconButton: View {
                 )
         case .micro:
             MicIcon()
-                .fill(Color.accent, style: FillStyle(eoFill: true))
+                .fill(Color.white, style: FillStyle(eoFill: true))
         case .cross:
             CloseIcon()
-                .fill(Color.accent)
+                .fill(Color.white)
         }
     }
 }

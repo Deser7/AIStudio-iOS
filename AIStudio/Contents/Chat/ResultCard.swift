@@ -35,7 +35,7 @@ struct ResultCard: View {
 
             Button(action: onPlay) {
                 PlayIcon()
-                    .fill(Color.accent.opacity(0.9))
+                    .fill(Color.white.opacity(0.9))
                     .frame(width: playIconWidth, height: playIconHeight)
             }
             .buttonStyle(.plain)

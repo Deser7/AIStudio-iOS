@@ -56,13 +56,13 @@ struct AICreationOptionRow: View {
                 VStack(alignment: .leading, spacing: textSpacing) {
                     Text(option.title)
                         .typography(Typography.semiBold(size: titleFontSize))
-                        .foregroundStyle(Color.accent)
+                        .foregroundStyle(Color.white)
                         .tracking(0)
                         .lineLimit(1)
 
                     Text(option.subtitle)
                         .typography(Typography.regular(size: subtitleFontSize))
-                        .foregroundStyle(Color.accent.opacity(0.5))
+                        .foregroundStyle(Color.white.opacity(0.5))
                         .tracking(0)
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)

@@ -94,7 +94,7 @@ struct AIVideoCard: View {
 
     private var featureIcon: some View {
         MagicIcon()
-            .fill(Color.accent)
+            .fill(Color.white)
             .frame(width: iconContentSize, height: iconContentSize)
             .frame(width: iconCircleSize, height: iconCircleSize)
             .background { iconCircleBackground }
@@ -103,21 +103,21 @@ struct AIVideoCard: View {
 
     private var iconCircleBackground: some View {
         Circle()
-            .fill(Color.accent.opacity(AppSurface.FeatureCard.iconCircleOpacity))
+            .fill(Color.white.opacity(AppSurface.FeatureCard.iconCircleOpacity))
     }
 
     private var readinessBadge: some View {
         HStack(spacing: badgeContentGap) {
             Text("Ready in seconds")
                 .typography(Typography.regular(size: badgeFontSize))
-                .foregroundStyle(Color.accent)
+                .foregroundStyle(Color.white)
                 .tracking(badgeFontSize * AppSurface.FeatureCard.badgeLetterSpacing / 12)
                 .lineLimit(1)
                 .minimumScaleFactor(0.85)
                 .frame(maxWidth: badgeTextMaxWidth, alignment: .leading)
 
             MediaPlayIcon()
-                .fill(Color.accent)
+                .fill(Color.white)
                 .frame(width: playIconSize, height: playIconSize)
         }
         .padding(.horizontal, badgeHorizontalPadding)
@@ -128,7 +128,7 @@ struct AIVideoCard: View {
 
     private var readinessBadgeBackground: some View {
         Capsule()
-            .fill(Color.accent.opacity(AppSurface.FeatureCard.badgeBackgroundOpacity))
+            .fill(Color.white.opacity(AppSurface.FeatureCard.badgeBackgroundOpacity))
     }
 }
 

@@ -26,7 +26,7 @@ struct SectionChip: View {
     }
 
     private var titleColor: Color {
-        Color.accent.opacity(
+        Color.white.opacity(
             isSelected
                 ? 1
                 : AppSurface.Interaction.notificationSubtitleOpacity

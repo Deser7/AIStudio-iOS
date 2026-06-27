@@ -57,7 +57,7 @@ struct SettingsRow<Icon: View, Trailing: View>: View {
 
             Text(title)
                 .font(AppFont.font(weight: .regular, size: fontSize))
-                .foregroundStyle(Color.accent)
+                .foregroundStyle(Color.white)
                 .tracking(0)
                 .lineSpacing(0)
                 .frame(maxWidth: .infinity, alignment: .leading)

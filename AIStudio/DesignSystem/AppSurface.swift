@@ -37,7 +37,7 @@ enum AppSurface {
     enum FeatureCard {
         /// Figma: круг под иконкой #FFFFFF @ 15%.
         static let iconCircleOpacity: CGFloat = 0.15
-        /// Figma: pill «Ready in seconds» accent @ 30%.
+        /// Figma: pill «Ready in seconds» white @ 30%.
         static let badgeBackgroundOpacity: CGFloat = 0.3
         /// Figma letter spacing для 12 px.
         static let badgeLetterSpacing: CGFloat = 0.06
@@ -58,9 +58,9 @@ enum AppSurface {
         static let disabledOpacity: CGFloat = 0.6
         /// Navigation bar subtitle — Figma: #FFFFFF @ 30%.
         static let subtitleOpacity: CGFloat = 0.3
-        /// Figma @ 10% — typing dot (accent), response divider (#D9D9D9).
+        /// Figma @ 10% — typing dot (white), response divider (#D9D9D9).
         static let faintOpacity: CGFloat = 0.1
-        /// Notification error subtitle — Figma: accent @ 50%.
+        /// Notification error subtitle — Figma: white @ 50%.
         static let notificationSubtitleOpacity: CGFloat = 0.5
         /// AI response body text — Figma: #FFFFFF @ 80%.
         static let responseBodyTextOpacity: CGFloat = 0.8

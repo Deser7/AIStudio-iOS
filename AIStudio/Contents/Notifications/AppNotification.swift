@@ -40,7 +40,7 @@ struct AppNotification: View {
     }
 
     private var subtitleColor: Color {
-        Color.accent.opacity(AppSurface.Interaction.notificationSubtitleOpacity)
+        Color.white.opacity(AppSurface.Interaction.notificationSubtitleOpacity)
     }
 
     private var contentSpacing: CGFloat {
@@ -73,7 +73,7 @@ struct AppNotification: View {
         case .textCopied(let message), .videoSaved(let message):
             Text(message)
                 .font(AppFont.font(weight: .regular, size: titleFontSize))
-                .foregroundStyle(Color.accent)
+                .foregroundStyle(Color.white)
                 .multilineTextAlignment(.center)
                 .frame(height: messageTextHeight)
 
@@ -81,7 +81,7 @@ struct AppNotification: View {
             VStack(spacing: titleSubtitleSpacing) {
                 Text(title)
                     .font(AppFont.font(weight: .semiBold, size: titleFontSize))
-                    .foregroundStyle(Color.accent)
+                    .foregroundStyle(Color.white)
                     .multilineTextAlignment(.center)
                     .frame(height: errorTitleHeight)
 

@@ -31,11 +31,11 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
                 text: $text,
                 prompt: Text(placeholder)
                     .font(AppFont.font(weight: .regular, size: spacing))
-                    .foregroundColor(Color.accent.opacity(0.5))
+                    .foregroundColor(Color.white.opacity(0.5))
             )
             .font(AppFont.font(weight: .regular, size: spacing))
-            .foregroundColor(Color.accent)
-            .tint(Color.accent)
+            .foregroundColor(Color.white)
+            .tint(Color.white)
         }
         .padding(spacing)
         .frame(maxWidth: .infinity)

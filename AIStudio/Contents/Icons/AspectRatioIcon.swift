@@ -62,7 +62,7 @@ struct AspectRatioIcon: View {
     }
 
     private var strokeStyle: AnyShapeStyle {
-        isSelected ? AnyShapeStyle(AppGradient.main) : AnyShapeStyle(Color.accent)
+        isSelected ? AnyShapeStyle(AppGradient.main) : AnyShapeStyle(Color.white)
     }
 }
 

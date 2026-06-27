@@ -34,7 +34,7 @@ struct TextInputCard: View {
     private var isOverLimit: Bool { text.count > characterLimit }
 
     private var secondaryColor: Color {
-        Color.accent.opacity(AppSurface.Interaction.subtitleOpacity)
+        Color.white.opacity(AppSurface.Interaction.subtitleOpacity)
     }
 
     private var editorHeight: CGFloat {
@@ -72,8 +72,8 @@ struct TextInputCard: View {
         )
         .lineLimit(editorLineLimit)
         .font(AppFont.font(weight: .regular, size: fontSize))
-        .foregroundColor(Color.accent)
-        .tint(Color.accent)
+        .foregroundColor(Color.white)
+        .tint(Color.white)
         .frame(height: editorHeight, alignment: .top)
         .frame(maxWidth: .infinity, alignment: .leading)
     }

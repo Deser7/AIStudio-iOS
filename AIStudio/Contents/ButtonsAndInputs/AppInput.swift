@@ -51,11 +51,11 @@ struct AppInput: View {
         switch style {
         case .main:
             GenerateIcon()
-                .fill(Color.accent, style: FillStyle(eoFill: true))
+                .fill(Color.white, style: FillStyle(eoFill: true))
                 .frame(width: iconSize, height: iconSize)
         case .search:
             SearchIcon()
-                .fill(Color.accent)
+                .fill(Color.white)
                 .frame(width: iconSize, height: iconSize)
         }
     }
@@ -92,7 +92,7 @@ struct AppInput: View {
             .allowsHitTesting(false)
         case .search:
             fieldShape
-                .strokeBorder(Color.accent, lineWidth: borderWidth)
+                .strokeBorder(Color.white, lineWidth: borderWidth)
         }
     }
 }

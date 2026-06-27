@@ -22,7 +22,7 @@ struct BenefitRow: View {
 
             Text(title)
                 .font(AppFont.font(weight: .semiBold, size: size))
-                .foregroundStyle(Color.accent)
+                .foregroundStyle(Color.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }

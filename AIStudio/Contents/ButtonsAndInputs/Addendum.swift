@@ -107,7 +107,7 @@ struct Addendum: View {
 
     private var plusIcon: some View {
         PlusIcon()
-            .fill(Color.accent)
+            .fill(Color.white)
             .frame(width: plusSize, height: plusSize)
     }
 

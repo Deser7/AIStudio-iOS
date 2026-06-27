@@ -31,7 +31,7 @@ struct ProButton: View {
             .padding(.horizontal, horizontalPadding)
             .padding(.vertical, spacing)
             .frame(height: size)
-            .background(Color.accent, in: Capsule())
+            .background(Color.white, in: Capsule())
             .fixedSize(horizontal: true, vertical: false)
         }
         .buttonStyle(.plain)

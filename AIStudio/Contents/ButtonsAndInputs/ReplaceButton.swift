@@ -27,7 +27,7 @@ struct ReplaceButton: View {
             HStack(spacing: spacing) {
                 RefreshIcon()
                     .stroke(
-                        Color.accent,
+                        Color.white,
                         style: StrokeStyle(
                             lineWidth: strokeWidth,
                             lineCap: .round,
@@ -38,7 +38,7 @@ struct ReplaceButton: View {
 
                 Text(title)
                     .font(AppFont.font(weight: .regular, size: fontSize))
-                    .foregroundStyle(Color.accent)
+                    .foregroundStyle(Color.white)
                     .lineLimit(1)
             }
             .padding(.horizontal, horizontalPadding)

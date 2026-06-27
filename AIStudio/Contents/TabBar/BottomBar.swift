@@ -86,7 +86,7 @@ struct BottomBar: View {
     }
 
     private var secondaryColor: Color {
-        .accent.opacity(0.5)
+        .white.opacity(0.5)
     }
 }
 

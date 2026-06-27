@@ -24,11 +24,11 @@ struct AppToggle: View {
     }
 
     private var trackFill: Color {
-        isOn ? Color.accent : Color.toggleTrackSecondary
+        isOn ? Color.white : Color.toggleTrackSecondary
     }
 
     private var thumbFill: Color {
-        isOn ? Color.surface : Color.accent
+        isOn ? Color.surface : Color.white
     }
 
     var body: some View {

@@ -17,7 +17,7 @@ struct AudioWaveform: View {
     private var clampedProgress: CGFloat { min(max(progress, 0), 1) }
 
     private var inactiveFill: Color {
-        Color.accent.opacity(inactiveOpacity)
+        Color.white.opacity(inactiveOpacity)
     }
 
     private var showsUnplayedLayer: Bool { clampedProgress < 1 }

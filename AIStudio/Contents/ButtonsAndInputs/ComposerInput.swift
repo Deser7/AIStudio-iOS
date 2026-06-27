@@ -143,8 +143,8 @@ struct ComposerInput: View {
         )
         .lineLimit(1...10)
         .font(AppFont.font(weight: .regular, size: spacing))
-        .foregroundColor(Color.accent)
-        .tint(Color.accent)
+        .foregroundColor(Color.white)
+        .tint(Color.white)
         .disabled(isTextInputDisabled)
     }
 

@@ -95,7 +95,7 @@ struct SelectionMenu<Option: SelectionMenuOption>: View {
     }
 
     private var rowSeparator: some View {
-        Color.accent.opacity(AppSurface.Interaction.faintOpacity)
+        Color.white.opacity(AppSurface.Interaction.faintOpacity)
             .frame(height: separatorHeight)
     }
 

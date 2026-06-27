@@ -41,7 +41,7 @@ struct PricingPlanCard: View {
                         Text("/ week")
                             .font(AppFont.font(weight: .regular, size: titleFontSize))
                     }
-                    .foregroundStyle(Color.accent)
+                    .foregroundStyle(Color.white)
 
                     Text(price)
                         .font(AppFont.font(weight: .regular, size: secondaryFontSize))
@@ -53,7 +53,7 @@ struct PricingPlanCard: View {
                 if let badge {
                     Text(badge)
                         .font(AppFont.font(weight: .medium, size: secondaryFontSize))
-                        .foregroundStyle(Color.accent)
+                        .foregroundStyle(Color.white)
                         .textCase(.uppercase)
                         .padding(.horizontal, badgeHorizontalPadding)
                         .padding(.vertical, badgeVerticalPadding)
@@ -78,7 +78,7 @@ struct PricingPlanCard: View {
                 .strokeBorder(AppGradient.main, lineWidth: borderWidth)
         } else {
             RoundedRectangle(cornerRadius: cornerRadius)
-                .strokeBorder(Color.accent.opacity(0.25), lineWidth: borderWidth)
+                .strokeBorder(Color.white.opacity(0.25), lineWidth: borderWidth)
         }
     }
 }

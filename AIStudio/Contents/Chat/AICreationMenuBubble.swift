@@ -29,7 +29,7 @@ struct AICreationMenuBubble: View {
         VStack(alignment: .leading, spacing: cornerRadius) {
             Text("What do you want to create?")
                 .typography(Typography.semiBold(size: fontSize))
-                .foregroundStyle(Color.accent)
+                .foregroundStyle(Color.white)
                 .tracking(0)
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)

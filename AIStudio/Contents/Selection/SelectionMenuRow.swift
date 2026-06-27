@@ -36,7 +36,7 @@ struct SelectionMenuRow<Trailing: View>: View {
     }
 
     private var titleStyle: AnyShapeStyle {
-        isSelected ? AnyShapeStyle(AppGradient.main) : AnyShapeStyle(Color.accent)
+        isSelected ? AnyShapeStyle(AppGradient.main) : AnyShapeStyle(Color.white)
     }
 }
 

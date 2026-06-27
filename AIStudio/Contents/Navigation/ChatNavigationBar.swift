@@ -35,7 +35,7 @@ struct ChatNavigationBar: View {
     private var borderHeight: CGFloat { size * 1 / 150 }
 
     private var borderColor: Color {
-        Color.accent.opacity(0.1)
+        Color.white.opacity(0.1)
     }
 
     private var showsRegenerateButton: Bool {
@@ -91,7 +91,7 @@ struct ChatNavigationBar: View {
 
             Text(title)
                 .typography(Typography.semiBold20)
-                .foregroundStyle(Color.accent)
+                .foregroundStyle(Color.white)
                 .lineLimit(1)
         }
     }
@@ -104,7 +104,7 @@ struct ChatNavigationBar: View {
         case .aiVideo:
             gradientLeadingIcon {
                 MagicIcon()
-                    .fill(Color.accent)
+                    .fill(Color.white)
             }
         case .centeredTitle:
             EmptyView()
@@ -123,7 +123,7 @@ struct ChatNavigationBar: View {
         case .aiVideo:
             Text(title)
                 .typography(Typography.semiBold20)
-                .foregroundStyle(Color.accent)
+                .foregroundStyle(Color.white)
                 .lineLimit(1)
         case .centeredTitle:
             EmptyView()
@@ -147,7 +147,7 @@ struct ChatNavigationBar: View {
         Button(action: onBack) {
             Image(systemName: "chevron.left")
                 .font(.system(size: backIconSize, weight: .semibold))
-                .foregroundStyle(Color.accent)
+                .foregroundStyle(Color.white)
                 .frame(width: actionTapSize, height: actionTapSize, alignment: .leading)
         }
         .buttonStyle(.plain)
@@ -157,7 +157,7 @@ struct ChatNavigationBar: View {
     private var regenerateButton: some View {
         Button(action: { onRegenerate?() }) {
             RegenerateIcon()
-                .fill(Color.accent)
+                .fill(Color.white)
                 .frame(width: regenerateIconSize, height: regenerateIconSize)
                 .frame(width: actionTapSize, height: actionTapSize)
         }

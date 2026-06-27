@@ -25,7 +25,7 @@ struct SectionButton: View {
     private var cornerRadius: CGFloat { size * 24 / 50 }
 
     private var titleColor: Color {
-        isEnabled ? Color.accent : Color.black.opacity(0.3)
+        isEnabled ? Color.white : Color.black.opacity(0.3)
     }
 
     var body: some View {

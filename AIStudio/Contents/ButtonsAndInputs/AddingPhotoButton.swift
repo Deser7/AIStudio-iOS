@@ -17,7 +17,7 @@ struct AddingPhotoButton: View {
     private var blurRadius: CGFloat { size * AppSurface.blurRadius / 40 }
 
     private var iconStrokeColor: Color {
-        Color.accent.opacity(0.5)
+        Color.white.opacity(0.5)
     }
 
     var body: some View {
