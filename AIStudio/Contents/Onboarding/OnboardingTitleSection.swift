@@ -170,7 +170,7 @@ struct OnboardingTitleSection: View {
 
     private var subtitleTracking: CGFloat {
         switch style {
-        case .functionCard: functionCardSubtitleSize * AppSurface.FunctionCard.subtitleLetterSpacing / 12
+        case .functionCard: functionCardSubtitleSize * -0.08 / 12
         case .featureCard, .onboarding, .navigation, .upload, .sourceOption: 0
         }
     }

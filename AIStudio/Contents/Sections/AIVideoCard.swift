@@ -22,7 +22,7 @@ struct AIVideoCard: View {
     private var iconContentSize: CGFloat { size * 20 / 172 }
     private var titleFontSize: CGFloat { size * 20 / 172 }
     private var subtitleFontSize: CGFloat { size * 14 / 172 }
-    private var contentSpacing: CGFloat { size * AppSurface.FeatureCard.contentSpacingRatio }
+    private var contentSpacing: CGFloat { size * 12 / 172 }
     private var badgeWidth: CGFloat { size * 149 / 172 }
     private var badgeHeight: CGFloat { size * 32 / 172 }
     private var badgeFontSize: CGFloat { size * 12 / 172 }
@@ -84,7 +84,7 @@ struct AIVideoCard: View {
         Image("Wave")
             .resizable()
             .scaledToFill()
-            .frame(width: size * AppSurface.FeatureCard.waveHorizontalScale)
+            .frame(width: size * 1.5)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .clipped()
             .opacity(waveOpacity)
@@ -111,7 +111,7 @@ struct AIVideoCard: View {
             Text("Ready in seconds")
                 .typography(Typography.regular(size: badgeFontSize))
                 .foregroundStyle(Color.white)
-                .tracking(badgeFontSize * AppSurface.FeatureCard.badgeLetterSpacing / 12)
+                .tracking(badgeFontSize * 0.06 / 12)
                 .lineLimit(1)
                 .minimumScaleFactor(0.85)
                 .frame(maxWidth: badgeTextMaxWidth, alignment: .leading)

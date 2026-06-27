@@ -14,7 +14,7 @@ struct DissolvingGradientBorder<S: InsettableShape>: View {
     let cornerRadius: CGFloat
 
     private var softBlurRadius: CGFloat {
-        lineWidth * AppSurface.DissolvingBorder.blurMultiplier
+        lineWidth * 0.75
     }
 
     private var softLayerOpacity: CGFloat {
@@ -39,8 +39,8 @@ struct DissolvingGradientBorder<S: InsettableShape>: View {
     private var borderMask: LinearGradient {
         let cap = min(cornerRadius / max(containerWidth, 1), 0.5)
         let fadeEnd = cap
-        let fadeStart = cap * AppSurface.DissolvingBorder.fadeStartMultiplier
-        let solidStart = min(cap * AppSurface.DissolvingBorder.solidStartMultiplier, 0.5)
+        let fadeStart = cap * 0.45
+        let solidStart = min(cap * 1.15, 0.5)
 
         return LinearGradient(
             stops: [

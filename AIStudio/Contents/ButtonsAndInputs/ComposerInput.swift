@@ -115,7 +115,7 @@ struct ComposerInput: View {
 
     @ViewBuilder
     private var generatingSection: some View {
-        AddendumLoader(size: addendumSize)
+        Addendum(size: addendumSize, content: .loading)
 
         Spacer(minLength: 0)
     }
@@ -123,7 +123,7 @@ struct ComposerInput: View {
     @ViewBuilder
     private var attachmentSection: some View {
         if state == .imageLoading {
-            AddendumLoader(size: addendumSize)
+            Addendum(size: addendumSize, content: .loading)
         } else if let attachedImage {
             Addendum(
                 size: addendumSize,
