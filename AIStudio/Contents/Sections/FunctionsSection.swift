@@ -24,8 +24,6 @@ struct FunctionsSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: spacing) {
-            sectionHeader
-
             HStack(alignment: .top, spacing: columnGap) {
                 AIVideoCard(size: videoCardWidth, action: onVideoTap)
 
@@ -45,19 +43,6 @@ struct FunctionsSection: View {
             }
         }
         .frame(width: size, alignment: .leading)
-    }
-
-    private var sectionHeader: some View {
-        HStack(spacing: spacing * 0.5) {
-            GenerateIcon()
-                .fill(AppGradient.main)
-                .frame(width: headerIconSize, height: headerIconSize)
-
-            Text("Functions")
-                .typography(Typography.medium(size: headerFontSize))
-                .foregroundStyle(AppGradient.main)
-                .tracking(0)
-        }
     }
 }
 

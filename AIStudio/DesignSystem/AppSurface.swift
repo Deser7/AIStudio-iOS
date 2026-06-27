@@ -41,6 +41,8 @@ enum AppSurface {
         static let badgeBackgroundOpacity: CGFloat = 0.3
         /// Figma letter spacing для 12 px.
         static let badgeLetterSpacing: CGFloat = 0.06
+        /// Wave в ассете уже ~2/3 ширины — растягиваем до краёв карточки.
+        static let waveHorizontalScale: CGFloat = 1.5
         /// Figma: gap между иконкой и текстом.
         static let contentSpacingRatio: CGFloat = 12 / 172
     }

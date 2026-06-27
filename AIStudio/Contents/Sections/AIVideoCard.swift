@@ -33,8 +33,7 @@ struct AIVideoCard: View {
         badgeWidth - badgeHorizontalPadding * 2 - playIconSize - badgeContentGap
     }
 
-    /// Figma ref wave frame = 293.33×440.
-    private var waveHeight: CGFloat { size * 440 / 293.33 }
+    /// Figma ref wave opacity = 50%.
     private var waveOpacity: CGFloat { 0.5 }
 
     private var cardShape: RoundedRectangle {
@@ -43,7 +42,7 @@ struct AIVideoCard: View {
 
     var body: some View {
         Button(action: action) {
-            ZStack(alignment: .bottomLeading) {
+            ZStack {
                 AppGradient.linear(
                     from: .aiBlue,
                     to: .aiPink,
@@ -51,9 +50,7 @@ struct AIVideoCard: View {
                     endPoint: .bottomTrailing
                 )
 
-                waveOverlay
-
-                VStack(alignment: .leading, spacing: 0) {
+                VStack(spacing: 0) {
                     VStack(alignment: .leading, spacing: contentSpacing) {
                         featureIcon
 
@@ -65,17 +62,18 @@ struct AIVideoCard: View {
                             subtitleTextSize: subtitleFontSize
                         )
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, horizontalPadding)
+                    .padding(.top, topPadding)
 
                     Spacer(minLength: 0)
-                }
-                .padding(.top, topPadding)
-                .padding(.bottom, bottomPadding)
-                .padding(.horizontal, horizontalPadding)
-                .frame(width: size, height: cardHeight, alignment: .topLeading)
-                .overlay(alignment: .bottom) {
+                        .background { waveOverlay }
+
                     readinessBadge
+                        .frame(maxWidth: .infinity)
                         .padding(.bottom, bottomPadding)
                 }
+                .frame(width: size, height: cardHeight)
             }
             .frame(width: size, height: cardHeight)
             .clipShape(cardShape)
@@ -86,9 +84,10 @@ struct AIVideoCard: View {
     private var waveOverlay: some View {
         Image("Wave")
             .resizable()
-            .scaledToFit()
-            .frame(width: size, height: waveHeight)
-            .frame(width: size, height: cardHeight, alignment: .bottom)
+            .scaledToFill()
+            .frame(width: size * AppSurface.FeatureCard.waveHorizontalScale)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .clipped()
             .opacity(waveOpacity)
             .blendMode(.screen)
             .allowsHitTesting(false)
