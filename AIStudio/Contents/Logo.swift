@@ -10,6 +10,7 @@ import SwiftUI
 struct Logo: View {
     var size: CGFloat
     var preset = AppGradient.Preset.main
+    var iconColor: Color = .accent
 
     private var iconSize: CGFloat { size * 49 / 80 }
 
@@ -20,7 +21,7 @@ struct Logo: View {
                 .clipShape(Circle())
 
             GenerateIcon()
-                .fill(.accent)
+                .fill(iconColor)
                 .frame(width: iconSize, height: iconSize)
         }
     }
