@@ -14,32 +14,27 @@ struct FunctionsSection: View {
     let onWritingTap: () -> Void
     let onUnderstandTap: () -> Void
 
-    /// Figma ref width = 358. Базовая единица — 16px.
-    private var spacing: CGFloat { size * 16 / 358 }
+    /// Figma ref width = 358.
     private var columnGap: CGFloat { size * 8 / 358 }
-    private var headerIconSize: CGFloat { size * 12 / 358 }
-    private var headerFontSize: CGFloat { size * 14 / 358 }
     private var videoCardWidth: CGFloat { size * 172 / 358 }
     private var functionCardWidth: CGFloat { size * 178 / 358 }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: spacing) {
-            HStack(alignment: .top, spacing: columnGap) {
-                AIVideoCard(size: videoCardWidth, action: onVideoTap)
+        HStack(alignment: .top, spacing: columnGap) {
+            AIVideoCard(size: videoCardWidth, action: onVideoTap)
 
-                VStack(spacing: columnGap) {
-                    FunctionCard(
-                        option: .fixWriting,
-                        size: functionCardWidth,
-                        action: onWritingTap
-                    )
+            VStack(spacing: columnGap) {
+                FunctionCard(
+                    option: .fixWriting,
+                    size: functionCardWidth,
+                    action: onWritingTap
+                )
 
-                    FunctionCard(
-                        option: .understandFaster,
-                        size: functionCardWidth,
-                        action: onUnderstandTap
-                    )
-                }
+                FunctionCard(
+                    option: .understandFaster,
+                    size: functionCardWidth,
+                    action: onUnderstandTap
+                )
             }
         }
         .frame(width: size, alignment: .leading)

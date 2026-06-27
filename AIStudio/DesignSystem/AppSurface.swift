@@ -35,7 +35,7 @@ enum AppSurface {
     }
 
     enum FeatureCard {
-        /// Figma: круг под иконкой accent @ 15%.
+        /// Figma: круг под иконкой #FFFFFF @ 15%.
         static let iconCircleOpacity: CGFloat = 0.15
         /// Figma: pill «Ready in seconds» accent @ 30%.
         static let badgeBackgroundOpacity: CGFloat = 0.3
@@ -48,7 +48,7 @@ enum AppSurface {
     }
 
     enum FunctionCard {
-        /// Figma: круг под иконкой accent @ 5%.
+        /// Figma: круг под иконкой #FFFFFF @ 5%.
         static let iconCircleOpacity: CGFloat = 0.05
         /// Figma subtitle letter spacing для 12 px.
         static let subtitleLetterSpacing: CGFloat = -0.08

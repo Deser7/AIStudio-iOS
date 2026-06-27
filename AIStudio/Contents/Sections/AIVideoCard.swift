@@ -73,7 +73,6 @@ struct AIVideoCard: View {
                         .frame(maxWidth: .infinity)
                         .padding(.bottom, bottomPadding)
                 }
-                .frame(width: size, height: cardHeight)
             }
             .frame(width: size, height: cardHeight)
             .clipShape(cardShape)

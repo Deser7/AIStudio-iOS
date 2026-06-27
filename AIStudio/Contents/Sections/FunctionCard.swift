@@ -7,11 +7,9 @@
 
 import SwiftUI
 
-enum FunctionCardOption: CaseIterable, Identifiable, Sendable {
+enum FunctionCardOption: Sendable {
     case fixWriting
     case understandFaster
-
-    var id: Self { self }
 
     var title: String {
         switch self {
@@ -42,7 +40,6 @@ struct FunctionCard: View {
     private var iconContentSize: CGFloat { size * 20 / 178 }
     private var titleFontSize: CGFloat { padding }
     private var subtitleFontSize: CGFloat { size * 12 / 178 }
-    private var blurRadius: CGFloat { padding * AppSurface.blurRadius / 16 }
 
     private var cardShape: RoundedRectangle {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
@@ -80,14 +77,8 @@ struct FunctionCard: View {
     }
 
     private var iconCircleBackground: some View {
-        BlurCardBackground(
-            style: .compact,
-            size: iconCircleSize,
-            blurRadius: blurRadius,
-            cardOpacity: AppSurface.FunctionCard.iconCircleOpacity,
-            fillColor: .accent,
-            shape: Circle()
-        )
+        Circle()
+            .fill(Color.accent.opacity(AppSurface.FunctionCard.iconCircleOpacity))
     }
 
     @ViewBuilder
@@ -103,17 +94,9 @@ struct FunctionCard: View {
     }
 
     private var cardBackground: some View {
-        ZStack {
-            BackdropBlurView()
-                .frame(
-                    width: size + blurRadius * AppSurface.BlurFrame.paddingMultiplier,
-                    height: cardHeight + blurRadius * AppSurface.BlurFrame.paddingMultiplier
-                )
-
-            cardShape
-                .fill(Color.functionCard)
-        }
-        .allowsHitTesting(false)
+        cardShape
+            .fill(Color.functionCard)
+            .allowsHitTesting(false)
     }
 }
 
@@ -125,5 +108,5 @@ struct FunctionCard: View {
         FunctionCard(option: .understandFaster, size: size, action: {})
     }
     .padding(24)
-    .background(Color.background)
+    .background(Color.gray)
 }
