@@ -19,6 +19,7 @@ struct BlurCardBackground<S: Shape>: View {
     var size: CGFloat
     var blurRadius: CGFloat
     var cardOpacity: CGFloat
+    var fillColor: Color = Color.card
     var shape: S
 
     private var blurMaxWidth: CGFloat? {
@@ -32,7 +33,7 @@ struct BlurCardBackground<S: Shape>: View {
                 .frame(maxWidth: blurMaxWidth, maxHeight: .infinity)
 
             shape
-                .fill(Color.card.opacity(cardOpacity))
+                .fill(fillColor.opacity(cardOpacity))
         }
         .allowsHitTesting(false)
     }

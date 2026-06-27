@@ -12,6 +12,10 @@ enum OnboardingTitleSectionStyle {
     case navigation
     case upload
     case sourceOption
+    /// Figma «AI Text» / «Understand Faster».
+    case functionCard
+    /// Figma «AI Video».
+    case featureCard
 }
 
 struct OnboardingTitleSection: View {
@@ -34,8 +38,12 @@ struct OnboardingTitleSection: View {
         style == .upload
     }
 
+    private var isFunctionCardStyle: Bool {
+        style == .functionCard || style == .featureCard
+    }
+
     private var expandsHorizontally: Bool {
-        isUploadStyle || style == .onboarding || isSourceOptionStyle
+        isUploadStyle || style == .onboarding || isSourceOptionStyle || isFunctionCardStyle
     }
 
     private var horizontalMaxWidth: CGFloat? {
@@ -59,7 +67,7 @@ struct OnboardingTitleSection: View {
             Text(title)
                 .typography(titleTypography)
                 .tracking(titleTracking)
-                .foregroundStyle(Color.accent)
+                .foregroundStyle(titleColor)
                 .lineLimit(lineLimit)
                 .multilineTextAlignment(isUploadStyle ? .center : .leading)
                 .frame(maxWidth: horizontalMaxWidth, alignment: frameAlignment)
@@ -83,7 +91,17 @@ struct OnboardingTitleSection: View {
         case .navigation: 2
         case .upload: textSize * 12 / 16
         case .sourceOption: sourceOptionTitleSize * 4 / 20
+        case .functionCard: functionCardTitleSize * 4 / 16
+        case .featureCard: featureCardTitleSize * 4 / 20
         }
+    }
+
+    private var functionCardTitleSize: CGFloat {
+        titleTextSize ?? textSize
+    }
+
+    private var featureCardTitleSize: CGFloat {
+        titleTextSize ?? textSize
     }
 
     private var sourceOptionTitleSize: CGFloat {
@@ -96,6 +114,8 @@ struct OnboardingTitleSection: View {
         case .navigation: Typography.semiBold20
         case .upload: Typography.medium(size: textSize)
         case .sourceOption: Typography.semiBold(size: sourceOptionTitleSize)
+        case .functionCard: Typography.medium(size: functionCardTitleSize)
+        case .featureCard: Typography.semiBold(size: featureCardTitleSize)
         }
     }
 
@@ -105,7 +125,17 @@ struct OnboardingTitleSection: View {
         case .navigation: Typography.regular14
         case .upload: Typography.regular(size: uploadSubtitleSize)
         case .sourceOption: Typography.regular(size: sourceOptionSubtitleSize)
+        case .functionCard: Typography.medium(size: functionCardSubtitleSize)
+        case .featureCard: Typography.regular(size: featureCardSubtitleSize)
         }
+    }
+
+    private var functionCardSubtitleSize: CGFloat {
+        subtitleTextSize ?? functionCardTitleSize * 12 / 16
+    }
+
+    private var featureCardSubtitleSize: CGFloat {
+        subtitleTextSize ?? featureCardTitleSize * 14 / 20
     }
 
     private var uploadSubtitleSize: CGFloat {
@@ -116,23 +146,34 @@ struct OnboardingTitleSection: View {
         subtitleTextSize ?? sourceOptionTitleSize * 16 / 20
     }
 
+    private var titleColor: Color {
+        Color.accent
+    }
+
     private var subtitleColor: Color {
         switch style {
         case .onboarding: Color.price
         case .navigation: Color.accent.opacity(AppSurface.Interaction.subtitleOpacity)
         case .upload: Color.accent.opacity(AppSurface.Interaction.subtitleOpacity)
         case .sourceOption: Color.accent.opacity(0.5)
+        case .functionCard: Color.accent.opacity(AppSurface.Interaction.notificationSubtitleOpacity)
+        case .featureCard: Color.accent.opacity(0.7)
         }
     }
 
     private var titleTracking: CGFloat {
         switch style {
         case .onboarding: 0.4
-        case .navigation, .upload, .sourceOption: 0
+        case .navigation, .upload, .sourceOption, .functionCard, .featureCard: 0
         }
     }
 
-    private var subtitleTracking: CGFloat { 0 }
+    private var subtitleTracking: CGFloat {
+        switch style {
+        case .functionCard: functionCardSubtitleSize * AppSurface.FunctionCard.subtitleLetterSpacing / 12
+        case .featureCard, .onboarding, .navigation, .upload, .sourceOption: 0
+        }
+    }
 
     private var lineLimit: Int? {
         style == .navigation ? 1 : nil

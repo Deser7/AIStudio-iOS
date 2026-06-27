@@ -34,6 +34,13 @@ enum AppSurface {
         static let solidStartMultiplier: CGFloat = 1.15
     }
 
+    enum FunctionCard {
+        /// Figma: круг под иконкой #FFFFFF @ 5%.
+        static let iconCircleOpacity: CGFloat = 0.05
+        /// Figma subtitle letter spacing для 12 px.
+        static let subtitleLetterSpacing: CGFloat = -0.08
+    }
+
     enum Interaction {
         static let disabledOpacity: CGFloat = 0.6
         /// Navigation bar subtitle — Figma: #FFFFFF @ 30%.
