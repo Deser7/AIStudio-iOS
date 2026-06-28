@@ -14,15 +14,10 @@ struct SectionButton: View {
     }
 
     let title: String
-    var height: CGFloat
     var style: Style = .primary
     let action: () -> Void
 
     @Environment(\.isEnabled) private var isEnabled
-
-    private var fontSize: CGFloat { height * 16 / 50 }
-    private var horizontalPadding: CGFloat { height * 12 / 50 }
-    private var cornerRadius: CGFloat { height * 24 / 50 }
 
     private var titleColor: Color {
         isEnabled ? Color.white : Color.black.opacity(0.3)
@@ -31,13 +26,13 @@ struct SectionButton: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .typography(style: .semiBold, size: fontSize)
+                .typography(style: .semiBold, size: 16)
                 .foregroundStyle(titleColor)
-                .padding(.horizontal, horizontalPadding)
+                .padding(.horizontal, 12)
                 .frame(maxWidth: .infinity)
-                .frame(height: height)
+                .frame(height: 50)
                 .background { backgroundFill }
-                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+                .clipShape(RoundedRectangle(cornerRadius: 24))
         }
         .buttonStyle(.plain)
     }
@@ -53,13 +48,11 @@ struct SectionButton: View {
 }
 
 #Preview {
-    let size: CGFloat = 50
-
-    VStack(spacing: size * 16 / 50) {
-        SectionButton(title: "Label", height: size, style: .primary) {}
-        SectionButton(title: "Label", height: size, style: .primary) {}
+    VStack(spacing: 16) {
+        SectionButton(title: "Label", style: .primary) {}
+        SectionButton(title: "Label", style: .primary) {}
             .disabled(true)
-        SectionButton(title: "Label", height: size * 56 / 50, style: .secondary) {}
+        SectionButton(title: "Label", style: .secondary) {}
     }
     .padding(.horizontal, 24)
     .padding(.vertical, 24)

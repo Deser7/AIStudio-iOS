@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct BottomBar: View {
-    var height: CGFloat
     var cancelText: String = "Cancel Anytime"
     var buttonTitle: String = "Label"
     var onButtonTap: () -> Void
@@ -16,48 +15,40 @@ struct BottomBar: View {
     var onRestoreTap: () -> Void
     var onTermsTap: () -> Void
 
-    private var horizontalPadding: CGFloat { height * 24 / 50 }
-    private var verticalSpacing: CGFloat { height * 16 / 50 }
-    private var iconTextGap: CGFloat { height * 6 / 50 }
-    private var secondaryFontSize: CGFloat { height * 12 / 50 }
-    private var bottomPadding: CGFloat { verticalSpacing * 1 / 2 }
-    private var iconStrokeWidth: CGFloat { verticalSpacing * 1 / 10 }
-
     var body: some View {
-        VStack(spacing: verticalSpacing) {
+        VStack(spacing: 16) {
             cancelRow
 
             SectionButton(
                 title: buttonTitle,
-                height: height,
                 style: .primary,
                 action: onButtonTap
             )
 
             footerLinks
         }
-        .padding(.horizontal, horizontalPadding)
-        .padding(.top, verticalSpacing)
-        .padding(.bottom, bottomPadding)
+        .padding(.horizontal, 24)
+        .padding(.top, 16)
+        .padding(.bottom, 8)
         .frame(maxWidth: .infinity)
         .background(Color.background)
     }
 
     private var cancelRow: some View {
-        HStack(spacing: iconTextGap) {
+        HStack(spacing: 6) {
             RefreshIcon()
                 .stroke(
                     secondaryColor,
                     style: StrokeStyle(
-                        lineWidth: iconStrokeWidth,
+                        lineWidth: 1.6,
                         lineCap: .round,
                         lineJoin: .round
                     )
                 )
-                .frame(width: verticalSpacing, height: verticalSpacing)
+                .frame(width: 16, height: 16)
 
             Text(cancelText)
-                .typography(style: .medium, size: secondaryFontSize)
+                .typography(style: .medium, size: 12)
                 .foregroundStyle(secondaryColor)
         }
     }
@@ -66,11 +57,11 @@ struct BottomBar: View {
         HStack {
             linkButton("Privacy Policy", action: onPrivacyTap)
 
-            Spacer(minLength: 0)
+            Spacer()
 
             linkButton("Restore Purchases", action: onRestoreTap)
 
-            Spacer(minLength: 0)
+            Spacer()
 
             linkButton("Terms of Use", action: onTermsTap)
         }
@@ -79,7 +70,7 @@ struct BottomBar: View {
     private func linkButton(_ title: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
-                .typography(style: .medium, size: secondaryFontSize)
+                .typography(style: .medium, size: 12)
                 .foregroundStyle(secondaryColor)
         }
         .buttonStyle(.plain)
@@ -91,7 +82,7 @@ struct BottomBar: View {
 }
 
 #Preview {
-    BottomBar(height: 50,
+    BottomBar(
         onButtonTap: {},
         onPrivacyTap: {},
         onRestoreTap: {},
