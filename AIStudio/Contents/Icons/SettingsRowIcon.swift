@@ -12,7 +12,7 @@ struct SettingsRowIcon: View {
 
     var body: some View {
         Image(systemName: systemName)
-            .font(.system(size: 22, weight: .medium))
+            .font(.system(size: 17, weight: .regular))
             .foregroundStyle(AppGradient.main)
             .frame(width: 28, height: 22)
     }

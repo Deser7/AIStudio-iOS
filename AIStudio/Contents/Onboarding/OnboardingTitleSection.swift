@@ -12,9 +12,7 @@ enum OnboardingTitleSectionStyle {
     case navigation
     case upload
     case sourceOption
-    /// Figma «AI Text» / «Understand Faster».
     case functionCard
-    /// Figma «AI Video».
     case featureCard
 }
 

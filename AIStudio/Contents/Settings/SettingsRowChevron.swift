@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsRowChevron: View {
     var body: some View {
         Image(systemName: "chevron.right")
-            .font(.system(size: 14, weight: .semibold))
+            .font(.system(size: 17, weight: .semibold))
             .foregroundStyle(AppGradient.main)
     }
 }

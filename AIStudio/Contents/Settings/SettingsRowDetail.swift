@@ -13,8 +13,8 @@ struct SettingsRowDetail: View {
     var body: some View {
         HStack(spacing: 8) {
             Text(text)
-                .typography(style: .regular16)
-                .foregroundStyle(Color.price)
+                .font(.system(size: 17, weight: .regular))
+                .foregroundStyle(.white.opacity(0.4))
 
             SettingsRowChevron()
         }
@@ -22,5 +22,8 @@ struct SettingsRowDetail: View {
 }
 
 #Preview {
-    SettingsRowDetail(text: "GGHHJJ")
+    SettingsRowDetail(text: "5 MB")
+        .frame(width: 100, height: 100)
+        .background(.black)
+
 }
