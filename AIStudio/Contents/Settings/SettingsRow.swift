@@ -57,7 +57,7 @@ struct SettingsRow<Icon: View, Trailing: View>: View {
         SettingsRow(title: "Notifications") {
             SettingsRowIcon(systemName: "bell")
         } trailing: {
-            AppToggle(height: 31, isOn: .constant(true))
+            AppToggle(isOn: .constant(true))
         }
 
         SettingsRow(title: "Clear cache", action: {}) {

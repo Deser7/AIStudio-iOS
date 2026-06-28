@@ -7,20 +7,12 @@
 
 import SwiftUI
 
+/// Toggle (Figma ref 51×31).
 struct AppToggle: View {
-    var height: CGFloat
     @Binding var isOn: Bool
 
-    private var width: CGFloat { height * 51 / 31 }
-    private var thumbSize: CGFloat { height * 27 / 31 }
-    private var thumbInset: CGFloat { height * 2 / 31 }
-    private var thumbOffsetOn: CGFloat { height * 22 / 31 }
-    private var thumbShadowYOffset: CGFloat { height * 3 / 31 }
-    private var thumbShadowRadiusSoft: CGFloat { height * 1 / 62 }
-    private var thumbShadowRadiusHard: CGFloat { height * 4 / 31 }
-
     private var thumbOffsetX: CGFloat {
-        isOn ? thumbOffsetOn : thumbInset
+        isOn ? 22 : 2
     }
 
     private var trackFill: Color {
@@ -43,7 +35,7 @@ struct AppToggle: View {
                 thumb
                     .offset(x: thumbOffsetX)
             }
-            .frame(width: width, height: height)
+            .frame(width: 51, height: 31)
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isOn ? .isSelected : [])
@@ -53,57 +45,40 @@ struct AppToggle: View {
     private var track: some View {
         Capsule()
             .fill(trackFill)
-            .frame(width: width, height: height)
+            .frame(width: 51, height: 31)
     }
 
     private var thumb: some View {
         Circle()
             .fill(thumbFill)
-            .frame(width: thumbSize, height: thumbSize)
-            .shadow(
-                color: .black.opacity(0.06),
-                radius: thumbShadowRadiusSoft,
-                x: 0,
-                y: thumbShadowYOffset
-            )
-            .shadow(
-                color: .black.opacity(0.15),
-                radius: thumbShadowRadiusHard,
-                x: 0,
-                y: thumbShadowYOffset
-            )
+            .frame(width: 27, height: 27)
+            .shadow(color: .black.opacity(0.06), radius: 0.5, x: 0, y: 3)
+            .shadow(color: .black.opacity(0.15), radius: 4, x: 0, y: 3)
     }
 }
 
 struct AppToggleStyle: ToggleStyle {
-    var height: CGFloat
-
     func makeBody(configuration: Configuration) -> some View {
-        AppToggle(height: height, isOn: configuration.$isOn)
+        AppToggle(isOn: configuration.$isOn)
     }
 }
 
 #Preview {
-    struct PreviewContainer: View {
-        @State private var isOnTop = true
-        @State private var isOnBottom = false
-        @State private var isToggleStyleOn = true
+    AppTogglePreview()
+}
 
-        var body: some View {
-            let largeSize: CGFloat = 155
-            let mediumSize: CGFloat = 78
+private struct AppTogglePreview: View {
+    @State private var isOn = true
+    @State private var isToggleStyleOn = false
 
-            VStack(spacing: 24) {
-                AppToggle(height: largeSize, isOn: $isOnTop)
-                AppToggle(height: mediumSize, isOn: $isOnBottom)
+    var body: some View {
+        VStack(spacing: 24) {
+            AppToggle(isOn: $isOn)
 
-                Toggle("Label", isOn: $isToggleStyleOn)
-                    .toggleStyle(AppToggleStyle(height: mediumSize))
-            }
-            .padding(24)
-            .background(Color.background)
+            Toggle("Label", isOn: $isToggleStyleOn)
+                .toggleStyle(AppToggleStyle())
         }
+        .padding(24)
+        .background(Color.background)
     }
-
-    return PreviewContainer()
 }

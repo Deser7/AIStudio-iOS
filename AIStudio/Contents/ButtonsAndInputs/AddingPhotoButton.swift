@@ -10,15 +10,11 @@ import SwiftUI
 struct AddingPhotoButton: View {
     let action: () -> Void
 
-    private var iconStrokeColor: Color {
-        Color.white.opacity(0.5)
-    }
-
     var body: some View {
         Button(action: action) {
             SettingsIcon()
                 .stroke(
-                    iconStrokeColor,
+                    .white.opacity(0.5),
                     style: StrokeStyle(
                         lineWidth: 2.16,
                         lineCap: .round,

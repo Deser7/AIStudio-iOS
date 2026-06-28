@@ -14,16 +14,15 @@ enum CircularIconButtonIcon {
 }
 
 struct CircularIconButton: View {
-    var diameter: CGFloat
+    var size: CGFloat
     let icon: CircularIconButtonIcon
     let action: () -> Void
 
     @Environment(\.displayScale) private var displayScale
 
-    private var padding: CGFloat { diameter * 12 / 40 }
-    private var iconSize: CGFloat { diameter * 24 / 40 }
+    private var iconSize: CGFloat { size * 24 / 40 }
     private var borderWidth: CGFloat {
-        max(diameter * 1 / 40, 1 / displayScale)
+        max(size * 1 / 40, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
     private var strokeWidth: CGFloat {
@@ -34,8 +33,8 @@ struct CircularIconButton: View {
         Button(action: action) {
             iconView
                 .frame(width: iconSize, height: iconSize)
-                .padding(padding)
-                .frame(width: diameter, height: diameter)
+                .padding(12)
+                .frame(width: size, height: size)
                 .overlay {
                     Circle()
                         .strokeBorder(Color.white.opacity(0.1), lineWidth: borderWidth)
@@ -69,12 +68,10 @@ struct CircularIconButton: View {
 }
 
 #Preview {
-    let size: CGFloat = 40
-
-    HStack(spacing: size * 24 / 40) {
-        CircularIconButton(diameter: size, icon: .photo) {}
-        CircularIconButton(diameter: size, icon: .micro) {}
-        CircularIconButton(diameter: size, icon: .cross) {}
+    HStack(spacing: 24) {
+        CircularIconButton(size: 20, icon: .photo) {}
+        CircularIconButton(size: 40, icon: .micro) {}
+        CircularIconButton(size: 60, icon: .cross) {}
     }
     .padding(24)
     .background(Color.background)

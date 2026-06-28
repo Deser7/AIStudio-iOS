@@ -60,7 +60,7 @@ struct SettingsContents: View {
             SettingsRow(title: "Notifications") {
                 settingsIcon("bell")
             } trailing: {
-                AppToggle(height: 31, isOn: $notificationsEnabled)
+                AppToggle(isOn: $notificationsEnabled)
             }
 
             rowSeparator

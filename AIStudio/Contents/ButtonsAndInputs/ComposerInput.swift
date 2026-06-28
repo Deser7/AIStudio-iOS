@@ -10,9 +10,7 @@ import SwiftUI
 enum ComposerInputState: Equatable {
     case editing
     case voiceRecording
-    /// Загрузка изображения (Addendum spinner).
     case imageLoading
-    /// Ожидание ответа AI (Addendum spinner + текст).
     case generating
 }
 
@@ -140,15 +138,15 @@ struct ComposerInput: View {
             GradientIconButton(diameter: 40, icon: .generation, action: handleSend)
         } else {
             HStack(spacing: 16) {
-                CircularIconButton(diameter: 40, icon: .photo, action: handleImport)
-                CircularIconButton(diameter: 40, icon: .micro, action: handleMicrophone)
+                CircularIconButton(size: 40, icon: .photo, action: handleImport)
+                CircularIconButton(size: 40, icon: .micro, action: handleMicrophone)
             }
         }
     }
 
     private var voiceRow: some View {
         HStack(spacing: 16) {
-            CircularIconButton(diameter: 40, icon: .cross, action: handleVoiceCancel)
+            CircularIconButton(size: 40, icon: .cross, action: handleVoiceCancel)
 
             AudioWaveform(progress: voiceProgress)
             .frame(maxWidth: .infinity)

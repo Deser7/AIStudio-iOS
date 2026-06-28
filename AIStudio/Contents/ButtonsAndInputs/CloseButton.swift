@@ -13,7 +13,7 @@ struct CloseButton: View {
         case light
     }
 
-    var diameter: CGFloat
+    var size: CGFloat
     var style: Style = .surface
     let action: () -> Void
 
@@ -21,7 +21,7 @@ struct CloseButton: View {
         style == .surface ? Color.surface : Color.white
     }
 
-    private var iconSize: CGFloat { diameter * 16 / 24 }
+    private var iconSize: CGFloat { size * 16 / 24 }
 
     var body: some View {
         Button(action: action) {
@@ -32,7 +32,7 @@ struct CloseButton: View {
                 iconView
                     .frame(width: iconSize, height: iconSize)
             }
-            .frame(width: diameter, height: diameter)
+            .frame(width: size, height: size)
         }
         .buttonStyle(.plain)
         .appDisabledOpacity()
@@ -51,11 +51,9 @@ struct CloseButton: View {
 }
 
 #Preview {
-    let size: CGFloat = 24
-
-    HStack(spacing: size) {
-        CloseButton(diameter: size, style: .surface) {}
-        CloseButton(diameter: size, style: .light) {}
+    HStack(spacing: 24) {
+        CloseButton(size: 24, style: .surface) {}
+        CloseButton(size: 48, style: .light) {}
     }
     .padding(24)
     .background(Color.background)

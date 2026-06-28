@@ -55,7 +55,7 @@ struct Addendum: View {
                             .clipShape(shape)
                     }
                     .overlay(alignment: .topTrailing) {
-                        CloseButton(diameter: closeSize, style: .light, action: onClose)
+                        CloseButton(size: closeSize, style: .light, action: onClose)
                             .offset(x: closeOffset, y: -closeOffset)
                     }
             }
