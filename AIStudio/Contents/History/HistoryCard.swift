@@ -30,13 +30,13 @@ struct HistoryCard: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .typography(style: .semiBold16)
-                        .foregroundStyle(Color.white)
+                        .foregroundStyle(.white)
                         .tracking(0)
                         .lineLimit(1)
 
                     Text(subtitle)
                         .typography(style: .regular14)
-                        .foregroundStyle(Color.white.opacity(0.5))
+                        .foregroundStyle(.white.opacity(0.5))
                         .tracking(0)
                         .lineLimit(1)
                         .multilineTextAlignment(.leading)

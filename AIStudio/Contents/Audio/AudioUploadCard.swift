@@ -98,7 +98,7 @@ struct AudioUploadCard: View {
     private var errorBorder: some View {
         if state == .error {
             shape
-                .strokeBorder(Color.error, lineWidth: borderWidth)
+                .strokeBorder(.error, lineWidth: borderWidth)
         }
     }
 

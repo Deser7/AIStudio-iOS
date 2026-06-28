@@ -13,7 +13,7 @@ struct MediaSourcePicker: View {
     var body: some View {
         VStack(spacing: 12) {
             Capsule()
-                .fill(Color.white.opacity(0.3))
+                .fill(.white.opacity(0.3))
                 .frame(width: 36, height: 5)
 
             VStack(spacing: 12) {

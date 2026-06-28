@@ -8,39 +8,33 @@
 import SwiftUI
 
 struct AudioInput: View {
-    var height: CGFloat
     var isPlaying: Bool
     var progress: CGFloat
     let onPlayPause: () -> Void
-
-    private var spacing: CGFloat { height * 2 / 11 }
-    private var sectionSpacing: CGFloat { height * 3 / 11 }
-    private var buttonSize: CGFloat { height * 5 / 11 }
-    private var blurRadius: CGFloat { height * AppSurface.blurRadius / 88 }
 
     private var clampedProgress: CGFloat {
         min(max(progress, 0), 1)
     }
 
     private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: sectionSpacing, style: .continuous)
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
     var body: some View {
-        HStack(spacing: spacing) {
+        HStack(spacing: 16) {
             playbackButton
 
             AudioWaveform(
                 progress: clampedProgress,
-                height: buttonSize,
+                height: 40,
                 inactiveOpacity: 0.2
             )
             .frame(maxWidth: .infinity)
         }
-        .padding(.horizontal, spacing)
-        .padding(.vertical, sectionSpacing)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 24)
         .frame(maxWidth: .infinity)
-        .frame(height: height)
+        .frame(height: 88)
         .background { background }
         .clipShape(shape)
         .appDisabledOpacity()
@@ -49,8 +43,8 @@ struct AudioInput: View {
     private var background: some View {
         BlurCardBackground(
             style: .bar,
-            extent: height,
-            blurRadius: blurRadius,
+            extent: 88,
+            blurRadius: AppSurface.blurRadius,
             cardOpacity: 0.7,
             shape: shape
         )
@@ -58,7 +52,7 @@ struct AudioInput: View {
 
     private var playbackButton: some View {
         GradientIconButton(
-            diameter: buttonSize,
+            diameter: 40,
             icon: isPlaying ? .pause : .play,
             action: onPlayPause
         )
@@ -73,22 +67,21 @@ private struct AudioInputPreview: View {
     @State private var isPlaying = true
 
     var body: some View {
-        let size: CGFloat = 88
 
-        VStack(spacing: size * 11 / 50) {
-            AudioInput(height: size,
+        VStack(spacing: 16) {
+            AudioInput(
                 isPlaying: isPlaying,
                 progress: 0.35,
                 onPlayPause: { isPlaying.toggle() }
             )
 
-            AudioInput(height: size * 1 / 2,
+            AudioInput(
                 isPlaying: false,
                 progress: 0.65,
                 onPlayPause: {}
             )
 
-            AudioInput(height: size,
+            AudioInput(
                 isPlaying: true,
                 progress: 0.35,
                 onPlayPause: {}
