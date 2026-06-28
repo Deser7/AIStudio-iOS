@@ -46,7 +46,7 @@ struct AudioUploadCard: View {
     private var supportedFormatsSubtitle: String {
         """
         MP3 • WAV • M4A • MP4 • MOV
-        Max file width: 100 MB
+        Max file size: 100 MB
         """
     }
 
