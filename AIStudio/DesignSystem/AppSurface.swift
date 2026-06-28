@@ -10,3 +10,11 @@ import SwiftUI
 enum AppSurface {
     static let blurRadius: CGFloat = 182.21
 }
+
+struct BackdropBlurView: UIViewRepresentable {
+    func makeUIView(context: Context) -> UIVisualEffectView {
+        UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))
+    }
+
+    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {}
+}

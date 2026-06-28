@@ -13,21 +13,13 @@ struct DissolvingGradientBorder<S: InsettableShape>: View {
     let lineWidth: CGFloat
     let cornerRadius: CGFloat
 
-    private var softBlurRadius: CGFloat {
-        lineWidth * 0.75
-    }
-
-    private var softLayerOpacity: CGFloat {
-        0.55
-    }
-
     var body: some View {
         ZStack {
             shape
                 .strokeBorder(AppGradient.main, lineWidth: lineWidth)
                 .mask(borderMask)
-                .blur(radius: softBlurRadius)
-                .opacity(softLayerOpacity)
+                .blur(radius: lineWidth * 0.75)
+                .opacity(0.55)
 
             shape
                 .strokeBorder(AppGradient.main, lineWidth: lineWidth)
@@ -57,4 +49,21 @@ struct DissolvingGradientBorder<S: InsettableShape>: View {
             endPoint: .trailing
         )
     }
+}
+
+#Preview {
+    let shape = RoundedRectangle(cornerRadius: 24, style: .continuous)
+
+    return ZStack {
+        shape.fill(Color.card.opacity(0.7))
+        DissolvingGradientBorder(
+            shape: shape,
+            containerWidth: 358,
+            lineWidth: 2,
+            cornerRadius: 24
+        )
+    }
+    .frame(width: 358, height: 56)
+    .padding(24)
+    .background(Color.background)
 }
