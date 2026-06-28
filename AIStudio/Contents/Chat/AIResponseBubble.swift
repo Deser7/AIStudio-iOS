@@ -19,64 +19,54 @@ struct AIResponseContent: Hashable, Sendable {
     var closingParagraphs: [String] = []
 }
 
-/// Пузырь ответа AI с текстом и действиями (Figma «AI's response/Default»).
 struct AIResponseBubble: View {
     let content: AIResponseContent
-    var width: CGFloat
     let onCopy: () -> Void
     let onRefresh: () -> Void
-    
+
     @Environment(\.displayScale) private var displayScale
-    
-    /// Figma ref width = 302. Базовая единица — 16px.
-    private var spacing: CGFloat { width * 16 / 302 }
-    private var fontSize: CGFloat { spacing }
-    private var cornerRadius: CGFloat { spacing * 24 / 16 }
-    private var iconSize: CGFloat { cornerRadius }
-    private var bottomTrailingRadius: CGFloat { spacing * 4 / 16 }
-    private var bulletSize: CGFloat { bottomTrailingRadius }
-    private var bulletSpacing: CGFloat { spacing * 8 / 16 }
-    private var bulletTopPadding: CGFloat { spacing * 6 / 16 }
-    private var blurRadius: CGFloat { spacing * AppSurface.blurRadius / 16 }
+
     private var iconStrokeWidth: CGFloat {
-        (iconSize * 9 / 100).pixelAligned(to: displayScale)
+        (24 * 9 / 100).pixelAligned(to: displayScale)
     }
+
     private var dividerHeight: CGFloat {
-        max(spacing / 16, 1 / displayScale)
+        max(1, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
+
     private var dividerColor: Color {
         Color(.divider)
-        .opacity(0.1)
+            .opacity(0.1)
     }
-    
+
     private var bubbleShape: AIResponseBubbleShape {
         AIResponseBubbleShape(
-            cornerRadius: cornerRadius,
-            bottomTrailingRadius: bottomTrailingRadius
+            cornerRadius: 24,
+            bottomTrailingRadius: 4
         )
     }
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: spacing) {
+        VStack(alignment: .leading, spacing: 16) {
             titleView
             bodyView
             divider
             actionBar
         }
-        .padding(spacing)
-        .frame(width: width, alignment: .leading)
+        .padding(16)
+        .frame(width: 302, alignment: .leading)
         .background { bubbleBackground }
         .clipShape(bubbleShape)
     }
-    
+
     private var bodyTextColor: Color {
         Color.white.opacity(0.8)
     }
 
     private var titleView: some View {
         Text(content.title)
-            .typography(style: .bold, size: fontSize)
+            .typography(style: .bold, size: 16)
             .foregroundStyle(AppGradient.main)
             .tracking(0)
             .lineSpacing(0)
@@ -85,7 +75,7 @@ struct AIResponseBubble: View {
     }
 
     private var bodyView: some View {
-        VStack(alignment: .leading, spacing: spacing) {
+        VStack(alignment: .leading, spacing: 16) {
             ForEach(content.paragraphs, id: \.self) { paragraph in
                 bodyParagraph(paragraph)
             }
@@ -102,33 +92,33 @@ struct AIResponseBubble: View {
 
     private func bodyParagraph(_ text: String) -> some View {
         Text(text)
-            .typography(style: .regular, size: fontSize)
+            .typography(style: .regular, size: 16)
             .foregroundStyle(bodyTextColor)
             .tracking(0)
             .lineSpacing(0)
             .multilineTextAlignment(.leading)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
-    
+
     private func bulletRow(_ bullet: AIResponseBullet) -> some View {
-        HStack(alignment: .top, spacing: bulletSpacing) {
+        HStack(alignment: .top, spacing: 8) {
             Circle()
                 .fill(bodyTextColor)
-                .frame(width: bulletSize, height: bulletSize)
-                .padding(.top, bulletTopPadding)
+                .frame(width: 4, height: 4)
+                .padding(.top, 6)
 
             Text(
                 Typography.emphasizedText(
                     bullet.emphasis,
                     suffix: bullet.text,
-                    size: fontSize,
+                    size: 16,
                     color: bodyTextColor
                 )
             )
-                .tracking(0)
-                .lineSpacing(0)
-                .multilineTextAlignment(.leading)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            .tracking(0)
+            .lineSpacing(0)
+            .multilineTextAlignment(.leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
@@ -151,13 +141,13 @@ struct AIResponseBubble: View {
                             lineJoin: .round
                         )
                     )
-                    .frame(width: iconSize, height: iconSize)
+                    .frame(width: 24, height: 24)
             } action: {
                 onCopy()
             }
-            
+
             Spacer(minLength: 0)
-            
+
             actionButton {
                 RefreshIcon()
                     .stroke(
@@ -168,15 +158,15 @@ struct AIResponseBubble: View {
                             lineJoin: .round
                         )
                     )
-                    .frame(width: iconSize, height: iconSize)
+                    .frame(width: 24, height: 24)
             } action: {
                 onRefresh()
             }
         }
-        .frame(height: iconSize)
+        .frame(height: 24)
         .opacity(0.5)
     }
-    
+
     private func actionButton<Icon: View>(
         @ViewBuilder icon: () -> Icon,
         action: @escaping () -> Void
@@ -187,13 +177,13 @@ struct AIResponseBubble: View {
         .buttonStyle(.plain)
         .appDisabledOpacity()
     }
-    
+
     private var bubbleBackground: some View {
         GeometryReader { geo in
             BlurCardBackground(
                 style: .compact,
                 extent: geo.size.height,
-                blurRadius: blurRadius,
+                blurRadius: AppSurface.blurRadius,
                 cardOpacity: 0.5,
                 shape: bubbleShape
             )
@@ -204,7 +194,7 @@ struct AIResponseBubble: View {
 private struct AIResponseBubbleShape: Shape {
     var cornerRadius: CGFloat
     var bottomTrailingRadius: CGFloat
-    
+
     func path(in rect: CGRect) -> Path {
         UnevenRoundedRectangle(
             topLeadingRadius: cornerRadius,
@@ -217,8 +207,6 @@ private struct AIResponseBubbleShape: Shape {
 }
 
 #Preview {
-    let size: CGFloat = 302
-    
     AIResponseBubble(
         content: AIResponseContent(
             title: "Welcome to the team, Alexander!",
@@ -264,7 +252,6 @@ private struct AIResponseBubbleShape: Shape {
                 "Team Lead"
             ]
         ),
-        width: size,
         onCopy: {},
         onRefresh: {}
     )

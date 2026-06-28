@@ -7,19 +7,12 @@
 
 import SwiftUI
 
-/// Карточка результата генерации (Figma «Result»).
 struct ResultCard: View {
-    var width: CGFloat
     let onReplace: () -> Void
     let onPlay: () -> Void
 
-    /// Figma ref width = 358, height = 611.
-    private var cardHeight: CGFloat { width * 611 / 358 }
-    private var cornerRadius: CGFloat { width * 24 / 358 }
-    private var overlayInset: CGFloat { width * 16 / 358 }
-
     private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
     var body: some View {
@@ -27,21 +20,19 @@ struct ResultCard: View {
             Image("Result")
                 .resizable()
                 .scaledToFill()
-                .frame(width: width, height: cardHeight)
+                .frame(width: 358, height: 611)
                 .clipped()
         }
-        .frame(width: width, height: cardHeight)
+        .frame(width: 358, height: 611)
         .clipShape(shape)
         .overlay(alignment: .topTrailing) {
             ReplaceButton(action: onReplace)
-                .padding(.top, overlayInset)
-                .padding(.trailing, overlayInset)
+                .padding(.top, 16)
+                .padding(.trailing, 16)
         }
     }
 }
 
 #Preview {
-    let size: CGFloat = 358
-
-    ResultCard(width: size, onReplace: {}, onPlay: {})
+    ResultCard(onReplace: {}, onPlay: {})
 }

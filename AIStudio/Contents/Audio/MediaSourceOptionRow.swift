@@ -30,41 +30,29 @@ enum MediaSourceOption: CaseIterable, Identifiable, Sendable {
 
 struct MediaSourceOptionRow: View {
     let option: MediaSourceOption
-    var width: CGFloat
     let action: () -> Void
 
-    /// Figma ref width = 358, height = 95. Базовая единица — 16px.
-    private var spacing: CGFloat { width * 16 / 358 }
-    private var cardHeight: CGFloat { width * 95 / 358 }
-    private var leadingPadding: CGFloat { spacing * 24 / 16 }
-    private var cornerRadius: CGFloat { leadingPadding }
-    private var iconSize: CGFloat { spacing * 32 / 16 }
-    private var contentGap: CGFloat { leadingPadding }
-    private var titleFontSize: CGFloat { spacing * 20 / 16 }
-    private var subtitleFontSize: CGFloat { spacing }
-    private var blurRadius: CGFloat { spacing * AppSurface.blurRadius / 16 }
-
     private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: contentGap) {
+            HStack(spacing: 24) {
                 optionIcon
-                    .frame(width: iconSize, height: iconSize)
+                    .frame(width: 32, height: 32)
 
                 OnboardingTitleSection(
                     title: option.title,
                     subtitle: option.subtitle,
                     style: .sourceOption,
-                    titleTextSize: titleFontSize,
-                    subtitleTextSize: subtitleFontSize
+                    titleTextSize: 20,
+                    subtitleTextSize: 16
                 )
             }
-            .padding(.leading, leadingPadding)
-            .padding([.vertical, .trailing], spacing)
-            .frame(width: width, height: cardHeight, alignment: .leading)
+            .padding(.leading, 24)
+            .padding([.vertical, .trailing], 16)
+            .frame(width: 358, height: 95, alignment: .leading)
             .background { cardBackground }
             .clipShape(shape)
         }
@@ -86,8 +74,8 @@ struct MediaSourceOptionRow: View {
     private var cardBackground: some View {
         BlurCardBackground(
             style: .compact,
-            extent: cardHeight,
-            blurRadius: blurRadius,
+            extent: 95,
+            blurRadius: AppSurface.blurRadius,
             cardOpacity: 0.6,
             shape: shape
         )
@@ -95,9 +83,7 @@ struct MediaSourceOptionRow: View {
 }
 
 #Preview {
-    let size: CGFloat = 358
-
-    MediaSourceOptionRow(option: .files, width: size, action: {})
+    MediaSourceOptionRow(option: .files, action: {})
         .padding(24)
         .background(Color.background)
 }

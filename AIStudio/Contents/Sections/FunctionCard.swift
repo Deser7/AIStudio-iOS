@@ -29,20 +29,10 @@ enum FunctionCardOption: Sendable {
 /// Компактная карточка функции (Figma «AI Text» / «Understand Faster»).
 struct FunctionCard: View {
     let option: FunctionCardOption
-    var width: CGFloat
     let action: () -> Void
 
-    /// Figma ref width = 178, height = 152.5. Базовая единица — 16px.
-    private var cardHeight: CGFloat { width * 152.5 / 178 }
-    private var padding: CGFloat { width * 16 / 178 }
-    private var cornerRadius: CGFloat { width * 24 / 178 }
-    private var iconCircleSize: CGFloat { width * 36 / 178 }
-    private var iconContentSize: CGFloat { width * 20 / 178 }
-    private var titleFontSize: CGFloat { padding }
-    private var subtitleFontSize: CGFloat { width * 12 / 178 }
-
     private var cardShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
     var body: some View {
@@ -56,12 +46,12 @@ struct FunctionCard: View {
                     title: option.title,
                     subtitle: option.subtitle,
                     style: .functionCard,
-                    titleTextSize: titleFontSize,
-                    subtitleTextSize: subtitleFontSize
+                    titleTextSize: 16,
+                    subtitleTextSize: 12
                 )
             }
-            .padding(padding)
-            .frame(width: width, height: cardHeight, alignment: .topLeading)
+            .padding(16)
+            .frame(width: 178, height: 152.5, alignment: .topLeading)
             .background { cardBackground }
             .clipShape(cardShape)
         }
@@ -70,8 +60,8 @@ struct FunctionCard: View {
 
     private var featureIcon: some View {
         optionIcon
-            .frame(width: iconContentSize, height: iconContentSize)
-            .frame(width: iconCircleSize, height: iconCircleSize)
+            .frame(width: 20, height: 20)
+            .frame(width: 36, height: 36)
             .background { iconCircleBackground }
             .clipShape(Circle())
     }
@@ -101,11 +91,9 @@ struct FunctionCard: View {
 }
 
 #Preview {
-    let size: CGFloat = 178
-
     VStack(spacing: 8) {
-        FunctionCard(option: .fixWriting, width: size, action: {})
-        FunctionCard(option: .understandFaster, width: size, action: {})
+        FunctionCard(option: .fixWriting, action: {})
+        FunctionCard(option: .understandFaster, action: {})
     }
     .padding(24)
     .background(Color.gray)

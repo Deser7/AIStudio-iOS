@@ -7,50 +7,34 @@
 
 import SwiftUI
 
-/// Меню выбора сценария в пузыре AI (Figma «AI's response/Default»).
 struct AICreationMenuBubble: View {
-    var width: CGFloat
     let onSelect: (AICreationOption) -> Void
 
-    /// Figma ref width = 334. Базовая единица — 16px.
-    private var spacing: CGFloat { width * 16 / 334 }
-    private var fontSize: CGFloat { spacing }
-    private var subtitleFontSize: CGFloat { spacing * 14 / 16 }
-    private var cornerRadius: CGFloat { spacing * 24 / 16 }
-    private var rowHeight: CGFloat { width * 72 / 334 }
-    private var rowSpacing: CGFloat { spacing * 8 / 16 }
-    private var blurRadius: CGFloat { spacing * AppSurface.blurRadius / 16 }
-
     private var bubbleShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: cornerRadius) {
+        VStack(alignment: .leading, spacing: 24) {
             Text("What do you want to create?")
-                .typography(style: .semiBold, size: fontSize)
+                .typography(style: .semiBold, size: 16)
                 .foregroundStyle(Color.white)
                 .tracking(0)
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            VStack(spacing: rowSpacing) {
+            VStack(spacing: 8) {
                 ForEach(AICreationOption.allCases) { option in
-                    AICreationOptionRow(
-                        option: option,
-                        height: rowHeight,
-                        titleFontSize: fontSize,
-                        subtitleFontSize: subtitleFontSize
-                    ) {
+                    AICreationOptionRow(option: option) {
                         onSelect(option)
                     }
                 }
             }
         }
-        .padding(.top, cornerRadius)
-        .padding(.horizontal, spacing)
-        .padding(.bottom, spacing)
-        .frame(width: width, alignment: .leading)
+        .padding(.top, 24)
+        .padding(.horizontal, 16)
+        .padding(.bottom, 16)
+        .frame(width: 334, alignment: .leading)
         .background { bubbleBackground }
         .clipShape(bubbleShape)
     }
@@ -60,7 +44,7 @@ struct AICreationMenuBubble: View {
             BlurCardBackground(
                 style: .compact,
                 extent: geo.size.height,
-                blurRadius: blurRadius,
+                blurRadius: AppSurface.blurRadius,
                 cardOpacity: 0.5,
                 shape: bubbleShape
             )
@@ -69,9 +53,7 @@ struct AICreationMenuBubble: View {
 }
 
 #Preview {
-    let size: CGFloat = 334
-
-    AICreationMenuBubble(width: size) { _ in }
+    AICreationMenuBubble { _ in }
         .padding(24)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.background)

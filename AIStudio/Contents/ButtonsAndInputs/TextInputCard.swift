@@ -7,28 +7,20 @@
 
 import SwiftUI
 
-/// Многострочное поле ввода с счётчиком символов (Figma «input», 342×162).
 struct TextInputCard: View {
     var placeholder: String = "Paste or write your text here..."
-    var width: CGFloat
     var characterLimit: Int = 400
     @Binding var text: String
 
     @Environment(\.displayScale) private var displayScale
 
-    /// Figma ref width = 342, height = 162. Базовая единица — 16px.
-    private var spacing: CGFloat { width * 16 / 342 }
-    private var cardHeight: CGFloat { width * 162 / 342 }
-    private var cornerRadius: CGFloat { spacing * 24 / 16 }
-    private var fontSize: CGFloat { spacing }
-    private var blurRadius: CGFloat { spacing * AppSurface.blurRadius / 16 }
     private var borderWidth: CGFloat {
-        max(spacing / 16, 1 / displayScale)
+        max(1, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
 
     private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
     private var isOverLimit: Bool { text.count > characterLimit }
@@ -37,12 +29,10 @@ struct TextInputCard: View {
         Color.white.opacity(0.3)
     }
 
-    private var editorHeight: CGFloat {
-        cardHeight - cornerRadius - spacing - fontSize
-    }
+    private var editorHeight: CGFloat { 106 }
 
     private var editorLineLimit: ClosedRange<Int> {
-        let visibleLines = max(Int(editorHeight / fontSize), 1)
+        let visibleLines = max(Int(editorHeight / 16), 1)
         return visibleLines...max(visibleLines, 50)
     }
 
@@ -53,9 +43,9 @@ struct TextInputCard: View {
             characterCounter
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
-        .padding(.top, cornerRadius)
-        .padding([.horizontal, .bottom], spacing)
-        .frame(width: width, height: cardHeight, alignment: .top)
+        .padding(.top, 24)
+        .padding([.horizontal, .bottom], 16)
+        .frame(width: 342, height: 162, alignment: .top)
         .background { cardBackground }
         .clipShape(shape)
         .overlay { errorBorder }
@@ -66,12 +56,12 @@ struct TextInputCard: View {
             "",
             text: $text,
             prompt: Text(placeholder)
-                .font(Typography.font(style: .regular, size: fontSize))
+                .font(Typography.font(style: .regular, size: 16))
                 .foregroundColor(secondaryColor),
             axis: .vertical
         )
         .lineLimit(editorLineLimit)
-        .typography(style: .regular, size: fontSize)
+        .typography(style: .regular, size: 16)
         .foregroundColor(Color.white)
         .tint(Color.white)
         .frame(height: editorHeight, alignment: .top)
@@ -80,7 +70,7 @@ struct TextInputCard: View {
 
     private var characterCounter: some View {
         Text("\(text.count)/\(characterLimit)")
-            .typography(style: .regular, size: fontSize)
+            .typography(style: .regular, size: 16)
             .foregroundColor(isOverLimit ? Color.error : secondaryColor)
     }
 
@@ -95,8 +85,8 @@ struct TextInputCard: View {
     private var cardBackground: some View {
         BlurCardBackground(
             style: .compact,
-            extent: cardHeight,
-            blurRadius: blurRadius,
+            extent: 162,
+            blurRadius: AppSurface.blurRadius,
             cardOpacity: 0.6,
             shape: shape
         )
@@ -119,7 +109,7 @@ private struct TextInputCardPreviewContainer: View {
     @Binding var text: String
 
     var body: some View {
-        TextInputCard(width: 342, text: $text)
+        TextInputCard(text: $text)
             .padding(24)
             .background(Color.background)
     }

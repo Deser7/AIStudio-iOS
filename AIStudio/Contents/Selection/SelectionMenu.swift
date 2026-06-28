@@ -7,14 +7,13 @@
 
 import SwiftUI
 
-/// Опция универсального меню выбора.
 protocol SelectionMenuOption: Identifiable, Hashable {
     var title: String { get }
-    func trailingContent(rowHeight: CGFloat, isSelected: Bool) -> AnyView
+    func trailingContent(isSelected: Bool) -> AnyView
 }
 
 extension SelectionMenuOption {
-    func trailingContent(rowHeight: CGFloat, isSelected: Bool) -> AnyView {
+    func trailingContent(isSelected: Bool) -> AnyView {
         AnyView(EmptyView())
     }
 }
@@ -22,8 +21,8 @@ extension SelectionMenuOption {
 extension AspectRatio: Identifiable, SelectionMenuOption {
     var id: Self { self }
 
-    func trailingContent(rowHeight: CGFloat, isSelected: Bool) -> AnyView {
-        AnyView(AspectRatioIcon(ratio: self, rowHeight: rowHeight, isSelected: isSelected))
+    func trailingContent(isSelected: Bool) -> AnyView {
+        AnyView(AspectRatioIcon(ratio: self, isSelected: isSelected))
     }
 }
 
@@ -37,34 +36,26 @@ enum VideoQuality: String, CaseIterable, Identifiable, SelectionMenuOption, Send
     var title: String { rawValue }
 }
 
-/// Универсальное меню выбора (Figma «Format», «Quality», «Language», «Style»).
+/// Универсальное меню выбора (Figma «Format», «Quality», «Language», «Style», 358).
 struct SelectionMenu<Option: SelectionMenuOption>: View {
     let options: [Option]
-    var width: CGFloat
     @Binding var selection: Option
 
     @Environment(\.displayScale) private var displayScale
 
-    /// Figma ref width = 358. Базовая единица — 16px.
-    private var spacing: CGFloat { width * 16 / 358 }
-    private var rowHeight: CGFloat { width * 44 / 358 }
-    private var verticalPadding: CGFloat { spacing * 8 / 16 }
-    private var cornerRadius: CGFloat { spacing * 24 / 16 }
-    private var blurRadius: CGFloat { spacing * AppSurface.blurRadius / 16 }
-
     private var separatorHeight: CGFloat {
-        max(spacing * 0.5 / 16, 1 / displayScale)
+        max(0.5, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
 
     private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
     private var cardContentHeight: CGFloat {
         let rows = CGFloat(options.count)
         let separators = CGFloat(max(options.count - 1, 0))
-        return rows * rowHeight + separators * separatorHeight + verticalPadding * 2
+        return rows * 44 + separators * separatorHeight + 16
     }
 
     var body: some View {
@@ -76,20 +67,16 @@ struct SelectionMenu<Option: SelectionMenuOption>: View {
 
                 SelectionMenuRow(
                     title: option.title,
-                    height: rowHeight,
                     isSelected: selection == option
                 ) {
                     selection = option
                 } trailing: {
-                    option.trailingContent(
-                        rowHeight: rowHeight,
-                        isSelected: selection == option
-                    )
+                    option.trailingContent(isSelected: selection == option)
                 }
             }
         }
-        .padding(.vertical, verticalPadding)
-        .frame(width: width)
+        .padding(.vertical, 8)
+        .frame(width: 358)
         .background { cardBackground }
         .clipShape(shape)
     }
@@ -100,10 +87,10 @@ struct SelectionMenu<Option: SelectionMenuOption>: View {
     }
 
     private var cardBackground: some View {
-            BlurCardBackground(
-                style: .bar,
-                extent: cardContentHeight,
-            blurRadius: blurRadius,
+        BlurCardBackground(
+            style: .bar,
+            extent: cardContentHeight,
+            blurRadius: AppSurface.blurRadius,
             cardOpacity: 0.6,
             shape: shape
         )
@@ -161,7 +148,7 @@ private struct SelectionMenuPreview<Option: SelectionMenuOption>: View {
     }
 
     var body: some View {
-        SelectionMenu(options: options, width: 358, selection: $selection)
+        SelectionMenu(options: options, selection: $selection)
             .padding(24)
             .background(Color.background)
     }

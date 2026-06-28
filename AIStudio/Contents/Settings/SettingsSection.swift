@@ -7,20 +7,15 @@
 
 import SwiftUI
 
-/// Группа строк настроек (Figma grouped `Row`).
+/// Группа строк настроек (Figma grouped `Row`, ref 390).
 struct SettingsSection<Rows: View>: View {
     let title: String
-    var width: CGFloat
     @ViewBuilder var rows: () -> Rows
 
-    private var sectionTitleSize: CGFloat { width * 13 / 390 }
-    private var titleBottomSpacing: CGFloat { width * 8 / 390 }
-    private var groupCornerRadius: CGFloat { width * 12 / 390 }
-
     var body: some View {
-        VStack(alignment: .leading, spacing: titleBottomSpacing) {
+        VStack(alignment: .leading, spacing: 8) {
             Text(title)
-                .typography(style: .regular, size: sectionTitleSize)
+                .typography(style: .regular, size: 13)
                 .foregroundStyle(Color.price)
                 .textCase(.none)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -29,22 +24,15 @@ struct SettingsSection<Rows: View>: View {
                 rows()
             }
             .background(Color.card)
-            .clipShape(RoundedRectangle(cornerRadius: groupCornerRadius, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         }
     }
 }
 
 #Preview {
-    let size: CGFloat = 390
-    let rowHeight = size * 44 / 390
-
-    SettingsSection(title: "Support us", width: size) {
-        SettingsRow(title: "Rate app", height: rowHeight, action: {}) {
-            SettingsRowIcon(
-                systemName: "star",
-                width: rowHeight * 28 / 44,
-                height: rowHeight * 22 / 44
-            )
+    SettingsSection(title: "Support us") {
+        SettingsRow(title: "Rate app", action: {}) {
+            SettingsRowIcon(systemName: "star")
         }
     }
     .padding(24)

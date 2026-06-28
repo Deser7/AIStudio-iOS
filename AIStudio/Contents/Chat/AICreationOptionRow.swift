@@ -36,32 +36,23 @@ enum AICreationOption: CaseIterable, Identifiable, Sendable {
 
 struct AICreationOptionRow: View {
     let option: AICreationOption
-    var height: CGFloat
-    var titleFontSize: CGFloat
-    var subtitleFontSize: CGFloat
     let action: () -> Void
-
-    /// Figma ref row height = 72. Базовая единица — 16px.
-    private var spacing: CGFloat { height * 16 / 72 }
-    private var cornerRadius: CGFloat { spacing * 24 / 16 }
-    private var iconSize: CGFloat { cornerRadius }
-    private var textSpacing: CGFloat { spacing * 4 / 16 }
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: spacing) {
+            HStack(spacing: 16) {
                 optionIcon
-                    .frame(width: iconSize, height: iconSize)
+                    .frame(width: 24, height: 24)
 
-                VStack(alignment: .leading, spacing: textSpacing) {
+                VStack(alignment: .leading, spacing: 4) {
                     Text(option.title)
-                        .typography(style: .semiBold, size: titleFontSize)
+                        .typography(style: .semiBold, size: 16)
                         .foregroundStyle(Color.white)
                         .tracking(0)
                         .lineLimit(1)
 
                     Text(option.subtitle)
-                        .typography(style: .regular, size: subtitleFontSize)
+                        .typography(style: .regular, size: 14)
                         .foregroundStyle(Color.white.opacity(0.5))
                         .tracking(0)
                         .lineLimit(2)
@@ -69,11 +60,11 @@ struct AICreationOptionRow: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .padding(.horizontal, spacing)
-            .frame(maxWidth: .infinity, minHeight: height, alignment: .leading)
+            .padding(.horizontal, 16)
+            .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
             .background(
                 Color.card,
-                in: RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                in: RoundedRectangle(cornerRadius: 24, style: .continuous)
             )
         }
         .buttonStyle(.plain)
@@ -99,19 +90,9 @@ struct AICreationOptionRow: View {
 }
 
 #Preview {
-    let rowHeight: CGFloat = 72
-    let fontSize: CGFloat = 16
-    let subtitleFontSize: CGFloat = 14
-
     VStack(spacing: 8) {
         ForEach(AICreationOption.allCases) { option in
-            AICreationOptionRow(
-                option: option,
-                height: rowHeight,
-                titleFontSize: fontSize,
-                subtitleFontSize: subtitleFontSize,
-                action: {}
-            )
+            AICreationOptionRow(option: option, action: {})
         }
     }
     .padding(24)

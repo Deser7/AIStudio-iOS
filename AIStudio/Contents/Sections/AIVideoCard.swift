@@ -9,35 +9,12 @@ import SwiftUI
 
 /// Карточка фичи AI Video (Figma «AI Video»).
 struct AIVideoCard: View {
-    var width: CGFloat
     let action: () -> Void
 
-    /// Figma ref width = 172, height = 313. Базовая единица — 16px.
-    private var cardHeight: CGFloat { width * 313 / 172 }
-    private var horizontalPadding: CGFloat { width * 16 / 172 }
-    private var topPadding: CGFloat { width * 24 / 172 }
-    private var bottomPadding: CGFloat { width * 16 / 172 }
-    private var cornerRadius: CGFloat { width * 24 / 172 }
-    private var iconCircleSize: CGFloat { width * 36 / 172 }
-    private var iconContentSize: CGFloat { width * 20 / 172 }
-    private var titleFontSize: CGFloat { width * 20 / 172 }
-    private var subtitleFontSize: CGFloat { width * 14 / 172 }
-    private var contentSpacing: CGFloat { width * 12 / 172 }
-    private var badgeWidth: CGFloat { width * 149 / 172 }
-    private var badgeHeight: CGFloat { width * 32 / 172 }
-    private var badgeFontSize: CGFloat { width * 12 / 172 }
-    private var badgeHorizontalPadding: CGFloat { width * 12 / 172 }
-    private var badgeContentGap: CGFloat { width * 8 / 172 }
-    private var playIconSize: CGFloat { width * 16 / 172 }
-    private var badgeTextMaxWidth: CGFloat {
-        badgeWidth - badgeHorizontalPadding * 2 - playIconSize - badgeContentGap
-    }
-
-    /// Figma ref wave opacity = 50%.
     private var waveOpacity: CGFloat { 0.5 }
 
     private var cardShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
     var body: some View {
@@ -51,30 +28,30 @@ struct AIVideoCard: View {
                 )
 
                 VStack(spacing: 0) {
-                    VStack(alignment: .leading, spacing: contentSpacing) {
+                    VStack(alignment: .leading, spacing: 12) {
                         featureIcon
 
                         OnboardingTitleSection(
                             title: "Turn Photo\ninto Video",
                             subtitle: "Animate • Templates",
                             style: .featureCard,
-                            titleTextSize: titleFontSize,
-                            subtitleTextSize: subtitleFontSize
+                            titleTextSize: 20,
+                            subtitleTextSize: 14
                         )
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, horizontalPadding)
-                    .padding(.top, topPadding)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 24)
 
                     Spacer(minLength: 0)
                         .background { waveOverlay }
 
                     readinessBadge
                         .frame(maxWidth: .infinity)
-                        .padding(.bottom, bottomPadding)
+                        .padding(.bottom, 16)
                 }
             }
-            .frame(width: width, height: cardHeight)
+            .frame(width: 172, height: 313)
             .clipShape(cardShape)
         }
         .buttonStyle(.plain)
@@ -84,7 +61,7 @@ struct AIVideoCard: View {
         Image("Wave")
             .resizable()
             .scaledToFill()
-            .frame(width: width * 1.5)
+            .frame(width: 258)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .clipped()
             .opacity(waveOpacity)
@@ -95,8 +72,8 @@ struct AIVideoCard: View {
     private var featureIcon: some View {
         MagicIcon()
             .fill(Color.white)
-            .frame(width: iconContentSize, height: iconContentSize)
-            .frame(width: iconCircleSize, height: iconCircleSize)
+            .frame(width: 20, height: 20)
+            .frame(width: 36, height: 36)
             .background { iconCircleBackground }
             .clipShape(Circle())
     }
@@ -107,21 +84,21 @@ struct AIVideoCard: View {
     }
 
     private var readinessBadge: some View {
-        HStack(spacing: badgeContentGap) {
+        HStack(spacing: 8) {
             Text("Ready in seconds")
-                .typography(style: .regular, size: badgeFontSize)
+                .typography(style: .regular, size: 12)
                 .foregroundStyle(Color.white)
-                .tracking(badgeFontSize * 0.06 / 12)
+                .tracking(0.06)
                 .lineLimit(1)
                 .minimumScaleFactor(0.85)
-                .frame(maxWidth: badgeTextMaxWidth, alignment: .leading)
+                .frame(maxWidth: 101, alignment: .leading)
 
             MediaPlayIcon()
                 .fill(Color.white)
-                .frame(width: playIconSize, height: playIconSize)
+                .frame(width: 16, height: 16)
         }
-        .padding(.horizontal, badgeHorizontalPadding)
-        .frame(width: badgeWidth, height: badgeHeight, alignment: .center)
+        .padding(.horizontal, 12)
+        .frame(width: 149, height: 32, alignment: .center)
         .background { readinessBadgeBackground }
         .clipShape(Capsule())
     }
@@ -133,9 +110,7 @@ struct AIVideoCard: View {
 }
 
 #Preview {
-    let size: CGFloat = 172
-
-    AIVideoCard(width: size, action: {})
+    AIVideoCard(action: {})
         .padding(24)
         .background(Color.background)
 }

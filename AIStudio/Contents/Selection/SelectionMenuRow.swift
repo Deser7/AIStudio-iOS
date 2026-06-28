@@ -7,30 +7,25 @@
 
 import SwiftUI
 
-/// Строка универсального меню выбора (Figma «Format» / «Quality» / «Language», height = 44).
 struct SelectionMenuRow<Trailing: View>: View {
     let title: String
-    var height: CGFloat
     var isSelected: Bool
     let action: () -> Void
     @ViewBuilder var trailing: () -> Trailing
-
-    private var fontSize: CGFloat { height * 16 / 44 }
-    private var horizontalPadding: CGFloat { height * 16 / 44 }
 
     var body: some View {
         Button(action: action) {
             HStack(spacing: 0) {
                 Text(title)
-                    .typography(style: .regular, size: fontSize)
+                    .typography(style: .regular, size: 16)
                     .foregroundStyle(titleStyle)
                     .tracking(0)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 trailing()
             }
-            .padding(.horizontal, horizontalPadding)
-            .frame(height: height)
+            .padding(.horizontal, 16)
+            .frame(height: 44)
         }
         .buttonStyle(.plain)
     }
@@ -41,13 +36,11 @@ struct SelectionMenuRow<Trailing: View>: View {
 }
 
 #Preview {
-    let size: CGFloat = 44
-
     VStack(spacing: 0) {
-        SelectionMenuRow(title: "720p", height: size, isSelected: true, action: {}) {
+        SelectionMenuRow(title: "720p", isSelected: true, action: {}) {
             EmptyView()
         }
-        SelectionMenuRow(title: "1080p", height: size, isSelected: false, action: {}) {
+        SelectionMenuRow(title: "1080p", isSelected: false, action: {}) {
             EmptyView()
         }
     }

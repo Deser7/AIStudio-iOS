@@ -13,45 +13,29 @@ enum AppNotificationContent {
     case fileTooLarge(title: String, subtitle: String)
 }
 
-/// Toast-уведомление (Figma «notification»).
 struct AppNotification: View {
     let content: AppNotificationContent
-    var width: CGFloat
-
-    private var titleFontSize: CGFloat { width * 16 / 239 }
-    private var cornerRadius: CGFloat { width * 24 / 239 }
-    private var successContentSpacing: CGFloat { width * 8 / 239 }
-    private var errorContentSpacing: CGFloat { width * 12 / 239 }
-    private var titleSubtitleSpacing: CGFloat { width * 4 / 239 }
-    private var subtitleFontSize: CGFloat { width * 14 / 239 }
-    private var iconSize: CGFloat { width * 40 / 239 }
-    private var messageTextHeight: CGFloat { width * 38 / 239 }
-    private var errorTitleHeight: CGFloat { width * 19 / 239 }
-    private var errorSubtitleHeight: CGFloat { width * 17 / 239 }
-    private var blurRadius: CGFloat { width * AppSurface.blurRadius / 239 }
-
-    private var cardHeight: CGFloat {
-        switch content {
-        case .fileTooLarge:
-            width * 140 / 239
-        default:
-            width * 134 / 239
-        }
-    }
 
     private var subtitleColor: Color {
         Color.white.opacity(0.5)
     }
 
+    private var cardHeight: CGFloat {
+        switch content {
+        case .fileTooLarge: 140
+        default: 134
+        }
+    }
+
     private var contentSpacing: CGFloat {
         switch content {
-        case .fileTooLarge: errorContentSpacing
-        default: successContentSpacing
+        case .fileTooLarge: 12
+        default: 8
         }
     }
 
     private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
     var body: some View {
@@ -60,9 +44,9 @@ struct AppNotification: View {
 
             textContent
         }
-        .padding(.horizontal, titleFontSize)
-        .padding(.vertical, cornerRadius)
-        .frame(width: width, height: cardHeight)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 24)
+        .frame(width: 239, height: cardHeight)
         .background { notificationBackground }
         .clipShape(shape)
     }
@@ -72,24 +56,24 @@ struct AppNotification: View {
         switch content {
         case .textCopied(let message), .videoSaved(let message):
             Text(message)
-                .typography(style: .regular, size: titleFontSize)
+                .typography(style: .regular, size: 16)
                 .foregroundStyle(Color.white)
                 .multilineTextAlignment(.center)
-                .frame(height: messageTextHeight)
+                .frame(height: 38)
 
         case .fileTooLarge(let title, let subtitle):
-            VStack(spacing: titleSubtitleSpacing) {
+            VStack(spacing: 4) {
                 Text(title)
-                    .typography(style: .semiBold, size: titleFontSize)
+                    .typography(style: .semiBold, size: 16)
                     .foregroundStyle(Color.white)
                     .multilineTextAlignment(.center)
-                    .frame(height: errorTitleHeight)
+                    .frame(height: 19)
 
                 Text(subtitle)
-                    .typography(style: .regular, size: subtitleFontSize)
+                    .typography(style: .regular, size: 14)
                     .foregroundStyle(subtitleColor)
                     .multilineTextAlignment(.center)
-                    .frame(height: errorSubtitleHeight)
+                    .frame(height: 17)
             }
         }
     }
@@ -100,12 +84,12 @@ struct AppNotification: View {
         case .textCopied, .videoSaved:
             CheckIcon()
                 .fill(AppGradient.main, style: FillStyle(eoFill: true))
-                .frame(width: iconSize, height: iconSize)
+                .frame(width: 40, height: 40)
 
         case .fileTooLarge:
             CloseIcon()
                 .fill(Color.error)
-                .frame(width: iconSize, height: iconSize)
+                .frame(width: 40, height: 40)
         }
     }
 
@@ -114,7 +98,7 @@ struct AppNotification: View {
             BlurCardBackground(
                 style: .compact,
                 extent: geo.size.height,
-                blurRadius: blurRadius,
+                blurRadius: AppSurface.blurRadius,
                 cardOpacity: 0.4,
                 shape: shape
             )
@@ -123,29 +107,24 @@ struct AppNotification: View {
 }
 
 #Preview {
-    let size: CGFloat = 239
-
     VStack(spacing: 24) {
         AppNotification(
             content: .textCopied(
                 message: "The text has been copied successfully"
-            ),
-            width: size
+            )
         )
 
         AppNotification(
             content: .videoSaved(
                 message: "Video has been saved to your gallery"
-            ),
-            width: size
+            )
         )
 
         AppNotification(
             content: .fileTooLarge(
                 title: "File is too large",
                 subtitle: "Maximum file size is 100 MB"
-            ),
-            width: size
+            )
         )
     }
     .padding(24)

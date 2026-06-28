@@ -10,16 +10,9 @@ import SwiftUI
 /// Карточка с изображением и заголовком (Figma «card»).
 struct TitleCard: View {
     let title: String
-    var width: CGFloat
-
-    /// Figma ref width = 168, height = 219.
-    private var cardHeight: CGFloat { width * 219 / 168 }
-    private var cornerRadius: CGFloat { width * 24 / 168 }
-    private var padding: CGFloat { width * 8 / 168 }
-    private var titleFontSize: CGFloat { width * 16 / 168 }
 
     private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
     var body: some View {
@@ -27,7 +20,7 @@ struct TitleCard: View {
             Image("Card")
                 .resizable()
                 .scaledToFill()
-                .frame(width: width, height: cardHeight)
+                .frame(width: 168, height: 219)
 
             LinearGradient(
                 colors: [Color.card.opacity(0), Color.card],
@@ -36,18 +29,18 @@ struct TitleCard: View {
             )
 
             Text(title)
-                .typography(style: .regular, size: titleFontSize)
+                .typography(style: .regular, size: 16)
                 .foregroundStyle(Color.white)
                 .frame(maxWidth: .infinity)
-                .padding(padding)
+                .padding(8)
         }
-        .frame(width: width, height: cardHeight)
+        .frame(width: 168, height: 219)
         .clipShape(shape)
     }
 }
 
 #Preview {
-    TitleCard(title: "Title", width: 168)
+    TitleCard(title: "Title")
         .padding(24)
         .background(Color.background)
 }

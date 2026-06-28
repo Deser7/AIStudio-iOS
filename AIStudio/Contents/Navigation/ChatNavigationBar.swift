@@ -8,11 +8,8 @@
 import SwiftUI
 
 enum ChatNavigationBarStyle {
-    /// Logo + title + subtitle + regenerate.
     case aiChat
-    /// MagicIcon + title + regenerate.
     case aiVideo
-    /// Title по центру, без иконки и regenerate.
     case centeredTitle
 }
 

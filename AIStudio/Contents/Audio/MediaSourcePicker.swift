@@ -7,48 +7,38 @@
 
 import SwiftUI
 
-/// Выбор источника медиа (Figma «Text settings»).
 struct MediaSourcePicker: View {
-    var width: CGFloat
     let onSelect: (MediaSourceOption) -> Void
 
-    /// Figma ref width = 358. Базовая единица — 16px.
-    private var spacing: CGFloat { width * 16 / 358 }
-    private var rowSpacing: CGFloat { spacing * 12 / 16 }
-    private var grabberWidth: CGFloat { spacing * 36 / 16 }
-    private var grabberHeight: CGFloat { max(spacing * 5 / 16, 4) }
-
     var body: some View {
-        VStack(spacing: rowSpacing) {
+        VStack(spacing: 12) {
             Capsule()
                 .fill(Color.white.opacity(0.3))
-                .frame(width: grabberWidth, height: grabberHeight)
+                .frame(width: 36, height: 5)
 
-            VStack(spacing: rowSpacing) {
+            VStack(spacing: 12) {
                 ForEach(MediaSourceOption.allCases) { option in
-                    MediaSourceOptionRow(option: option, width: width) {
+                    MediaSourceOptionRow(option: option) {
                         onSelect(option)
                     }
                 }
             }
         }
-        .frame(width: width)
+        .frame(width: 358)
     }
 }
 
 #Preview {
-    let size: CGFloat = 358
-    let spacing = size * 16 / 358
-    let sheetShape = RoundedRectangle(cornerRadius: spacing * 24 / 16, style: .continuous)
+    let sheetShape = RoundedRectangle(cornerRadius: 24, style: .continuous)
 
     ZStack(alignment: .bottom) {
         Color.background
             .ignoresSafeArea()
 
-        MediaSourcePicker(width: size) { _ in }
-            .padding(.top, spacing)
-            .padding(.horizontal, spacing)
-            .padding(.bottom, spacing * 24 / 16)
+        MediaSourcePicker { _ in }
+            .padding(.top, 16)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 24)
             .background(Color.card, in: sheetShape)
             .padding(.horizontal, 24)
             .padding(.bottom, 24)

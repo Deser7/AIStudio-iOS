@@ -13,34 +13,24 @@ enum AudioUploadState: Sendable {
     case error
 }
 
-/// Карточка загрузки аудио/видео (Figma «audio»).
 struct AudioUploadCard: View {
-    var width: CGFloat
     var state: AudioUploadState = .idle
     let onTap: () -> Void
 
     @Environment(\.displayScale) private var displayScale
 
-    /// Figma ref width = 358, height = 279. Базовая единица — 16px.
-    private var spacing: CGFloat { width * 16 / 358 }
-    private var fontSize: CGFloat { spacing }
-    private var subtitleFontSize: CGFloat { spacing * 14 / 16 }
-    private var cardHeight: CGFloat { width * 279 / 358 }
-    private var cornerRadius: CGFloat { spacing * 24 / 16 }
-    private var iconSize: CGFloat { spacing * 48 / 16 }
-    private var blurRadius: CGFloat { spacing * AppSurface.blurRadius / 16 }
     private var borderWidth: CGFloat {
-        max(spacing / 16, 1 / displayScale)
+        max(1, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
-    /// Figma: icon 48 px, stroke 2 px.
+
     private var iconStrokeWidth: CGFloat {
-        max(spacing * 2 / 16, 1 / displayScale)
+        max(2, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
 
     private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
     private var supportedFormatsSubtitle: String {
@@ -61,20 +51,20 @@ struct AudioUploadCard: View {
                 .buttonStyle(.plain)
             }
         }
-        .frame(width: width, height: cardHeight)
+        .frame(width: 358, height: 279)
         .overlay { errorBorder }
     }
 
     private var cardContent: some View {
-        VStack(spacing: spacing) {
+        VStack(spacing: 16) {
             if state == .loading {
-                SpinnerView(diameter: iconSize)
+                SpinnerView(diameter: 48)
 
                 OnboardingTitleSection(
                     title: "Converting speech to text...",
                     subtitle: "",
                     style: .upload,
-                    textSize: fontSize
+                    textSize: 16
                 )
             } else {
                 importIcon
@@ -83,12 +73,12 @@ struct AudioUploadCard: View {
                     title: "Upload audio or video",
                     subtitle: supportedFormatsSubtitle,
                     style: .upload,
-                    textSize: fontSize,
-                    subtitleTextSize: subtitleFontSize
+                    textSize: 16,
+                    subtitleTextSize: 14
                 )
             }
         }
-        .padding(spacing)
+        .padding(16)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background { cardBackground }
         .clipShape(shape)
@@ -104,7 +94,7 @@ struct AudioUploadCard: View {
                     lineJoin: .round
                 )
             )
-            .frame(width: iconSize, height: iconSize)
+            .frame(width: 48, height: 48)
     }
 
     @ViewBuilder
@@ -118,8 +108,8 @@ struct AudioUploadCard: View {
     private var cardBackground: some View {
         BlurCardBackground(
             style: .compact,
-            extent: cardHeight,
-            blurRadius: blurRadius,
+            extent: 279,
+            blurRadius: AppSurface.blurRadius,
             cardOpacity: 0.6,
             shape: shape
         )
@@ -127,12 +117,10 @@ struct AudioUploadCard: View {
 }
 
 #Preview {
-    let size: CGFloat = 358
-
-    VStack(spacing: size * 16 / 358) {
-        AudioUploadCard(width: size, state: .idle, onTap: {})
-        AudioUploadCard(width: size, state: .error, onTap: {})
-        AudioUploadCard(width: size, state: .loading, onTap: {})
+    VStack(spacing: 16) {
+        AudioUploadCard(state: .idle, onTap: {})
+        AudioUploadCard(state: .error, onTap: {})
+        AudioUploadCard(state: .loading, onTap: {})
     }
     .padding(24)
     .background(Color.background)

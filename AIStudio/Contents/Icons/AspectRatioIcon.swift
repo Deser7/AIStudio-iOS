@@ -21,15 +21,13 @@ enum AspectRatio: CaseIterable, Hashable, Sendable {
     }
 
     @ViewBuilder
-    func icon(rowHeight: CGFloat, isSelected: Bool) -> some View {
-        AspectRatioIcon(ratio: self, rowHeight: rowHeight, isSelected: isSelected)
+    func icon(isSelected: Bool) -> some View {
+        AspectRatioIcon(ratio: self, isSelected: isSelected)
     }
 }
 
-/// Иконка соотношения сторон (Figma «Format» trailing).
 struct AspectRatioIcon: View {
     let ratio: AspectRatio
-    var rowHeight: CGFloat
     var isSelected: Bool
 
     @Environment(\.displayScale) private var displayScale
@@ -37,22 +35,21 @@ struct AspectRatioIcon: View {
     private var iconSize: CGSize {
         switch ratio {
         case .landscape16x9:
-            return CGSize(width: rowHeight * 32 / 44, height: rowHeight * 19 / 44)
+            return CGSize(width: 32, height: 19)
         case .portrait9x16:
-            return CGSize(width: rowHeight * 13 / 44, height: rowHeight * 20 / 44)
+            return CGSize(width: 13, height: 20)
         case .square1x1:
-            let side = rowHeight * 20 / 44
-            return CGSize(width: side, height: side)
+            return CGSize(width: 20, height: 20)
         }
     }
-    private var cornerRadius: CGFloat { rowHeight * 4 / 44 }
+
     private var strokeWidth: CGFloat {
-        max(rowHeight * 1 / 44, 1 / displayScale)
+        max(1, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
 
     private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: 4, style: .continuous)
     }
 
     var body: some View {
@@ -67,12 +64,10 @@ struct AspectRatioIcon: View {
 }
 
 #Preview {
-    let rowHeight: CGFloat = 44
-
     HStack(spacing: 24) {
-        AspectRatioIcon(ratio: .landscape16x9, rowHeight: rowHeight, isSelected: true)
-        AspectRatioIcon(ratio: .portrait9x16, rowHeight: rowHeight, isSelected: false)
-        AspectRatioIcon(ratio: .square1x1, rowHeight: rowHeight, isSelected: false)
+        AspectRatioIcon(ratio: .landscape16x9, isSelected: true)
+        AspectRatioIcon(ratio: .portrait9x16, isSelected: false)
+        AspectRatioIcon(ratio: .square1x1, isSelected: false)
     }
     .padding(24)
     .background(Color.background)

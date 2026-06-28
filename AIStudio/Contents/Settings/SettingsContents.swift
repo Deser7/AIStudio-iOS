@@ -7,9 +7,7 @@
 
 import SwiftUI
 
-/// Контент экрана настроек (Figma «SettingsContents»).
 struct SettingsContents: View {
-    var width: CGFloat
     @Binding var notificationsEnabled: Bool
     var cacheSize: String
     var appVersion: String
@@ -22,38 +20,29 @@ struct SettingsContents: View {
     var onPrivacyPolicy: () -> Void
     var onUsagePolicy: () -> Void
 
-    private var rowHeight: CGFloat { width * 44 / 390 }
-    private var sectionSpacing: CGFloat { width * 24 / 390 }
-    private var footerTopSpacing: CGFloat { width * 32 / 390 }
-    private var footerFontSize: CGFloat { width * 12 / 390 }
-    private var iconWidth: CGFloat { rowHeight * 28 / 44 }
-    private var iconHeight: CGFloat { rowHeight * 22 / 44 }
-    private var toggleSize: CGFloat { rowHeight * 31 / 44 }
-    private var separatorInset: CGFloat { width * 56 / 390 }
-
     @Environment(\.displayScale) private var displayScale
 
     private var separatorHeight: CGFloat {
-        max(width * 0.33 / 390, 1 / displayScale)
+        max(0.33, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: sectionSpacing) {
+        VStack(alignment: .leading, spacing: 24) {
             supportSection
             purchasesSection
             infoSection
 
             Text("App Version: \(appVersion)")
-                .typography(style: .regular, size: footerFontSize)
+                .typography(style: .regular, size: 12)
                 .foregroundStyle(Color.price)
                 .frame(maxWidth: .infinity)
-                .padding(.top, footerTopSpacing)
+                .padding(.top, 32)
         }
     }
 
     private var supportSection: some View {
-        SettingsSection(title: "Support us", width: width) {
+        SettingsSection(title: "Support us") {
             settingsRow(title: "Rate app", icon: "star", action: onRateApp)
 
             rowSeparator
@@ -63,23 +52,23 @@ struct SettingsContents: View {
     }
 
     private var purchasesSection: some View {
-        SettingsSection(title: "Purchases & Actions", width: width) {
+        SettingsSection(title: "Purchases & Actions") {
             settingsRow(title: "Upgrade plan", icon: "sparkles", action: onUpgradePlan)
 
             rowSeparator
 
-            SettingsRow(title: "Notifications", height: rowHeight) {
+            SettingsRow(title: "Notifications") {
                 settingsIcon("bell")
             } trailing: {
-                AppToggle(height: toggleSize, isOn: $notificationsEnabled)
+                AppToggle(height: 31, isOn: $notificationsEnabled)
             }
 
             rowSeparator
 
-            SettingsRow(title: "Clear cache", height: rowHeight, action: onClearCache) {
+            SettingsRow(title: "Clear cache", action: onClearCache) {
                 settingsIcon("trash")
             } trailing: {
-                SettingsRowDetail(text: cacheSize, height: rowHeight)
+                SettingsRowDetail(text: cacheSize)
             }
 
             rowSeparator
@@ -89,7 +78,7 @@ struct SettingsContents: View {
     }
 
     private var infoSection: some View {
-        SettingsSection(title: "Info & legal", width: width) {
+        SettingsSection(title: "Info & legal") {
             settingsRow(title: "Contact us", icon: "bubble.left", action: onContactUs)
 
             rowSeparator
@@ -107,19 +96,19 @@ struct SettingsContents: View {
         icon: String,
         action: @escaping () -> Void
     ) -> some View {
-        SettingsRow(title: title, height: rowHeight, action: action) {
+        SettingsRow(title: title, action: action) {
             settingsIcon(icon)
         }
     }
 
     private func settingsIcon(_ systemName: String) -> some View {
-        SettingsRowIcon(systemName: systemName, width: iconWidth, height: iconHeight)
+        SettingsRowIcon(systemName: systemName)
     }
 
     private var rowSeparator: some View {
         Color.white.opacity(0.1)
             .frame(height: separatorHeight)
-            .padding(.leading, separatorInset)
+            .padding(.leading, 56)
     }
 }
 
@@ -131,10 +120,8 @@ private struct SettingsContentsPreview: View {
     @State private var notificationsEnabled = false
 
     var body: some View {
-        let size: CGFloat = 390
-
         ScrollView {
-            SettingsContents(width: size,
+            SettingsContents(
                 notificationsEnabled: $notificationsEnabled,
                 cacheSize: "5 MB",
                 appVersion: "1.0.0",

@@ -7,23 +7,9 @@
 
 import SwiftUI
 
-/// Пузырь запроса пользователя (Figma «Prompt»). Высота — hug по тексту.
 struct UserPrompt: View {
     var text: String
     var image: Image?
-    var width: CGFloat
-
-    /// Figma ref width = 302 (пузырь). Текстовая область = 270 = 302 − 16 − 16.
-    private var spacing: CGFloat { width * 16 / 302 }
-    private var fontSize: CGFloat { spacing }
-    private var cornerRadius: CGFloat { spacing }
-    private var textWidth: CGFloat { width * 270 / 302 }
-    private var imageSize: CGFloat { width * 100 / 302 }
-    private var imageCornerRadius: CGFloat { spacing }
-    private var photoContentSpacing: CGFloat { width * 9 / 302 }
-    private var compactVerticalPadding: CGFloat { width * 4 / 302 }
-    private var compactHorizontalPadding: CGFloat { width * 14 / 302 }
-    private var textLineHeight: CGFloat { fontSize }
 
     private var hasPhoto: Bool {
         image != nil
@@ -31,21 +17,21 @@ struct UserPrompt: View {
 
     private var bubbleShape: UserPromptBubbleShape {
         UserPromptBubbleShape(
-            cornerRadius: cornerRadius,
+            cornerRadius: 16,
             sharpBottomTrailing: !hasPhoto
         )
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: hasPhoto ? photoContentSpacing : 0) {
+        VStack(alignment: .leading, spacing: hasPhoto ? 9 : 0) {
             if let image {
                 image
                     .resizable()
                     .scaledToFill()
-                    .frame(width: imageSize, height: imageSize)
+                    .frame(width: 100, height: 100)
                     .clipShape(
                         RoundedRectangle(
-                            cornerRadius: imageCornerRadius,
+                            cornerRadius: 16,
                             style: .continuous
                         )
                     )
@@ -54,20 +40,20 @@ struct UserPrompt: View {
             messageText
         }
         .padding(contentPadding)
-        .frame(width: width, alignment: .leading)
+        .frame(width: 302, alignment: .leading)
         .background(AppGradient.main)
         .clipShape(bubbleShape)
     }
 
     private var messageText: some View {
         Text(text)
-            .typography(style: .regular, size: fontSize)
+            .typography(style: .regular, size: 16)
             .foregroundStyle(Color.white)
             .tracking(0)
-            .lineSpacing(textLineHeight - fontSize)
+            .lineSpacing(0)
             .multilineTextAlignment(.leading)
             .frame(
-                maxWidth: hasPhoto ? .infinity : textWidth,
+                maxWidth: hasPhoto ? .infinity : 270,
                 alignment: .leading
             )
             .fixedSize(horizontal: false, vertical: true)
@@ -76,17 +62,17 @@ struct UserPrompt: View {
     private var contentPadding: EdgeInsets {
         if hasPhoto {
             EdgeInsets(
-                top: compactVerticalPadding,
-                leading: compactHorizontalPadding,
-                bottom: compactVerticalPadding,
-                trailing: compactHorizontalPadding
+                top: 4,
+                leading: 14,
+                bottom: 4,
+                trailing: 14
             )
         } else {
             EdgeInsets(
-                top: spacing,
-                leading: spacing,
-                bottom: spacing,
-                trailing: spacing
+                top: 16,
+                leading: 16,
+                bottom: 16,
+                trailing: 16
             )
         }
     }
@@ -121,10 +107,8 @@ private struct UserPromptBubbleShape: Shape {
 private struct UserPromptPreview: View {
     @State private var text = "Hi! Can you help me write a short welcome email for a new employee joining our team?"
 
-    private let size: CGFloat = 302
-
     var body: some View {
-        VStack(alignment: .trailing, spacing: size * 24 / 302) {
+        VStack(alignment: .trailing, spacing: 24) {
             TextField(
                 "Type a message",
                 text: $text,
@@ -137,12 +121,11 @@ private struct UserPromptPreview: View {
             .background(Color.card)
             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
 
-            UserPrompt(text: text, width: size)
+            UserPrompt(text: text)
 
             UserPrompt(
                 text: text,
-                image: Image(systemName: "person.crop.rectangle.fill"),
-                width: size
+                image: Image(systemName: "person.crop.rectangle.fill")
             )
         }
         .padding(24)

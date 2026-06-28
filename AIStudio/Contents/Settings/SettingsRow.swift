@@ -9,32 +9,21 @@ import SwiftUI
 
 struct SettingsRowIcon: View {
     let systemName: String
-    var width: CGFloat
-    var height: CGFloat
 
     var body: some View {
         Image(systemName: systemName)
-            .font(.system(size: min(width, height), weight: .medium))
+            .font(.system(size: 22, weight: .medium))
             .foregroundStyle(AppGradient.main)
-            .frame(width: width, height: height)
+            .frame(width: 28, height: 22)
     }
 }
 
-/// Строка настроек (Figma «Row», height Hug 44).
+/// Строка настроек (Figma «Row», 44).
 struct SettingsRow<Icon: View, Trailing: View>: View {
     let title: String
-    var height: CGFloat
     var action: (() -> Void)?
     @ViewBuilder var icon: () -> Icon
     @ViewBuilder var trailing: () -> Trailing
-
-    @Environment(\.displayScale) private var displayScale
-
-    private var fontSize: CGFloat { height * 16 / 44 }
-    private var iconWidth: CGFloat { height * 28 / 44 }
-    private var iconHeight: CGFloat { height * 22 / 44 }
-    private var contentSpacing: CGFloat { height * 12 / 44 }
-    private var horizontalPadding: CGFloat { height * 16 / 44 }
 
     var body: some View {
         Group {
@@ -51,12 +40,12 @@ struct SettingsRow<Icon: View, Trailing: View>: View {
     }
 
     private var rowContent: some View {
-        HStack(spacing: contentSpacing) {
+        HStack(spacing: 12) {
             icon()
-                .frame(width: iconWidth, height: iconHeight)
+                .frame(width: 28, height: 22)
 
             Text(title)
-                .typography(style: .regular, size: fontSize)
+                .typography(style: .regular, size: 16)
                 .foregroundStyle(Color.white)
                 .tracking(0)
                 .lineSpacing(0)
@@ -64,74 +53,62 @@ struct SettingsRow<Icon: View, Trailing: View>: View {
 
             trailing()
         }
-        .padding(.horizontal, horizontalPadding)
-        .frame(height: height)
+        .padding(.horizontal, 16)
+        .frame(height: 44)
     }
 }
 
 extension SettingsRow where Trailing == SettingsRowChevron {
     init(
         title: String,
-        height: CGFloat,
         action: (() -> Void)? = nil,
         @ViewBuilder icon: @escaping () -> Icon
     ) {
         self.title = title
-        self.height = height
         self.action = action
         self.icon = icon
-        self.trailing = { SettingsRowChevron(height: height) }
+        self.trailing = { SettingsRowChevron() }
     }
 }
 
 struct SettingsRowChevron: View {
-    var height: CGFloat
-
-    private var chevronSize: CGFloat { height * 14 / 44 }
-
     var body: some View {
         Image(systemName: "chevron.right")
-            .font(.system(size: chevronSize, weight: .semibold))
+            .font(.system(size: 14, weight: .semibold))
             .foregroundStyle(AppGradient.main)
     }
 }
 
 struct SettingsRowDetail: View {
     let text: String
-    var height: CGFloat
-
-    private var fontSize: CGFloat { height * 16 / 44 }
-    private var detailSpacing: CGFloat { height * 8 / 44 }
 
     var body: some View {
-        HStack(spacing: detailSpacing) {
+        HStack(spacing: 8) {
             Text(text)
-                .typography(style: .regular, size: fontSize)
+                .typography(style: .regular, size: 16)
                 .foregroundStyle(Color.price)
 
-            SettingsRowChevron(height: height)
+            SettingsRowChevron()
         }
     }
 }
 
 #Preview {
-    let size: CGFloat = 44
-
     VStack(spacing: 0) {
-        SettingsRow(title: "Rate app", height: size, action: {}) {
-            SettingsRowIcon(systemName: "star", width: size * 28 / 44, height: size * 22 / 44)
+        SettingsRow(title: "Rate app", action: {}) {
+            SettingsRowIcon(systemName: "star")
         }
 
-        SettingsRow(title: "Notifications", height: size) {
-            SettingsRowIcon(systemName: "bell", width: size * 28 / 44, height: size * 22 / 44)
+        SettingsRow(title: "Notifications") {
+            SettingsRowIcon(systemName: "bell")
         } trailing: {
-            AppToggle(height: size * 31 / 44, isOn: .constant(true))
+            AppToggle(height: 31, isOn: .constant(true))
         }
 
-        SettingsRow(title: "Clear cache", height: size, action: {}) {
-            SettingsRowIcon(systemName: "trash", width: size * 28 / 44, height: size * 22 / 44)
+        SettingsRow(title: "Clear cache", action: {}) {
+            SettingsRowIcon(systemName: "trash")
         } trailing: {
-            SettingsRowDetail(text: "5 MB", height: size)
+            SettingsRowDetail(text: "5 MB")
         }
     }
     .background(Color.card)
