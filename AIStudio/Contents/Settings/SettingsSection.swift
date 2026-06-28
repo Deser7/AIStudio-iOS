@@ -33,6 +33,8 @@ struct SettingsSection<Rows: View>: View {
     SettingsSection(title: "Support us") {
         SettingsRow(title: "Rate app", action: {}) {
             SettingsRowIcon(systemName: "star")
+        } trailing: {
+            SettingsRowChevron()
         }
     }
     .padding(24)

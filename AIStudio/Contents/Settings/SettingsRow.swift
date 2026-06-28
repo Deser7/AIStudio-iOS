@@ -46,45 +46,12 @@ struct SettingsRow<Icon: View, Trailing: View>: View {
     }
 }
 
-extension SettingsRow where Trailing == SettingsRowChevron {
-    init(
-        title: String,
-        action: (() -> Void)? = nil,
-        @ViewBuilder icon: @escaping () -> Icon
-    ) {
-        self.title = title
-        self.action = action
-        self.icon = icon
-        self.trailing = { SettingsRowChevron() }
-    }
-}
-
-struct SettingsRowChevron: View {
-    var body: some View {
-        Image(systemName: "chevron.right")
-            .font(.system(size: 14, weight: .semibold))
-            .foregroundStyle(AppGradient.main)
-    }
-}
-
-struct SettingsRowDetail: View {
-    let text: String
-
-    var body: some View {
-        HStack(spacing: 8) {
-            Text(text)
-                .typography(style: .regular16)
-                .foregroundStyle(Color.price)
-
-            SettingsRowChevron()
-        }
-    }
-}
-
 #Preview {
     VStack(spacing: 0) {
         SettingsRow(title: "Rate app", action: {}) {
             SettingsRowIcon(systemName: "star")
+        } trailing: {
+            SettingsRowChevron()
         }
 
         SettingsRow(title: "Notifications") {

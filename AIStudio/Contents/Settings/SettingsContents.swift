@@ -98,6 +98,8 @@ struct SettingsContents: View {
     ) -> some View {
         SettingsRow(title: title, action: action) {
             settingsIcon(icon)
+        } trailing: {
+            SettingsRowChevron()
         }
     }
 
