@@ -9,37 +9,33 @@ import SwiftUI
 
 struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
     var placeholder: String
-    var height: CGFloat
     @Binding var text: String
     @ViewBuilder var icon: () -> Icon
     @ViewBuilder var background: () -> Background
     @ViewBuilder var border: () -> Border
 
-    private var spacing: CGFloat { height * 2 / 7 }
-    private var cornerRadius: CGFloat { height * 3 / 7 }
-
     private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
     var body: some View {
-        HStack(spacing: spacing) {
+        HStack(spacing: 16) {
             icon()
 
             TextField(
                 "",
                 text: $text,
                 prompt: Text(placeholder)
-                    .font(Typography.font(style: .regular, size: spacing))
+                    .font(Typography.font(style: .regular, size: 16))
                     .foregroundColor(Color.white.opacity(0.5))
             )
-            .typography(style: .regular, size: spacing)
+            .typography(style: .regular, size: 16)
             .foregroundColor(Color.white)
             .tint(Color.white)
         }
-        .padding(spacing)
+        .padding(16)
         .frame(maxWidth: .infinity)
-        .frame(height: height)
+        .frame(height: 56)
         .background { background() }
         .clipShape(shape)
         .overlay { border() }

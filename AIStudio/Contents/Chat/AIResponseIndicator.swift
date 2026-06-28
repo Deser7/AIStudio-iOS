@@ -9,8 +9,6 @@ import SwiftUI
 
 /// Индикатор «AI печатает» — пузырь с тремя точками (Figma «AI's response»).
 struct AIResponseIndicator: View {
-    var height: CGFloat
-
     /// Пауза на каждой точке перед переходом к следующей.
     private let stepDuration: TimeInterval = 0.33
     /// Длительность crossfade градиент ↔ неактивная заливка.
@@ -18,28 +16,18 @@ struct AIResponseIndicator: View {
 
     @State private var activeIndex = 0
 
-    private var padding: CGFloat { height * 16 / 51 }
-    private var dotSpacing: CGFloat { height * 4 / 51 }
-    private var largeDotSize: CGFloat { height * 19 / 51 }
-    private var mediumDotSize: CGFloat { height * 15 / 51 }
-    private var smallDotSize: CGFloat { height * 10 / 51 }
-    private var cornerRadius: CGFloat { height * 24 / 51 }
-    private var blurRadius: CGFloat { height * AppSurface.blurRadius / 51 }
+    private let dotDiameters: [CGFloat] = [19, 15, 10]
+
+    private var bubbleShape: AIResponseBubbleShape {
+        AIResponseBubbleShape(cornerRadius: 24)
+    }
 
     private var inactiveDotColor: Color {
         Color.white.opacity(0.1)
     }
 
-    private var dotDiameters: [CGFloat] {
-        [largeDotSize, mediumDotSize, smallDotSize]
-    }
-
-    private var bubbleShape: AIResponseBubbleShape {
-        AIResponseBubbleShape(cornerRadius: cornerRadius)
-    }
-
     var body: some View {
-        HStack(alignment: .center, spacing: dotSpacing) {
+        HStack(alignment: .center, spacing: 4) {
             ForEach(0..<3, id: \.self) { dotIndex in
                 dot(
                     at: dotIndex,
@@ -47,8 +35,8 @@ struct AIResponseIndicator: View {
                 )
             }
         }
-        .padding(padding)
-        .frame(height: height)
+        .padding(16)
+        .frame(height: 51)
         .background { bubbleBackground }
         .clipShape(bubbleShape)
         .task { await runTypingAnimation() }
@@ -82,8 +70,8 @@ struct AIResponseIndicator: View {
     private var bubbleBackground: some View {
         BlurCardBackground(
             style: .compact,
-            extent: height,
-            blurRadius: blurRadius,
+            extent: 51,
+            blurRadius: AppSurface.blurRadius,
             cardOpacity: 0.5,
             shape: bubbleShape
         )
@@ -105,7 +93,7 @@ private struct AIResponseBubbleShape: Shape {
 }
 
 #Preview {
-    AIResponseIndicator(height: 51)
+    AIResponseIndicator()
         .padding(.horizontal, 24)
         .padding(.vertical, 24)
         .frame(maxWidth: .infinity, alignment: .topLeading)

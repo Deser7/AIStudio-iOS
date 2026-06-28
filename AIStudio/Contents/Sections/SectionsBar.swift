@@ -10,20 +10,15 @@ import SwiftUI
 /// Горизонтальный ряд чипов секций (Figma «Sections»).
 struct SectionsBar: View {
     let sections: [String]
-    var height: CGFloat
     @Binding var selection: String
     var onSelect: ((String) -> Void)?
 
-    /// Figma ref chip height = 33.
-    private var chipSpacing: CGFloat { height * 8 / 33 }
-
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: chipSpacing) {
+            HStack(spacing: 8) {
                 ForEach(sections, id: \.self) { section in
                     SectionChip(
                         title: section,
-                        height: height,
                         isSelected: selection == section
                     ) {
                         selection = section
@@ -41,12 +36,10 @@ struct SectionsBar: View {
 
 private struct SectionsBarPreview: View {
     @State private var selection = "Popular"
-    private let size: CGFloat = 33
 
     var body: some View {
         SectionsBar(
             sections: ["Popular", "Funny", "Sad", "Trends", "Dances"],
-            height: size,
             selection: $selection
         )
         .padding(24)

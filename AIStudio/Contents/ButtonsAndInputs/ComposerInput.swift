@@ -22,7 +22,6 @@ struct ComposerInput: View {
     }
 
     var placeholder: String = "How can I help you?"
-    var height: CGFloat
     @Binding var state: ComposerInputState
     @Binding var voiceProgress: CGFloat
     @Binding var text: String
@@ -35,16 +34,8 @@ struct ComposerInput: View {
     var onVoiceConfirm: () -> Void = {}
     var onImageRemove: () -> Void = {}
 
-    @Environment(\.displayScale) private var displayScale
-
-    private var spacing: CGFloat { height * 2 / 11 }
-    private var sectionSpacing: CGFloat { height * 3 / 11 }
-    private var buttonSize: CGFloat { height * 5 / 11 }
-    private var addendumSize: CGFloat { height * 25 / 22 }
-    private var blurRadius: CGFloat { height * AppSurface.blurRadius / 88 }
-
     private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: sectionSpacing, style: .continuous)
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
     private var placeholderColor: Color {
@@ -72,12 +63,7 @@ struct ComposerInput: View {
     }
 
     private var containerMinHeight: CGFloat {
-        switch state {
-        case .generating:
-            height * 229 / 88
-        default:
-            height
-        }
+        state == .generating ? 229 : 88
     }
 
     private var showsGeneratingContent: Bool {
@@ -85,14 +71,14 @@ struct ComposerInput: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: sectionSpacing) {
+        VStack(alignment: .leading, spacing: 24) {
             attachmentSection
 
             if showsGeneratingContent {
                 generatingSection
             }
 
-            HStack(alignment: .bottom, spacing: spacing) {
+            HStack(alignment: .bottom, spacing: 16) {
                 textInput
                     .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -105,8 +91,8 @@ struct ComposerInput: View {
                 voiceRow
             }
         }
-        .padding(.horizontal, spacing)
-        .padding(.vertical, sectionSpacing)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 24)
         .frame(maxWidth: .infinity, minHeight: containerMinHeight, alignment: .top)
         .background { background }
         .clipShape(shape)
@@ -115,7 +101,7 @@ struct ComposerInput: View {
 
     @ViewBuilder
     private var generatingSection: some View {
-        Addendum(diameter: addendumSize, content: .loading)
+        Addendum(diameter: 100, content: .loading)
 
         Spacer(minLength: 0)
     }
@@ -123,10 +109,10 @@ struct ComposerInput: View {
     @ViewBuilder
     private var attachmentSection: some View {
         if state == .imageLoading {
-            Addendum(diameter: addendumSize, content: .loading)
+            Addendum(diameter: 100, content: .loading)
         } else if let attachedImage {
             Addendum(
-                diameter: addendumSize,
+                diameter: 100,
                 content: .photo(attachedImage, onClose: removeAttachment)
             )
         }
@@ -137,12 +123,12 @@ struct ComposerInput: View {
             "",
             text: $text,
             prompt: Text(placeholder)
-                .font(Typography.font(style: .regular, size: spacing))
+                .font(Typography.font(style: .regular, size: 16))
                 .foregroundColor(placeholderColor),
             axis: .vertical
         )
         .lineLimit(1...10)
-        .typography(style: .regular, size: spacing)
+        .typography(style: .regular, size: 16)
         .foregroundColor(Color.white)
         .tint(Color.white)
         .disabled(isTextInputDisabled)
@@ -151,26 +137,26 @@ struct ComposerInput: View {
     @ViewBuilder
     private var buttonSection: some View {
         if showsSendButton {
-            GradientIconButton(diameter: buttonSize, icon: .generation, action: handleSend)
+            GradientIconButton(diameter: 40, icon: .generation, action: handleSend)
         } else {
-            HStack(spacing: spacing) {
-                CircularIconButton(diameter: buttonSize, icon: .photo, action: handleImport)
-                CircularIconButton(diameter: buttonSize, icon: .micro, action: handleMicrophone)
+            HStack(spacing: 16) {
+                CircularIconButton(diameter: 40, icon: .photo, action: handleImport)
+                CircularIconButton(diameter: 40, icon: .micro, action: handleMicrophone)
             }
         }
     }
 
     private var voiceRow: some View {
-        HStack(spacing: spacing) {
-            CircularIconButton(diameter: buttonSize, icon: .cross, action: handleVoiceCancel)
+        HStack(spacing: 16) {
+            CircularIconButton(diameter: 40, icon: .cross, action: handleVoiceCancel)
 
             AudioWaveform(
                 progress: voiceProgress,
-                height: buttonSize
+                height: 40
             )
             .frame(maxWidth: .infinity)
 
-            GradientIconButton(diameter: buttonSize, icon: .done, action: handleVoiceConfirm)
+            GradientIconButton(diameter: 40, icon: .done, action: handleVoiceConfirm)
         }
     }
 
@@ -180,7 +166,7 @@ struct ComposerInput: View {
             BlurCardBackground(
                 style: .bar,
                 extent: geo.size.height,
-                blurRadius: blurRadius,
+                blurRadius: AppSurface.blurRadius,
                 cardOpacity: 0.7,
                 shape: shape
             )
@@ -232,7 +218,7 @@ private struct ComposerInputPreview: View {
     @State private var voiceProgress: CGFloat = 0
 
     var body: some View {
-        ComposerInput(height: 88,
+        ComposerInput(
             state: $state,
             voiceProgress: $voiceProgress,
             text: $text,

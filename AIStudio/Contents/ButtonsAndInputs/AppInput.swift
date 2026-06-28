@@ -15,30 +15,25 @@ enum AppInputStyle {
 struct AppInput: View {
     var style: AppInputStyle = .main
     var placeholder: String = "Ask anything..."
-    var height: CGFloat
     @Binding var text: String
 
     @Environment(\.displayScale) private var displayScale
 
-    private var iconSize: CGFloat { height * 3 / 7 }
     private var borderWidth: CGFloat {
         let borderRatio: CGFloat = switch style {
-        case .main: 1 / 28
-        case .search: 1 / 56
+        case .main: 2
+        case .search: 1
         }
-        return max(height * borderRatio, 1 / displayScale)
-            .pixelAligned(to: displayScale)
+        return CGFloat(borderRatio).pixelAligned(to: displayScale)
     }
-    private var blurRadius: CGFloat { height * AppSurface.blurRadius / 56 }
 
     private var fieldShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: iconSize, style: .continuous)
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
     var body: some View {
         TextFieldBar(
             placeholder: placeholder,
-            height: height,
             text: $text,
             icon: { iconView },
             background: { backgroundView },
@@ -52,11 +47,11 @@ struct AppInput: View {
         case .main:
             GenerateIcon()
                 .fill(Color.white, style: FillStyle(eoFill: true))
-                .frame(width: iconSize, height: iconSize)
+                .frame(width: 24, height: 24)
         case .search:
             SearchIcon()
                 .fill(Color.white)
-                .frame(width: iconSize, height: iconSize)
+                .frame(width: 24, height: 24)
         }
     }
 
@@ -66,8 +61,8 @@ struct AppInput: View {
         case .main:
             BlurCardBackground(
                 style: .bar,
-                extent: height,
-                blurRadius: blurRadius,
+                extent: 56,
+                blurRadius: AppSurface.blurRadius,
                 cardOpacity: 0.7,
                 shape: fieldShape
             )
@@ -86,7 +81,7 @@ struct AppInput: View {
                     shape: fieldShape,
                     containerWidth: geo.size.width,
                     lineWidth: borderWidth,
-                    cornerRadius: iconSize
+                    cornerRadius: 24
                 )
             }
             .allowsHitTesting(false)
@@ -106,11 +101,9 @@ private struct AppInputPreview: View {
     @State private var searchText = ""
 
     var body: some View {
-        let size: CGFloat = 56
-
-        VStack(spacing: size * 12 / 50) {
-            AppInput(height: size, text: $mainText)
-            AppInput(style: .search, height: size, text: $searchText)
+        VStack(spacing: 12) {
+            AppInput(text: $mainText)
+            AppInput(style: .search, text: $searchText)
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 24)

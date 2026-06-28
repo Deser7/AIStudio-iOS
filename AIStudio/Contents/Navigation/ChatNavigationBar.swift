@@ -17,7 +17,6 @@ enum ChatNavigationBarStyle {
 }
 
 struct ChatNavigationBar: View {
-    var height: CGFloat
     let title: String
     var subtitle: String = ""
     var style: ChatNavigationBarStyle = .aiChat
@@ -25,14 +24,7 @@ struct ChatNavigationBar: View {
     let onBack: () -> Void
     var onRegenerate: (() -> Void)?
 
-    private var contentSpacing: CGFloat { height * 10 / 75 }
-    private var horizontalPadding: CGFloat { height * 16 / 75 }
-    private var leadingIconSize: CGFloat { height * 32 / 75 }
-    private var leadingIconContentSize: CGFloat { leadingIconSize * 49 / 80 }
-    private var regenerateIconSize: CGFloat { height * 24 / 75 }
-    private var actionTapSize: CGFloat { height * 44 / 75 }
-    private var backIconSize: CGFloat { height * 17 / 75 }
-    private var borderHeight: CGFloat { height * 1 / 150 }
+    private var leadingIconContentSize: CGFloat { 32 * 49 / 80 }
 
     private var borderColor: Color {
         Color.white.opacity(0.1)
@@ -51,18 +43,18 @@ struct ChatNavigationBar: View {
                 leadingContent
             }
         }
-        .padding(.horizontal, horizontalPadding)
+        .padding(.horizontal, 16)
         .frame(maxWidth: .infinity)
-        .frame(height: height)
+        .frame(height: 75)
         .background { background }
         .overlay(alignment: .bottom) { bottomBorder }
     }
 
     private var leadingContent: some View {
-        HStack(spacing: contentSpacing) {
+        HStack(spacing: 10) {
             backButton
 
-            HStack(spacing: contentSpacing) {
+            HStack(spacing: 10) {
                 leadingIcon
 
                 titleSection
@@ -70,7 +62,7 @@ struct ChatNavigationBar: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            Spacer(minLength: contentSpacing)
+            Spacer(minLength: 10)
 
             if showsRegenerateButton {
                 regenerateButton
@@ -86,7 +78,7 @@ struct ChatNavigationBar: View {
                 Spacer(minLength: 0)
 
                 Color.clear
-                    .frame(width: actionTapSize, height: actionTapSize)
+                    .frame(width: 44, height: 44)
             }
 
             Text(title)
@@ -100,7 +92,7 @@ struct ChatNavigationBar: View {
     private var leadingIcon: some View {
         switch style {
         case .aiChat:
-            Logo(diameter: leadingIconSize, preset: preset)
+            Logo(diameter: 32, preset: preset)
         case .aiVideo:
             gradientLeadingIcon {
                 MagicIcon()
@@ -135,7 +127,7 @@ struct ChatNavigationBar: View {
     ) -> some View {
         ZStack {
             AppGradient.linear(preset)
-                .frame(width: leadingIconSize, height: leadingIconSize)
+                .frame(width: 32, height: 32)
                 .clipShape(Circle())
 
             icon()
@@ -146,9 +138,9 @@ struct ChatNavigationBar: View {
     private var backButton: some View {
         Button(action: onBack) {
             Image(systemName: "chevron.left")
-                .font(.system(size: backIconSize, weight: .semibold))
+                .font(.system(size: 17, weight: .semibold))
                 .foregroundStyle(Color.white)
-                .frame(width: actionTapSize, height: actionTapSize, alignment: .leading)
+                .frame(width: 44, height: 44, alignment: .leading)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text("Back"))
@@ -158,8 +150,8 @@ struct ChatNavigationBar: View {
         Button(action: { onRegenerate?() }) {
             RegenerateIcon()
                 .fill(Color.white)
-                .frame(width: regenerateIconSize, height: regenerateIconSize)
-                .frame(width: actionTapSize, height: actionTapSize)
+                .frame(width: 24, height: 24)
+                .frame(width: 44, height: 44)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text("Regenerate"))
@@ -176,15 +168,13 @@ struct ChatNavigationBar: View {
     private var bottomBorder: some View {
         Rectangle()
             .fill(borderColor)
-            .frame(height: borderHeight)
+            .frame(height: 0.5)
     }
 }
 
 #Preview {
-    let size: CGFloat = 75
-
     VStack(spacing: 0) {
-        ChatNavigationBar(height: size,
+        ChatNavigationBar(
             title: "AI Chat",
             subtitle: "26.03.2026",
             style: .aiChat,
@@ -193,7 +183,7 @@ struct ChatNavigationBar: View {
             onRegenerate: {}
         )
 
-        ChatNavigationBar(height: size,
+        ChatNavigationBar(
             title: "AI Chat",
             subtitle: "26.03.2026",
             style: .aiChat,
@@ -202,7 +192,7 @@ struct ChatNavigationBar: View {
             onRegenerate: {}
         )
 
-        ChatNavigationBar(height: size,
+        ChatNavigationBar(
             title: "AI Video",
             style: .aiVideo,
             preset: .main,
@@ -210,13 +200,13 @@ struct ChatNavigationBar: View {
             onRegenerate: {}
         )
 
-        ChatNavigationBar(height: size,
+        ChatNavigationBar(
             title: "Settings",
             style: .centeredTitle,
             onBack: {}
         )
 
-        ChatNavigationBar(height: size,
+        ChatNavigationBar(
             title: "Clay Fool",
             style: .centeredTitle,
             onBack: {}

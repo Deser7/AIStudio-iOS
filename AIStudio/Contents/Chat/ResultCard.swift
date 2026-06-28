@@ -16,7 +16,6 @@ struct ResultCard: View {
     /// Figma ref width = 358, height = 611.
     private var cardHeight: CGFloat { width * 611 / 358 }
     private var cornerRadius: CGFloat { width * 24 / 358 }
-    private var replaceButtonSize: CGFloat { width * 40 / 358 }
     private var overlayInset: CGFloat { width * 16 / 358 }
 
     private var shape: RoundedRectangle {
@@ -34,7 +33,7 @@ struct ResultCard: View {
         .frame(width: width, height: cardHeight)
         .clipShape(shape)
         .overlay(alignment: .topTrailing) {
-            ReplaceButton(height: replaceButtonSize, action: onReplace)
+            ReplaceButton(action: onReplace)
                 .padding(.top, overlayInset)
                 .padding(.trailing, overlayInset)
         }

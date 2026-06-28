@@ -19,32 +19,23 @@ struct PricingPlanCard: View {
     let price: String
     var badge: String? = nil
     var isSelected: Bool = false
-    var height: CGFloat
     let action: () -> Void
-
-    private var cornerRadius: CGFloat { height * 1 / 3 }
-    private var titleFontSize: CGFloat { height * 2 / 9 }
-    private var secondaryFontSize: CGFloat { height * 7 / 36 }
-    private var textSpacing: CGFloat { height * 1 / 18 }
-    private var borderWidth: CGFloat { max(height * 1 / 72, 1) }
-    private var badgeHorizontalPadding: CGFloat { height * 5 / 36 }
-    private var badgeVerticalPadding: CGFloat { height * 1 / 12 }
 
     var body: some View {
         Button(action: action) {
             HStack {
-                VStack(alignment: .leading, spacing: textSpacing) {
+                VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 0) {
                         Text(periodLabel)
-                            .typography(style: .medium, size: titleFontSize)
+                            .typography(style: .medium, size: 16)
 
                         Text("/ week")
-                            .typography(style: .regular, size: titleFontSize)
+                            .typography(style: .regular, size: 16)
                     }
                     .foregroundStyle(Color.white)
 
                     Text(price)
-                        .typography(style: .regular, size: secondaryFontSize)
+                        .typography(style: .regular, size: 14)
                         .foregroundStyle(Color.price)
                 }
 
@@ -52,20 +43,20 @@ struct PricingPlanCard: View {
 
                 if let badge {
                     Text(badge)
-                        .typography(style: .medium, size: secondaryFontSize)
+                        .typography(style: .medium, size: 14)
                         .foregroundStyle(Color.white)
                         .textCase(.uppercase)
-                        .padding(.horizontal, badgeHorizontalPadding)
-                        .padding(.vertical, badgeVerticalPadding)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
                         .background(AppGradient.main)
                         .clipShape(Capsule())
                 }
             }
-            .padding(.horizontal, titleFontSize)
-            .padding(.vertical, secondaryFontSize)
-            .frame(maxWidth: .infinity, minHeight: height, alignment: .leading)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
             .background(Color.card)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .clipShape(RoundedRectangle(cornerRadius: 24))
             .overlay { borderOverlay }
         }
         .buttonStyle(.plain)
@@ -74,11 +65,11 @@ struct PricingPlanCard: View {
     @ViewBuilder
     private var borderOverlay: some View {
         if isSelected {
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .strokeBorder(AppGradient.main, lineWidth: borderWidth)
+            RoundedRectangle(cornerRadius: 24)
+                .strokeBorder(AppGradient.main, lineWidth: 1)
         } else {
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .strokeBorder(Color.white.opacity(0.25), lineWidth: borderWidth)
+            RoundedRectangle(cornerRadius: 24)
+                .strokeBorder(Color.white.opacity(0.25), lineWidth: 1)
         }
     }
 }
@@ -86,11 +77,10 @@ struct PricingPlanCard: View {
 struct PricingPlans: View {
     let plans: [PricingPlanItem]
     @Binding var selectedPlanID: String
-    var height: CGFloat
     var spacing: CGFloat?
 
     private var planSpacing: CGFloat {
-        spacing ?? height * 2 / 9
+        spacing ?? 16
     }
 
     var body: some View {
@@ -100,8 +90,7 @@ struct PricingPlans: View {
                     periodLabel: plan.periodLabel,
                     price: plan.price,
                     badge: plan.badge,
-                    isSelected: selectedPlanID == plan.id,
-                    height: height
+                    isSelected: selectedPlanID == plan.id
                 ) {
                     selectedPlanID = plan.id
                 }
@@ -132,8 +121,7 @@ struct PricingPlans: View {
         var body: some View {
             PricingPlans(
                 plans: plans,
-                selectedPlanID: $selectedPlanID,
-                height: 72
+                selectedPlanID: $selectedPlanID
             )
             .padding(.horizontal, 24)
             .padding(.vertical, 24)

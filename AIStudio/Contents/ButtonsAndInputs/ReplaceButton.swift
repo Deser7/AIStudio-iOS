@@ -9,22 +9,17 @@ import SwiftUI
 
 struct ReplaceButton: View {
     var title: String = "Replace"
-    var height: CGFloat
     let action: () -> Void
 
     @Environment(\.displayScale) private var displayScale
 
-    private var horizontalPadding: CGFloat { height * 12 / 40 }
-    private var spacing: CGFloat { height * 8 / 40 }
-    private var fontSize: CGFloat { height * 14 / 40 }
-    private var iconSize: CGFloat { height * 24 / 40 }
     private var strokeWidth: CGFloat {
-        (iconSize * 9 / 100).pixelAligned(to: displayScale)
+        CGFloat(2.16).pixelAligned(to: displayScale)
     }
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: spacing) {
+            HStack(spacing: 8) {
                 RefreshIcon()
                     .stroke(
                         Color.white,
@@ -34,19 +29,19 @@ struct ReplaceButton: View {
                             lineJoin: .round
                         )
                     )
-                    .frame(width: iconSize, height: iconSize)
+                    .frame(width: 24, height: 24)
 
                 Text(title)
-                    .typography(style: .regular, size: fontSize)
+                    .typography(style: .regular, size: 14)
                     .foregroundStyle(Color.white)
                     .lineLimit(1)
             }
-            .padding(.horizontal, horizontalPadding)
-            .padding(.vertical, spacing)
-            .frame(height: height)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .frame(height: 40)
             .background(
                 Color.card.opacity(0.4),
-                in: RoundedRectangle(cornerRadius: iconSize)
+                in: RoundedRectangle(cornerRadius: 24)
             )
             .fixedSize(horizontal: true, vertical: false)
         }
@@ -55,9 +50,7 @@ struct ReplaceButton: View {
 }
 
 #Preview {
-    let size: CGFloat = 40
-
-    VStack(spacing: size * 16 / 40) {
-        ReplaceButton(height: size) {}
-    }
+    ReplaceButton(action: {})
+        .padding(24)
+        .background(Color.background)
 }
