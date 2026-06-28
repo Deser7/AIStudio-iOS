@@ -8,21 +8,38 @@
 import SwiftUI
 
 struct Logo: View {
-    var diameter: CGFloat
+    enum Icon {
+        case generate
+        case magic
+    }
+
+    var size: CGFloat
     var preset = AppGradient.Preset.main
+    var icon: Icon = .generate
     var iconColor: Color = .white
 
-    private var iconSize: CGFloat { diameter * 49 / 80 }
+    private var iconSize: CGFloat { size * 49 / 80 }
 
     var body: some View {
         ZStack {
             AppGradient.linear(preset)
-                .frame(width: diameter, height: diameter)
+                .frame(width: size, height: size)
                 .clipShape(Circle())
 
+            iconView
+                .frame(width: iconSize, height: iconSize)
+        }
+    }
+
+    @ViewBuilder
+    private var iconView: some View {
+        switch icon {
+        case .generate:
             GenerateIcon()
                 .fill(iconColor)
-                .frame(width: iconSize, height: iconSize)
+        case .magic:
+            MagicIcon()
+                .fill(iconColor)
         }
     }
 }
@@ -30,11 +47,11 @@ struct Logo: View {
 #Preview {
     let size: CGFloat = 40
 
-    HStack(spacing: size * 2 / 5) {
+    HStack(spacing: 16) {
         ForEach(AppGradient.Preset.allCases, id: \.self) { preset in
-            VStack(spacing: size * 1 / 5) {
-                Logo(diameter: size, preset: preset)
-                Logo(diameter: size * 4 / 5, preset: preset)
+            VStack(spacing: 8) {
+                Logo(size: size, preset: preset, icon: .generate)
+                Logo(size: size, preset: preset, icon: .magic)
             }
         }
     }

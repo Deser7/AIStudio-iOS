@@ -21,8 +21,6 @@ struct ChatNavigationBar: View {
     let onBack: () -> Void
     var onRegenerate: (() -> Void)?
 
-    private var leadingIconContentSize: CGFloat { 32 * 49 / 80 }
-
     private var showsRegenerateButton: Bool {
         style != .centeredTitle && onRegenerate != nil
     }
@@ -85,12 +83,9 @@ struct ChatNavigationBar: View {
     private var leadingIcon: some View {
         switch style {
         case .aiChat:
-            Logo(diameter: 32, preset: preset)
+            Logo(size: 32, preset: preset, icon: .generate)
         case .aiVideo:
-            gradientLeadingIcon {
-                MagicIcon()
-                    .fill(Color.white)
-            }
+            Logo(size: 32, preset: preset, icon: .magic)
         case .centeredTitle:
             EmptyView()
         }
@@ -112,19 +107,6 @@ struct ChatNavigationBar: View {
                 .lineLimit(1)
         case .centeredTitle:
             EmptyView()
-        }
-    }
-
-    private func gradientLeadingIcon<Icon: View>(
-        @ViewBuilder icon: () -> Icon
-    ) -> some View {
-        ZStack {
-            AppGradient.linear(preset)
-                .frame(width: 32, height: 32)
-                .clipShape(Circle())
-
-            icon()
-                .frame(width: leadingIconContentSize, height: leadingIconContentSize)
         }
     }
 
