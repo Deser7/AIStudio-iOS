@@ -72,7 +72,7 @@ struct AppNotification: View {
         switch content {
         case .textCopied(let message), .videoSaved(let message):
             Text(message)
-                .font(AppFont.font(weight: .regular, size: titleFontSize))
+                .typography(style: .regular, size: titleFontSize)
                 .foregroundStyle(Color.white)
                 .multilineTextAlignment(.center)
                 .frame(height: messageTextHeight)
@@ -80,13 +80,13 @@ struct AppNotification: View {
         case .fileTooLarge(let title, let subtitle):
             VStack(spacing: titleSubtitleSpacing) {
                 Text(title)
-                    .font(AppFont.font(weight: .semiBold, size: titleFontSize))
+                    .typography(style: .semiBold, size: titleFontSize)
                     .foregroundStyle(Color.white)
                     .multilineTextAlignment(.center)
                     .frame(height: errorTitleHeight)
 
                 Text(subtitle)
-                    .font(AppFont.font(weight: .regular, size: subtitleFontSize))
+                    .typography(style: .regular, size: subtitleFontSize)
                     .foregroundStyle(subtitleColor)
                     .multilineTextAlignment(.center)
                     .frame(height: errorSubtitleHeight)

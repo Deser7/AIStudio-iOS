@@ -21,7 +21,7 @@ struct BenefitRow: View {
                 .frame(width: iconSize, height: iconSize)
 
             Text(title)
-                .font(AppFont.font(weight: .semiBold, size: size))
+                .typography(style: .semiBold, size: size)
                 .foregroundStyle(Color.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }

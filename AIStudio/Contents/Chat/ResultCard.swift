@@ -18,8 +18,6 @@ struct ResultCard: View {
     private var cornerRadius: CGFloat { size * 24 / 358 }
     private var replaceButtonSize: CGFloat { size * 40 / 358 }
     private var overlayInset: CGFloat { size * 16 / 358 }
-    private var playIconHeight: CGFloat { size * 72 / 358 }
-    private var playIconWidth: CGFloat { playIconHeight * 56 / 72 }
 
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
@@ -32,14 +30,6 @@ struct ResultCard: View {
                 .scaledToFill()
                 .frame(width: size, height: cardHeight)
                 .clipped()
-
-            Button(action: onPlay) {
-                PlayIcon()
-                    .fill(Color.white.opacity(0.9))
-                    .frame(width: playIconWidth, height: playIconHeight)
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(Text("Play"))
         }
         .frame(width: size, height: cardHeight)
         .clipShape(shape)

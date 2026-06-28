@@ -22,7 +22,7 @@ struct SelectionMenuRow<Trailing: View>: View {
         Button(action: action) {
             HStack(spacing: 0) {
                 Text(title)
-                    .typography(Typography.regular(size: fontSize))
+                    .typography(style: .regular, size: fontSize)
                     .foregroundStyle(titleStyle)
                     .tracking(0)
                     .frame(maxWidth: .infinity, alignment: .leading)

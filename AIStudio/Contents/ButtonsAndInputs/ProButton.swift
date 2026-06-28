@@ -21,7 +21,7 @@ struct ProButton: View {
         Button(action: action) {
             HStack(spacing: spacing) {
                 Text(title)
-                    .font(AppFont.font(weight: .regular, size: fontSize))
+                    .typography(style: .regular, size: fontSize)
                     .foregroundStyle(Color.background)
                     .lineLimit(1)
 

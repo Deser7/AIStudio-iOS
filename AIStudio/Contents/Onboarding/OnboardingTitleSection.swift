@@ -65,7 +65,7 @@ struct OnboardingTitleSection: View {
     var body: some View {
         VStack(alignment: contentAlignment, spacing: hasSubtitle ? textSpacing : 0) {
             Text(title)
-                .typography(titleTypography)
+                .typography(style: titleStyle, size: titleSize, lineHeight: titleLineHeight)
                 .tracking(titleTracking)
                 .foregroundStyle(titleColor)
                 .lineLimit(lineLimit)
@@ -74,7 +74,7 @@ struct OnboardingTitleSection: View {
 
             if hasSubtitle {
                 Text(subtitle)
-                    .typography(subtitleTypography)
+                    .typography(style: subtitleStyle, size: subtitleSize, lineHeight: subtitleLineHeight)
                     .tracking(subtitleTracking)
                     .foregroundStyle(subtitleColor)
                     .lineLimit(lineLimit)
@@ -108,25 +108,55 @@ struct OnboardingTitleSection: View {
         titleTextSize ?? textSize
     }
 
-    private var titleTypography: TypographyStyle {
+    private var titleStyle: Typography.Style {
         switch style {
-        case .onboarding: Typography.bold28
-        case .navigation: Typography.semiBold20
-        case .upload: Typography.medium(size: textSize)
-        case .sourceOption: Typography.semiBold(size: sourceOptionTitleSize)
-        case .functionCard: Typography.medium(size: functionCardTitleSize)
-        case .featureCard: Typography.medium(size: featureCardTitleSize)
+        case .onboarding: .bold
+        case .navigation, .sourceOption: .semiBold
+        case .upload, .functionCard, .featureCard: .medium
         }
     }
 
-    private var subtitleTypography: TypographyStyle {
+    private var titleSize: CGFloat {
         switch style {
-        case .onboarding: Typography.regular16
-        case .navigation: Typography.regular14
-        case .upload: Typography.regular(size: uploadSubtitleSize)
-        case .sourceOption: Typography.regular(size: sourceOptionSubtitleSize)
-        case .functionCard: Typography.medium(size: functionCardSubtitleSize)
-        case .featureCard: Typography.regular(size: featureCardSubtitleSize)
+        case .onboarding: 28
+        case .navigation: 20
+        case .upload: textSize
+        case .sourceOption: sourceOptionTitleSize
+        case .functionCard: functionCardTitleSize
+        case .featureCard: featureCardTitleSize
+        }
+    }
+
+    private var titleLineHeight: CGFloat? {
+        switch style {
+        case .navigation: 20
+        default: nil
+        }
+    }
+
+    private var subtitleStyle: Typography.Style {
+        switch style {
+        case .functionCard: .medium
+        default: .regular
+        }
+    }
+
+    private var subtitleSize: CGFloat {
+        switch style {
+        case .onboarding: 16
+        case .navigation: 14
+        case .upload: uploadSubtitleSize
+        case .sourceOption: sourceOptionSubtitleSize
+        case .functionCard: functionCardSubtitleSize
+        case .featureCard: featureCardSubtitleSize
+        }
+    }
+
+    private var subtitleLineHeight: CGFloat? {
+        switch style {
+        case .onboarding: 16
+        case .navigation: 14
+        default: nil
         }
     }
 

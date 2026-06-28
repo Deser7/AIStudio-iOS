@@ -109,7 +109,7 @@ struct AIVideoCard: View {
     private var readinessBadge: some View {
         HStack(spacing: badgeContentGap) {
             Text("Ready in seconds")
-                .typography(Typography.regular(size: badgeFontSize))
+                .typography(style: .regular, size: badgeFontSize)
                 .foregroundStyle(Color.white)
                 .tracking(badgeFontSize * 0.06 / 12)
                 .lineLimit(1)

@@ -56,7 +56,7 @@ struct SettingsRow<Icon: View, Trailing: View>: View {
                 .frame(width: iconWidth, height: iconHeight)
 
             Text(title)
-                .font(AppFont.font(weight: .regular, size: fontSize))
+                .typography(style: .regular, size: fontSize)
                 .foregroundStyle(Color.white)
                 .tracking(0)
                 .lineSpacing(0)
@@ -106,7 +106,7 @@ struct SettingsRowDetail: View {
     var body: some View {
         HStack(spacing: detailSpacing) {
             Text(text)
-                .font(AppFont.font(weight: .regular, size: fontSize))
+                .typography(style: .regular, size: fontSize)
                 .foregroundStyle(Color.price)
 
             SettingsRowChevron(size: size)

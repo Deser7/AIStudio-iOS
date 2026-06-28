@@ -45,7 +45,7 @@ struct SettingsContents: View {
             infoSection
 
             Text("App Version: \(appVersion)")
-                .font(AppFont.font(weight: .regular, size: footerFontSize))
+                .typography(style: .regular, size: footerFontSize)
                 .foregroundStyle(Color.price)
                 .frame(maxWidth: .infinity)
                 .padding(.top, footerTopSpacing)

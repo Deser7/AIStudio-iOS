@@ -76,7 +76,7 @@ struct AIResponseBubble: View {
 
     private var titleView: some View {
         Text(content.title)
-            .font(AppFont.font(weight: .bold, size: fontSize))
+            .typography(style: .bold, size: fontSize)
             .foregroundStyle(AppGradient.main)
             .tracking(0)
             .lineSpacing(0)
@@ -102,7 +102,7 @@ struct AIResponseBubble: View {
 
     private func bodyParagraph(_ text: String) -> some View {
         Text(text)
-            .font(AppFont.font(weight: .regular, size: fontSize))
+            .typography(style: .regular, size: fontSize)
             .foregroundStyle(bodyTextColor)
             .tracking(0)
             .lineSpacing(0)
@@ -118,7 +118,7 @@ struct AIResponseBubble: View {
                 .padding(.top, bulletTopPadding)
 
             Text(
-                AppFont.emphasizedText(
+                Typography.emphasizedText(
                     bullet.emphasis,
                     suffix: bullet.text,
                     size: fontSize,

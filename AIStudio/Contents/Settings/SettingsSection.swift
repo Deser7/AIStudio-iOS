@@ -20,7 +20,7 @@ struct SettingsSection<Rows: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: titleBottomSpacing) {
             Text(title)
-                .font(AppFont.font(weight: .regular, size: sectionTitleSize))
+                .typography(style: .regular, size: sectionTitleSize)
                 .foregroundStyle(Color.price)
                 .textCase(.none)
                 .frame(maxWidth: .infinity, alignment: .leading)

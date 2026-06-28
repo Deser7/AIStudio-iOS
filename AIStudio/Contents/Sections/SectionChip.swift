@@ -26,17 +26,13 @@ struct SectionChip: View {
     }
 
     private var titleColor: Color {
-        Color.white.opacity(
-            isSelected
-                ? 1
-                : 0.5
-        )
+        Color.white.opacity(isSelected ? 1 : 0.5)
     }
 
     var body: some View {
         Button(action: action) {
             Text(title)
-                .typography(Typography.regular(size: fontSize))
+                .typography(style: .regular, size: fontSize)
                 .foregroundStyle(titleColor)
                 .tracking(0)
                 .padding(.horizontal, spacing)

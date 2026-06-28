@@ -37,7 +37,7 @@ struct ReplaceButton: View {
                     .frame(width: iconSize, height: iconSize)
 
                 Text(title)
-                    .font(AppFont.font(weight: .regular, size: fontSize))
+                    .typography(style: .regular, size: fontSize)
                     .foregroundStyle(Color.white)
                     .lineLimit(1)
             }

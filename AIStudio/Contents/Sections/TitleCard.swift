@@ -36,7 +36,7 @@ struct TitleCard: View {
             )
 
             Text(title)
-                .typography(Typography.regular(size: titleFontSize))
+                .typography(style: .regular, size: titleFontSize)
                 .foregroundStyle(Color.white)
                 .frame(maxWidth: .infinity)
                 .padding(padding)

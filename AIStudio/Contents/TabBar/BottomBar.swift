@@ -57,7 +57,7 @@ struct BottomBar: View {
                 .frame(width: verticalSpacing, height: verticalSpacing)
 
             Text(cancelText)
-                .font(AppFont.font(weight: .medium, size: secondaryFontSize))
+                .typography(style: .medium, size: secondaryFontSize)
                 .foregroundStyle(secondaryColor)
         }
     }
@@ -79,7 +79,7 @@ struct BottomBar: View {
     private func linkButton(_ title: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
-                .font(AppFont.font(weight: .medium, size: secondaryFontSize))
+                .typography(style: .medium, size: secondaryFontSize)
                 .foregroundStyle(secondaryColor)
         }
         .buttonStyle(.plain)

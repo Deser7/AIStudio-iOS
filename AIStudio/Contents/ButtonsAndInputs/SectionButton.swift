@@ -31,7 +31,7 @@ struct SectionButton: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(AppFont.font(weight: .semiBold, size: fontSize))
+                .typography(style: .semiBold, size: fontSize)
                 .foregroundStyle(titleColor)
                 .padding(.horizontal, horizontalPadding)
                 .frame(maxWidth: .infinity)

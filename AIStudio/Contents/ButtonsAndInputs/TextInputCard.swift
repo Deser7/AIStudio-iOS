@@ -66,12 +66,12 @@ struct TextInputCard: View {
             "",
             text: $text,
             prompt: Text(placeholder)
-                .font(AppFont.font(weight: .regular, size: fontSize))
+                .font(Typography.font(style: .regular, size: fontSize))
                 .foregroundColor(secondaryColor),
             axis: .vertical
         )
         .lineLimit(editorLineLimit)
-        .font(AppFont.font(weight: .regular, size: fontSize))
+        .typography(style: .regular, size: fontSize)
         .foregroundColor(Color.white)
         .tint(Color.white)
         .frame(height: editorHeight, alignment: .top)
@@ -80,7 +80,7 @@ struct TextInputCard: View {
 
     private var characterCounter: some View {
         Text("\(text.count)/\(characterLimit)")
-            .font(AppFont.font(weight: .regular, size: fontSize))
+            .typography(style: .regular, size: fontSize)
             .foregroundColor(isOverLimit ? Color.error : secondaryColor)
     }
 

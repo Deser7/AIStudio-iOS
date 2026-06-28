@@ -137,12 +137,12 @@ struct ComposerInput: View {
             "",
             text: $text,
             prompt: Text(placeholder)
-                .font(AppFont.font(weight: .regular, size: spacing))
+                .font(Typography.font(style: .regular, size: spacing))
                 .foregroundColor(placeholderColor),
             axis: .vertical
         )
         .lineLimit(1...10)
-        .font(AppFont.font(weight: .regular, size: spacing))
+        .typography(style: .regular, size: spacing)
         .foregroundColor(Color.white)
         .tint(Color.white)
         .disabled(isTextInputDisabled)
