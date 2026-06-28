@@ -26,7 +26,6 @@ struct AudioInput: View {
 
             AudioWaveform(
                 progress: clampedProgress,
-                height: 40,
                 inactiveOpacity: 0.2
             )
             .frame(maxWidth: .infinity)

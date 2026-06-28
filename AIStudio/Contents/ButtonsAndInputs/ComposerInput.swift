@@ -150,10 +150,7 @@ struct ComposerInput: View {
         HStack(spacing: 16) {
             CircularIconButton(diameter: 40, icon: .cross, action: handleVoiceCancel)
 
-            AudioWaveform(
-                progress: voiceProgress,
-                height: 40
-            )
+            AudioWaveform(progress: voiceProgress)
             .frame(maxWidth: .infinity)
 
             GradientIconButton(diameter: 40, icon: .done, action: handleVoiceConfirm)

@@ -9,8 +9,9 @@ import SwiftUI
 
 struct AudioWaveform: View {
     var progress: CGFloat
-    var height: CGFloat
     var inactiveOpacity: CGFloat = 0.2
+
+    private let height: CGFloat = 40
 
     private var segmentCount: Int { EqualizerIcon.Layout.segmentCount }
 
@@ -130,7 +131,7 @@ private struct AudioWaveformPreview: View {
 
     var body: some View {
         VStack(spacing: 24) {
-            AudioWaveform(progress: progress, height: 40)
+            AudioWaveform(progress: progress)
 
             Slider(value: $progress, in: 0...1)
         }
