@@ -9,9 +9,7 @@ import SwiftUI
 
 struct BlurCardBackground<S: Shape>: View {
     enum Style {
-        /// Горизонтальный бар: input, audio.
         case bar
-        /// Квадрат / круг: addendum, adding photo.
         case compact
     }
 
@@ -41,13 +39,13 @@ struct BlurCardBackground<S: Shape>: View {
     private var blurWidth: CGFloat {
         switch style {
         case .bar:
-            blurRadius * AppSurface.BlurFrame.barWidthMultiplier
+            blurRadius * 4
         case .compact:
-            extent + blurRadius * AppSurface.BlurFrame.paddingMultiplier
+            extent + blurRadius * 2
         }
     }
 
     private var blurHeight: CGFloat {
-        extent + blurRadius * AppSurface.BlurFrame.paddingMultiplier
+        extent + blurRadius * 2
     }
 }

@@ -23,10 +23,6 @@ struct ChatNavigationBar: View {
 
     private var leadingIconContentSize: CGFloat { 32 * 49 / 80 }
 
-    private var borderColor: Color {
-        Color.white.opacity(0.1)
-    }
-
     private var showsRegenerateButton: Bool {
         style != .centeredTitle && onRegenerate != nil
     }
@@ -164,7 +160,7 @@ struct ChatNavigationBar: View {
 
     private var bottomBorder: some View {
         Rectangle()
-            .fill(borderColor)
+            .fill(.white.opacity(0.1))
             .frame(height: 0.5)
     }
 }

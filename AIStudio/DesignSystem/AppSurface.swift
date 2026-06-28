@@ -8,11 +8,5 @@
 import SwiftUI
 
 enum AppSurface {
-    /// Figma «Blur»: 182.21
     static let blurRadius: CGFloat = 182.21
-
-    enum BlurFrame {
-        static let barWidthMultiplier: CGFloat = 4
-        static let paddingMultiplier: CGFloat = 2
-    }
 }
