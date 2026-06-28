@@ -26,7 +26,7 @@ struct SectionButton: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .typography(style: .semiBold, size: 16)
+                .typography(style: .semiBold16)
                 .foregroundStyle(titleColor)
                 .padding(.horizontal, 12)
                 .frame(maxWidth: .infinity)

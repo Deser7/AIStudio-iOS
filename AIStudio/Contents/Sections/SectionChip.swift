@@ -24,7 +24,7 @@ struct SectionChip: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .typography(style: .regular, size: 14)
+                .typography(style: .regular14)
                 .foregroundStyle(titleColor)
                 .tracking(0)
                 .padding(.horizontal, 16)

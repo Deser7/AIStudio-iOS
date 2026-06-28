@@ -45,9 +45,7 @@ struct FunctionCard: View {
                 OnboardingTitleSection(
                     title: option.title,
                     subtitle: option.subtitle,
-                    style: .functionCard,
-                    titleTextSize: 16,
-                    subtitleTextSize: 12
+                    style: .functionCard
                 )
             }
             .padding(16)

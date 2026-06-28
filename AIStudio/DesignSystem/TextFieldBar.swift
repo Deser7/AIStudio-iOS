@@ -26,10 +26,10 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
                 "",
                 text: $text,
                 prompt: Text(placeholder)
-                    .font(Typography.font(style: .regular, size: 16))
+                    .font(Typography.font(style: .regular16))
                     .foregroundColor(Color.white.opacity(0.5))
             )
-            .typography(style: .regular, size: 16)
+            .typography(style: .regular16)
             .foregroundColor(Color.white)
             .tint(Color.white)
         }

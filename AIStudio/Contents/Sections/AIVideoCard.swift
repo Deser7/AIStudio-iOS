@@ -34,9 +34,7 @@ struct AIVideoCard: View {
                         OnboardingTitleSection(
                             title: "Turn Photo\ninto Video",
                             subtitle: "Animate • Templates",
-                            style: .featureCard,
-                            titleTextSize: 20,
-                            subtitleTextSize: 14
+                            style: .featureCard
                         )
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -86,7 +84,7 @@ struct AIVideoCard: View {
     private var readinessBadge: some View {
         HStack(spacing: 8) {
             Text("Ready in seconds")
-                .typography(style: .regular, size: 12)
+                .typography(style: .regular12)
                 .foregroundStyle(Color.white)
                 .tracking(0.06)
                 .lineLimit(1)

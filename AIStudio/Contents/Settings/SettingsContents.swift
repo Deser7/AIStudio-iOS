@@ -34,7 +34,7 @@ struct SettingsContents: View {
             infoSection
 
             Text("App Version: \(appVersion)")
-                .typography(style: .regular, size: 12)
+                .typography(style: .regular12)
                 .foregroundStyle(Color.price)
                 .frame(maxWidth: .infinity)
                 .padding(.top, 32)

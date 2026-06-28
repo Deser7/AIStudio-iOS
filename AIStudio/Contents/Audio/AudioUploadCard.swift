@@ -63,8 +63,7 @@ struct AudioUploadCard: View {
                 OnboardingTitleSection(
                     title: "Converting speech to text...",
                     subtitle: "",
-                    style: .upload,
-                    textSize: 16
+                    style: .upload
                 )
             } else {
                 importIcon
@@ -72,9 +71,7 @@ struct AudioUploadCard: View {
                 OnboardingTitleSection(
                     title: "Upload audio or video",
                     subtitle: supportedFormatsSubtitle,
-                    style: .upload,
-                    textSize: 16,
-                    subtitleTextSize: 14
+                    style: .upload
                 )
             }
         }

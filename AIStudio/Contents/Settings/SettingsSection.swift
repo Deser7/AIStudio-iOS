@@ -15,7 +15,7 @@ struct SettingsSection<Rows: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
-                .typography(style: .regular, size: 13)
+                .typography(style: .regular16)
                 .foregroundStyle(Color.price)
                 .textCase(.none)
                 .frame(maxWidth: .infinity, alignment: .leading)

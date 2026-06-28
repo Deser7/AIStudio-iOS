@@ -45,9 +45,7 @@ struct MediaSourceOptionRow: View {
                 OnboardingTitleSection(
                     title: option.title,
                     subtitle: option.subtitle,
-                    style: .sourceOption,
-                    titleTextSize: 20,
-                    subtitleTextSize: 16
+                    style: .sourceOption
                 )
             }
             .padding(.leading, 24)

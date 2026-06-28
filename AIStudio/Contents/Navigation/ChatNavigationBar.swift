@@ -75,7 +75,7 @@ struct ChatNavigationBar: View {
             }
 
             Text(title)
-                .typography(style: .semiBold, size: 20)
+                .typography(style: .semiBold20)
                 .foregroundStyle(Color.white)
                 .lineLimit(1)
         }
@@ -107,7 +107,7 @@ struct ChatNavigationBar: View {
             )
         case .aiVideo:
             Text(title)
-                .typography(style: .semiBold, size: 20)
+                .typography(style: .semiBold20)
                 .foregroundStyle(Color.white)
                 .lineLimit(1)
         case .centeredTitle:

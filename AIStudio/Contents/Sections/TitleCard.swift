@@ -29,7 +29,7 @@ struct TitleCard: View {
             )
 
             Text(title)
-                .typography(style: .regular, size: 16)
+                .typography(style: .regular16)
                 .foregroundStyle(Color.white)
                 .frame(maxWidth: .infinity)
                 .padding(8)

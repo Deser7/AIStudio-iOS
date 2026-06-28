@@ -29,13 +29,13 @@ struct HistoryCard: View {
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
-                        .typography(style: .semiBold, size: 16)
+                        .typography(style: .semiBold16)
                         .foregroundStyle(Color.white)
                         .tracking(0)
                         .lineLimit(1)
 
                     Text(subtitle)
-                        .typography(style: .regular, size: 14)
+                        .typography(style: .regular14)
                         .foregroundStyle(Color.white.opacity(0.5))
                         .tracking(0)
                         .lineLimit(1)

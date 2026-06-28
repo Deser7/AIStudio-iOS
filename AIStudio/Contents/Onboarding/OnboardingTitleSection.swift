@@ -22,13 +22,6 @@ struct OnboardingTitleSection: View {
     let title: String
     let subtitle: String
     var style: OnboardingTitleSectionStyle = .onboarding
-    /// Базовая единица 16 px для `.upload`.
-    var textSize: CGFloat = 16
-    /// Title 20 px для `.sourceOption`.
-    var titleTextSize: CGFloat?
-
-    /// Subtitle 14 px для `.upload`, 16 px для `.sourceOption`.
-    var subtitleTextSize: CGFloat?
 
     private var isSourceOptionStyle: Bool {
         style == .sourceOption
@@ -65,16 +58,16 @@ struct OnboardingTitleSection: View {
     var body: some View {
         VStack(alignment: contentAlignment, spacing: hasSubtitle ? textSpacing : 0) {
             Text(title)
-                .typography(style: titleStyle, size: titleSize, lineHeight: titleLineHeight)
+                .typography(style: titleTypography)
                 .tracking(titleTracking)
                 .foregroundStyle(titleColor)
                 .lineLimit(lineLimit)
                 .multilineTextAlignment(isUploadStyle ? .center : .leading)
                 .frame(maxWidth: horizontalMaxWidth, alignment: frameAlignment)
 
-            if hasSubtitle {
+            if hasSubtitle, let subtitleTypography {
                 Text(subtitle)
-                    .typography(style: subtitleStyle, size: subtitleSize, lineHeight: subtitleLineHeight)
+                    .typography(style: subtitleTypography)
                     .tracking(subtitleTracking)
                     .foregroundStyle(subtitleColor)
                     .lineLimit(lineLimit)
@@ -89,91 +82,28 @@ struct OnboardingTitleSection: View {
         switch style {
         case .onboarding: 8
         case .navigation: 2
-        case .upload: textSize * 12 / 16
-        case .sourceOption: sourceOptionTitleSize * 4 / 20
-        case .functionCard: functionCardTitleSize * 4 / 16
-        case .featureCard: featureCardTitleSize * 4 / 20
+        case .upload: 12
+        case .sourceOption, .functionCard, .featureCard: 4
         }
     }
 
-    private var functionCardTitleSize: CGFloat {
-        titleTextSize ?? textSize
-    }
-
-    private var featureCardTitleSize: CGFloat {
-        titleTextSize ?? textSize
-    }
-
-    private var sourceOptionTitleSize: CGFloat {
-        titleTextSize ?? textSize
-    }
-
-    private var titleStyle: Typography.Style {
+    private var titleTypography: Typography.Style {
         switch style {
-        case .onboarding: .bold
-        case .navigation, .sourceOption: .semiBold
-        case .upload, .functionCard, .featureCard: .medium
+        case .onboarding: .bold28
+        case .navigation, .sourceOption, .featureCard: .semiBold20
+        case .upload, .functionCard: .medium16
         }
     }
 
-    private var titleSize: CGFloat {
+    private var subtitleTypography: Typography.Style? {
+        guard hasSubtitle else { return nil }
+
         switch style {
-        case .onboarding: 28
-        case .navigation: 20
-        case .upload: textSize
-        case .sourceOption: sourceOptionTitleSize
-        case .functionCard: functionCardTitleSize
-        case .featureCard: featureCardTitleSize
+        case .onboarding: return .regular16
+        case .navigation, .upload, .featureCard: return .regular14
+        case .sourceOption: return .regular16
+        case .functionCard: return .medium12
         }
-    }
-
-    private var titleLineHeight: CGFloat? {
-        switch style {
-        case .navigation: 20
-        default: nil
-        }
-    }
-
-    private var subtitleStyle: Typography.Style {
-        switch style {
-        case .functionCard: .medium
-        default: .regular
-        }
-    }
-
-    private var subtitleSize: CGFloat {
-        switch style {
-        case .onboarding: 16
-        case .navigation: 14
-        case .upload: uploadSubtitleSize
-        case .sourceOption: sourceOptionSubtitleSize
-        case .functionCard: functionCardSubtitleSize
-        case .featureCard: featureCardSubtitleSize
-        }
-    }
-
-    private var subtitleLineHeight: CGFloat? {
-        switch style {
-        case .onboarding: 16
-        case .navigation: 14
-        default: nil
-        }
-    }
-
-    private var functionCardSubtitleSize: CGFloat {
-        subtitleTextSize ?? functionCardTitleSize * 12 / 16
-    }
-
-    private var featureCardSubtitleSize: CGFloat {
-        subtitleTextSize ?? featureCardTitleSize * 14 / 20
-    }
-
-    private var uploadSubtitleSize: CGFloat {
-        subtitleTextSize ?? textSize * 14 / 16
-    }
-
-    private var sourceOptionSubtitleSize: CGFloat {
-        subtitleTextSize ?? sourceOptionTitleSize * 16 / 20
     }
 
     private var titleColor: Color {
@@ -199,10 +129,7 @@ struct OnboardingTitleSection: View {
     }
 
     private var subtitleTracking: CGFloat {
-        switch style {
-        case .functionCard: functionCardSubtitleSize * -0.08 / 12
-        case .featureCard, .onboarding, .navigation, .upload, .sourceOption: 0
-        }
+        style == .functionCard ? -0.08 : 0
     }
 
     private var lineLimit: Int? {

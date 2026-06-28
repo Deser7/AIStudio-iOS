@@ -7,18 +7,6 @@
 
 import SwiftUI
 
-struct SettingsRowIcon: View {
-    let systemName: String
-
-    var body: some View {
-        Image(systemName: systemName)
-            .font(.system(size: 22, weight: .medium))
-            .foregroundStyle(AppGradient.main)
-            .frame(width: 28, height: 22)
-    }
-}
-
-/// Строка настроек (Figma «Row», 44).
 struct SettingsRow<Icon: View, Trailing: View>: View {
     let title: String
     var action: (() -> Void)?
@@ -45,7 +33,7 @@ struct SettingsRow<Icon: View, Trailing: View>: View {
                 .frame(width: 28, height: 22)
 
             Text(title)
-                .typography(style: .regular, size: 16)
+                .typography(style: .regular16)
                 .foregroundStyle(Color.white)
                 .tracking(0)
                 .lineSpacing(0)
@@ -85,7 +73,7 @@ struct SettingsRowDetail: View {
     var body: some View {
         HStack(spacing: 8) {
             Text(text)
-                .typography(style: .regular, size: 16)
+                .typography(style: .regular16)
                 .foregroundStyle(Color.price)
 
             SettingsRowChevron()

@@ -48,7 +48,7 @@ struct BottomBar: View {
                 .frame(width: 16, height: 16)
 
             Text(cancelText)
-                .typography(style: .medium, size: 12)
+                .typography(style: .medium12)
                 .foregroundStyle(secondaryColor)
         }
     }
@@ -70,7 +70,7 @@ struct BottomBar: View {
     private func linkButton(_ title: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
-                .typography(style: .medium, size: 12)
+                .typography(style: .medium12)
                 .foregroundStyle(secondaryColor)
         }
         .buttonStyle(.plain)

@@ -32,7 +32,7 @@ struct ReplaceButton: View {
                     .frame(width: 24, height: 24)
 
                 Text(title)
-                    .typography(style: .regular, size: 14)
+                    .typography(style: .regular14)
                     .foregroundStyle(Color.white)
                     .lineLimit(1)
             }

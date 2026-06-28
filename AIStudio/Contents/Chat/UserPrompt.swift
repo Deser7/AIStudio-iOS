@@ -47,7 +47,7 @@ struct UserPrompt: View {
 
     private var messageText: some View {
         Text(text)
-            .typography(style: .regular, size: 16)
+            .typography(style: .regular16)
             .foregroundStyle(Color.white)
             .tracking(0)
             .lineSpacing(0)
@@ -114,7 +114,7 @@ private struct UserPromptPreview: View {
                 text: $text,
                 axis: .vertical
             )
-            .typography(style: .regular, size: 16)
+            .typography(style: .regular16)
             .foregroundStyle(Color.white)
             .lineLimit(1 ... 10)
             .padding(12)

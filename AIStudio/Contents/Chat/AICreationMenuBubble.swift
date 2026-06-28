@@ -17,7 +17,7 @@ struct AICreationMenuBubble: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             Text("What do you want to create?")
-                .typography(style: .semiBold, size: 16)
+                .typography(style: .semiBold16)
                 .foregroundStyle(Color.white)
                 .tracking(0)
                 .multilineTextAlignment(.leading)

@@ -9,97 +9,146 @@ import SwiftUI
 
 enum Typography {
     enum Style: CaseIterable {
-        case regular
-        case medium
-        case semiBold
-        case bold
+        case regular12
+        case regular14
+        case regular16
+        case regular20
+        case medium12
+        case medium14
+        case medium16
+        case medium20
+        case semiBold14
+        case semiBold16
+        case semiBold20
+        case semiBold24
+        case bold16
+        case bold28
+        case bold34
 
-        var title: String {
+        var fontSize: CGFloat {
             switch self {
-            case .regular: "Regular"
-            case .medium: "Medium"
-            case .semiBold: "Semi Bold"
-            case .bold: "Bold"
+            case .regular12, .medium12: 12
+            case .regular14, .medium14, .semiBold14: 14
+            case .regular16, .medium16, .semiBold16, .bold16: 16
+            case .regular20, .medium20, .semiBold20: 20
+            case .semiBold24: 24
+            case .bold28: 28
+            case .bold34: 34
+            }
+        }
+
+        var lineHeight: CGFloat {
+            switch self {
+            case .regular14: 14
+            case .regular16: 16
+            case .semiBold20: 20
+            case .bold34: 41
+            default: fontSize
+            }
+        }
+
+        var weightTitle: String {
+            switch self {
+            case .regular12, .regular14, .regular16, .regular20:
+                "Regular"
+            case .medium12, .medium14, .medium16, .medium20:
+                "Medium"
+            case .semiBold14, .semiBold16, .semiBold20, .semiBold24:
+                "Semi Bold"
+            case .bold16, .bold28, .bold34:
+                "Bold"
             }
         }
 
         fileprivate var postScriptName: String {
             switch self {
-            case .regular: "Inter-Regular"
-            case .medium: "Inter-Medium"
-            case .semiBold: "Inter-SemiBold"
-            case .bold: "Inter-Bold"
+            case .regular12, .regular14, .regular16, .regular20:
+                "Inter-Regular"
+            case .medium12, .medium14, .medium16, .medium20:
+                "Inter-Medium"
+            case .semiBold14, .semiBold16, .semiBold20, .semiBold24:
+                "Inter-SemiBold"
+            case .bold16, .bold28, .bold34:
+                "Inter-Bold"
             }
         }
 
-        fileprivate var systemWeight: Font.Weight {
-            switch self {
-            case .regular: .regular
-            case .medium: .medium
-            case .semiBold: .semibold
-            case .bold: .bold
+        fileprivate var boldVariant: Style {
+            switch fontSize {
+            case 12: .bold16
+            case 14: .bold16
+            case 16: .bold16
+            case 20: .bold28
+            case 24: .bold28
+            case 28: .bold28
+            case 34: .bold34
+            default: .bold16
             }
         }
     }
 
     /// Figma type scale для preview.
-    static let previewStyles: [(section: Style, sizes: [CGFloat], lineHeights: [CGFloat?])] = [
-        (.semiBold, [14, 16, 20], [nil, 16, 20]),
-        (.medium, [12, 16, 20], [nil, 16, nil]),
-        (.regular, [14, 16, 20], [14, 16, nil]),
-        (.bold, [28, 34], [nil, 41])
+    static let previewGroups: [(weight: String, styles: [Style])] = [
+        ("Semi Bold", [.semiBold14, .semiBold16, .semiBold20]),
+        ("Medium", [.medium12, .medium16, .medium20]),
+        ("Regular", [.regular14, .regular16, .regular20]),
+        ("Bold", [.bold28, .bold34])
     ]
 
-    static func font(style: Style, size: CGFloat) -> Font {
-        Font(uiFont(style: style, size: size))
+    static func font(style: Style) -> Font {
+        Font(uiFont(style: style))
     }
 
     /// Жирное начало + regular продолжение (Figma bullet: Bold/16 + Regular/16).
     static func emphasizedText(
         _ emphasis: String,
         suffix: String,
-        size: CGFloat,
+        style: Style = .regular16,
         color: Color
     ) -> AttributedString {
         let uiColor = UIColor(color)
         let mutable = NSMutableAttributedString(
             string: emphasis,
-            attributes: textAttributes(style: .bold, size: size, color: uiColor)
+            attributes: textAttributes(style: style.boldVariant, color: uiColor)
         )
         mutable.append(
             NSAttributedString(
                 string: " — \(suffix)",
-                attributes: textAttributes(style: .regular, size: size, color: uiColor)
+                attributes: textAttributes(style: style, color: uiColor)
             )
         )
         return AttributedString(mutable)
     }
 
-    fileprivate static func uiFont(style: Style, size: CGFloat) -> UIFont {
-        UIFont(name: style.postScriptName, size: size)
-            ?? .systemFont(ofSize: size, weight: uiWeight(for: style))
+    fileprivate static func uiFont(style: Style) -> UIFont {
+        UIFont(name: style.postScriptName, size: style.fontSize)
+            ?? .systemFont(ofSize: style.fontSize, weight: uiWeight(for: style))
     }
 
     private static func uiWeight(for style: Style) -> UIFont.Weight {
         switch style {
-        case .regular: .regular
-        case .medium: .medium
-        case .semiBold: .semibold
-        case .bold: .bold
+        case .regular12, .regular14, .regular16, .regular20:
+            .regular
+        case .medium12, .medium14, .medium16, .medium20:
+            .medium
+        case .semiBold14, .semiBold16, .semiBold20, .semiBold24:
+            .semibold
+        case .bold16, .bold28, .bold34:
+            .bold
         }
     }
 
     private static func textAttributes(
         style: Style,
-        size: CGFloat,
         color: UIColor
     ) -> [NSAttributedString.Key: Any] {
+        _ = style.fontSize
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.minimumLineHeight = size
-        paragraphStyle.maximumLineHeight = size
+        paragraphStyle.minimumLineHeight = style.lineHeight
+        paragraphStyle.maximumLineHeight = style.lineHeight
 
         return [
-            .font: uiFont(style: style, size: size),
+            .font: uiFont(style: style),
             .foregroundColor: color,
             .kern: 0,
             .paragraphStyle: paragraphStyle
@@ -109,29 +158,24 @@ enum Typography {
 
 private struct TypographyModifier: ViewModifier {
     let style: Typography.Style
-    let size: CGFloat
     let lineHeight: CGFloat
 
     func body(content: Content) -> some View {
         content
-            .font(Typography.font(style: style, size: size))
-            .lineSpacing(lineHeight - size)
+            .font(Typography.font(style: style))
+            .lineSpacing(lineHeight - style.fontSize)
     }
 }
 
 extension View {
-    /// Figma line height по умолчанию 100% (`lineHeight == size`).
     func typography(
         style: Typography.Style,
-        size: CGFloat,
         lineHeight: CGFloat? = nil
     ) -> some View {
-        let resolvedLineHeight = lineHeight ?? size
-        return modifier(
+        modifier(
             TypographyModifier(
                 style: style,
-                size: size,
-                lineHeight: resolvedLineHeight
+                lineHeight: lineHeight ?? style.lineHeight
             )
         )
     }
@@ -140,25 +184,19 @@ extension View {
 #Preview("Typography") {
     ScrollView {
         VStack(alignment: .leading, spacing: 32) {
-            ForEach(Typography.previewStyles, id: \.section) { group in
+            ForEach(Typography.previewGroups, id: \.weight) { group in
                 VStack(alignment: .leading, spacing: 16) {
-                    Text(group.section.title)
-                        .typography(style: .semiBold, size: 20)
+                    Text(group.weight)
+                        .typography(style: .semiBold20)
 
-                    ForEach(Array(group.sizes.enumerated()), id: \.offset) { index, fontSize in
-                        let lineHeight = group.lineHeights[index]
-
+                    ForEach(group.styles, id: \.self) { textStyle in
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("\(Int(fontSize)) px")
-                                .typography(style: .medium, size: 12)
+                            Text("\(Int(textStyle.fontSize)) px")
+                                .typography(style: .medium12)
                                 .foregroundStyle(.secondary)
 
                             Text("The quick brown fox jumps over the lazy dog.")
-                                .typography(
-                                    style: group.section,
-                                    size: fontSize,
-                                    lineHeight: lineHeight ?? fontSize
-                                )
+                                .typography(style: textStyle)
                                 .foregroundStyle(.primary)
                         }
                     }
