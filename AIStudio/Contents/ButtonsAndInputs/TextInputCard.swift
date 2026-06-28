@@ -10,15 +10,15 @@ import SwiftUI
 /// Многострочное поле ввода с счётчиком символов (Figma «input», 342×162).
 struct TextInputCard: View {
     var placeholder: String = "Paste or write your text here..."
-    var size: CGFloat
+    var width: CGFloat
     var characterLimit: Int = 400
     @Binding var text: String
 
     @Environment(\.displayScale) private var displayScale
 
     /// Figma ref width = 342, height = 162. Базовая единица — 16px.
-    private var spacing: CGFloat { size * 16 / 342 }
-    private var cardHeight: CGFloat { size * 162 / 342 }
+    private var spacing: CGFloat { width * 16 / 342 }
+    private var cardHeight: CGFloat { width * 162 / 342 }
     private var cornerRadius: CGFloat { spacing * 24 / 16 }
     private var fontSize: CGFloat { spacing }
     private var blurRadius: CGFloat { spacing * AppSurface.blurRadius / 16 }
@@ -55,7 +55,7 @@ struct TextInputCard: View {
         }
         .padding(.top, cornerRadius)
         .padding([.horizontal, .bottom], spacing)
-        .frame(width: size, height: cardHeight, alignment: .top)
+        .frame(width: width, height: cardHeight, alignment: .top)
         .background { cardBackground }
         .clipShape(shape)
         .overlay { errorBorder }
@@ -95,7 +95,7 @@ struct TextInputCard: View {
     private var cardBackground: some View {
         BlurCardBackground(
             style: .compact,
-            size: cardHeight,
+            extent: cardHeight,
             blurRadius: blurRadius,
             cardOpacity: 0.6,
             shape: shape
@@ -119,7 +119,7 @@ private struct TextInputCardPreviewContainer: View {
     @Binding var text: String
 
     var body: some View {
-        TextInputCard(size: 342, text: $text)
+        TextInputCard(width: 342, text: $text)
             .padding(24)
             .background(Color.background)
     }

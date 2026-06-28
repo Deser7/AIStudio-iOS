@@ -16,26 +16,26 @@ enum AppNotificationContent {
 /// Toast-уведомление (Figma «notification»).
 struct AppNotification: View {
     let content: AppNotificationContent
-    var size: CGFloat
+    var width: CGFloat
 
-    private var titleFontSize: CGFloat { size * 16 / 239 }
-    private var cornerRadius: CGFloat { size * 24 / 239 }
-    private var successContentSpacing: CGFloat { size * 8 / 239 }
-    private var errorContentSpacing: CGFloat { size * 12 / 239 }
-    private var titleSubtitleSpacing: CGFloat { size * 4 / 239 }
-    private var subtitleFontSize: CGFloat { size * 14 / 239 }
-    private var iconSize: CGFloat { size * 40 / 239 }
-    private var messageTextHeight: CGFloat { size * 38 / 239 }
-    private var errorTitleHeight: CGFloat { size * 19 / 239 }
-    private var errorSubtitleHeight: CGFloat { size * 17 / 239 }
-    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 239 }
+    private var titleFontSize: CGFloat { width * 16 / 239 }
+    private var cornerRadius: CGFloat { width * 24 / 239 }
+    private var successContentSpacing: CGFloat { width * 8 / 239 }
+    private var errorContentSpacing: CGFloat { width * 12 / 239 }
+    private var titleSubtitleSpacing: CGFloat { width * 4 / 239 }
+    private var subtitleFontSize: CGFloat { width * 14 / 239 }
+    private var iconSize: CGFloat { width * 40 / 239 }
+    private var messageTextHeight: CGFloat { width * 38 / 239 }
+    private var errorTitleHeight: CGFloat { width * 19 / 239 }
+    private var errorSubtitleHeight: CGFloat { width * 17 / 239 }
+    private var blurRadius: CGFloat { width * AppSurface.blurRadius / 239 }
 
     private var cardHeight: CGFloat {
         switch content {
         case .fileTooLarge:
-            size * 140 / 239
+            width * 140 / 239
         default:
-            size * 134 / 239
+            width * 134 / 239
         }
     }
 
@@ -62,7 +62,7 @@ struct AppNotification: View {
         }
         .padding(.horizontal, titleFontSize)
         .padding(.vertical, cornerRadius)
-        .frame(width: size, height: cardHeight)
+        .frame(width: width, height: cardHeight)
         .background { notificationBackground }
         .clipShape(shape)
     }
@@ -113,7 +113,7 @@ struct AppNotification: View {
         GeometryReader { geo in
             BlurCardBackground(
                 style: .compact,
-                size: geo.size.height,
+                extent: geo.size.height,
                 blurRadius: blurRadius,
                 cardOpacity: 0.4,
                 shape: shape
@@ -130,14 +130,14 @@ struct AppNotification: View {
             content: .textCopied(
                 message: "The text has been copied successfully"
             ),
-            size: size
+            width: size
         )
 
         AppNotification(
             content: .videoSaved(
                 message: "Video has been saved to your gallery"
             ),
-            size: size
+            width: size
         )
 
         AppNotification(
@@ -145,7 +145,7 @@ struct AppNotification: View {
                 title: "File is too large",
                 subtitle: "Maximum file size is 100 MB"
             ),
-            size: size
+            width: size
         )
     }
     .padding(24)

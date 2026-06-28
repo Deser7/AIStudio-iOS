@@ -19,16 +19,16 @@ struct PricingPlanCard: View {
     let price: String
     var badge: String? = nil
     var isSelected: Bool = false
-    var size: CGFloat
+    var height: CGFloat
     let action: () -> Void
 
-    private var cornerRadius: CGFloat { size * 1 / 3 }
-    private var titleFontSize: CGFloat { size * 2 / 9 }
-    private var secondaryFontSize: CGFloat { size * 7 / 36 }
-    private var textSpacing: CGFloat { size * 1 / 18 }
-    private var borderWidth: CGFloat { max(size * 1 / 72, 1) }
-    private var badgeHorizontalPadding: CGFloat { size * 5 / 36 }
-    private var badgeVerticalPadding: CGFloat { size * 1 / 12 }
+    private var cornerRadius: CGFloat { height * 1 / 3 }
+    private var titleFontSize: CGFloat { height * 2 / 9 }
+    private var secondaryFontSize: CGFloat { height * 7 / 36 }
+    private var textSpacing: CGFloat { height * 1 / 18 }
+    private var borderWidth: CGFloat { max(height * 1 / 72, 1) }
+    private var badgeHorizontalPadding: CGFloat { height * 5 / 36 }
+    private var badgeVerticalPadding: CGFloat { height * 1 / 12 }
 
     var body: some View {
         Button(action: action) {
@@ -63,7 +63,7 @@ struct PricingPlanCard: View {
             }
             .padding(.horizontal, titleFontSize)
             .padding(.vertical, secondaryFontSize)
-            .frame(maxWidth: .infinity, minHeight: size, alignment: .leading)
+            .frame(maxWidth: .infinity, minHeight: height, alignment: .leading)
             .background(Color.card)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             .overlay { borderOverlay }
@@ -86,11 +86,11 @@ struct PricingPlanCard: View {
 struct PricingPlans: View {
     let plans: [PricingPlanItem]
     @Binding var selectedPlanID: String
-    var size: CGFloat
+    var height: CGFloat
     var spacing: CGFloat?
 
     private var planSpacing: CGFloat {
-        spacing ?? size * 2 / 9
+        spacing ?? height * 2 / 9
     }
 
     var body: some View {
@@ -101,7 +101,7 @@ struct PricingPlans: View {
                     price: plan.price,
                     badge: plan.badge,
                     isSelected: selectedPlanID == plan.id,
-                    size: size
+                    height: height
                 ) {
                     selectedPlanID = plan.id
                 }
@@ -133,7 +133,7 @@ struct PricingPlans: View {
             PricingPlans(
                 plans: plans,
                 selectedPlanID: $selectedPlanID,
-                size: 72
+                height: 72
             )
             .padding(.horizontal, 24)
             .padding(.vertical, 24)

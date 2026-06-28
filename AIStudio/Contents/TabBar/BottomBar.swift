@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BottomBar: View {
-    var size: CGFloat
+    var height: CGFloat
     var cancelText: String = "Cancel Anytime"
     var buttonTitle: String = "Label"
     var onButtonTap: () -> Void
@@ -16,10 +16,10 @@ struct BottomBar: View {
     var onRestoreTap: () -> Void
     var onTermsTap: () -> Void
 
-    private var horizontalPadding: CGFloat { size * 24 / 50 }
-    private var verticalSpacing: CGFloat { size * 16 / 50 }
-    private var iconTextGap: CGFloat { size * 6 / 50 }
-    private var secondaryFontSize: CGFloat { size * 12 / 50 }
+    private var horizontalPadding: CGFloat { height * 24 / 50 }
+    private var verticalSpacing: CGFloat { height * 16 / 50 }
+    private var iconTextGap: CGFloat { height * 6 / 50 }
+    private var secondaryFontSize: CGFloat { height * 12 / 50 }
     private var bottomPadding: CGFloat { verticalSpacing * 1 / 2 }
     private var iconStrokeWidth: CGFloat { verticalSpacing * 1 / 10 }
 
@@ -29,7 +29,7 @@ struct BottomBar: View {
 
             SectionButton(
                 title: buttonTitle,
-                size: size,
+                height: height,
                 style: .primary,
                 action: onButtonTap
             )
@@ -91,8 +91,7 @@ struct BottomBar: View {
 }
 
 #Preview {
-    BottomBar(
-        size: 50,
+    BottomBar(height: 50,
         onButtonTap: {},
         onPrivacyTap: {},
         onRestoreTap: {},

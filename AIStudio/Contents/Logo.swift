@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct Logo: View {
-    var size: CGFloat
+    var diameter: CGFloat
     var preset = AppGradient.Preset.main
     var iconColor: Color = .white
 
-    private var iconSize: CGFloat { size * 49 / 80 }
+    private var iconSize: CGFloat { diameter * 49 / 80 }
 
     var body: some View {
         ZStack {
             AppGradient.linear(preset)
-                .frame(width: size, height: size)
+                .frame(width: diameter, height: diameter)
                 .clipShape(Circle())
 
             GenerateIcon()
@@ -33,8 +33,8 @@ struct Logo: View {
     HStack(spacing: size * 2 / 5) {
         ForEach(AppGradient.Preset.allCases, id: \.self) { preset in
             VStack(spacing: size * 1 / 5) {
-                Logo(size: size, preset: preset)
-                Logo(size: size * 4 / 5, preset: preset)
+                Logo(diameter: size, preset: preset)
+                Logo(diameter: size * 4 / 5, preset: preset)
             }
         }
     }

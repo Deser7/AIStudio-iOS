@@ -14,18 +14,18 @@ enum AddendumContent {
 }
 
 struct Addendum: View {
-    var size: CGFloat
+    var diameter: CGFloat
     let content: AddendumContent
 
     @Environment(\.displayScale) private var displayScale
 
-    private var cornerRadius: CGFloat { size * 16 / 100 }
-    private var plusSize: CGFloat { size * 32 / 100 }
-    private var closeSize: CGFloat { size * 24 / 100 }
-    private var closeOffset: CGFloat { size * 6 / 100 }
-    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 100 }
+    private var cornerRadius: CGFloat { diameter * 16 / 100 }
+    private var plusSize: CGFloat { diameter * 32 / 100 }
+    private var closeSize: CGFloat { diameter * 24 / 100 }
+    private var closeOffset: CGFloat { diameter * 6 / 100 }
+    private var blurRadius: CGFloat { diameter * AppSurface.blurRadius / 100 }
     private var borderWidth: CGFloat {
-        max(size * 1 / 100, 1 / displayScale)
+        max(diameter * 1 / 100, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
 
@@ -51,16 +51,16 @@ struct Addendum: View {
                         image
                             .resizable()
                             .scaledToFill()
-                            .frame(width: size, height: size)
+                            .frame(width: diameter, height: diameter)
                             .clipShape(shape)
                     }
                     .overlay(alignment: .topTrailing) {
-                        CloseButton(size: closeSize, style: .light, action: onClose)
+                        CloseButton(diameter: closeSize, style: .light, action: onClose)
                             .offset(x: closeOffset, y: -closeOffset)
                     }
             }
         }
-        .frame(width: size, height: size)
+        .frame(width: diameter, height: diameter)
         .appDisabledOpacity()
     }
 
@@ -75,12 +75,12 @@ struct Addendum: View {
             case .add:
                 plusIcon
             case .loading:
-                SpinnerView(size: plusSize)
+                SpinnerView(diameter: plusSize)
             case .photo:
                 EmptyView()
             }
         }
-        .frame(width: size, height: size)
+        .frame(width: diameter, height: diameter)
         .clipShape(shape)
         .overlay {
             if case .add = content {
@@ -98,7 +98,7 @@ struct Addendum: View {
     private var blurBackground: some View {
         BlurCardBackground(
             style: .compact,
-            size: size,
+            extent: diameter,
             blurRadius: blurRadius,
             cardOpacity: 0.4,
             shape: shape
@@ -121,10 +121,9 @@ struct Addendum: View {
     let size: CGFloat = 100
 
     VStack(spacing: size * 24 / 100) {
-        Addendum(size: size, content: .add {})
-        Addendum(size: size, content: .loading)
-        Addendum(
-            size: size,
+        Addendum(diameter: size, content: .add {})
+        Addendum(diameter: size, content: .loading)
+        Addendum(diameter: size,
             content: .photo(
                 Image(systemName: "person.crop.rectangle.fill"),
                 onClose: {}

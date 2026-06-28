@@ -9,11 +9,11 @@ import SwiftUI
 
 /// Выбор источника медиа (Figma «Text settings»).
 struct MediaSourcePicker: View {
-    var size: CGFloat
+    var width: CGFloat
     let onSelect: (MediaSourceOption) -> Void
 
     /// Figma ref width = 358. Базовая единица — 16px.
-    private var spacing: CGFloat { size * 16 / 358 }
+    private var spacing: CGFloat { width * 16 / 358 }
     private var rowSpacing: CGFloat { spacing * 12 / 16 }
     private var grabberWidth: CGFloat { spacing * 36 / 16 }
     private var grabberHeight: CGFloat { max(spacing * 5 / 16, 4) }
@@ -26,13 +26,13 @@ struct MediaSourcePicker: View {
 
             VStack(spacing: rowSpacing) {
                 ForEach(MediaSourceOption.allCases) { option in
-                    MediaSourceOptionRow(option: option, size: size) {
+                    MediaSourceOptionRow(option: option, width: width) {
                         onSelect(option)
                     }
                 }
             }
         }
-        .frame(width: size)
+        .frame(width: width)
     }
 }
 
@@ -45,7 +45,7 @@ struct MediaSourcePicker: View {
         Color.background
             .ignoresSafeArea()
 
-        MediaSourcePicker(size: size) { _ in }
+        MediaSourcePicker(width: size) { _ in }
             .padding(.top, spacing)
             .padding(.horizontal, spacing)
             .padding(.bottom, spacing * 24 / 16)

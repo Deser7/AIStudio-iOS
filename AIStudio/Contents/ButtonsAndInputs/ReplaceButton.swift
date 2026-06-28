@@ -9,15 +9,15 @@ import SwiftUI
 
 struct ReplaceButton: View {
     var title: String = "Replace"
-    var size: CGFloat
+    var height: CGFloat
     let action: () -> Void
 
     @Environment(\.displayScale) private var displayScale
 
-    private var horizontalPadding: CGFloat { size * 12 / 40 }
-    private var spacing: CGFloat { size * 8 / 40 }
-    private var fontSize: CGFloat { size * 14 / 40 }
-    private var iconSize: CGFloat { size * 24 / 40 }
+    private var horizontalPadding: CGFloat { height * 12 / 40 }
+    private var spacing: CGFloat { height * 8 / 40 }
+    private var fontSize: CGFloat { height * 14 / 40 }
+    private var iconSize: CGFloat { height * 24 / 40 }
     private var strokeWidth: CGFloat {
         (iconSize * 9 / 100).pixelAligned(to: displayScale)
     }
@@ -43,7 +43,7 @@ struct ReplaceButton: View {
             }
             .padding(.horizontal, horizontalPadding)
             .padding(.vertical, spacing)
-            .frame(height: size)
+            .frame(height: height)
             .background(
                 Color.card.opacity(0.4),
                 in: RoundedRectangle(cornerRadius: iconSize)
@@ -58,6 +58,6 @@ struct ReplaceButton: View {
     let size: CGFloat = 40
 
     VStack(spacing: size * 16 / 40) {
-        ReplaceButton(size: size) {}
+        ReplaceButton(height: size) {}
     }
 }

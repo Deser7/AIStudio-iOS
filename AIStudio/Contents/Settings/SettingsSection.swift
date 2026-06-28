@@ -10,12 +10,12 @@ import SwiftUI
 /// Группа строк настроек (Figma grouped `Row`).
 struct SettingsSection<Rows: View>: View {
     let title: String
-    var size: CGFloat
+    var width: CGFloat
     @ViewBuilder var rows: () -> Rows
 
-    private var sectionTitleSize: CGFloat { size * 13 / 390 }
-    private var titleBottomSpacing: CGFloat { size * 8 / 390 }
-    private var groupCornerRadius: CGFloat { size * 12 / 390 }
+    private var sectionTitleSize: CGFloat { width * 13 / 390 }
+    private var titleBottomSpacing: CGFloat { width * 8 / 390 }
+    private var groupCornerRadius: CGFloat { width * 12 / 390 }
 
     var body: some View {
         VStack(alignment: .leading, spacing: titleBottomSpacing) {
@@ -38,8 +38,8 @@ struct SettingsSection<Rows: View>: View {
     let size: CGFloat = 390
     let rowHeight = size * 44 / 390
 
-    SettingsSection(title: "Support us", size: size) {
-        SettingsRow(title: "Rate app", size: rowHeight, action: {}) {
+    SettingsSection(title: "Support us", width: size) {
+        SettingsRow(title: "Rate app", height: rowHeight, action: {}) {
             SettingsRowIcon(
                 systemName: "star",
                 width: rowHeight * 28 / 44,

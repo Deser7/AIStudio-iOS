@@ -22,14 +22,14 @@ struct AIResponseContent: Hashable, Sendable {
 /// Пузырь ответа AI с текстом и действиями (Figma «AI's response/Default»).
 struct AIResponseBubble: View {
     let content: AIResponseContent
-    var size: CGFloat
+    var width: CGFloat
     let onCopy: () -> Void
     let onRefresh: () -> Void
     
     @Environment(\.displayScale) private var displayScale
     
     /// Figma ref width = 302. Базовая единица — 16px.
-    private var spacing: CGFloat { size * 16 / 302 }
+    private var spacing: CGFloat { width * 16 / 302 }
     private var fontSize: CGFloat { spacing }
     private var cornerRadius: CGFloat { spacing * 24 / 16 }
     private var iconSize: CGFloat { cornerRadius }
@@ -65,7 +65,7 @@ struct AIResponseBubble: View {
             actionBar
         }
         .padding(spacing)
-        .frame(width: size, alignment: .leading)
+        .frame(width: width, alignment: .leading)
         .background { bubbleBackground }
         .clipShape(bubbleShape)
     }
@@ -192,7 +192,7 @@ struct AIResponseBubble: View {
         GeometryReader { geo in
             BlurCardBackground(
                 style: .compact,
-                size: geo.size.height,
+                extent: geo.size.height,
                 blurRadius: blurRadius,
                 cardOpacity: 0.5,
                 shape: bubbleShape
@@ -264,7 +264,7 @@ private struct AIResponseBubbleShape: Shape {
                 "Team Lead"
             ]
         ),
-        size: size,
+        width: size,
         onCopy: {},
         onRefresh: {}
     )

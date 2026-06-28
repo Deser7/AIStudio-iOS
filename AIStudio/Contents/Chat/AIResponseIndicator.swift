@@ -9,7 +9,7 @@ import SwiftUI
 
 /// Индикатор «AI печатает» — пузырь с тремя точками (Figma «AI's response»).
 struct AIResponseIndicator: View {
-    var size: CGFloat
+    var height: CGFloat
 
     /// Пауза на каждой точке перед переходом к следующей.
     private let stepDuration: TimeInterval = 0.33
@@ -18,13 +18,13 @@ struct AIResponseIndicator: View {
 
     @State private var activeIndex = 0
 
-    private var padding: CGFloat { size * 16 / 51 }
-    private var dotSpacing: CGFloat { size * 4 / 51 }
-    private var largeDotSize: CGFloat { size * 19 / 51 }
-    private var mediumDotSize: CGFloat { size * 15 / 51 }
-    private var smallDotSize: CGFloat { size * 10 / 51 }
-    private var cornerRadius: CGFloat { size * 24 / 51 }
-    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 51 }
+    private var padding: CGFloat { height * 16 / 51 }
+    private var dotSpacing: CGFloat { height * 4 / 51 }
+    private var largeDotSize: CGFloat { height * 19 / 51 }
+    private var mediumDotSize: CGFloat { height * 15 / 51 }
+    private var smallDotSize: CGFloat { height * 10 / 51 }
+    private var cornerRadius: CGFloat { height * 24 / 51 }
+    private var blurRadius: CGFloat { height * AppSurface.blurRadius / 51 }
 
     private var inactiveDotColor: Color {
         Color.white.opacity(0.1)
@@ -48,7 +48,7 @@ struct AIResponseIndicator: View {
             }
         }
         .padding(padding)
-        .frame(height: size)
+        .frame(height: height)
         .background { bubbleBackground }
         .clipShape(bubbleShape)
         .task { await runTypingAnimation() }
@@ -82,7 +82,7 @@ struct AIResponseIndicator: View {
     private var bubbleBackground: some View {
         BlurCardBackground(
             style: .compact,
-            size: size,
+            extent: height,
             blurRadius: blurRadius,
             cardOpacity: 0.5,
             shape: bubbleShape
@@ -105,7 +105,7 @@ private struct AIResponseBubbleShape: Shape {
 }
 
 #Preview {
-    AIResponseIndicator(size: 51)
+    AIResponseIndicator(height: 51)
         .padding(.horizontal, 24)
         .padding(.vertical, 24)
         .frame(maxWidth: .infinity, alignment: .topLeading)

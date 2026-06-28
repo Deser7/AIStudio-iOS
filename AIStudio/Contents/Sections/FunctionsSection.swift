@@ -9,43 +9,42 @@ import SwiftUI
 
 /// Секция «Functions» с сеткой карточек (Figma «Functions»).
 struct FunctionsSection: View {
-    var size: CGFloat
+    var width: CGFloat
     let onVideoTap: () -> Void
     let onWritingTap: () -> Void
     let onUnderstandTap: () -> Void
 
     /// Figma ref width = 358.
-    private var columnGap: CGFloat { size * 8 / 358 }
-    private var videoCardWidth: CGFloat { size * 172 / 358 }
-    private var functionCardWidth: CGFloat { size * 178 / 358 }
+    private var columnGap: CGFloat { width * 8 / 358 }
+    private var videoCardWidth: CGFloat { width * 172 / 358 }
+    private var functionCardWidth: CGFloat { width * 178 / 358 }
 
     var body: some View {
         HStack(alignment: .top, spacing: columnGap) {
-            AIVideoCard(size: videoCardWidth, action: onVideoTap)
+            AIVideoCard(width: videoCardWidth, action: onVideoTap)
 
             VStack(spacing: columnGap) {
                 FunctionCard(
                     option: .fixWriting,
-                    size: functionCardWidth,
+                    width: functionCardWidth,
                     action: onWritingTap
                 )
 
                 FunctionCard(
                     option: .understandFaster,
-                    size: functionCardWidth,
+                    width: functionCardWidth,
                     action: onUnderstandTap
                 )
             }
         }
-        .frame(width: size, alignment: .leading)
+        .frame(width: width, alignment: .leading)
     }
 }
 
 #Preview {
     let size: CGFloat = 358
 
-    FunctionsSection(
-        size: size,
+    FunctionsSection(width: size,
         onVideoTap: {},
         onWritingTap: {},
         onUnderstandTap: {}

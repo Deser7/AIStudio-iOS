@@ -9,13 +9,13 @@ import SwiftUI
 
 struct ProButton: View {
     var title: String = "PRO"
-    var size: CGFloat
+    var height: CGFloat
     let action: () -> Void
 
-    private var spacing: CGFloat { size * 4 / 32 }
-    private var fontSize: CGFloat { size * 16 / 32 }
-    private var iconPlaceholderSize: CGFloat { size * 24 / 32 }
-    private var horizontalPadding: CGFloat { size * 8 / 32 }
+    private var spacing: CGFloat { height * 4 / 32 }
+    private var fontSize: CGFloat { height * 16 / 32 }
+    private var iconPlaceholderSize: CGFloat { height * 24 / 32 }
+    private var horizontalPadding: CGFloat { height * 8 / 32 }
 
     var body: some View {
         Button(action: action) {
@@ -30,7 +30,7 @@ struct ProButton: View {
             }
             .padding(.horizontal, horizontalPadding)
             .padding(.vertical, spacing)
-            .frame(height: size)
+            .frame(height: height)
             .background(Color.white, in: Capsule())
             .fixedSize(horizontal: true, vertical: false)
         }
@@ -43,8 +43,8 @@ struct ProButton: View {
     let size: CGFloat = 32
 
     VStack(spacing: size * 16 / 32) {
-        ProButton(size: size) {}
-        ProButton(size: size) {}
+        ProButton(height: size) {}
+        ProButton(height: size) {}
             .disabled(true)
     }
     .padding(24)

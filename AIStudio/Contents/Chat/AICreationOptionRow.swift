@@ -36,13 +36,13 @@ enum AICreationOption: CaseIterable, Identifiable, Sendable {
 
 struct AICreationOptionRow: View {
     let option: AICreationOption
-    var size: CGFloat
+    var height: CGFloat
     var titleFontSize: CGFloat
     var subtitleFontSize: CGFloat
     let action: () -> Void
 
     /// Figma ref row height = 72. Базовая единица — 16px.
-    private var spacing: CGFloat { size * 16 / 72 }
+    private var spacing: CGFloat { height * 16 / 72 }
     private var cornerRadius: CGFloat { spacing * 24 / 16 }
     private var iconSize: CGFloat { cornerRadius }
     private var textSpacing: CGFloat { spacing * 4 / 16 }
@@ -70,7 +70,7 @@ struct AICreationOptionRow: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.horizontal, spacing)
-            .frame(maxWidth: .infinity, minHeight: size, alignment: .leading)
+            .frame(maxWidth: .infinity, minHeight: height, alignment: .leading)
             .background(
                 Color.card,
                 in: RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
@@ -107,7 +107,7 @@ struct AICreationOptionRow: View {
         ForEach(AICreationOption.allCases) { option in
             AICreationOptionRow(
                 option: option,
-                size: rowHeight,
+                height: rowHeight,
                 titleFontSize: fontSize,
                 subtitleFontSize: subtitleFontSize,
                 action: {}

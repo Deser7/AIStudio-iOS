@@ -9,14 +9,14 @@ import SwiftUI
 
 struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
     var placeholder: String
-    var size: CGFloat
+    var height: CGFloat
     @Binding var text: String
     @ViewBuilder var icon: () -> Icon
     @ViewBuilder var background: () -> Background
     @ViewBuilder var border: () -> Border
 
-    private var spacing: CGFloat { size * 2 / 7 }
-    private var cornerRadius: CGFloat { size * 3 / 7 }
+    private var spacing: CGFloat { height * 2 / 7 }
+    private var cornerRadius: CGFloat { height * 3 / 7 }
 
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
@@ -39,7 +39,7 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
         }
         .padding(spacing)
         .frame(maxWidth: .infinity)
-        .frame(height: size)
+        .frame(height: height)
         .background { background() }
         .clipShape(shape)
         .overlay { border() }

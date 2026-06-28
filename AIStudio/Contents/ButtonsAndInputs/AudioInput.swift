@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct AudioInput: View {
-    var size: CGFloat
+    var height: CGFloat
     var isPlaying: Bool
     var progress: CGFloat
     let onPlayPause: () -> Void
 
-    private var spacing: CGFloat { size * 2 / 11 }
-    private var sectionSpacing: CGFloat { size * 3 / 11 }
-    private var buttonSize: CGFloat { size * 5 / 11 }
-    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 88 }
+    private var spacing: CGFloat { height * 2 / 11 }
+    private var sectionSpacing: CGFloat { height * 3 / 11 }
+    private var buttonSize: CGFloat { height * 5 / 11 }
+    private var blurRadius: CGFloat { height * AppSurface.blurRadius / 88 }
 
     private var clampedProgress: CGFloat {
         min(max(progress, 0), 1)
@@ -40,7 +40,7 @@ struct AudioInput: View {
         .padding(.horizontal, spacing)
         .padding(.vertical, sectionSpacing)
         .frame(maxWidth: .infinity)
-        .frame(height: size)
+        .frame(height: height)
         .background { background }
         .clipShape(shape)
         .appDisabledOpacity()
@@ -49,7 +49,7 @@ struct AudioInput: View {
     private var background: some View {
         BlurCardBackground(
             style: .bar,
-            size: size,
+            extent: height,
             blurRadius: blurRadius,
             cardOpacity: 0.7,
             shape: shape
@@ -58,7 +58,7 @@ struct AudioInput: View {
 
     private var playbackButton: some View {
         GradientIconButton(
-            size: buttonSize,
+            diameter: buttonSize,
             icon: isPlaying ? .pause : .play,
             action: onPlayPause
         )
@@ -76,22 +76,19 @@ private struct AudioInputPreview: View {
         let size: CGFloat = 88
 
         VStack(spacing: size * 11 / 50) {
-            AudioInput(
-                size: size,
+            AudioInput(height: size,
                 isPlaying: isPlaying,
                 progress: 0.35,
                 onPlayPause: { isPlaying.toggle() }
             )
 
-            AudioInput(
-                size: size * 1 / 2,
+            AudioInput(height: size * 1 / 2,
                 isPlaying: false,
                 progress: 0.65,
                 onPlayPause: {}
             )
 
-            AudioInput(
-                size: size,
+            AudioInput(height: size,
                 isPlaying: true,
                 progress: 0.35,
                 onPlayPause: {}

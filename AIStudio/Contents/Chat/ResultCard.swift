@@ -9,15 +9,15 @@ import SwiftUI
 
 /// Карточка результата генерации (Figma «Result»).
 struct ResultCard: View {
-    var size: CGFloat
+    var width: CGFloat
     let onReplace: () -> Void
     let onPlay: () -> Void
 
     /// Figma ref width = 358, height = 611.
-    private var cardHeight: CGFloat { size * 611 / 358 }
-    private var cornerRadius: CGFloat { size * 24 / 358 }
-    private var replaceButtonSize: CGFloat { size * 40 / 358 }
-    private var overlayInset: CGFloat { size * 16 / 358 }
+    private var cardHeight: CGFloat { width * 611 / 358 }
+    private var cornerRadius: CGFloat { width * 24 / 358 }
+    private var replaceButtonSize: CGFloat { width * 40 / 358 }
+    private var overlayInset: CGFloat { width * 16 / 358 }
 
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
@@ -28,13 +28,13 @@ struct ResultCard: View {
             Image("Result")
                 .resizable()
                 .scaledToFill()
-                .frame(width: size, height: cardHeight)
+                .frame(width: width, height: cardHeight)
                 .clipped()
         }
-        .frame(width: size, height: cardHeight)
+        .frame(width: width, height: cardHeight)
         .clipShape(shape)
         .overlay(alignment: .topTrailing) {
-            ReplaceButton(size: replaceButtonSize, action: onReplace)
+            ReplaceButton(height: replaceButtonSize, action: onReplace)
                 .padding(.top, overlayInset)
                 .padding(.trailing, overlayInset)
         }
@@ -44,5 +44,5 @@ struct ResultCard: View {
 #Preview {
     let size: CGFloat = 358
 
-    ResultCard(size: size, onReplace: {}, onPlay: {})
+    ResultCard(width: size, onReplace: {}, onPlay: {})
 }

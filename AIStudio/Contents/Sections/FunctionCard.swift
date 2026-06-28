@@ -29,17 +29,17 @@ enum FunctionCardOption: Sendable {
 /// Компактная карточка функции (Figma «AI Text» / «Understand Faster»).
 struct FunctionCard: View {
     let option: FunctionCardOption
-    var size: CGFloat
+    var width: CGFloat
     let action: () -> Void
 
     /// Figma ref width = 178, height = 152.5. Базовая единица — 16px.
-    private var cardHeight: CGFloat { size * 152.5 / 178 }
-    private var padding: CGFloat { size * 16 / 178 }
-    private var cornerRadius: CGFloat { size * 24 / 178 }
-    private var iconCircleSize: CGFloat { size * 36 / 178 }
-    private var iconContentSize: CGFloat { size * 20 / 178 }
+    private var cardHeight: CGFloat { width * 152.5 / 178 }
+    private var padding: CGFloat { width * 16 / 178 }
+    private var cornerRadius: CGFloat { width * 24 / 178 }
+    private var iconCircleSize: CGFloat { width * 36 / 178 }
+    private var iconContentSize: CGFloat { width * 20 / 178 }
     private var titleFontSize: CGFloat { padding }
-    private var subtitleFontSize: CGFloat { size * 12 / 178 }
+    private var subtitleFontSize: CGFloat { width * 12 / 178 }
 
     private var cardShape: RoundedRectangle {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
@@ -61,7 +61,7 @@ struct FunctionCard: View {
                 )
             }
             .padding(padding)
-            .frame(width: size, height: cardHeight, alignment: .topLeading)
+            .frame(width: width, height: cardHeight, alignment: .topLeading)
             .background { cardBackground }
             .clipShape(cardShape)
         }
@@ -104,8 +104,8 @@ struct FunctionCard: View {
     let size: CGFloat = 178
 
     VStack(spacing: 8) {
-        FunctionCard(option: .fixWriting, size: size, action: {})
-        FunctionCard(option: .understandFaster, size: size, action: {})
+        FunctionCard(option: .fixWriting, width: size, action: {})
+        FunctionCard(option: .understandFaster, width: size, action: {})
     }
     .padding(24)
     .background(Color.gray)

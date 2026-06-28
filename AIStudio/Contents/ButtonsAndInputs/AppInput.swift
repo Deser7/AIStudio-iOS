@@ -15,21 +15,21 @@ enum AppInputStyle {
 struct AppInput: View {
     var style: AppInputStyle = .main
     var placeholder: String = "Ask anything..."
-    var size: CGFloat
+    var height: CGFloat
     @Binding var text: String
 
     @Environment(\.displayScale) private var displayScale
 
-    private var iconSize: CGFloat { size * 3 / 7 }
+    private var iconSize: CGFloat { height * 3 / 7 }
     private var borderWidth: CGFloat {
         let borderRatio: CGFloat = switch style {
         case .main: 1 / 28
         case .search: 1 / 56
         }
-        return max(size * borderRatio, 1 / displayScale)
+        return max(height * borderRatio, 1 / displayScale)
             .pixelAligned(to: displayScale)
     }
-    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 56 }
+    private var blurRadius: CGFloat { height * AppSurface.blurRadius / 56 }
 
     private var fieldShape: RoundedRectangle {
         RoundedRectangle(cornerRadius: iconSize, style: .continuous)
@@ -38,7 +38,7 @@ struct AppInput: View {
     var body: some View {
         TextFieldBar(
             placeholder: placeholder,
-            size: size,
+            height: height,
             text: $text,
             icon: { iconView },
             background: { backgroundView },
@@ -66,7 +66,7 @@ struct AppInput: View {
         case .main:
             BlurCardBackground(
                 style: .bar,
-                size: size,
+                extent: height,
                 blurRadius: blurRadius,
                 cardOpacity: 0.7,
                 shape: fieldShape
@@ -109,8 +109,8 @@ private struct AppInputPreview: View {
         let size: CGFloat = 56
 
         VStack(spacing: size * 12 / 50) {
-            AppInput(size: size, text: $mainText)
-            AppInput(style: .search, size: size, text: $searchText)
+            AppInput(height: size, text: $mainText)
+            AppInput(style: .search, height: size, text: $searchText)
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 24)

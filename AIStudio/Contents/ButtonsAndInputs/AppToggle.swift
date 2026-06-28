@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct AppToggle: View {
-    var size: CGFloat
+    var height: CGFloat
     @Binding var isOn: Bool
 
-    private var width: CGFloat { size * 51 / 31 }
-    private var thumbSize: CGFloat { size * 27 / 31 }
-    private var thumbInset: CGFloat { size * 2 / 31 }
-    private var thumbOffsetOn: CGFloat { size * 22 / 31 }
-    private var thumbShadowYOffset: CGFloat { size * 3 / 31 }
-    private var thumbShadowRadiusSoft: CGFloat { size * 1 / 62 }
-    private var thumbShadowRadiusHard: CGFloat { size * 4 / 31 }
+    private var width: CGFloat { height * 51 / 31 }
+    private var thumbSize: CGFloat { height * 27 / 31 }
+    private var thumbInset: CGFloat { height * 2 / 31 }
+    private var thumbOffsetOn: CGFloat { height * 22 / 31 }
+    private var thumbShadowYOffset: CGFloat { height * 3 / 31 }
+    private var thumbShadowRadiusSoft: CGFloat { height * 1 / 62 }
+    private var thumbShadowRadiusHard: CGFloat { height * 4 / 31 }
 
     private var thumbOffsetX: CGFloat {
         isOn ? thumbOffsetOn : thumbInset
@@ -43,7 +43,7 @@ struct AppToggle: View {
                 thumb
                     .offset(x: thumbOffsetX)
             }
-            .frame(width: width, height: size)
+            .frame(width: width, height: height)
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isOn ? .isSelected : [])
@@ -53,7 +53,7 @@ struct AppToggle: View {
     private var track: some View {
         Capsule()
             .fill(trackFill)
-            .frame(width: width, height: size)
+            .frame(width: width, height: height)
     }
 
     private var thumb: some View {
@@ -76,10 +76,10 @@ struct AppToggle: View {
 }
 
 struct AppToggleStyle: ToggleStyle {
-    var size: CGFloat
+    var height: CGFloat
 
     func makeBody(configuration: Configuration) -> some View {
-        AppToggle(size: size, isOn: configuration.$isOn)
+        AppToggle(height: height, isOn: configuration.$isOn)
     }
 }
 
@@ -94,11 +94,11 @@ struct AppToggleStyle: ToggleStyle {
             let mediumSize: CGFloat = 78
 
             VStack(spacing: 24) {
-                AppToggle(size: largeSize, isOn: $isOnTop)
-                AppToggle(size: mediumSize, isOn: $isOnBottom)
+                AppToggle(height: largeSize, isOn: $isOnTop)
+                AppToggle(height: mediumSize, isOn: $isOnBottom)
 
                 Toggle("Label", isOn: $isToggleStyleOn)
-                    .toggleStyle(AppToggleStyle(size: mediumSize))
+                    .toggleStyle(AppToggleStyle(height: mediumSize))
             }
             .padding(24)
             .background(Color.background)

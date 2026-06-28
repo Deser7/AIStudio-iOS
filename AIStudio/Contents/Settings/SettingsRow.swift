@@ -23,18 +23,18 @@ struct SettingsRowIcon: View {
 /// Строка настроек (Figma «Row», height Hug 44).
 struct SettingsRow<Icon: View, Trailing: View>: View {
     let title: String
-    var size: CGFloat
+    var height: CGFloat
     var action: (() -> Void)?
     @ViewBuilder var icon: () -> Icon
     @ViewBuilder var trailing: () -> Trailing
 
     @Environment(\.displayScale) private var displayScale
 
-    private var fontSize: CGFloat { size * 16 / 44 }
-    private var iconWidth: CGFloat { size * 28 / 44 }
-    private var iconHeight: CGFloat { size * 22 / 44 }
-    private var contentSpacing: CGFloat { size * 12 / 44 }
-    private var horizontalPadding: CGFloat { size * 16 / 44 }
+    private var fontSize: CGFloat { height * 16 / 44 }
+    private var iconWidth: CGFloat { height * 28 / 44 }
+    private var iconHeight: CGFloat { height * 22 / 44 }
+    private var contentSpacing: CGFloat { height * 12 / 44 }
+    private var horizontalPadding: CGFloat { height * 16 / 44 }
 
     var body: some View {
         Group {
@@ -65,29 +65,29 @@ struct SettingsRow<Icon: View, Trailing: View>: View {
             trailing()
         }
         .padding(.horizontal, horizontalPadding)
-        .frame(height: size)
+        .frame(height: height)
     }
 }
 
 extension SettingsRow where Trailing == SettingsRowChevron {
     init(
         title: String,
-        size: CGFloat,
+        height: CGFloat,
         action: (() -> Void)? = nil,
         @ViewBuilder icon: @escaping () -> Icon
     ) {
         self.title = title
-        self.size = size
+        self.height = height
         self.action = action
         self.icon = icon
-        self.trailing = { SettingsRowChevron(size: size) }
+        self.trailing = { SettingsRowChevron(height: height) }
     }
 }
 
 struct SettingsRowChevron: View {
-    var size: CGFloat
+    var height: CGFloat
 
-    private var chevronSize: CGFloat { size * 14 / 44 }
+    private var chevronSize: CGFloat { height * 14 / 44 }
 
     var body: some View {
         Image(systemName: "chevron.right")
@@ -98,10 +98,10 @@ struct SettingsRowChevron: View {
 
 struct SettingsRowDetail: View {
     let text: String
-    var size: CGFloat
+    var height: CGFloat
 
-    private var fontSize: CGFloat { size * 16 / 44 }
-    private var detailSpacing: CGFloat { size * 8 / 44 }
+    private var fontSize: CGFloat { height * 16 / 44 }
+    private var detailSpacing: CGFloat { height * 8 / 44 }
 
     var body: some View {
         HStack(spacing: detailSpacing) {
@@ -109,7 +109,7 @@ struct SettingsRowDetail: View {
                 .typography(style: .regular, size: fontSize)
                 .foregroundStyle(Color.price)
 
-            SettingsRowChevron(size: size)
+            SettingsRowChevron(height: height)
         }
     }
 }
@@ -118,20 +118,20 @@ struct SettingsRowDetail: View {
     let size: CGFloat = 44
 
     VStack(spacing: 0) {
-        SettingsRow(title: "Rate app", size: size, action: {}) {
+        SettingsRow(title: "Rate app", height: size, action: {}) {
             SettingsRowIcon(systemName: "star", width: size * 28 / 44, height: size * 22 / 44)
         }
 
-        SettingsRow(title: "Notifications", size: size) {
+        SettingsRow(title: "Notifications", height: size) {
             SettingsRowIcon(systemName: "bell", width: size * 28 / 44, height: size * 22 / 44)
         } trailing: {
-            AppToggle(size: size * 31 / 44, isOn: .constant(true))
+            AppToggle(height: size * 31 / 44, isOn: .constant(true))
         }
 
-        SettingsRow(title: "Clear cache", size: size, action: {}) {
+        SettingsRow(title: "Clear cache", height: size, action: {}) {
             SettingsRowIcon(systemName: "trash", width: size * 28 / 44, height: size * 22 / 44)
         } trailing: {
-            SettingsRowDetail(text: "5 MB", size: size)
+            SettingsRowDetail(text: "5 MB", height: size)
         }
     }
     .background(Color.card)

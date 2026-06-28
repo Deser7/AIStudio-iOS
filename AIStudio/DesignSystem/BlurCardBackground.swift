@@ -16,7 +16,7 @@ struct BlurCardBackground<S: Shape>: View {
     }
 
     var style: Style
-    var size: CGFloat
+    var extent: CGFloat
     var blurRadius: CGFloat
     var cardOpacity: CGFloat
     var fillColor: Color = Color.card
@@ -43,11 +43,11 @@ struct BlurCardBackground<S: Shape>: View {
         case .bar:
             blurRadius * AppSurface.BlurFrame.barWidthMultiplier
         case .compact:
-            size + blurRadius * AppSurface.BlurFrame.paddingMultiplier
+            extent + blurRadius * AppSurface.BlurFrame.paddingMultiplier
         }
     }
 
     private var blurHeight: CGFloat {
-        size + blurRadius * AppSurface.BlurFrame.paddingMultiplier
+        extent + blurRadius * AppSurface.BlurFrame.paddingMultiplier
     }
 }

@@ -13,11 +13,11 @@ enum AvatarButtonKind {
 }
 
 struct AvatarButton: View {
-    var size: CGFloat
+    var diameter: CGFloat
     var kind: AvatarButtonKind
     let action: () -> Void
 
-    private var iconSize: CGFloat { size * 18 / 32 }
+    private var iconSize: CGFloat { diameter * 18 / 32 }
 
     private var showsUserIcon: Bool {
         if case .user = kind { true } else { false }
@@ -33,7 +33,7 @@ struct AvatarButton: View {
                     userIcon
                 }
             }
-            .frame(width: size, height: size)
+            .frame(width: diameter, height: diameter)
         }
         .buttonStyle(.plain)
         .appDisabledOpacity()
@@ -50,8 +50,8 @@ struct AvatarButton: View {
     let size: CGFloat = 32
 
     HStack(spacing: size * 1 / 2) {
-        AvatarButton(size: size, kind: .ai) {}
-        AvatarButton(size: size, kind: .user) {}
+        AvatarButton(diameter: size, kind: .ai) {}
+        AvatarButton(diameter: size, kind: .user) {}
     }
     .padding(24)
     .background(Color.background)

@@ -10,11 +10,11 @@ import SwiftUI
 /// Опция универсального меню выбора.
 protocol SelectionMenuOption: Identifiable, Hashable {
     var title: String { get }
-    func trailingContent(rowSize: CGFloat, isSelected: Bool) -> AnyView
+    func trailingContent(rowHeight: CGFloat, isSelected: Bool) -> AnyView
 }
 
 extension SelectionMenuOption {
-    func trailingContent(rowSize: CGFloat, isSelected: Bool) -> AnyView {
+    func trailingContent(rowHeight: CGFloat, isSelected: Bool) -> AnyView {
         AnyView(EmptyView())
     }
 }
@@ -22,8 +22,8 @@ extension SelectionMenuOption {
 extension AspectRatio: Identifiable, SelectionMenuOption {
     var id: Self { self }
 
-    func trailingContent(rowSize: CGFloat, isSelected: Bool) -> AnyView {
-        AnyView(AspectRatioIcon(ratio: self, rowSize: rowSize, isSelected: isSelected))
+    func trailingContent(rowHeight: CGFloat, isSelected: Bool) -> AnyView {
+        AnyView(AspectRatioIcon(ratio: self, rowHeight: rowHeight, isSelected: isSelected))
     }
 }
 
@@ -40,14 +40,14 @@ enum VideoQuality: String, CaseIterable, Identifiable, SelectionMenuOption, Send
 /// Универсальное меню выбора (Figma «Format», «Quality», «Language», «Style»).
 struct SelectionMenu<Option: SelectionMenuOption>: View {
     let options: [Option]
-    var size: CGFloat
+    var width: CGFloat
     @Binding var selection: Option
 
     @Environment(\.displayScale) private var displayScale
 
     /// Figma ref width = 358. Базовая единица — 16px.
-    private var spacing: CGFloat { size * 16 / 358 }
-    private var rowHeight: CGFloat { size * 44 / 358 }
+    private var spacing: CGFloat { width * 16 / 358 }
+    private var rowHeight: CGFloat { width * 44 / 358 }
     private var verticalPadding: CGFloat { spacing * 8 / 16 }
     private var cornerRadius: CGFloat { spacing * 24 / 16 }
     private var blurRadius: CGFloat { spacing * AppSurface.blurRadius / 16 }
@@ -76,20 +76,20 @@ struct SelectionMenu<Option: SelectionMenuOption>: View {
 
                 SelectionMenuRow(
                     title: option.title,
-                    size: rowHeight,
+                    height: rowHeight,
                     isSelected: selection == option
                 ) {
                     selection = option
                 } trailing: {
                     option.trailingContent(
-                        rowSize: rowHeight,
+                        rowHeight: rowHeight,
                         isSelected: selection == option
                     )
                 }
             }
         }
         .padding(.vertical, verticalPadding)
-        .frame(width: size)
+        .frame(width: width)
         .background { cardBackground }
         .clipShape(shape)
     }
@@ -100,9 +100,9 @@ struct SelectionMenu<Option: SelectionMenuOption>: View {
     }
 
     private var cardBackground: some View {
-        BlurCardBackground(
-            style: .bar,
-            size: cardContentHeight,
+            BlurCardBackground(
+                style: .bar,
+                extent: cardContentHeight,
             blurRadius: blurRadius,
             cardOpacity: 0.6,
             shape: shape
@@ -161,7 +161,7 @@ private struct SelectionMenuPreview<Option: SelectionMenuOption>: View {
     }
 
     var body: some View {
-        SelectionMenu(options: options, size: 358, selection: $selection)
+        SelectionMenu(options: options, width: 358, selection: $selection)
             .padding(24)
             .background(Color.background)
     }

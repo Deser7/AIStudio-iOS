@@ -30,12 +30,12 @@ enum MediaSourceOption: CaseIterable, Identifiable, Sendable {
 
 struct MediaSourceOptionRow: View {
     let option: MediaSourceOption
-    var size: CGFloat
+    var width: CGFloat
     let action: () -> Void
 
     /// Figma ref width = 358, height = 95. Базовая единица — 16px.
-    private var spacing: CGFloat { size * 16 / 358 }
-    private var cardHeight: CGFloat { size * 95 / 358 }
+    private var spacing: CGFloat { width * 16 / 358 }
+    private var cardHeight: CGFloat { width * 95 / 358 }
     private var leadingPadding: CGFloat { spacing * 24 / 16 }
     private var cornerRadius: CGFloat { leadingPadding }
     private var iconSize: CGFloat { spacing * 32 / 16 }
@@ -64,7 +64,7 @@ struct MediaSourceOptionRow: View {
             }
             .padding(.leading, leadingPadding)
             .padding([.vertical, .trailing], spacing)
-            .frame(width: size, height: cardHeight, alignment: .leading)
+            .frame(width: width, height: cardHeight, alignment: .leading)
             .background { cardBackground }
             .clipShape(shape)
         }
@@ -86,7 +86,7 @@ struct MediaSourceOptionRow: View {
     private var cardBackground: some View {
         BlurCardBackground(
             style: .compact,
-            size: cardHeight,
+            extent: cardHeight,
             blurRadius: blurRadius,
             cardOpacity: 0.6,
             shape: shape
@@ -97,7 +97,7 @@ struct MediaSourceOptionRow: View {
 #Preview {
     let size: CGFloat = 358
 
-    MediaSourceOptionRow(option: .files, size: size, action: {})
+    MediaSourceOptionRow(option: .files, width: size, action: {})
         .padding(24)
         .background(Color.background)
 }

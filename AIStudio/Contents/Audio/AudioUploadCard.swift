@@ -15,17 +15,17 @@ enum AudioUploadState: Sendable {
 
 /// Карточка загрузки аудио/видео (Figma «audio»).
 struct AudioUploadCard: View {
-    var size: CGFloat
+    var width: CGFloat
     var state: AudioUploadState = .idle
     let onTap: () -> Void
 
     @Environment(\.displayScale) private var displayScale
 
     /// Figma ref width = 358, height = 279. Базовая единица — 16px.
-    private var spacing: CGFloat { size * 16 / 358 }
+    private var spacing: CGFloat { width * 16 / 358 }
     private var fontSize: CGFloat { spacing }
     private var subtitleFontSize: CGFloat { spacing * 14 / 16 }
-    private var cardHeight: CGFloat { size * 279 / 358 }
+    private var cardHeight: CGFloat { width * 279 / 358 }
     private var cornerRadius: CGFloat { spacing * 24 / 16 }
     private var iconSize: CGFloat { spacing * 48 / 16 }
     private var blurRadius: CGFloat { spacing * AppSurface.blurRadius / 16 }
@@ -46,7 +46,7 @@ struct AudioUploadCard: View {
     private var supportedFormatsSubtitle: String {
         """
         MP3 • WAV • M4A • MP4 • MOV
-        Max file size: 100 MB
+        Max file width: 100 MB
         """
     }
 
@@ -61,14 +61,14 @@ struct AudioUploadCard: View {
                 .buttonStyle(.plain)
             }
         }
-        .frame(width: size, height: cardHeight)
+        .frame(width: width, height: cardHeight)
         .overlay { errorBorder }
     }
 
     private var cardContent: some View {
         VStack(spacing: spacing) {
             if state == .loading {
-                SpinnerView(size: iconSize)
+                SpinnerView(diameter: iconSize)
 
                 OnboardingTitleSection(
                     title: "Converting speech to text...",
@@ -118,7 +118,7 @@ struct AudioUploadCard: View {
     private var cardBackground: some View {
         BlurCardBackground(
             style: .compact,
-            size: cardHeight,
+            extent: cardHeight,
             blurRadius: blurRadius,
             cardOpacity: 0.6,
             shape: shape
@@ -130,9 +130,9 @@ struct AudioUploadCard: View {
     let size: CGFloat = 358
 
     VStack(spacing: size * 16 / 358) {
-        AudioUploadCard(size: size, state: .idle, onTap: {})
-        AudioUploadCard(size: size, state: .error, onTap: {})
-        AudioUploadCard(size: size, state: .loading, onTap: {})
+        AudioUploadCard(width: size, state: .idle, onTap: {})
+        AudioUploadCard(width: size, state: .error, onTap: {})
+        AudioUploadCard(width: size, state: .loading, onTap: {})
     }
     .padding(24)
     .background(Color.background)

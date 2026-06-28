@@ -14,15 +14,15 @@ struct SectionButton: View {
     }
 
     let title: String
-    var size: CGFloat
+    var height: CGFloat
     var style: Style = .primary
     let action: () -> Void
 
     @Environment(\.isEnabled) private var isEnabled
 
-    private var fontSize: CGFloat { size * 16 / 50 }
-    private var horizontalPadding: CGFloat { size * 12 / 50 }
-    private var cornerRadius: CGFloat { size * 24 / 50 }
+    private var fontSize: CGFloat { height * 16 / 50 }
+    private var horizontalPadding: CGFloat { height * 12 / 50 }
+    private var cornerRadius: CGFloat { height * 24 / 50 }
 
     private var titleColor: Color {
         isEnabled ? Color.white : Color.black.opacity(0.3)
@@ -35,7 +35,7 @@ struct SectionButton: View {
                 .foregroundStyle(titleColor)
                 .padding(.horizontal, horizontalPadding)
                 .frame(maxWidth: .infinity)
-                .frame(height: size)
+                .frame(height: height)
                 .background { backgroundFill }
                 .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
         }
@@ -56,10 +56,10 @@ struct SectionButton: View {
     let size: CGFloat = 50
 
     VStack(spacing: size * 16 / 50) {
-        SectionButton(title: "Label", size: size, style: .primary) {}
-        SectionButton(title: "Label", size: size, style: .primary) {}
+        SectionButton(title: "Label", height: size, style: .primary) {}
+        SectionButton(title: "Label", height: size, style: .primary) {}
             .disabled(true)
-        SectionButton(title: "Label", size: size * 56 / 50, style: .secondary) {}
+        SectionButton(title: "Label", height: size * 56 / 50, style: .secondary) {}
     }
     .padding(.horizontal, 24)
     .padding(.vertical, 24)

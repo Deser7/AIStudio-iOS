@@ -17,7 +17,7 @@ enum ChatNavigationBarStyle {
 }
 
 struct ChatNavigationBar: View {
-    var size: CGFloat
+    var height: CGFloat
     let title: String
     var subtitle: String = ""
     var style: ChatNavigationBarStyle = .aiChat
@@ -25,14 +25,14 @@ struct ChatNavigationBar: View {
     let onBack: () -> Void
     var onRegenerate: (() -> Void)?
 
-    private var contentSpacing: CGFloat { size * 10 / 75 }
-    private var horizontalPadding: CGFloat { size * 16 / 75 }
-    private var leadingIconSize: CGFloat { size * 32 / 75 }
+    private var contentSpacing: CGFloat { height * 10 / 75 }
+    private var horizontalPadding: CGFloat { height * 16 / 75 }
+    private var leadingIconSize: CGFloat { height * 32 / 75 }
     private var leadingIconContentSize: CGFloat { leadingIconSize * 49 / 80 }
-    private var regenerateIconSize: CGFloat { size * 24 / 75 }
-    private var actionTapSize: CGFloat { size * 44 / 75 }
-    private var backIconSize: CGFloat { size * 17 / 75 }
-    private var borderHeight: CGFloat { size * 1 / 150 }
+    private var regenerateIconSize: CGFloat { height * 24 / 75 }
+    private var actionTapSize: CGFloat { height * 44 / 75 }
+    private var backIconSize: CGFloat { height * 17 / 75 }
+    private var borderHeight: CGFloat { height * 1 / 150 }
 
     private var borderColor: Color {
         Color.white.opacity(0.1)
@@ -53,7 +53,7 @@ struct ChatNavigationBar: View {
         }
         .padding(.horizontal, horizontalPadding)
         .frame(maxWidth: .infinity)
-        .frame(height: size)
+        .frame(height: height)
         .background { background }
         .overlay(alignment: .bottom) { bottomBorder }
     }
@@ -100,7 +100,7 @@ struct ChatNavigationBar: View {
     private var leadingIcon: some View {
         switch style {
         case .aiChat:
-            Logo(size: leadingIconSize, preset: preset)
+            Logo(diameter: leadingIconSize, preset: preset)
         case .aiVideo:
             gradientLeadingIcon {
                 MagicIcon()
@@ -184,8 +184,7 @@ struct ChatNavigationBar: View {
     let size: CGFloat = 75
 
     VStack(spacing: 0) {
-        ChatNavigationBar(
-            size: size,
+        ChatNavigationBar(height: size,
             title: "AI Chat",
             subtitle: "26.03.2026",
             style: .aiChat,
@@ -194,8 +193,7 @@ struct ChatNavigationBar: View {
             onRegenerate: {}
         )
 
-        ChatNavigationBar(
-            size: size,
+        ChatNavigationBar(height: size,
             title: "AI Chat",
             subtitle: "26.03.2026",
             style: .aiChat,
@@ -204,8 +202,7 @@ struct ChatNavigationBar: View {
             onRegenerate: {}
         )
 
-        ChatNavigationBar(
-            size: size,
+        ChatNavigationBar(height: size,
             title: "AI Video",
             style: .aiVideo,
             preset: .main,
@@ -213,15 +210,13 @@ struct ChatNavigationBar: View {
             onRegenerate: {}
         )
 
-        ChatNavigationBar(
-            size: size,
+        ChatNavigationBar(height: size,
             title: "Settings",
             style: .centeredTitle,
             onBack: {}
         )
 
-        ChatNavigationBar(
-            size: size,
+        ChatNavigationBar(height: size,
             title: "Clay Fool",
             style: .centeredTitle,
             onBack: {}

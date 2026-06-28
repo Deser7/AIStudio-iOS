@@ -9,15 +9,15 @@ import SwiftUI
 
 /// Меню выбора сценария в пузыре AI (Figma «AI's response/Default»).
 struct AICreationMenuBubble: View {
-    var size: CGFloat
+    var width: CGFloat
     let onSelect: (AICreationOption) -> Void
 
     /// Figma ref width = 334. Базовая единица — 16px.
-    private var spacing: CGFloat { size * 16 / 334 }
+    private var spacing: CGFloat { width * 16 / 334 }
     private var fontSize: CGFloat { spacing }
     private var subtitleFontSize: CGFloat { spacing * 14 / 16 }
     private var cornerRadius: CGFloat { spacing * 24 / 16 }
-    private var rowHeight: CGFloat { size * 72 / 334 }
+    private var rowHeight: CGFloat { width * 72 / 334 }
     private var rowSpacing: CGFloat { spacing * 8 / 16 }
     private var blurRadius: CGFloat { spacing * AppSurface.blurRadius / 16 }
 
@@ -38,7 +38,7 @@ struct AICreationMenuBubble: View {
                 ForEach(AICreationOption.allCases) { option in
                     AICreationOptionRow(
                         option: option,
-                        size: rowHeight,
+                        height: rowHeight,
                         titleFontSize: fontSize,
                         subtitleFontSize: subtitleFontSize
                     ) {
@@ -50,7 +50,7 @@ struct AICreationMenuBubble: View {
         .padding(.top, cornerRadius)
         .padding(.horizontal, spacing)
         .padding(.bottom, spacing)
-        .frame(width: size, alignment: .leading)
+        .frame(width: width, alignment: .leading)
         .background { bubbleBackground }
         .clipShape(bubbleShape)
     }
@@ -59,7 +59,7 @@ struct AICreationMenuBubble: View {
         GeometryReader { geo in
             BlurCardBackground(
                 style: .compact,
-                size: geo.size.height,
+                extent: geo.size.height,
                 blurRadius: blurRadius,
                 cardOpacity: 0.5,
                 shape: bubbleShape
@@ -71,7 +71,7 @@ struct AICreationMenuBubble: View {
 #Preview {
     let size: CGFloat = 334
 
-    AICreationMenuBubble(size: size) { _ in }
+    AICreationMenuBubble(width: size) { _ in }
         .padding(24)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.background)

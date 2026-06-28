@@ -10,12 +10,12 @@ import SwiftUI
 /// Горизонтальный ряд чипов секций (Figma «Sections»).
 struct SectionsBar: View {
     let sections: [String]
-    var size: CGFloat
+    var height: CGFloat
     @Binding var selection: String
     var onSelect: ((String) -> Void)?
 
     /// Figma ref chip height = 33.
-    private var chipSpacing: CGFloat { size * 8 / 33 }
+    private var chipSpacing: CGFloat { height * 8 / 33 }
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -23,7 +23,7 @@ struct SectionsBar: View {
                 ForEach(sections, id: \.self) { section in
                     SectionChip(
                         title: section,
-                        size: size,
+                        height: height,
                         isSelected: selection == section
                     ) {
                         selection = section
@@ -46,7 +46,7 @@ private struct SectionsBarPreview: View {
     var body: some View {
         SectionsBar(
             sections: ["Popular", "Funny", "Sad", "Trends", "Dances"],
-            size: size,
+            height: size,
             selection: $selection
         )
         .padding(24)

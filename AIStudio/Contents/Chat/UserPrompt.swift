@@ -11,18 +11,18 @@ import SwiftUI
 struct UserPrompt: View {
     var text: String
     var image: Image?
-    var size: CGFloat
+    var width: CGFloat
 
     /// Figma ref width = 302 (пузырь). Текстовая область = 270 = 302 − 16 − 16.
-    private var spacing: CGFloat { size * 16 / 302 }
+    private var spacing: CGFloat { width * 16 / 302 }
     private var fontSize: CGFloat { spacing }
     private var cornerRadius: CGFloat { spacing }
-    private var textWidth: CGFloat { size * 270 / 302 }
-    private var imageSize: CGFloat { size * 100 / 302 }
+    private var textWidth: CGFloat { width * 270 / 302 }
+    private var imageSize: CGFloat { width * 100 / 302 }
     private var imageCornerRadius: CGFloat { spacing }
-    private var photoContentSpacing: CGFloat { size * 9 / 302 }
-    private var compactVerticalPadding: CGFloat { size * 4 / 302 }
-    private var compactHorizontalPadding: CGFloat { size * 14 / 302 }
+    private var photoContentSpacing: CGFloat { width * 9 / 302 }
+    private var compactVerticalPadding: CGFloat { width * 4 / 302 }
+    private var compactHorizontalPadding: CGFloat { width * 14 / 302 }
     private var textLineHeight: CGFloat { fontSize }
 
     private var hasPhoto: Bool {
@@ -54,7 +54,7 @@ struct UserPrompt: View {
             messageText
         }
         .padding(contentPadding)
-        .frame(width: size, alignment: .leading)
+        .frame(width: width, alignment: .leading)
         .background(AppGradient.main)
         .clipShape(bubbleShape)
     }
@@ -137,12 +137,12 @@ private struct UserPromptPreview: View {
             .background(Color.card)
             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
 
-            UserPrompt(text: text, size: size)
+            UserPrompt(text: text, width: size)
 
             UserPrompt(
                 text: text,
                 image: Image(systemName: "person.crop.rectangle.fill"),
-                size: size
+                width: size
             )
         }
         .padding(24)

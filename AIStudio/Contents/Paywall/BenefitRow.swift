@@ -9,10 +9,10 @@ import SwiftUI
 
 struct BenefitRow: View {
     let title: String
-    var size: CGFloat
+    var fontSize: CGFloat
 
-    private var rowSpacing: CGFloat { size * 12 / 20 }
-    private var iconSize: CGFloat { size * 28 / 20 }
+    private var rowSpacing: CGFloat { fontSize * 12 / 20 }
+    private var iconSize: CGFloat { fontSize * 28 / 20 }
 
     var body: some View {
         HStack(spacing: rowSpacing) {
@@ -21,7 +21,7 @@ struct BenefitRow: View {
                 .frame(width: iconSize, height: iconSize)
 
             Text(title)
-                .typography(style: .semiBold, size: size)
+                .typography(style: .semiBold, size: fontSize)
                 .foregroundStyle(Color.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -32,8 +32,8 @@ struct BenefitRow: View {
     let size: CGFloat = 20
 
     VStack(alignment: .leading, spacing: size * 16 / 20) {
-        BenefitRow(title: "Unlimited tracking", size: size)
-        BenefitRow(title: "Unlimited tracking", size: size * 24 / 20)
+        BenefitRow(title: "Unlimited tracking", fontSize: size)
+        BenefitRow(title: "Unlimited tracking", fontSize: size * 24 / 20)
     }
     .padding(.horizontal, 24)
     .padding(.vertical, 24)

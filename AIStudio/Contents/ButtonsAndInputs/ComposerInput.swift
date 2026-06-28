@@ -22,7 +22,7 @@ struct ComposerInput: View {
     }
 
     var placeholder: String = "How can I help you?"
-    var size: CGFloat
+    var height: CGFloat
     @Binding var state: ComposerInputState
     @Binding var voiceProgress: CGFloat
     @Binding var text: String
@@ -37,11 +37,11 @@ struct ComposerInput: View {
 
     @Environment(\.displayScale) private var displayScale
 
-    private var spacing: CGFloat { size * 2 / 11 }
-    private var sectionSpacing: CGFloat { size * 3 / 11 }
-    private var buttonSize: CGFloat { size * 5 / 11 }
-    private var addendumSize: CGFloat { size * 25 / 22 }
-    private var blurRadius: CGFloat { size * AppSurface.blurRadius / 88 }
+    private var spacing: CGFloat { height * 2 / 11 }
+    private var sectionSpacing: CGFloat { height * 3 / 11 }
+    private var buttonSize: CGFloat { height * 5 / 11 }
+    private var addendumSize: CGFloat { height * 25 / 22 }
+    private var blurRadius: CGFloat { height * AppSurface.blurRadius / 88 }
 
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: sectionSpacing, style: .continuous)
@@ -74,9 +74,9 @@ struct ComposerInput: View {
     private var containerMinHeight: CGFloat {
         switch state {
         case .generating:
-            size * 229 / 88
+            height * 229 / 88
         default:
-            size
+            height
         }
     }
 
@@ -115,7 +115,7 @@ struct ComposerInput: View {
 
     @ViewBuilder
     private var generatingSection: some View {
-        Addendum(size: addendumSize, content: .loading)
+        Addendum(diameter: addendumSize, content: .loading)
 
         Spacer(minLength: 0)
     }
@@ -123,10 +123,10 @@ struct ComposerInput: View {
     @ViewBuilder
     private var attachmentSection: some View {
         if state == .imageLoading {
-            Addendum(size: addendumSize, content: .loading)
+            Addendum(diameter: addendumSize, content: .loading)
         } else if let attachedImage {
             Addendum(
-                size: addendumSize,
+                diameter: addendumSize,
                 content: .photo(attachedImage, onClose: removeAttachment)
             )
         }
@@ -151,18 +151,18 @@ struct ComposerInput: View {
     @ViewBuilder
     private var buttonSection: some View {
         if showsSendButton {
-            GradientIconButton(size: buttonSize, icon: .generation, action: handleSend)
+            GradientIconButton(diameter: buttonSize, icon: .generation, action: handleSend)
         } else {
             HStack(spacing: spacing) {
-                CircularIconButton(size: buttonSize, icon: .photo, action: handleImport)
-                CircularIconButton(size: buttonSize, icon: .micro, action: handleMicrophone)
+                CircularIconButton(diameter: buttonSize, icon: .photo, action: handleImport)
+                CircularIconButton(diameter: buttonSize, icon: .micro, action: handleMicrophone)
             }
         }
     }
 
     private var voiceRow: some View {
         HStack(spacing: spacing) {
-            CircularIconButton(size: buttonSize, icon: .cross, action: handleVoiceCancel)
+            CircularIconButton(diameter: buttonSize, icon: .cross, action: handleVoiceCancel)
 
             AudioWaveform(
                 progress: voiceProgress,
@@ -170,7 +170,7 @@ struct ComposerInput: View {
             )
             .frame(maxWidth: .infinity)
 
-            GradientIconButton(size: buttonSize, icon: .done, action: handleVoiceConfirm)
+            GradientIconButton(diameter: buttonSize, icon: .done, action: handleVoiceConfirm)
         }
     }
 
@@ -179,7 +179,7 @@ struct ComposerInput: View {
         GeometryReader { geo in
             BlurCardBackground(
                 style: .bar,
-                size: geo.size.height,
+                extent: geo.size.height,
                 blurRadius: blurRadius,
                 cardOpacity: 0.7,
                 shape: shape
@@ -232,8 +232,7 @@ private struct ComposerInputPreview: View {
     @State private var voiceProgress: CGFloat = 0
 
     var body: some View {
-        ComposerInput(
-            size: 88,
+        ComposerInput(height: 88,
             state: $state,
             voiceProgress: $voiceProgress,
             text: $text,

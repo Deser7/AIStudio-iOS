@@ -10,15 +10,15 @@ import SwiftUI
 /// Чип секции (Figma «Sections», height = 33).
 struct SectionChip: View {
     let title: String
-    var size: CGFloat
+    var height: CGFloat
     var isSelected: Bool
     let action: () -> Void
 
     /// Figma ref height = 33. Базовая единица — 16px (padding horizontal).
-    private var spacing: CGFloat { size * 16 / 33 }
-    private var fontSize: CGFloat { size * 14 / 33 }
-    private var verticalPadding: CGFloat { size * 8 / 33 }
-    private var cornerRadius: CGFloat { size * 24 / 33 }
+    private var spacing: CGFloat { height * 16 / 33 }
+    private var fontSize: CGFloat { height * 14 / 33 }
+    private var verticalPadding: CGFloat { height * 8 / 33 }
+    private var cornerRadius: CGFloat { height * 24 / 33 }
     private var blurRadius: CGFloat { spacing * AppSurface.blurRadius / 16 }
 
     private var shape: RoundedRectangle {
@@ -37,7 +37,7 @@ struct SectionChip: View {
                 .tracking(0)
                 .padding(.horizontal, spacing)
                 .padding(.vertical, verticalPadding)
-                .frame(height: size)
+                .frame(height: height)
                 .background { chipBackground }
                 .clipShape(shape)
         }
@@ -52,7 +52,7 @@ struct SectionChip: View {
         } else {
             BlurCardBackground(
                 style: .compact,
-                size: size,
+                extent: height,
                 blurRadius: blurRadius,
                 cardOpacity: 0.6,
                 shape: shape
@@ -65,8 +65,8 @@ struct SectionChip: View {
     let size: CGFloat = 33
 
     HStack(spacing: size * 8 / 33) {
-        SectionChip(title: "Popular", size: size, isSelected: true, action: {})
-        SectionChip(title: "Funny", size: size, isSelected: false, action: {})
+        SectionChip(title: "Popular", height: size, isSelected: true, action: {})
+        SectionChip(title: "Funny", height: size, isSelected: false, action: {})
     }
     .padding(24)
     .background(Color.green)
