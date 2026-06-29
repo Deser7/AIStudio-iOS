@@ -60,7 +60,7 @@ struct GradientIconButton: View {
         case .generation:
             SendIcon()
                 .stroke(
-                    Color.white,
+                    .white,
                     style: StrokeStyle(
                         lineWidth: strokeWidth,
                         lineCap: .round,
@@ -69,13 +69,13 @@ struct GradientIconButton: View {
                 )
         case .done:
             CheckIcon()
-                .fill(Color.white)
+                .fill(.white)
         case .play:
             PlayIcon()
-                .fill(Color.white)
+                .fill(.white)
         case .pause:
             PauseIcon()
-                .fill(Color.white)
+                .fill(.white)
         }
     }
 }

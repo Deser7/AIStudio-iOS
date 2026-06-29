@@ -10,6 +10,7 @@ import SwiftUI
 enum ComposerInputMode: Equatable {
     case text
     case recording(progress: CGFloat)
+    case attachmentLoading
 }
 
 struct ComposerInput: View {
@@ -21,15 +22,14 @@ struct ComposerInput: View {
     let onCancelRecording: () -> Void
     let onConfirmRecording: () -> Void
 
-    private let cornerRadius: CGFloat = 24
     private let buttonSize: CGFloat = 40
 
     private var shape: UnevenRoundedRectangle {
         UnevenRoundedRectangle(
-            topLeadingRadius: cornerRadius,
+            topLeadingRadius: 24,
             bottomLeadingRadius: 0,
             bottomTrailingRadius: 0,
-            topTrailingRadius: cornerRadius,
+            topTrailingRadius: 24,
             style: .continuous
         )
     }
@@ -42,6 +42,7 @@ struct ComposerInput: View {
         switch mode {
         case .text: 88
         case .recording: 131
+        case .attachmentLoading: 229
         }
     }
 
@@ -52,6 +53,8 @@ struct ComposerInput: View {
                 textLayout
             case let .recording(progress):
                 recordingLayout(progress: progress)
+            case .attachmentLoading:
+                attachmentLayout
             }
         }
         .padding(.horizontal, 24)
@@ -80,6 +83,19 @@ struct ComposerInput: View {
         }
     }
 
+    private var attachmentLayout: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Addendum(size: 100, content: .loading)
+
+            HStack(alignment: .center, spacing: 16) {
+                textField
+                if showsSend {
+                    GradientIconButton(size: buttonSize, icon: .generation, action: onSend)
+                }
+            }
+        }
+    }
+
     private var textField: some View {
         TextField(
             "",
@@ -91,8 +107,8 @@ struct ComposerInput: View {
         )
         .lineLimit(1...6)
         .typography(style: .regular16)
-        .foregroundColor(Color.white)
-        .tint(Color.white)
+        .foregroundColor(.white)
+        .tint(.white)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
@@ -121,20 +137,8 @@ struct ComposerInput: View {
     }
 }
 
-#Preview("Empty") {
-    ComposerInputEmptyPreview()
-}
-
-#Preview("Typing") {
-    ComposerInputTypingPreview()
-}
-
-#Preview("Multiline") {
-    ComposerInputMultilinePreview()
-}
-
-#Preview("Recording") {
-    ComposerInputRecordingPreview()
+#Preview() {
+    ComposerInputPreview()
 }
 
 private struct ComposerInputPreviewContainer: View {
@@ -150,7 +154,7 @@ private struct ComposerInputPreviewContainer: View {
         ComposerInput(
             mode: mode,
             text: $text,
-            onImport: {},
+            onImport: { mode = .attachmentLoading },
             onMicro: { mode = .recording(progress: 0.45) },
             onSend: {},
             onCancelRecording: { mode = .text },
@@ -160,38 +164,10 @@ private struct ComposerInputPreviewContainer: View {
     }
 }
 
-private struct ComposerInputEmptyPreview: View {
+private struct ComposerInputPreview: View {
     @State private var text = ""
 
     var body: some View {
         ComposerInputPreviewContainer(text: $text)
-    }
-}
-
-private struct ComposerInputTypingPreview: View {
-    @State private var text = "Hi! Can you help me write"
-
-    var body: some View {
-        ComposerInputPreviewContainer(text: $text)
-    }
-}
-
-private struct ComposerInputMultilinePreview: View {
-    @State private var text =
-        "Hi! Can you help me write a short welcome email for a new employee joining our team?"
-
-    var body: some View {
-        ComposerInputPreviewContainer(text: $text)
-    }
-}
-
-private struct ComposerInputRecordingPreview: View {
-    @State private var text = ""
-
-    var body: some View {
-        ComposerInputPreviewContainer(
-            mode: .recording(progress: 0.45),
-            text: $text
-        )
     }
 }
