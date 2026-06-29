@@ -42,3 +42,31 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
         .appDisabledOpacity()
     }
 }
+
+#Preview {
+    TextFieldBarPreview()
+}
+
+private struct TextFieldBarPreview: View {
+    @State private var text = ""
+
+    private var shape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: 24, style: .continuous)
+    }
+
+    var body: some View {
+        TextFieldBar(
+            placeholder: "Ask anything...",
+            text: $text,
+            icon: {
+                GenerateIcon()
+                    .fill(Color.white, style: FillStyle(eoFill: true))
+                    .frame(width: 24, height: 24)
+            },
+            background: { shape.fill(Color.card.opacity(0.6)) },
+            border: { EmptyView() }
+        )
+        .padding(24)
+        .background(Color.background)
+    }
+}
