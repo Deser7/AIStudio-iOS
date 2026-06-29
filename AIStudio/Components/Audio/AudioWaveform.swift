@@ -9,27 +9,16 @@ import SwiftUI
 
 struct AudioWaveform: View {
     var progress: CGFloat
-    var inactiveOpacity: CGFloat = 0.2
 
     private let height: CGFloat = 40
 
-    private var segmentCount: Int { EqualizerIcon.Layout.segmentCount }
-
     private var clampedProgress: CGFloat { min(max(progress, 0), 1) }
-
-    private var inactiveFill: Color {
-        Color.white.opacity(inactiveOpacity)
-    }
-
-    private var showsUnplayedLayer: Bool { clampedProgress < 1 }
-
-    private var showsPlayedLayer: Bool { clampedProgress > 0 }
 
     var body: some View {
         GeometryReader { geo in
             waveformContent(width: geo.size.width)
         }
-        .frame(height: height)
+        .frame(height: 40)
     }
 
     @ViewBuilder
@@ -37,10 +26,10 @@ struct AudioWaveform: View {
         let unplayedWidth = self.unplayedWidth(in: width)
 
         ZStack(alignment: .leading) {
-            if showsUnplayedLayer {
+            if clampedProgress < 1 {
                 EqualizerIcon()
-                    .fill(inactiveFill)
-                    .frame(width: width, height: height)
+                    .fill(.white.opacity(0.2))
+                    .frame(width: width, height: 40)
                     .mask(alignment: .trailing) {
                         Rectangle()
                             .frame(width: unplayedWidth)
@@ -48,9 +37,9 @@ struct AudioWaveform: View {
                     }
             }
 
-            if showsPlayedLayer {
+            if clampedProgress > 0 {
                 ZStack(alignment: .leading) {
-                    ForEach(0..<segmentCount, id: \.self) { index in
+                    ForEach(0..<5, id: \.self) { index in
                         playedSegment(
                             index: index,
                             totalWidth: width

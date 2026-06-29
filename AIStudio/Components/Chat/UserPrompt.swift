@@ -48,7 +48,7 @@ struct UserPrompt: View {
     private var messageText: some View {
         Text(text)
             .typography(style: .regular16)
-            .foregroundStyle(Color.white)
+            .foregroundStyle(.white)
             .tracking(0)
             .lineSpacing(0)
             .multilineTextAlignment(.leading)
@@ -115,10 +115,10 @@ private struct UserPromptPreview: View {
                 axis: .vertical
             )
             .typography(style: .regular16)
-            .foregroundStyle(Color.white)
+            .foregroundStyle(.white)
             .lineLimit(1 ... 10)
             .padding(12)
-            .background(Color.card)
+            .background(.card)
             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
 
             UserPrompt(text: text)

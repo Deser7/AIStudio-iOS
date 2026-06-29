@@ -39,7 +39,7 @@ struct MediaSourcePicker: View {
             .padding(.top, 16)
             .padding(.horizontal, 16)
             .padding(.bottom, 24)
-            .background(Color.card, in: sheetShape)
+            .background(.card, in: sheetShape)
             .padding(.horizontal, 24)
             .padding(.bottom, 24)
     }

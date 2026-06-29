@@ -15,11 +15,7 @@ enum AppNotificationContent {
 
 struct AppNotification: View {
     let content: AppNotificationContent
-
-    private var subtitleColor: Color {
-        Color.white.opacity(0.5)
-    }
-
+    
     private var cardHeight: CGFloat {
         switch content {
         case .fileTooLarge: 140
@@ -57,39 +53,40 @@ struct AppNotification: View {
         case .textCopied(let message), .videoSaved(let message):
             Text(message)
                 .typography(style: .regular16)
-                .foregroundStyle(Color.white)
+                .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
-                .frame(height: 38)
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
 
-        case .fileTooLarge(let title, let subtitle):
+        case let .fileTooLarge(title, subtitle):
             VStack(spacing: 4) {
                 Text(title)
                     .typography(style: .semiBold16)
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
-                    .frame(height: 19)
 
                 Text(subtitle)
                     .typography(style: .regular14)
-                    .foregroundStyle(subtitleColor)
+                    .foregroundStyle(.white.opacity(0.5))
                     .multilineTextAlignment(.center)
-                    .frame(height: 17)
             }
         }
     }
 
     @ViewBuilder
     private var iconView: some View {
+        let iconSize: CGFloat = 40
+        
         switch content {
         case .textCopied, .videoSaved:
             CheckIcon()
-                .fill(AppGradient.main, style: FillStyle(eoFill: true))
-                .frame(width: 40, height: 40)
+                .fill(AppGradient.main)
+                .frame(width: iconSize, height: iconSize)
 
         case .fileTooLarge:
             CloseIcon()
-                .fill(Color.error)
-                .frame(width: 40, height: 40)
+                .fill(.error)
+                .frame(width: iconSize, height: iconSize)
         }
     }
 

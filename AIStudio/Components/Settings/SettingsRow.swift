@@ -34,7 +34,7 @@ struct SettingsRow<Icon: View, Trailing: View>: View {
 
             Text(title)
                 .typography(style: .regular16)
-                .foregroundStyle(Color.white)
+                .foregroundStyle(.white)
                 .tracking(0)
                 .lineSpacing(0)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -66,7 +66,7 @@ struct SettingsRow<Icon: View, Trailing: View>: View {
             SettingsRowDetail(text: "5 MB")
         }
     }
-    .background(Color.card)
+    .background(.card)
     .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
     .padding(24)
     .background(Color.background)

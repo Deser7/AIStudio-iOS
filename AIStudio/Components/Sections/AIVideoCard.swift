@@ -69,7 +69,7 @@ struct AIVideoCard: View {
 
     private var featureIcon: some View {
         MagicIcon()
-            .fill(Color.white)
+            .fill(.white)
             .frame(width: 20, height: 20)
             .frame(width: 36, height: 36)
             .background { iconCircleBackground }
@@ -78,21 +78,21 @@ struct AIVideoCard: View {
 
     private var iconCircleBackground: some View {
         Circle()
-            .fill(Color.white.opacity(0.15))
+            .fill(.white.opacity(0.15))
     }
 
     private var readinessBadge: some View {
         HStack(spacing: 8) {
             Text("Ready in seconds")
                 .typography(style: .regular12)
-                .foregroundStyle(Color.white)
+                .foregroundStyle(.white)
                 .tracking(0.06)
                 .lineLimit(1)
                 .minimumScaleFactor(0.85)
                 .frame(maxWidth: 101, alignment: .leading)
 
             MediaPlayIcon()
-                .fill(Color.white)
+                .fill(.white)
                 .frame(width: 16, height: 16)
         }
         .padding(.horizontal, 12)
@@ -103,7 +103,7 @@ struct AIVideoCard: View {
 
     private var readinessBadgeBackground: some View {
         Capsule()
-            .fill(Color.white.opacity(0.3))
+            .fill(.white.opacity(0.3))
     }
 }
 

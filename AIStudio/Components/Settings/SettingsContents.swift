@@ -35,7 +35,7 @@ struct SettingsContents: View {
 
             Text("App Version: \(appVersion)")
                 .typography(style: .regular16)
-                .foregroundStyle(Color.price)
+                .foregroundStyle(.price)
                 .frame(maxWidth: .infinity)
                 .padding(.top, 32)
         }
@@ -108,7 +108,8 @@ struct SettingsContents: View {
     }
 
     private var rowSeparator: some View {
-        Color.white.opacity(0.1)
+        Rectangle()
+            .fill(.white.opacity(0.1))
             .frame(height: separatorHeight)
             .padding(.leading, 56)
     }

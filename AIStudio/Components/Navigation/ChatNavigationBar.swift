@@ -74,7 +74,7 @@ struct ChatNavigationBar: View {
 
             Text(title)
                 .typography(style: .semiBold20)
-                .foregroundStyle(Color.white)
+                .foregroundStyle(.white)
                 .lineLimit(1)
         }
     }
@@ -103,7 +103,7 @@ struct ChatNavigationBar: View {
         case .aiVideo:
             Text(title)
                 .typography(style: .semiBold20)
-                .foregroundStyle(Color.white)
+                .foregroundStyle(.white)
                 .lineLimit(1)
         case .centeredTitle:
             EmptyView()
@@ -114,7 +114,7 @@ struct ChatNavigationBar: View {
         Button(action: onBack) {
             Image(systemName: "chevron.left")
                 .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(Color.white)
+                .foregroundStyle(.white)
                 .frame(width: 44, height: 44, alignment: .leading)
         }
         .buttonStyle(.plain)
@@ -124,7 +124,7 @@ struct ChatNavigationBar: View {
     private var regenerateButton: some View {
         Button(action: { onRegenerate?() }) {
             RegenerateIcon()
-                .fill(Color.white)
+                .fill(.white)
                 .frame(width: 24, height: 24)
                 .frame(width: 44, height: 44)
         }

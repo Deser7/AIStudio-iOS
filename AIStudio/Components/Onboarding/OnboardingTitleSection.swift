@@ -105,17 +105,15 @@ struct OnboardingTitleSection: View {
     }
 
     private var titleColor: Color {
-        Color.white
+        .white
     }
 
     private var subtitleColor: Color {
         switch style {
-        case .onboarding: Color.price
-        case .navigation: Color.white.opacity(0.3)
-        case .upload: Color.white.opacity(0.3)
-        case .sourceOption: Color.white.opacity(0.5)
-        case .functionCard: Color.white.opacity(0.5)
-        case .featureCard: Color.white.opacity(0.7)
+        case .onboarding: .price
+        case .navigation, .upload: .white.opacity(0.3)
+        case .sourceOption, .functionCard: .white.opacity(0.5)
+        case .featureCard: .white.opacity(0.7)
         }
     }
 

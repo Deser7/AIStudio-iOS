@@ -14,14 +14,14 @@ struct AddingPhotoButton: View {
         Button(action: action) {
             SettingsIcon()
                 .stroke(
-                    .white.opacity(0.5),
+                    .white.opacity(0.3),
                     style: StrokeStyle(
                         lineWidth: 2.16,
                         lineCap: .round,
                         lineJoin: .round
                     )
                 )
-                .frame(width: 24, height: 24)
+                .frame(width: 28, height: 28)
                 .padding(12)
                 .frame(width: 40, height: 40)
                 .background {

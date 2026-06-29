@@ -82,7 +82,8 @@ struct SelectionMenu<Option: SelectionMenuOption>: View {
     }
 
     private var rowSeparator: some View {
-        Color.white.opacity(0.1)
+        Rectangle()
+            .fill(.white.opacity(0.1))
             .frame(height: separatorHeight)
     }
 

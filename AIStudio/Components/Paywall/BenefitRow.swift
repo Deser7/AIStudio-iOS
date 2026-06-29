@@ -23,7 +23,7 @@ struct BenefitRow: View {
 
             Text(title)
                 .typography(style: style)
-                .foregroundStyle(Color.white)
+                .foregroundStyle(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }

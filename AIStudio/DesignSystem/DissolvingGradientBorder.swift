@@ -55,7 +55,7 @@ struct DissolvingGradientBorder<S: InsettableShape>: View {
     let shape = RoundedRectangle(cornerRadius: 24, style: .continuous)
 
     return ZStack {
-        shape.fill(Color.card.opacity(0.7))
+        shape.fill(.card.opacity(0.7))
         DissolvingGradientBorder(
             shape: shape,
             containerWidth: 358,

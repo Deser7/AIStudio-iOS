@@ -19,15 +19,11 @@ struct SectionButton: View {
 
     @Environment(\.isEnabled) private var isEnabled
 
-    private var titleColor: Color {
-        isEnabled ? Color.white : Color.black.opacity(0.3)
-    }
-
     var body: some View {
         Button(action: action) {
             Text(title)
                 .typography(style: .semiBold16)
-                .foregroundStyle(titleColor)
+                .foregroundStyle(isEnabled ? .white : .black.opacity(0.3))
                 .padding(.horizontal, 12)
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)

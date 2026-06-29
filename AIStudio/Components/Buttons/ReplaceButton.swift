@@ -22,7 +22,7 @@ struct ReplaceButton: View {
             HStack(spacing: 8) {
                 RefreshIcon()
                     .stroke(
-                        Color.white,
+                        .white,
                         style: StrokeStyle(
                             lineWidth: strokeWidth,
                             lineCap: .round,
@@ -33,14 +33,14 @@ struct ReplaceButton: View {
 
                 Text(title)
                     .typography(style: .regular14)
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(.white)
                     .lineLimit(1)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
             .frame(height: 40)
             .background(
-                Color.card.opacity(0.4),
+                .card.opacity(0.4),
                 in: RoundedRectangle(cornerRadius: 24)
             )
             .fixedSize(horizontal: true, vertical: false)

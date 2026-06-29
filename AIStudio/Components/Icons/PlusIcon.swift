@@ -38,6 +38,6 @@ struct PlusIcon: Shape {
 
 #Preview {
     PlusIcon()
-        .fill(Color.black)
+        .fill(.black)
         .frame(width: 48, height: 48)
 }

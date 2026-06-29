@@ -25,7 +25,7 @@ struct ProButton: View {
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
             .frame(height: 32)
-            .background(Color.white, in: Capsule())
+            .background(.white, in: Capsule())
             .fixedSize(horizontal: true, vertical: false)
         }
         .buttonStyle(.plain)

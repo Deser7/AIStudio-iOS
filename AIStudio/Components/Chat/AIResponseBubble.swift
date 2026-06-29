@@ -61,7 +61,7 @@ struct AIResponseBubble: View {
     }
 
     private var bodyTextColor: Color {
-        Color.white.opacity(0.8)
+        .white.opacity(0.8)
     }
 
     private var titleView: some View {
@@ -134,7 +134,7 @@ struct AIResponseBubble: View {
             actionButton {
                 CopyIcon()
                     .stroke(
-                        Color.white,
+                        .white,
                         style: StrokeStyle(
                             lineWidth: iconStrokeWidth,
                             lineCap: .round,
@@ -151,7 +151,7 @@ struct AIResponseBubble: View {
             actionButton {
                 RefreshIcon()
                     .stroke(
-                        Color.white,
+                        .white,
                         style: StrokeStyle(
                             lineWidth: iconStrokeWidth,
                             lineCap: .round,

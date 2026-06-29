@@ -23,14 +23,14 @@ struct TitleCard: View {
                 .frame(width: 168, height: 219)
 
             LinearGradient(
-                colors: [Color.card.opacity(0), Color.card],
+                colors: [.card.opacity(0), .card],
                 startPoint: .top,
                 endPoint: .bottom
             )
 
             Text(title)
                 .typography(style: .regular16)
-                .foregroundStyle(Color.white)
+                .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .padding(8)
         }

@@ -47,13 +47,13 @@ struct AICreationOptionRow: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(option.title)
                         .typography(style: .semiBold16)
-                        .foregroundStyle(Color.white)
+                        .foregroundStyle(.white)
                         .tracking(0)
                         .lineLimit(1)
 
                     Text(option.subtitle)
                         .typography(style: .regular14)
-                        .foregroundStyle(Color.white.opacity(0.5))
+                        .foregroundStyle(.white.opacity(0.5))
                         .tracking(0)
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
@@ -63,7 +63,7 @@ struct AICreationOptionRow: View {
             .padding(.horizontal, 16)
             .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
             .background(
-                Color.card,
+                .card,
                 in: RoundedRectangle(cornerRadius: 24, style: .continuous)
             )
         }

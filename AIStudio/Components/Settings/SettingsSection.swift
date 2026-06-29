@@ -16,14 +16,14 @@ struct SettingsSection<Rows: View>: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .typography(style: .regular16)
-                .foregroundStyle(Color.price)
+                .foregroundStyle(.price)
                 .textCase(.none)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(spacing: 0) {
                 rows()
             }
-            .background(Color.card)
+            .background(.card)
             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         }
     }

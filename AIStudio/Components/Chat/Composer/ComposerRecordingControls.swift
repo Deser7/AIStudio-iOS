@@ -18,7 +18,7 @@ struct ComposerRecordingControls: View {
         HStack(spacing: 16) {
             CircularIconButton(size: buttonSize, icon: .cross, action: onCancel)
 
-            AudioWaveform(progress: progress, inactiveOpacity: 0.2)
+            AudioWaveform(progress: progress)
                 .frame(maxWidth: .infinity)
 
             GradientIconButton(size: buttonSize, icon: .done, action: onConfirm)

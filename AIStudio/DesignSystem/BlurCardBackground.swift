@@ -17,7 +17,7 @@ struct BlurCardBackground<S: Shape>: View {
     var extent: CGFloat
     var blurRadius: CGFloat
     var cardOpacity: CGFloat
-    var fillColor: Color = Color.card
+    var fillColor: Color = .card
     var shape: S
 
     private var blurMaxWidth: CGFloat? {

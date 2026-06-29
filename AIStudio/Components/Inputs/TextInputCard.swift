@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TextInputCard: View {
-    var placeholder: String = "Paste or write your text here..."
     var characterLimit: Int = 400
     @Binding var text: String
 
@@ -23,10 +22,10 @@ struct TextInputCard: View {
         RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
-    private var isOverLimit: Bool { text.count > characterLimit }
+    private var isOverLimit: Bool { text.count > 400 }
 
     private var secondaryColor: Color {
-        Color.white.opacity(0.3)
+        .white.opacity(0.3)
     }
 
     private var editorHeight: CGFloat { 106 }
@@ -55,15 +54,15 @@ struct TextInputCard: View {
         TextField(
             "",
             text: $text,
-            prompt: Text(placeholder)
+            prompt: Text("Paste or write your text here...")
                 .font(Typography.font(style: .regular16))
                 .foregroundColor(secondaryColor),
             axis: .vertical
         )
         .lineLimit(editorLineLimit)
         .typography(style: .regular16)
-        .foregroundColor(Color.white)
-        .tint(Color.white)
+        .foregroundColor(.white)
+        .tint(.white)
         .frame(height: editorHeight, alignment: .top)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -71,14 +70,14 @@ struct TextInputCard: View {
     private var characterCounter: some View {
         Text("\(text.count)/\(characterLimit)")
             .typography(style: .regular16)
-            .foregroundColor(isOverLimit ? Color.error : secondaryColor)
+            .foregroundColor(isOverLimit ? .error : secondaryColor)
     }
 
     @ViewBuilder
     private var errorBorder: some View {
         if isOverLimit {
             shape
-                .strokeBorder(Color.error, lineWidth: borderWidth)
+                .strokeBorder(.error, lineWidth: borderWidth)
         }
     }
 

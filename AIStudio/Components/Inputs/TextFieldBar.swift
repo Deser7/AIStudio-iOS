@@ -27,11 +27,11 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
                 text: $text,
                 prompt: Text(placeholder)
                     .font(Typography.font(style: .regular16))
-                    .foregroundColor(Color.white.opacity(0.5))
+                    .foregroundColor(.white.opacity(0.5))
             )
             .typography(style: .regular16)
-            .foregroundColor(Color.white)
-            .tint(Color.white)
+            .foregroundColor(.white)
+            .tint(.white)
         }
         .padding(16)
         .frame(maxWidth: .infinity)
@@ -60,10 +60,10 @@ private struct TextFieldBarPreview: View {
             text: $text,
             icon: {
                 GenerateIcon()
-                    .fill(Color.white, style: FillStyle(eoFill: true))
+                    .fill(.white, style: FillStyle(eoFill: true))
                     .frame(width: 24, height: 24)
             },
-            background: { shape.fill(Color.card.opacity(0.6)) },
+            background: { shape.fill(.card.opacity(0.6)) },
             border: { EmptyView() }
         )
         .padding(24)

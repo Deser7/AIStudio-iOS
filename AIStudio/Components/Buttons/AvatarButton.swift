@@ -24,7 +24,7 @@ struct AvatarButton: View {
         Button(action: action) {
             ZStack {
                 Circle()
-                    .fill(Color.white)
+                    .fill(.white)
 
                 if showsUserIcon {
                     userIcon
@@ -38,8 +38,8 @@ struct AvatarButton: View {
 
     private var userIcon: some View {
         UserIcon()
-            .fill(Color.surface)
-            .frame(width: 18, height: 18)
+            .fill(.surface)
+            .frame(width: 16, height: 18)
     }
 }
 

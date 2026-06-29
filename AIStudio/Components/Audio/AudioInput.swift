@@ -24,10 +24,7 @@ struct AudioInput: View {
         HStack(spacing: 16) {
             playbackButton
 
-            AudioWaveform(
-                progress: clampedProgress,
-                inactiveOpacity: 0.2
-            )
+            AudioWaveform(progress: clampedProgress)
             .frame(maxWidth: .infinity)
         }
         .padding(.horizontal, 16)

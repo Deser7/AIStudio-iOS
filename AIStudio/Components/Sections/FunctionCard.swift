@@ -66,7 +66,7 @@ struct FunctionCard: View {
 
     private var iconCircleBackground: some View {
         Circle()
-            .fill(Color.white.opacity(0.05))
+            .fill(.white.opacity(0.05))
     }
 
     @ViewBuilder
@@ -83,7 +83,7 @@ struct FunctionCard: View {
 
     private var cardBackground: some View {
         cardShape
-            .fill(Color.functionCard)
+            .fill(.functionCard)
             .allowsHitTesting(false)
     }
 }
@@ -94,5 +94,5 @@ struct FunctionCard: View {
         FunctionCard(option: .understandFaster, action: {})
     }
     .padding(24)
-    .background(Color.gray)
+    .background(.gray)
 }

@@ -46,11 +46,11 @@ struct AppInput: View {
         switch style {
         case .main:
             GenerateIcon()
-                .fill(Color.white, style: FillStyle(eoFill: true))
+                .fill(.white, style: FillStyle(eoFill: true))
                 .frame(width: 24, height: 24)
         case .search:
             SearchIcon()
-                .fill(Color.white)
+                .fill(.white)
                 .frame(width: 24, height: 24)
         }
     }
@@ -68,7 +68,7 @@ struct AppInput: View {
             )
         case .search:
             fieldShape
-                .fill(Color.card.opacity(0.6))
+                .fill(.card.opacity(0.6))
         }
     }
 
@@ -87,7 +87,7 @@ struct AppInput: View {
             .allowsHitTesting(false)
         case .search:
             fieldShape
-                .strokeBorder(Color.white, lineWidth: borderWidth)
+                .strokeBorder(.white, lineWidth: borderWidth)
         }
     }
 }

@@ -18,7 +18,7 @@ struct CloseButton: View {
     let action: () -> Void
 
     private var backgroundColor: Color {
-        style == .surface ? Color.surface : Color.white
+        style == .surface ? .surface : .white
     }
 
     private var iconSize: CGFloat { size * 16 / 24 }
@@ -42,7 +42,7 @@ struct CloseButton: View {
     private var iconView: some View {
         if style == .surface {
             CloseIcon()
-                .fill(Color.white)
+                .fill(.white)
         } else {
             CloseIcon()
                 .fill(AppGradient.main)

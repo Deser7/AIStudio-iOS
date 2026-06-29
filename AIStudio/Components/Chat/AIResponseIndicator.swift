@@ -15,14 +15,14 @@ struct AIResponseIndicator: View {
 
     @State private var activeIndex = 0
 
-    private let dotDiameters: [CGFloat] = [19, 15, 10]
+    private let sizes: [CGFloat] = [19, 15, 10]
 
     private var bubbleShape: AIResponseBubbleShape {
         AIResponseBubbleShape(cornerRadius: 24)
     }
 
     private var inactiveDotColor: Color {
-        Color.white.opacity(0.1)
+        .white.opacity(0.1)
     }
 
     var body: some View {
@@ -42,7 +42,7 @@ struct AIResponseIndicator: View {
     }
 
     private func dot(at index: Int, isActive: Bool) -> some View {
-        let diameter = dotDiameters[index]
+        let size = sizes[index]
 
         return ZStack {
             Circle()
@@ -52,7 +52,7 @@ struct AIResponseIndicator: View {
                 .fill(AppGradient.main)
                 .opacity(isActive ? 1 : 0)
         }
-        .frame(width: diameter, height: diameter)
+        .frame(width: size, height: size)
     }
 
     @MainActor

@@ -262,9 +262,6 @@ struct EqualizerIcon: Shape {
 
 extension EqualizerIcon {
     enum Layout {
-        static let barsPerSegment = 9
-        static let segmentCount = 5
-
         /// Группы по 9 палочек слева направо; сегмент 4 — хвост из 3 палочек.
         static let groupLeadingEdge: [CGFloat] = [0, 0.23404, 0.46853, 0.70343, 0.93501]
         static let groupTrailingEdge: [CGFloat] = [0.22135, 0.45564, 0.69084, 0.92241, 0.99796]

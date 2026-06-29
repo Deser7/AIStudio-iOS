@@ -32,11 +32,11 @@ struct PricingPlanCard: View {
                         Text("/ week")
                             .typography(style: .regular16)
                     }
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(.white)
 
                     Text(price)
                         .typography(style: .regular14)
-                        .foregroundStyle(Color.price)
+                        .foregroundStyle(.price)
                 }
 
                 Spacer(minLength: 0)
@@ -44,7 +44,7 @@ struct PricingPlanCard: View {
                 if let badge {
                     Text(badge)
                         .typography(style: .medium14)
-                        .foregroundStyle(Color.white)
+                        .foregroundStyle(.white)
                         .textCase(.uppercase)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 6)
@@ -55,7 +55,7 @@ struct PricingPlanCard: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
             .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
-            .background(Color.card)
+            .background(.card)
             .clipShape(RoundedRectangle(cornerRadius: 24))
             .overlay { borderOverlay }
         }
@@ -69,7 +69,7 @@ struct PricingPlanCard: View {
                 .strokeBorder(AppGradient.main, lineWidth: 1)
         } else {
             RoundedRectangle(cornerRadius: 24)
-                .strokeBorder(Color.white.opacity(0.25), lineWidth: 1)
+                .strokeBorder(.white.opacity(0.25), lineWidth: 1)
         }
     }
 }

@@ -35,7 +35,7 @@ struct AspectRatioIcon: View {
     private var iconSize: CGSize {
         switch ratio {
         case .landscape16x9:
-            return CGSize(width: 32, height: 19)
+            return CGSize(width: 22, height: 14)
         case .portrait9x16:
             return CGSize(width: 13, height: 20)
         case .square1x1:
@@ -59,7 +59,7 @@ struct AspectRatioIcon: View {
     }
 
     private var strokeStyle: AnyShapeStyle {
-        isSelected ? AnyShapeStyle(AppGradient.main) : AnyShapeStyle(Color.white)
+        isSelected ? AnyShapeStyle(AppGradient.main) : AnyShapeStyle(.white)
     }
 }
 

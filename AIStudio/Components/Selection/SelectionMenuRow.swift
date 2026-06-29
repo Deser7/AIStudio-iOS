@@ -31,7 +31,7 @@ struct SelectionMenuRow<Trailing: View>: View {
     }
 
     private var titleStyle: AnyShapeStyle {
-        isSelected ? AnyShapeStyle(AppGradient.main) : AnyShapeStyle(Color.white)
+        isSelected ? AnyShapeStyle(AppGradient.main) : AnyShapeStyle(.white)
     }
 }
 
@@ -44,7 +44,7 @@ struct SelectionMenuRow<Trailing: View>: View {
             EmptyView()
         }
     }
-    .background(Color.card)
+    .background(.card)
     .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
     .padding(24)
     .background(Color.background)

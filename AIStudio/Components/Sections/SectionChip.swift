@@ -18,7 +18,7 @@ struct SectionChip: View {
     }
 
     private var titleColor: Color {
-        Color.white.opacity(isSelected ? 1 : 0.5)
+        .white.opacity(isSelected ? 1 : 0.5)
     }
 
     var body: some View {
@@ -59,5 +59,5 @@ struct SectionChip: View {
         SectionChip(title: "Funny", isSelected: false, action: {})
     }
     .padding(24)
-    .background(Color.green)
+    .background(.green)
 }
