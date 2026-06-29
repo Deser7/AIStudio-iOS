@@ -51,7 +51,7 @@ struct AudioInput: View {
 
     private var playbackButton: some View {
         GradientIconButton(
-            diameter: 40,
+            size: 40,
             icon: isPlaying ? .pause : .play,
             action: onPlayPause
         )

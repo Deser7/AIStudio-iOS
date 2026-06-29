@@ -27,13 +27,13 @@ enum GradientIconButtonIcon {
 }
 
 struct GradientIconButton: View {
-    var diameter: CGFloat
+    var size: CGFloat
     var icon: GradientIconButtonIcon = .generation
     let action: () -> Void
 
     @Environment(\.displayScale) private var displayScale
 
-    private var iconFrameSize: CGSize { icon.iconFrameSize(relativeTo: diameter) }
+    private var iconFrameSize: CGSize { icon.iconFrameSize(relativeTo: size) }
     private var strokeWidth: CGFloat {
         (min(iconFrameSize.width, iconFrameSize.height) * 1 / 10)
             .pixelAligned(to: displayScale)
@@ -47,7 +47,7 @@ struct GradientIconButton: View {
                 iconView
                     .frame(width: iconFrameSize.width, height: iconFrameSize.height)
             }
-            .frame(width: diameter, height: diameter)
+            .frame(width: size, height: size)
             .clipShape(Circle())
         }
         .buttonStyle(.plain)
@@ -84,10 +84,10 @@ struct GradientIconButton: View {
     let size: CGFloat = 40
 
     HStack(spacing: size * 24 / 40) {
-        GradientIconButton(diameter: size, icon: .generation) {}
-        GradientIconButton(diameter: size, icon: .done) {}
-        GradientIconButton(diameter: size, icon: .play) {}
-        GradientIconButton(diameter: size, icon: .pause) {}
+        GradientIconButton(size: size, icon: .generation) {}
+        GradientIconButton(size: size, icon: .done) {}
+        GradientIconButton(size: size, icon: .play) {}
+        GradientIconButton(size: size, icon: .pause) {}
     }
     .padding(24)
     .background(Color.background)

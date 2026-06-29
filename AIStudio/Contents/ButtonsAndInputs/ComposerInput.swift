@@ -15,10 +15,6 @@ enum ComposerInputState: Equatable {
 }
 
 struct ComposerInput: View {
-    private enum Layout {
-        static let placeholderRed: CGFloat = 96 / 255
-    }
-
     var placeholder: String = "How can I help you?"
     @Binding var state: ComposerInputState
     @Binding var voiceProgress: CGFloat
@@ -34,14 +30,6 @@ struct ComposerInput: View {
 
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
-    private var placeholderColor: Color {
-        Color(
-            red: Layout.placeholderRed,
-            green: Layout.placeholderRed,
-            blue: Layout.placeholderRed
-        )
     }
 
     private var showsVoiceRow: Bool {
@@ -76,7 +64,7 @@ struct ComposerInput: View {
                 generatingSection
             }
 
-            HStack(alignment: .bottom, spacing: 16) {
+            HStack(alignment: .center, spacing: 16) {
                 textInput
                     .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -122,7 +110,7 @@ struct ComposerInput: View {
             text: $text,
             prompt: Text(placeholder)
                 .font(Typography.font(style: .regular16))
-                .foregroundColor(placeholderColor),
+                .foregroundColor(.price),
             axis: .vertical
         )
         .lineLimit(1...10)
@@ -135,7 +123,7 @@ struct ComposerInput: View {
     @ViewBuilder
     private var buttonSection: some View {
         if showsSendButton {
-            GradientIconButton(diameter: 40, icon: .generation, action: handleSend)
+            GradientIconButton(size: 40, icon: .generation, action: handleSend)
         } else {
             HStack(spacing: 16) {
                 CircularIconButton(size: 40, icon: .photo, action: handleImport)
@@ -151,7 +139,7 @@ struct ComposerInput: View {
             AudioWaveform(progress: voiceProgress)
             .frame(maxWidth: .infinity)
 
-            GradientIconButton(diameter: 40, icon: .done, action: handleVoiceConfirm)
+            GradientIconButton(size: 40, icon: .done, action: handleVoiceConfirm)
         }
     }
 
@@ -200,57 +188,54 @@ struct ComposerInput: View {
     }
 }
 
-// MARK: - Previews
-
-#Preview {
+#Preview("Editing") {
     ComposerInputPreview()
 }
 
+#Preview("With text") {
+    ComposerInputPreview(text: "How can I help you?")
+}
+
+#Preview("Voice") {
+    ComposerInputPreview(state: .voiceRecording, voiceProgress: 0.42)
+}
+
+#Preview("Generating") {
+    ComposerInputPreview(state: .generating)
+}
+
+#Preview("With photo") {
+    ComposerInputPreview(
+        attachedImage: Image(systemName: "person.crop.rectangle.fill")
+    )
+}
+
 private struct ComposerInputPreview: View {
-    @State private var state = ComposerInputState.editing
-    @State private var text = ""
+    @State private var state: ComposerInputState
+    @State private var text: String
+    @State private var voiceProgress: CGFloat
     @State private var attachedImage: Image?
-    @State private var voiceProgress: CGFloat = 0
+
+    init(
+        state: ComposerInputState = .editing,
+        text: String = "",
+        voiceProgress: CGFloat = 0,
+        attachedImage: Image? = nil
+    ) {
+        _state = State(initialValue: state)
+        _text = State(initialValue: text)
+        _voiceProgress = State(initialValue: voiceProgress)
+        _attachedImage = State(initialValue: attachedImage)
+    }
 
     var body: some View {
         ComposerInput(
             state: $state,
             voiceProgress: $voiceProgress,
             text: $text,
-            attachedImage: $attachedImage,
-            onImport: simulateImageImport,
-            onSend: simulateGenerating
+            attachedImage: $attachedImage
         )
-        .padding(.horizontal, 24)
-        .padding(.vertical, 24)
+        .padding(24)
         .background(Color.background)
-        .task(id: state) {
-            guard state == .voiceRecording else { return }
-
-            voiceProgress = 0
-            while state == .voiceRecording, voiceProgress < 1 {
-                try? await Task.sleep(for: .milliseconds(120))
-                voiceProgress = min(voiceProgress + 0.03, 1)
-            }
-        }
-    }
-
-    private func simulateImageImport() {
-        Task {
-            try? await Task.sleep(for: .seconds(1.5))
-            await MainActor.run {
-                attachedImage = Image(systemName: "person.crop.rectangle.fill")
-                state = .editing
-            }
-        }
-    }
-
-    private func simulateGenerating() {
-        Task {
-            try? await Task.sleep(for: .seconds(2))
-            await MainActor.run {
-                state = .editing
-            }
-        }
     }
 }
