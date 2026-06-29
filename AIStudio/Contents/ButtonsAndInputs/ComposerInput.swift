@@ -7,11 +7,19 @@
 
 import SwiftUI
 
+enum ComposerInputMode: Equatable {
+    case text
+    case recording(progress: CGFloat)
+}
+
 struct ComposerInput: View {
+    var mode: ComposerInputMode = .text
     @Binding var text: String
     let onImport: () -> Void
     let onMicro: () -> Void
     let onSend: () -> Void
+    let onCancelRecording: () -> Void
+    let onConfirmRecording: () -> Void
 
     private let cornerRadius: CGFloat = 24
     private let buttonSize: CGFloat = 40
@@ -30,30 +38,62 @@ struct ComposerInput: View {
         !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
-    var body: some View {
-        HStack(alignment: .center, spacing: 16) {
-            TextField(
-                "",
-                text: $text,
-                prompt: Text("How can I help you?")
-                    .font(Typography.font(style: .regular16))
-                    .foregroundColor(.price),
-                axis: .vertical
-            )
-            .lineLimit(1...6)
-            .typography(style: .regular16)
-            .foregroundColor(Color.white)
-            .tint(Color.white)
-            .frame(maxWidth: .infinity, alignment: .leading)
+    private var minHeight: CGFloat {
+        switch mode {
+        case .text: 88
+        case .recording: 131
+        }
+    }
 
-            trailingActions
+    var body: some View {
+        Group {
+            switch mode {
+            case .text:
+                textLayout
+            case let .recording(progress):
+                recordingLayout(progress: progress)
+            }
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
-        .frame(minHeight: 88)
+        .frame(minHeight: minHeight)
         .background { background }
         .clipShape(shape)
         .appDisabledOpacity()
+    }
+
+    private var textLayout: some View {
+        HStack(alignment: .center, spacing: 16) {
+            textField
+            trailingActions
+        }
+    }
+
+    private func recordingLayout(progress: CGFloat) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            textField
+            ComposerRecordingControls(
+                progress: progress,
+                onCancel: onCancelRecording,
+                onConfirm: onConfirmRecording
+            )
+        }
+    }
+
+    private var textField: some View {
+        TextField(
+            "",
+            text: $text,
+            prompt: Text("How can I help you?")
+                .font(Typography.font(style: .regular16))
+                .foregroundColor(.price),
+            axis: .vertical
+        )
+        .lineLimit(1...6)
+        .typography(style: .regular16)
+        .foregroundColor(Color.white)
+        .tint(Color.white)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     @ViewBuilder
@@ -93,15 +133,28 @@ struct ComposerInput: View {
     ComposerInputMultilinePreview()
 }
 
+#Preview("Recording") {
+    ComposerInputRecordingPreview()
+}
+
 private struct ComposerInputPreviewContainer: View {
+    @State private var mode: ComposerInputMode
     @Binding var text: String
+
+    init(mode: ComposerInputMode = .text, text: Binding<String>) {
+        _mode = State(initialValue: mode)
+        _text = text
+    }
 
     var body: some View {
         ComposerInput(
+            mode: mode,
             text: $text,
             onImport: {},
-            onMicro: {},
-            onSend: {}
+            onMicro: { mode = .recording(progress: 0.45) },
+            onSend: {},
+            onCancelRecording: { mode = .text },
+            onConfirmRecording: { mode = .text }
         )
         .background(Color.background)
     }
@@ -129,5 +182,16 @@ private struct ComposerInputMultilinePreview: View {
 
     var body: some View {
         ComposerInputPreviewContainer(text: $text)
+    }
+}
+
+private struct ComposerInputRecordingPreview: View {
+    @State private var text = ""
+
+    var body: some View {
+        ComposerInputPreviewContainer(
+            mode: .recording(progress: 0.45),
+            text: $text
+        )
     }
 }
