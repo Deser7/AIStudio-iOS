@@ -58,7 +58,7 @@ struct AudioUploadCard: View {
     private var cardContent: some View {
         VStack(spacing: 16) {
             if state == .loading {
-                SpinnerView(diameter: 48)
+                SpinnerView(size: 48)
 
                 OnboardingTitleSection(
                     title: "Converting speech to text...",

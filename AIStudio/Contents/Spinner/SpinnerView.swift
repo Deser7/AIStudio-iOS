@@ -15,16 +15,16 @@ struct SpinnerView: View {
         static let opacities: [CGFloat] = [1, 0.6, 0.35, 0.22, 0.15, 0.1, 0.07, 0.05]
     }
 
-    var diameter: CGFloat
+    var size: CGFloat
 
     var body: some View {
         TimelineView(.animation(minimumInterval: Layout.animationMinimumInterval)) { timeline in
             SpinnerIcon()
                 .fill(AppGradient.main)
-                .frame(width: diameter, height: diameter)
+                .frame(width: size, height: size)
                 .mask {
                     opacityMask
-                        .frame(width: diameter, height: diameter)
+                        .frame(width: size, height: size)
                         .rotationEffect(.degrees(maskRotation(for: timeline.date)))
                 }
         }
@@ -58,7 +58,7 @@ struct SpinnerView: View {
 }
 
 #Preview {
-    SpinnerView(diameter: 32)
+    SpinnerView(size: 32)
         .padding(24)
         .background(Color.background)
 }

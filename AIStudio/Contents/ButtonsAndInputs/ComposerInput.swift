@@ -32,6 +32,10 @@ struct ComposerInput: View {
         RoundedRectangle(cornerRadius: 24, style: .continuous)
     }
 
+    private var isCompactEditing: Bool {
+        state == .editing && attachedImage == nil && text.isEmpty
+    }
+
     private var showsVoiceRow: Bool {
         state == .voiceRecording
     }
@@ -40,35 +44,40 @@ struct ComposerInput: View {
         state == .generating || (state == .editing && !text.isEmpty)
     }
 
-    private var showsSideButtons: Bool {
-        state == .editing
+    private var showsTrailingButtons: Bool {
+        state == .editing || state == .generating
     }
 
     private var isTextInputDisabled: Bool {
         state == .generating || state == .imageLoading
     }
 
-    private var containerMinHeight: CGFloat {
-        state == .generating ? 229 : 88
-    }
-
-    private var showsGeneratingContent: Bool {
-        state == .generating
+    private var containerHeight: CGFloat? {
+        switch state {
+        case .generating: 229
+        case .editing where isCompactEditing: 88
+        default: nil
+        }
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             attachmentSection
 
-            if showsGeneratingContent {
-                generatingSection
+            if state == .generating {
+                SpinnerView(size: 48)
+                Spacer(minLength: 0)
+            }
+
+            if isCompactEditing {
+                Spacer(minLength: 0)
             }
 
             HStack(alignment: .center, spacing: 16) {
                 textInput
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                if showsSideButtons {
+                if showsTrailingButtons {
                     buttonSection
                 }
             }
@@ -76,54 +85,64 @@ struct ComposerInput: View {
             if showsVoiceRow {
                 voiceRow
             }
+
+            if isCompactEditing {
+                Spacer(minLength: 0)
+            }
         }
         .padding(.horizontal, 16)
-        .padding(.vertical, 24)
-        .frame(maxWidth: .infinity, minHeight: containerMinHeight, alignment: .top)
+        .padding(.vertical, 16)
+        .frame(maxWidth: .infinity)
+        .frame(minHeight: containerHeight == nil ? 88 : nil)
+        .frame(height: containerHeight)
         .background { background }
         .clipShape(shape)
         .appDisabledOpacity()
     }
 
     @ViewBuilder
-    private var generatingSection: some View {
-        Addendum(diameter: 100, content: .loading)
-
-        Spacer(minLength: 0)
-    }
-
-    @ViewBuilder
     private var attachmentSection: some View {
         if state == .imageLoading {
-            Addendum(diameter: 100, content: .loading)
+            Addendum(size: 100, content: .loading)
         } else if let attachedImage {
             Addendum(
-                diameter: 100,
+                size: 100,
                 content: .photo(attachedImage, onClose: removeAttachment)
             )
         }
     }
 
+    @ViewBuilder
     private var textInput: some View {
-        TextField(
-            "",
-            text: $text,
-            prompt: Text(placeholder)
-                .font(Typography.font(style: .regular16))
-                .foregroundColor(.price),
-            axis: .vertical
-        )
-        .lineLimit(1...10)
-        .typography(style: .regular16)
-        .foregroundColor(Color.white)
-        .tint(Color.white)
-        .disabled(isTextInputDisabled)
+        if state == .generating {
+            Text(text)
+                .typography(style: .regular16)
+                .foregroundStyle(Color.white)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
+        } else {
+            TextField(
+                "",
+                text: $text,
+                prompt: Text(placeholder)
+                    .font(Typography.font(style: .regular16))
+                    .foregroundColor(.price),
+                axis: .vertical
+            )
+            .lineLimit(1...10)
+            .typography(style: .regular16)
+            .foregroundColor(Color.white)
+            .tint(Color.white)
+            .disabled(isTextInputDisabled)
+        }
     }
 
     @ViewBuilder
     private var buttonSection: some View {
         if showsSendButton {
             GradientIconButton(size: 40, icon: .generation, action: handleSend)
+                .disabled(state == .generating)
         } else {
             HStack(spacing: 16) {
                 CircularIconButton(size: 40, icon: .photo, action: handleImport)
@@ -137,7 +156,7 @@ struct ComposerInput: View {
             CircularIconButton(size: 40, icon: .cross, action: handleVoiceCancel)
 
             AudioWaveform(progress: voiceProgress)
-            .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity)
 
             GradientIconButton(size: 40, icon: .done, action: handleVoiceConfirm)
         }
@@ -167,6 +186,7 @@ struct ComposerInput: View {
     }
 
     private func handleSend() {
+        guard state == .editing else { return }
         state = .generating
         onSend()
     }
@@ -196,12 +216,27 @@ struct ComposerInput: View {
     ComposerInputPreview(text: "How can I help you?")
 }
 
+#Preview("Multi-line") {
+    ComposerInputPreview(
+        text: """
+        Hi! Can you help me write a short welcome email for a new employee \
+        joining our team?
+        """
+    )
+}
+
 #Preview("Voice") {
     ComposerInputPreview(state: .voiceRecording, voiceProgress: 0.42)
 }
 
 #Preview("Generating") {
-    ComposerInputPreview(state: .generating)
+    ComposerInputPreview(
+        state: .generating,
+        text: """
+        Hi! Can you help me write a short welcome email for a new employee \
+        joining our team?
+        """
+    )
 }
 
 #Preview("With photo") {
