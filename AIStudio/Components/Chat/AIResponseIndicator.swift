@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// Индикатор «AI печатает» — пузырь с тремя точками (Figma «AI's response»).
 struct AIResponseIndicator: View {
     /// Пауза на каждой точке перед переходом к следующей.
     private let stepDuration: TimeInterval = 0.33
