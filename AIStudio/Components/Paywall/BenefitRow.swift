@@ -9,30 +9,43 @@ import SwiftUI
 
 struct BenefitRow: View {
     let title: String
-    var style: Typography.Style = .semiBold20
+    var style: Typography.Style = .medium16
+    var icon: PaywallBenefitIcon = .generate
 
     private var fontSize: CGFloat { style.fontSize }
-    private var rowSpacing: CGFloat { fontSize * 12 / 20 }
-    private var iconSize: CGFloat { fontSize * 28 / 20 }
+    private var iconSize: CGFloat { fontSize * 24 / 16 }
+
+    @ViewBuilder
+    private var iconView: some View {
+        switch icon {
+        case .generate:
+            GenerateIcon().fill(AppGradient.main)
+        case .magicPencil:
+            MagicPencil().fill(AppGradient.main)
+        case .prompt:
+            PromptIcon().fill(AppGradient.main)
+        case .magic:
+            MagicIcon().fill(AppGradient.main)
+        }
+    }
 
     var body: some View {
-        HStack(spacing: rowSpacing) {
-            GenerateIcon()
-                .fill(AppGradient.main)
+        HStack(spacing: 8) {
+            iconView
                 .frame(width: iconSize, height: iconSize)
 
             Text(title)
                 .typography(style: style)
                 .foregroundStyle(.white)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .lineLimit(1)
         }
     }
 }
 
 #Preview {
     VStack(alignment: .leading, spacing: 16) {
-        BenefitRow(title: "Unlimited tracking", style: .semiBold20)
-        BenefitRow(title: "Unlimited tracking", style: .semiBold24)
+        BenefitRow(title: "Unlimited tracking", style: .medium16)
+        BenefitRow(title: "Unlimited tracking", style: .bold34)
     }
     .padding(.horizontal, 24)
     .padding(.vertical, 24)

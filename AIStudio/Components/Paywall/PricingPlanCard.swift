@@ -7,13 +7,6 @@
 
 import SwiftUI
 
-struct PricingPlanItem: Identifiable, Equatable {
-    let id: String
-    let periodLabel: String
-    let price: String
-    let badge: String?
-}
-
 struct PricingPlanCard: View {
     let periodLabel: String
     let price: String
@@ -39,7 +32,7 @@ struct PricingPlanCard: View {
                         .foregroundStyle(.price)
                 }
 
-                Spacer(minLength: 0)
+                Spacer()
 
                 if let badge {
                     Text(badge)
@@ -74,60 +67,27 @@ struct PricingPlanCard: View {
     }
 }
 
-struct PricingPlans: View {
-    let plans: [PricingPlanItem]
-    @Binding var selectedPlanID: String
-    var spacing: CGFloat?
-
-    private var planSpacing: CGFloat {
-        spacing ?? 16
-    }
-
-    var body: some View {
-        VStack(spacing: planSpacing) {
-            ForEach(plans) { plan in
-                PricingPlanCard(
-                    periodLabel: plan.periodLabel,
-                    price: plan.price,
-                    badge: plan.badge,
-                    isSelected: selectedPlanID == plan.id
-                ) {
-                    selectedPlanID = plan.id
-                }
-            }
-        }
-    }
-}
-
 #Preview {
-    struct PreviewContainer: View {
-        @State private var selectedPlanID = "year"
-
-        private let plans = [
-            PricingPlanItem(
-                id: "month",
+    ZStack {
+        Color.background
+            .ignoresSafeArea()
+        
+        VStack(spacing: 16) {
+            PricingPlanCard(
                 periodLabel: "Month $1.99",
                 price: "$ 7.99",
-                badge: nil
-            ),
-            PricingPlanItem(
-                id: "year",
+                isSelected: false,
+                action: {}
+            )
+            
+            PricingPlanCard(
                 periodLabel: "Year $1.27",
                 price: "$ 69.99",
-                badge: "SAVE 80%"
+                badge: "SAVE 80%",
+                isSelected: true,
+                action: {}
             )
-        ]
-
-        var body: some View {
-            PricingPlans(
-                plans: plans,
-                selectedPlanID: $selectedPlanID
-            )
-            .padding(.horizontal, 24)
-            .padding(.vertical, 24)
-            .background(Color.background)
         }
+        .padding()
     }
-
-    return PreviewContainer()
 }
