@@ -18,7 +18,7 @@ struct Logo: View {
     var icon: Icon = .generate
     var iconColor: Color = .white
 
-    private var iconSize: CGFloat { size * 49 / 80 }
+    private var iconSize: CGFloat { size * 44 / 72 }
 
     var body: some View {
         ZStack {
