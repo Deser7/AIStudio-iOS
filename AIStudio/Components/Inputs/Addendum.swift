@@ -42,7 +42,7 @@ struct Addendum: View {
                             .resizable()
                             .scaledToFill()
                             .frame(width: size, height: size)
-                            .clipShape(shape)
+                            .clipShape(AppShape.card)
                     }
                     .overlay(alignment: .topTrailing) {
                         CloseButton(size: 24, style: .light, action: onClose)
@@ -58,7 +58,7 @@ struct Addendum: View {
     private var tileContent: some View {
         ZStack {
             if needsBlurBackground {
-                blurBackground
+                CardBlurBackground(shape: shape, opacity: 0.4)
             }
 
             switch content {
@@ -83,16 +83,6 @@ struct Addendum: View {
     private var needsBlurBackground: Bool {
         if case .loading = content { return true }
         return false
-    }
-
-    private var blurBackground: some View {
-        BlurCardBackground(
-            style: .compact,
-            extent: size,
-            blurRadius: AppSurface.blurRadius,
-            cardOpacity: 0.4,
-            shape: shape
-        )
     }
 
     private var plusIcon: some View {
@@ -127,5 +117,5 @@ struct Addendum: View {
         )
     }
     .padding(24)
-    .background(Color.background)
+//    .background(Color.background)
 }

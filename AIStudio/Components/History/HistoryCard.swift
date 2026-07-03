@@ -18,10 +18,6 @@ struct HistoryCard: View {
     var variant: HistoryCardVariant = .default
     let action: () -> Void
 
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
     var body: some View {
         Button(action: action) {
             HStack(spacing: 24) {
@@ -46,8 +42,7 @@ struct HistoryCard: View {
             .padding(.horizontal, 24)
             .padding(.vertical, 16)
             .frame(width: 358, height: 72, alignment: .leading)
-            .background { cardBackground }
-            .clipShape(shape)
+            .background(CardBlurBackground(opacity: 0.4))
         }
         .buttonStyle(.plain)
     }
@@ -64,16 +59,6 @@ struct HistoryCard: View {
                 .frame(width: 32, height: 32)
                 .clipShape(Circle())
         }
-    }
-
-    private var cardBackground: some View {
-        BlurCardBackground(
-            style: .compact,
-            extent: 72,
-            blurRadius: AppSurface.blurRadius,
-            cardOpacity: 0.4,
-            shape: shape
-        )
     }
 }
 

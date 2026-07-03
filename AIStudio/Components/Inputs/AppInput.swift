@@ -27,16 +27,20 @@ struct AppInput: View {
         return CGFloat(borderRatio).pixelAligned(to: displayScale)
     }
 
-    private var fieldShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
     var body: some View {
         TextFieldBar(
             placeholder: placeholder,
             text: $text,
             icon: { iconView },
-            background: { backgroundView },
+            background: {
+                switch style {
+                case .main:
+                    CardBlurBackground(opacity: 0.7)
+                case .search:
+                    AppShape.card
+                        .fill(.card.opacity(0.6))
+                }
+            },
             border: { borderView }
         )
     }
@@ -56,37 +60,20 @@ struct AppInput: View {
     }
 
     @ViewBuilder
-    private var backgroundView: some View {
-        switch style {
-        case .main:
-            BlurCardBackground(
-                style: .bar,
-                extent: 56,
-                blurRadius: AppSurface.blurRadius,
-                cardOpacity: 0.7,
-                shape: fieldShape
-            )
-        case .search:
-            fieldShape
-                .fill(.card.opacity(0.6))
-        }
-    }
-
-    @ViewBuilder
     private var borderView: some View {
         switch style {
         case .main:
             GeometryReader { geo in
                 DissolvingGradientBorder(
-                    shape: fieldShape,
+                    shape: AppShape.card,
                     containerWidth: geo.size.width,
                     lineWidth: borderWidth,
-                    cornerRadius: 24
+                    cornerRadius: AppShape.cornerRadius
                 )
             }
             .allowsHitTesting(false)
         case .search:
-            fieldShape
+            AppShape.card
                 .strokeBorder(.white, lineWidth: borderWidth)
         }
     }

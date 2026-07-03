@@ -29,8 +29,6 @@ struct MediaSourcePicker: View {
 }
 
 #Preview {
-    let sheetShape = RoundedRectangle(cornerRadius: 24, style: .continuous)
-
     ZStack(alignment: .bottom) {
         Color.background
             .ignoresSafeArea()
@@ -39,7 +37,7 @@ struct MediaSourcePicker: View {
             .padding(.top, 16)
             .padding(.horizontal, 16)
             .padding(.bottom, 24)
-            .background(.card, in: sheetShape)
+            .background(.card, in: AppShape.card)
             .padding(.horizontal, 24)
             .padding(.bottom, 24)
     }

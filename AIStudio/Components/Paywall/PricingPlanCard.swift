@@ -49,7 +49,7 @@ struct PricingPlanCard: View {
             .padding(.vertical, 14)
             .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
             .background(.card)
-            .clipShape(RoundedRectangle(cornerRadius: 24))
+            .clipShape(AppShape.card)
             .overlay { borderOverlay }
         }
         .buttonStyle(.plain)
@@ -58,10 +58,10 @@ struct PricingPlanCard: View {
     @ViewBuilder
     private var borderOverlay: some View {
         if isSelected {
-            RoundedRectangle(cornerRadius: 24)
+            AppShape.card
                 .strokeBorder(AppGradient.main, lineWidth: 1)
         } else {
-            RoundedRectangle(cornerRadius: 24)
+            AppShape.card
                 .strokeBorder(.white.opacity(0.25), lineWidth: 1)
         }
     }

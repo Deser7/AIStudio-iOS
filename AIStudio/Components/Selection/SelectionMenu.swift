@@ -36,7 +36,6 @@ enum VideoQuality: String, CaseIterable, Identifiable, SelectionMenuOption, Send
     var title: String { rawValue }
 }
 
-/// Универсальное меню выбора (Figma «Format», «Quality», «Language», «Style», 358).
 struct SelectionMenu<Option: SelectionMenuOption>: View {
     let options: [Option]
     @Binding var selection: Option
@@ -46,16 +45,6 @@ struct SelectionMenu<Option: SelectionMenuOption>: View {
     private var separatorHeight: CGFloat {
         max(0.5, 1 / displayScale)
             .pixelAligned(to: displayScale)
-    }
-
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
-    private var cardContentHeight: CGFloat {
-        let rows = CGFloat(options.count)
-        let separators = CGFloat(max(options.count - 1, 0))
-        return rows * 44 + separators * separatorHeight + 16
     }
 
     var body: some View {
@@ -77,24 +66,13 @@ struct SelectionMenu<Option: SelectionMenuOption>: View {
         }
         .padding(.vertical, 8)
         .frame(width: 358)
-        .background { cardBackground }
-        .clipShape(shape)
+        .background(CardBlurBackground(opacity: 0.6))
     }
 
     private var rowSeparator: some View {
         Rectangle()
             .fill(.white.opacity(0.1))
             .frame(height: separatorHeight)
-    }
-
-    private var cardBackground: some View {
-        BlurCardBackground(
-            style: .bar,
-            extent: cardContentHeight,
-            blurRadius: AppSurface.blurRadius,
-            cardOpacity: 0.6,
-            shape: shape
-        )
     }
 }
 

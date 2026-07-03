@@ -13,10 +13,6 @@ struct SectionChip: View {
     var isSelected: Bool
     let action: () -> Void
 
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
     private var titleColor: Color {
         .white.opacity(isSelected ? 1 : 0.5)
     }
@@ -30,26 +26,17 @@ struct SectionChip: View {
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
                 .frame(height: 33)
-                .background { chipBackground }
-                .clipShape(shape)
+                .background {
+                    if isSelected {
+                        AppGradient.main
+                    } else {
+                        CardBlurBackground(opacity: 0.6)
+                    }
+                }
+                .clipShape(AppShape.card)
         }
         .buttonStyle(.plain)
         .fixedSize(horizontal: true, vertical: false)
-    }
-
-    @ViewBuilder
-    private var chipBackground: some View {
-        if isSelected {
-            AppGradient.main
-        } else {
-            BlurCardBackground(
-                style: .compact,
-                extent: 33,
-                blurRadius: AppSurface.blurRadius,
-                cardOpacity: 0.6,
-                shape: shape
-            )
-        }
     }
 }
 

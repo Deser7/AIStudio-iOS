@@ -11,10 +11,6 @@ struct ResultCard: View {
     let onReplace: () -> Void
     let onPlay: () -> Void
 
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
     var body: some View {
         ZStack {
             Image("Result")
@@ -24,7 +20,7 @@ struct ResultCard: View {
                 .clipped()
         }
         .frame(width: 358, height: 611)
-        .clipShape(shape)
+        .clipShape(AppShape.card)
         .overlay(alignment: .topTrailing) {
             ReplaceButton(action: onReplace)
                 .padding(.top, 16)

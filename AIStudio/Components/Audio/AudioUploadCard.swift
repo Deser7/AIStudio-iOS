@@ -29,10 +29,6 @@ struct AudioUploadCard: View {
             .pixelAligned(to: displayScale)
     }
 
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
     private var supportedFormatsSubtitle: String {
         """
         MP3 • WAV • M4A • MP4 • MOV
@@ -77,8 +73,7 @@ struct AudioUploadCard: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background { cardBackground }
-        .clipShape(shape)
+        .background(CardBlurBackground(opacity: 0.6))
     }
 
     private var importIcon: some View {
@@ -97,19 +92,9 @@ struct AudioUploadCard: View {
     @ViewBuilder
     private var errorBorder: some View {
         if state == .error {
-            shape
+            AppShape.card
                 .strokeBorder(.error, lineWidth: borderWidth)
         }
-    }
-
-    private var cardBackground: some View {
-        BlurCardBackground(
-            style: .compact,
-            extent: 279,
-            blurRadius: AppSurface.blurRadius,
-            cardOpacity: 0.6,
-            shape: shape
-        )
     }
 }
 

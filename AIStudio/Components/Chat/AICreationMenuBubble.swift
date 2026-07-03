@@ -10,10 +10,6 @@ import SwiftUI
 struct AICreationMenuBubble: View {
     let onSelect: (AICreationOption) -> Void
 
-    private var bubbleShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             Text("What do you want to create?")
@@ -35,20 +31,7 @@ struct AICreationMenuBubble: View {
         .padding(.horizontal, 16)
         .padding(.bottom, 16)
         .frame(width: 334, alignment: .leading)
-        .background { bubbleBackground }
-        .clipShape(bubbleShape)
-    }
-
-    private var bubbleBackground: some View {
-        GeometryReader { geo in
-            BlurCardBackground(
-                style: .compact,
-                extent: geo.size.height,
-                blurRadius: AppSurface.blurRadius,
-                cardOpacity: 0.5,
-                shape: bubbleShape
-            )
-        }
+        .background(CardBlurBackground(opacity: 0.5))
     }
 }
 

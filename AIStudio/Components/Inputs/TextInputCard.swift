@@ -18,10 +18,6 @@ struct TextInputCard: View {
             .pixelAligned(to: displayScale)
     }
 
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
     private var isOverLimit: Bool { text.count > 400 }
 
     private var secondaryColor: Color {
@@ -45,8 +41,8 @@ struct TextInputCard: View {
         .padding(.top, 24)
         .padding([.horizontal, .bottom], 16)
         .frame(width: 342, height: 162, alignment: .top)
-        .background { cardBackground }
-        .clipShape(shape)
+        .background(CardBlurBackground(opacity: 0.6))
+        .clipShape(AppShape.card)
         .overlay { errorBorder }
     }
 
@@ -76,19 +72,9 @@ struct TextInputCard: View {
     @ViewBuilder
     private var errorBorder: some View {
         if isOverLimit {
-            shape
+            AppShape.card
                 .strokeBorder(.error, lineWidth: borderWidth)
         }
-    }
-
-    private var cardBackground: some View {
-        BlurCardBackground(
-            style: .compact,
-            extent: 162,
-            blurRadius: AppSurface.blurRadius,
-            cardOpacity: 0.6,
-            shape: shape
-        )
     }
 }
 

@@ -62,10 +62,7 @@ struct AICreationOptionRow: View {
             }
             .padding(.horizontal, 16)
             .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
-            .background(
-                .card,
-                in: RoundedRectangle(cornerRadius: 24, style: .continuous)
-            )
+            .background(CardBlurBackground(opacity: 0.6))
         }
         .buttonStyle(.plain)
     }

@@ -11,10 +11,6 @@ import SwiftUI
 struct TitleCard: View {
     let title: String
 
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
     var body: some View {
         ZStack(alignment: .bottom) {
             Image("Card")
@@ -35,7 +31,7 @@ struct TitleCard: View {
                 .padding(8)
         }
         .frame(width: 168, height: 219)
-        .clipShape(shape)
+        .clipShape(AppShape.card)
     }
 }
 

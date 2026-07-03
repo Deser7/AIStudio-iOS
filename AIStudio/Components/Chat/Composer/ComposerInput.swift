@@ -26,10 +26,10 @@ struct ComposerInput: View {
 
     private var shape: UnevenRoundedRectangle {
         UnevenRoundedRectangle(
-            topLeadingRadius: 24,
+            topLeadingRadius: AppShape.cornerRadius,
             bottomLeadingRadius: 0,
             bottomTrailingRadius: 0,
-            topTrailingRadius: 24,
+            topTrailingRadius: AppShape.cornerRadius,
             style: .continuous
         )
     }
@@ -60,7 +60,7 @@ struct ComposerInput: View {
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
         .frame(minHeight: minHeight)
-        .background { background }
+        .background(CardBlurBackground(shape: shape, opacity: 0.7))
         .clipShape(shape)
         .appDisabledOpacity()
     }
@@ -121,18 +121,6 @@ struct ComposerInput: View {
                 CircularIconButton(size: buttonSize, icon: .photo, action: onImport)
                 CircularIconButton(size: buttonSize, icon: .micro, action: onMicro)
             }
-        }
-    }
-
-    private var background: some View {
-        GeometryReader { geo in
-            BlurCardBackground(
-                style: .bar,
-                extent: geo.size.height,
-                blurRadius: AppSurface.blurRadius,
-                cardOpacity: 0.7,
-                shape: shape
-            )
         }
     }
 }

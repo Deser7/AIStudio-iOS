@@ -16,13 +16,13 @@ struct AudioInput: View {
         min(max(progress, 0), 1)
     }
 
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
     var body: some View {
         HStack(spacing: 16) {
-            playbackButton
+            GradientIconButton(
+                size: 40,
+                icon: isPlaying ? .pause : .play,
+                action: onPlayPause
+            )
 
             AudioWaveform(progress: clampedProgress)
             .frame(maxWidth: .infinity)
@@ -31,27 +31,9 @@ struct AudioInput: View {
         .padding(.vertical, 24)
         .frame(maxWidth: .infinity)
         .frame(height: 88)
-        .background { background }
-        .clipShape(shape)
+        .background(CardBlurBackground(opacity: 0.7))
+        .clipShape(AppShape.card)
         .appDisabledOpacity()
-    }
-
-    private var background: some View {
-        BlurCardBackground(
-            style: .bar,
-            extent: 88,
-            blurRadius: AppSurface.blurRadius,
-            cardOpacity: 0.7,
-            shape: shape
-        )
-    }
-
-    private var playbackButton: some View {
-        GradientIconButton(
-            size: 40,
-            icon: isPlaying ? .pause : .play,
-            action: onPlayPause
-        )
     }
 }
 
@@ -86,6 +68,6 @@ private struct AudioInputPreview: View {
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 24)
-        .background(Color.background)
+        .background(.green)
     }
 }

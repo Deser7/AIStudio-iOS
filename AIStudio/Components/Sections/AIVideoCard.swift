@@ -7,15 +7,8 @@
 
 import SwiftUI
 
-/// Карточка фичи AI Video (Figma «AI Video»).
 struct AIVideoCard: View {
     let action: () -> Void
-
-    private var waveOpacity: CGFloat { 0.5 }
-
-    private var cardShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
 
     var body: some View {
         Button(action: action) {
@@ -32,7 +25,7 @@ struct AIVideoCard: View {
                         featureIcon
 
                         OnboardingTitleSection(
-                            title: "Turn Photo\ninto Video",
+                            title: "Turn Photo into Video",
                             subtitle: "Animate • Templates",
                             style: .featureCard
                         )
@@ -50,7 +43,7 @@ struct AIVideoCard: View {
                 }
             }
             .frame(width: 172, height: 313)
-            .clipShape(cardShape)
+            .clipShape(AppShape.card)
         }
         .buttonStyle(.plain)
     }
@@ -62,7 +55,7 @@ struct AIVideoCard: View {
             .frame(width: 258)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .clipped()
-            .opacity(waveOpacity)
+            .opacity(0.5)
             .blendMode(.screen)
             .allowsHitTesting(false)
     }
@@ -72,13 +65,8 @@ struct AIVideoCard: View {
             .fill(.white)
             .frame(width: 20, height: 20)
             .frame(width: 36, height: 36)
-            .background { iconCircleBackground }
+            .background(.white.opacity(0.15))
             .clipShape(Circle())
-    }
-
-    private var iconCircleBackground: some View {
-        Circle()
-            .fill(.white.opacity(0.15))
     }
 
     private var readinessBadge: some View {
@@ -97,18 +85,14 @@ struct AIVideoCard: View {
         }
         .padding(.horizontal, 12)
         .frame(width: 149, height: 32, alignment: .center)
-        .background { readinessBadgeBackground }
+        .background(.white.opacity(0.3))
         .clipShape(Capsule())
-    }
-
-    private var readinessBadgeBackground: some View {
-        Capsule()
-            .fill(.white.opacity(0.3))
     }
 }
 
 #Preview {
     AIVideoCard(action: {})
+        .scaleEffect(2)
         .padding(24)
         .background(Color.background)
 }

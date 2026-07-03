@@ -30,10 +30,6 @@ struct AppNotification: View {
         }
     }
 
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
     var body: some View {
         VStack(spacing: contentSpacing) {
             iconView
@@ -43,8 +39,8 @@ struct AppNotification: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 24)
         .frame(width: 239, height: cardHeight)
-        .background { notificationBackground }
-        .clipShape(shape)
+        .background(CardBlurBackground(opacity: 0.4))
+        .clipShape(AppShape.card)
     }
 
     @ViewBuilder
@@ -89,18 +85,6 @@ struct AppNotification: View {
                 .frame(width: iconSize, height: iconSize)
         }
     }
-
-    private var notificationBackground: some View {
-        GeometryReader { geo in
-            BlurCardBackground(
-                style: .compact,
-                extent: geo.size.height,
-                blurRadius: AppSurface.blurRadius,
-                cardOpacity: 0.4,
-                shape: shape
-            )
-        }
-    }
 }
 
 #Preview {
@@ -125,5 +109,5 @@ struct AppNotification: View {
         )
     }
     .padding(24)
-    .background(Color.background)
+    .background(.red)
 }

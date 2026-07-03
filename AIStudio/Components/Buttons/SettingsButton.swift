@@ -23,15 +23,7 @@ struct SettingsButton: View {
                 )
                 .frame(width: 28, height: 28)
                 .frame(width: 40, height: 40)
-                .background {
-                    ZStack {
-                        BackdropBlurView(radius: AppSurface.blurRadius)
-                        Circle()
-                            .fill(.card.opacity(0.4))
-                    }
-                }
-                .clipShape(Circle())
-                .contentShape(Circle())
+                .background(CardBlurBackground(shape: Circle(), opacity: 0.4))
         }
         .buttonStyle(.plain)
         .appDisabledOpacity()

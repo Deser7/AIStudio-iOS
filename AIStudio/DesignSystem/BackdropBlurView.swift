@@ -19,20 +19,18 @@ struct BackdropBlurView: View {
         func updateUIView(_ uiView: UIVisualEffectView, context: Context) { }
     }
     
-    let radius: CGFloat
-    
     @ViewBuilder
     var body: some View {
-        BackdropView().blur(radius: radius)
+        BackdropView().blur(radius: 4)
     }
 }
 
-#Preview {
+#Preview() {
     ZStack {
         Text("Test Test Test Test Test")
             .font(.largeTitle)
         
-        BackdropBlurView(radius: 4)
+        BackdropBlurView()
             .frame(width: 100, height: 100)
     }
 }

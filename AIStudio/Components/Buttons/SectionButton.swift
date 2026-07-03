@@ -28,7 +28,7 @@ struct SectionButton: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)
                 .background { backgroundFill }
-                .clipShape(RoundedRectangle(cornerRadius: 24))
+                .clipShape(Capsule())
         }
         .buttonStyle(.plain)
     }

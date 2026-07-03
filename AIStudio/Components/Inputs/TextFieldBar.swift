@@ -14,10 +14,6 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
     @ViewBuilder var background: () -> Background
     @ViewBuilder var border: () -> Border
 
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
     var body: some View {
         HStack(spacing: 16) {
             icon()
@@ -37,7 +33,7 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
         .frame(maxWidth: .infinity)
         .frame(height: 56)
         .background { background() }
-        .clipShape(shape)
+        .clipShape(AppShape.card)
         .overlay { border() }
         .appDisabledOpacity()
     }
@@ -50,10 +46,6 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
 private struct TextFieldBarPreview: View {
     @State private var text = ""
 
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
     var body: some View {
         TextFieldBar(
             placeholder: "Ask anything...",
@@ -63,7 +55,7 @@ private struct TextFieldBarPreview: View {
                     .fill(.white, style: FillStyle(eoFill: true))
                     .frame(width: 24, height: 24)
             },
-            background: { shape.fill(.card.opacity(0.6)) },
+            background: { AppShape.card.fill(.card.opacity(0.6)) },
             border: { EmptyView() }
         )
         .padding(24)

@@ -32,10 +32,6 @@ struct MediaSourceOptionRow: View {
     let option: MediaSourceOption
     let action: () -> Void
 
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
-
     var body: some View {
         Button(action: action) {
             HStack(spacing: 24) {
@@ -51,8 +47,8 @@ struct MediaSourceOptionRow: View {
             .padding(.leading, 24)
             .padding([.vertical, .trailing], 16)
             .frame(width: 358, height: 95, alignment: .leading)
-            .background { cardBackground }
-            .clipShape(shape)
+            .background(CardBlurBackground(opacity: 0.6))
+            .clipShape(AppShape.card)
         }
         .buttonStyle(.plain)
     }
@@ -67,16 +63,6 @@ struct MediaSourceOptionRow: View {
             GalleryIcon()
                 .fill(AppGradient.main)
         }
-    }
-
-    private var cardBackground: some View {
-        BlurCardBackground(
-            style: .compact,
-            extent: 95,
-            blurRadius: AppSurface.blurRadius,
-            cardOpacity: 0.6,
-            shape: shape
-        )
     }
 }
 

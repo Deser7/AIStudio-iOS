@@ -37,7 +37,7 @@ struct ChatNavigationBar: View {
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity)
         .frame(height: 75)
-        .background { background }
+        .background(CardBlurBackground(shape: Rectangle(), opacity: 0.4))
         .overlay(alignment: .bottom) { bottomBorder }
     }
 
@@ -130,13 +130,6 @@ struct ChatNavigationBar: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text("Regenerate"))
-    }
-
-    private var background: some View {
-        ZStack {
-            BackdropBlurView(radius: AppSurface.blurRadius)
-            Color.card.opacity(0.4)
-        }
     }
 
     private var bottomBorder: some View {

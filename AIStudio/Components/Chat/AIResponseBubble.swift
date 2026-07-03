@@ -42,7 +42,7 @@ struct AIResponseBubble: View {
 
     private var bubbleShape: AIResponseBubbleShape {
         AIResponseBubbleShape(
-            cornerRadius: 24,
+            cornerRadius: AppShape.cornerRadius,
             bottomTrailingRadius: 4
         )
     }
@@ -56,7 +56,7 @@ struct AIResponseBubble: View {
         }
         .padding(16)
         .frame(width: 302, alignment: .leading)
-        .background { bubbleBackground }
+        .background(CardBlurBackground(shape: bubbleShape, opacity: 0.5))
         .clipShape(bubbleShape)
     }
 
@@ -176,18 +176,6 @@ struct AIResponseBubble: View {
         }
         .buttonStyle(.plain)
         .appDisabledOpacity()
-    }
-
-    private var bubbleBackground: some View {
-        GeometryReader { geo in
-            BlurCardBackground(
-                style: .compact,
-                extent: geo.size.height,
-                blurRadius: AppSurface.blurRadius,
-                cardOpacity: 0.5,
-                shape: bubbleShape
-            )
-        }
     }
 }
 

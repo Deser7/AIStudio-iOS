@@ -18,7 +18,7 @@ struct AIResponseIndicator: View {
     private let sizes: [CGFloat] = [19, 15, 10]
 
     private var bubbleShape: AIResponseBubbleShape {
-        AIResponseBubbleShape(cornerRadius: 24)
+        AIResponseBubbleShape(cornerRadius: AppShape.cornerRadius)
     }
 
     private var inactiveDotColor: Color {
@@ -36,7 +36,7 @@ struct AIResponseIndicator: View {
         }
         .padding(16)
         .frame(height: 51)
-        .background { bubbleBackground }
+        .background(CardBlurBackground(shape: bubbleShape, opacity: 0.5))
         .clipShape(bubbleShape)
         .task { await runTypingAnimation() }
     }
@@ -64,16 +64,6 @@ struct AIResponseIndicator: View {
                 activeIndex = (activeIndex + 1) % 3
             }
         }
-    }
-
-    private var bubbleBackground: some View {
-        BlurCardBackground(
-            style: .compact,
-            extent: 51,
-            blurRadius: AppSurface.blurRadius,
-            cardOpacity: 0.5,
-            shape: bubbleShape
-        )
     }
 }
 

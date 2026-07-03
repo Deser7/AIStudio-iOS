@@ -26,14 +26,9 @@ enum FunctionCardOption: Sendable {
     }
 }
 
-/// Компактная карточка функции (Figma «AI Text» / «Understand Faster»).
 struct FunctionCard: View {
     let option: FunctionCardOption
     let action: () -> Void
-
-    private var cardShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-    }
 
     var body: some View {
         Button(action: action) {
@@ -48,10 +43,10 @@ struct FunctionCard: View {
                     style: .functionCard
                 )
             }
-            .padding(16)
+            .padding()
             .frame(width: 178, height: 152.5, alignment: .topLeading)
-            .background { cardBackground }
-            .clipShape(cardShape)
+            .background(.functionCard)
+            .clipShape(AppShape.card)
         }
         .buttonStyle(.plain)
     }
@@ -60,13 +55,8 @@ struct FunctionCard: View {
         optionIcon
             .frame(width: 20, height: 20)
             .frame(width: 36, height: 36)
-            .background { iconCircleBackground }
+            .background(.white.opacity(0.05))
             .clipShape(Circle())
-    }
-
-    private var iconCircleBackground: some View {
-        Circle()
-            .fill(.white.opacity(0.05))
     }
 
     @ViewBuilder
@@ -79,12 +69,6 @@ struct FunctionCard: View {
             PromptIcon()
                 .fill(AppGradient.main)
         }
-    }
-
-    private var cardBackground: some View {
-        cardShape
-            .fill(.functionCard)
-            .allowsHitTesting(false)
     }
 }
 

@@ -39,10 +39,7 @@ struct ReplaceButton: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
             .frame(height: 40)
-            .background(
-                .card.opacity(0.4),
-                in: RoundedRectangle(cornerRadius: 24)
-            )
+            .background(CardBlurBackground(opacity: 0.4))
             .fixedSize(horizontal: true, vertical: false)
         }
         .buttonStyle(.plain)
@@ -52,5 +49,5 @@ struct ReplaceButton: View {
 #Preview {
     ReplaceButton(action: {})
         .padding(24)
-        .background(Color.background)
+//        .background(Color.background)
 }

@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// Секция «Functions» с сеткой карточек (Figma «Functions»).
 struct FunctionsSection: View {
     let onVideoTap: () -> Void
     let onWritingTap: () -> Void
