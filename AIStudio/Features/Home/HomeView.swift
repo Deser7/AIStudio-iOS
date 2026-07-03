@@ -22,10 +22,11 @@ struct HomeView: View {
             VStack(spacing: 0) {
                 HStack {
                     Spacer()
-                    SettingsButton(action: {})
+                    SettingsButton {
+                        isSettingsPresented = true
+                    }
                 }
-                .padding(.horizontal, 16)
-                .padding(.top, 16)
+                .padding()
 
                 ScrollView {
                     VStack(spacing: 32) {
@@ -33,9 +34,7 @@ struct HomeView: View {
                         promptInput
                         functionsSection
                     }
-                    .padding(.horizontal, 24)
-                    .padding(.top, 16)
-                    .padding(.bottom, 24)
+                    .padding()
                 }
             }
         }

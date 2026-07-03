@@ -26,7 +26,7 @@ struct BlurCardBackground<S: Shape>: View {
 
     var body: some View {
         ZStack {
-            BackdropBlurView()
+            BackdropBlurView(radius: AppSurface.blurRadius)
                 .frame(width: blurWidth, height: blurHeight)
                 .frame(maxWidth: blurMaxWidth, maxHeight: .infinity)
 
