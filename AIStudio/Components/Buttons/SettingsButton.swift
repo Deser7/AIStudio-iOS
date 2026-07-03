@@ -1,5 +1,5 @@
 //
-//  AddingPhotoButton.swift
+//  SettingsButton.swift
 //  AIStudio
 //
 //  Created by Андрей Спиридонов on 21.06.2026.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddingPhotoButton: View {
+struct SettingsButton: View {
     let action: () -> Void
 
     var body: some View {
@@ -24,15 +24,7 @@ struct AddingPhotoButton: View {
                 .frame(width: 28, height: 28)
                 .padding(12)
                 .frame(width: 40, height: 40)
-                .background {
-                    BlurCardBackground(
-                        style: .compact,
-                        extent: 40,
-                        blurRadius: AppSurface.blurRadius,
-                        cardOpacity: 0.4,
-                        shape: Circle()
-                    )
-                }
+                .background(.card.opacity(0.4))
                 .clipShape(Circle())
         }
         .buttonStyle(.plain)
@@ -41,7 +33,7 @@ struct AddingPhotoButton: View {
 }
 
 #Preview {
-    AddingPhotoButton(action: {})
+    SettingsButton(action: {})
         .padding(24)
         .background(Color.background)
 }
