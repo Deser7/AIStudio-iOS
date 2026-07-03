@@ -47,7 +47,6 @@ struct BenefitRow: View {
         BenefitRow(title: "Unlimited tracking", style: .medium16)
         BenefitRow(title: "Unlimited tracking", style: .bold34)
     }
-    .padding(.horizontal, 24)
-    .padding(.vertical, 24)
+    .padding()
     .background(Color.background)
 }

@@ -26,7 +26,6 @@ struct PaywallView: View {
                     benefitsSection
                     plansSection
                 }
-                .padding()
 
                 BottomBar(
                     cancelText: viewModel.cancelText,
@@ -37,6 +36,7 @@ struct PaywallView: View {
                     onTermsTap: viewModel.termsOfUseTapped
                 )
             }
+            .padding()
 
             closeButton
         }
@@ -84,7 +84,7 @@ struct PaywallView: View {
             }
             .buttonStyle(.plain)
             .opacity(0.7)
-            .padding(.leading, 24)
+            .padding(.leading, 16)
             .padding(.top, 16)
             .transition(.opacity)
             .animation(.easeIn(duration: 0.3), value: viewModel.isCloseButtonVisible)

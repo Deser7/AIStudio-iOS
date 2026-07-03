@@ -27,28 +27,19 @@ struct BottomBar: View {
 
             footerLinks
         }
-        .padding(.horizontal, 24)
         .padding(.top, 16)
-        .padding(.bottom, 8)
         .frame(maxWidth: .infinity)
-        .background(Color.background)
     }
 
     private var cancelRow: some View {
-        HStack(spacing: 6) {
-            RefreshIcon()
-                .stroke(
-                    secondaryColor,
-                    style: StrokeStyle(
-                        lineWidth: 1.6,
-                        lineCap: .round,
-                        lineJoin: .round
-                    )
-                )
-                .frame(width: 16, height: 16)
+        HStack(spacing: 0) {
+            Image(systemName: "clock.arrow.circlepath")
+                .font(.system(size: 12, weight: .regular))
+                .foregroundStyle(.price)
+                .frame(width: 24, height: 24)
 
             Text(cancelText)
-                .typography(style: .medium12)
+                .font(.system(size: 12, weight: .regular))
                 .foregroundStyle(secondaryColor)
         }
     }
@@ -70,7 +61,7 @@ struct BottomBar: View {
     private func linkButton(_ title: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
-                .typography(style: .medium12)
+                .font(.system(size: 11, weight: .regular))
                 .foregroundStyle(secondaryColor)
         }
         .buttonStyle(.plain)
