@@ -14,6 +14,7 @@ enum AppGradient {
         case green
         case pink
         case purple
+        case background
 
         var colors: (Color, Color) {
             switch self {
@@ -22,17 +23,17 @@ enum AppGradient {
             case .green: (.logoGreenOne, .logoGreenTwo)
             case .pink: (.logoPinkOne, .logoPinkTwo)
             case .purple: (.logoPurpleOne, .logoPurpleTwo)
+            case .background: (.background.opacity(0.9), .background)
             }
         }
     }
 
-    /// Figma «main»: #98C6F7 → #EB5B92, горизонтально.
     static let main = linear(.main)
-
     static let blue = linear(.blue)
     static let green = linear(.green)
     static let pink = linear(.pink)
     static let purple = linear(.purple)
+    static let background = linear(.background)
 
     static func linear(_ preset: Preset) -> LinearGradient {
         let colors = preset.colors
@@ -56,7 +57,7 @@ enum AppGradient {
 #Preview {
     let iconSize: CGFloat = 56
 
-    HStack(spacing: iconSize * 3 / 10) {
+    HStack(spacing: 8) {
         ForEach(AppGradient.Preset.allCases, id: \.self) { preset in
             AppGradient.linear(preset)
                 .frame(width: iconSize, height: iconSize)
@@ -64,5 +65,5 @@ enum AppGradient {
         }
     }
     .padding(24)
-    .background(Color.background)
+    .background(.card)
 }
