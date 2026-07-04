@@ -15,9 +15,7 @@ enum AddendumContent {
 
 struct Addendum: View {
     var size: CGFloat
-    let content: AddendumContent
-
-    @Environment(\.displayScale) private var displayScale
+    var content: AddendumContent
 
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: 16, style: .continuous)
@@ -56,13 +54,15 @@ struct Addendum: View {
     @ViewBuilder
     private var tileContent: some View {
         ZStack {
-            if needsBlurBackground {
+            if case .loading = content {
                 CardBlurBackground(shape: shape, opacity: 0.4)
             }
 
             switch content {
             case .add:
-                plusIcon
+                PlusIcon()
+                    .fill(.white)
+                    .frame(width: 32, height: 32)
             case .loading:
                 SpinnerView(size: 32)
             case .photo:
@@ -73,32 +73,14 @@ struct Addendum: View {
         .clipShape(shape)
         .overlay {
             if case .add = content {
-                gradientBorder
+                shape
+                    .strokeBorder(
+                        AppGradient.main,
+                        lineWidth: 1
+                    )
                     .allowsHitTesting(false)
             }
         }
-    }
-
-    private var needsBlurBackground: Bool {
-        if case .loading = content { return true }
-        return false
-    }
-
-    private var plusIcon: some View {
-        PlusIcon()
-            .fill(.white)
-            .frame(width: 32, height: 32)
-    }
-
-    private var gradientBorder: some View {
-        shape
-            .strokeBorder(
-                AppGradient.main,
-                lineWidth: max(
-                    size * 1 / 100, 1 / displayScale
-                )
-                .pixelAligned(to: displayScale)
-            )
     }
 }
 
@@ -116,5 +98,5 @@ struct Addendum: View {
         )
     }
     .padding(24)
-//    .background(Color.background)
+    .background(.red)
 }

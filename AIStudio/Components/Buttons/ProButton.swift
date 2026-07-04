@@ -24,7 +24,6 @@ struct ProButton: View {
             }
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
-            .frame(height: 32)
             .background(.white, in: Capsule())
             .fixedSize(horizontal: true, vertical: false)
         }
@@ -35,8 +34,7 @@ struct ProButton: View {
 #Preview {
     VStack(spacing: 16) {
         ProButton(action: {})
-        ProButton(action: {})
-            .disabled(true)
+//            .disabled(true)
     }
     .padding(24)
     .background(Color.background)

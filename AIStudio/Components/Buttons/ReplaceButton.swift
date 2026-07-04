@@ -38,9 +38,7 @@ struct ReplaceButton: View {
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-            .frame(height: 40)
             .background(CardBlurBackground(opacity: 0.4))
-            .fixedSize(horizontal: true, vertical: false)
         }
         .buttonStyle(.plain)
     }
