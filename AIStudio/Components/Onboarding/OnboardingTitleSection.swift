@@ -16,68 +16,10 @@ enum OnboardingTitleSectionStyle {
     case featureCard
 }
 
-struct OnboardingTitleSection: View {
-    let title: String
-    let subtitle: String
-    var style: OnboardingTitleSectionStyle = .onboarding
+extension OnboardingTitleSectionStyle {
 
-    private var isSourceOptionStyle: Bool {
-        style == .sourceOption
-    }
-
-    private var isUploadStyle: Bool {
-        style == .upload
-    }
-
-    private var isFunctionCardStyle: Bool {
-        style == .functionCard || style == .featureCard
-    }
-
-    private var expandsHorizontally: Bool {
-        isUploadStyle || style == .onboarding || isSourceOptionStyle || isFunctionCardStyle
-    }
-
-    private var horizontalMaxWidth: CGFloat? {
-        expandsHorizontally ? .infinity : nil
-    }
-
-    private var hasSubtitle: Bool {
-        !subtitle.isEmpty
-    }
-
-    private var contentAlignment: HorizontalAlignment {
-        isUploadStyle ? .center : .leading
-    }
-
-    private var frameAlignment: Alignment {
-        isUploadStyle ? .center : .leading
-    }
-
-    var body: some View {
-        VStack(alignment: contentAlignment, spacing: hasSubtitle ? textSpacing : 0) {
-            Text(title)
-                .typography(style: titleTypography)
-                .tracking(titleTracking)
-                .foregroundStyle(titleColor)
-                .lineLimit(lineLimit)
-                .multilineTextAlignment(isUploadStyle ? .center : .leading)
-                .frame(maxWidth: horizontalMaxWidth, alignment: frameAlignment)
-
-            if hasSubtitle, let subtitleTypography {
-                Text(subtitle)
-                    .typography(style: subtitleTypography)
-                    .tracking(subtitleTracking)
-                    .foregroundStyle(subtitleColor)
-                    .lineLimit(lineLimit)
-                    .multilineTextAlignment(isUploadStyle ? .center : .leading)
-                    .frame(maxWidth: horizontalMaxWidth, alignment: frameAlignment)
-            }
-        }
-        .frame(maxWidth: horizontalMaxWidth, alignment: frameAlignment)
-    }
-
-    private var textSpacing: CGFloat {
-        switch style {
+    var spacing: CGFloat {
+        switch self {
         case .onboarding: 8
         case .navigation: 2
         case .upload: 12
@@ -85,51 +27,136 @@ struct OnboardingTitleSection: View {
         }
     }
 
-    private var titleTypography: Typography.Style {
-        switch style {
-        case .onboarding: .bold28
-        case .navigation, .sourceOption, .featureCard: .semiBold20
-        case .upload, .functionCard: .medium16
+    var titleTypography: Typography.Style {
+        switch self {
+        case .onboarding:
+            .bold28
+
+        case .navigation,
+             .sourceOption,
+             .featureCard:
+            .semiBold20
+
+        case .upload,
+             .functionCard:
+            .medium16
         }
     }
 
-    private var subtitleTypography: Typography.Style? {
-        guard hasSubtitle else { return nil }
+    var subtitleTypography: Typography.Style {
+        switch self {
+        case .onboarding:
+            .regular16
 
-        switch style {
-        case .onboarding: return .regular16
-        case .navigation, .upload, .featureCard: return .regular14
-        case .sourceOption: return .regular16
-        case .functionCard: return .medium12
+        case .navigation,
+             .upload,
+             .featureCard:
+            .regular14
+
+        case .sourceOption:
+            .regular16
+
+        case .functionCard:
+            .medium12
         }
     }
 
-    private var titleColor: Color {
-        .white
-    }
+    var subtitleColor: Color {
+        switch self {
+        case .onboarding:
+            .price
 
-    private var subtitleColor: Color {
-        switch style {
-        case .onboarding: .price
-        case .navigation, .upload: .white.opacity(0.3)
-        case .sourceOption, .functionCard: .white.opacity(0.5)
-        case .featureCard: .white.opacity(0.7)
+        case .navigation,
+             .upload:
+            .white.opacity(0.3)
+
+        case .sourceOption,
+             .functionCard:
+            .white.opacity(0.5)
+
+        case .featureCard:
+            .white.opacity(0.7)
         }
     }
 
-    private var titleTracking: CGFloat {
-        switch style {
-        case .onboarding: 0.4
-        case .navigation, .upload, .sourceOption, .functionCard, .featureCard: 0
+    var titleTracking: CGFloat {
+        self == .onboarding ? 0.4 : 0
+    }
+
+    var subtitleTracking: CGFloat {
+        self == .functionCard ? -0.08 : 0
+    }
+
+    var lineLimit: Int? {
+        self == .navigation ? 1 : nil
+    }
+
+    var horizontalAlignment: HorizontalAlignment {
+        self == .upload ? .center : .leading
+    }
+
+    var frameAlignment: Alignment {
+        self == .upload ? .center : .leading
+    }
+
+    var expandsHorizontally: Bool {
+        switch self {
+        case .navigation:
+            false
+
+        case .onboarding,
+             .upload,
+             .sourceOption,
+             .functionCard,
+             .featureCard:
+            true
         }
     }
+}
 
-    private var subtitleTracking: CGFloat {
-        style == .functionCard ? -0.08 : 0
+struct OnboardingTitleSection: View {
+    let title: String
+    let subtitle: String
+
+    var style: OnboardingTitleSectionStyle = .onboarding
+
+    private var hasSubtitle: Bool {
+        !subtitle.isEmpty
     }
 
-    private var lineLimit: Int? {
-        style == .navigation ? 1 : nil
+    var body: some View {
+        VStack(
+            alignment: style.horizontalAlignment,
+            spacing: hasSubtitle ? style.spacing : 0
+        ) {
+            Text(title)
+                .typography(style: style.titleTypography)
+                .tracking(style.titleTracking)
+                .foregroundStyle(.white)
+                .lineLimit(style.lineLimit)
+                .multilineTextAlignment(style == .upload ? .center : .leading)
+                .frame(
+                    maxWidth: style.expandsHorizontally ? .infinity : nil,
+                    alignment: style.frameAlignment
+                )
+
+            if hasSubtitle {
+                Text(subtitle)
+                    .typography(style: style.subtitleTypography)
+                    .tracking(style.subtitleTracking)
+                    .foregroundStyle(style.subtitleColor)
+                    .lineLimit(style.lineLimit)
+                    .multilineTextAlignment(style == .upload ? .center : .leading)
+                    .frame(
+                        maxWidth: style.expandsHorizontally ? .infinity : nil,
+                        alignment: style.frameAlignment
+                    )
+            }
+        }
+        .frame(
+            maxWidth: style.expandsHorizontally ? .infinity : nil,
+            alignment: style.frameAlignment
+        )
     }
 }
 
@@ -151,7 +178,6 @@ struct OnboardingTitleSection: View {
             subtitle: "Turn your ideas into art in seconds with powerful generation tools"
         )
     }
-    .padding(.horizontal, 24)
-    .padding(.vertical, 24)
+    .padding(24)
     .background(Color.background)
 }

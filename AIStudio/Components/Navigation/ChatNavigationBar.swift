@@ -38,7 +38,11 @@ struct ChatNavigationBar: View {
         .frame(maxWidth: .infinity)
         .frame(height: 75)
         .background(CardBlurBackground(shape: Rectangle(), opacity: 0.4))
-        .overlay(alignment: .bottom) { bottomBorder }
+        .overlay(alignment: .bottom) {
+            Rectangle()
+                .fill(.white.opacity(0.1))
+                .frame(height: 0.5)
+        }
     }
 
     private var leadingContent: some View {
@@ -131,12 +135,6 @@ struct ChatNavigationBar: View {
         .buttonStyle(.plain)
         .accessibilityLabel(Text("Regenerate"))
     }
-
-    private var bottomBorder: some View {
-        Rectangle()
-            .fill(.white.opacity(0.1))
-            .frame(height: 0.5)
-    }
 }
 
 #Preview {
@@ -181,5 +179,5 @@ struct ChatNavigationBar: View {
 
         Spacer()
     }
-    .background(Color.background)
+//    .background(Color.background)
 }
