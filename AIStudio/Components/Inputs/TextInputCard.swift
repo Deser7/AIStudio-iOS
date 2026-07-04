@@ -11,24 +11,17 @@ struct TextInputCard: View {
     var characterLimit: Int = 400
     @Binding var text: String
 
-    @Environment(\.displayScale) private var displayScale
-
-    private var borderWidth: CGFloat {
-        max(1, 1 / displayScale)
-            .pixelAligned(to: displayScale)
+    private var isOverLimit: Bool {
+        text.count > characterLimit
     }
-
-    private var isOverLimit: Bool { text.count > 400 }
 
     private var secondaryColor: Color {
         .white.opacity(0.3)
     }
 
-    private var editorHeight: CGFloat { 106 }
-
     private var editorLineLimit: ClosedRange<Int> {
-        let visibleLines = max(Int(editorHeight / 16), 1)
-        return visibleLines...max(visibleLines, 50)
+        let visibleLines = max(Int(106 / 16), 1)
+        return visibleLines...50
     }
 
     var body: some View {
@@ -42,8 +35,12 @@ struct TextInputCard: View {
         .padding([.horizontal, .bottom], 16)
         .frame(width: 342, height: 162, alignment: .top)
         .background(CardBlurBackground(opacity: 0.6))
-        .clipShape(AppShape.card)
-        .overlay { errorBorder }
+        .overlay {
+            if isOverLimit {
+                AppShape.card
+                    .strokeBorder(.error, lineWidth: 1)
+            }
+        }
     }
 
     private var editor: some View {
@@ -59,7 +56,7 @@ struct TextInputCard: View {
         .typography(style: .regular16)
         .foregroundColor(.white)
         .tint(.white)
-        .frame(height: editorHeight, alignment: .top)
+        .frame(height: 106, alignment: .top)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
@@ -67,14 +64,6 @@ struct TextInputCard: View {
         Text("\(text.count)/\(characterLimit)")
             .typography(style: .regular16)
             .foregroundColor(isOverLimit ? .error : secondaryColor)
-    }
-
-    @ViewBuilder
-    private var errorBorder: some View {
-        if isOverLimit {
-            AppShape.card
-                .strokeBorder(.error, lineWidth: borderWidth)
-        }
     }
 }
 
@@ -96,7 +85,7 @@ private struct TextInputCardPreviewContainer: View {
     var body: some View {
         TextInputCard(text: $text)
             .padding(24)
-            .background(Color.background)
+//            .background(Color.background)
     }
 }
 
