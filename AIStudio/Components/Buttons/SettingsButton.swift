@@ -26,7 +26,6 @@ struct SettingsButton: View {
                 .background(CardBlurBackground(shape: Circle(), opacity: 0.4))
         }
         .buttonStyle(.plain)
-        .appDisabledOpacity()
     }
 }
 

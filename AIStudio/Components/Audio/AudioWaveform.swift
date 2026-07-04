@@ -18,7 +18,7 @@ struct AudioWaveform: View {
         GeometryReader { geo in
             waveformContent(width: geo.size.width)
         }
-        .frame(height: 40)
+        .frame(height: height)
     }
 
     @ViewBuilder
@@ -29,7 +29,7 @@ struct AudioWaveform: View {
             if clampedProgress < 1 {
                 EqualizerIcon()
                     .fill(.white.opacity(0.2))
-                    .frame(width: width, height: 40)
+                    .frame(width: width, height: height)
                     .mask(alignment: .trailing) {
                         Rectangle()
                             .frame(width: unplayedWidth)

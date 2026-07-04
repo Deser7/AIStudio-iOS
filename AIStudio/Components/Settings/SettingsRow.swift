@@ -24,7 +24,6 @@ struct SettingsRow<Icon: View, Trailing: View>: View {
                 rowContent
             }
         }
-        .appDisabledOpacity()
     }
 
     private var rowContent: some View {

@@ -25,15 +25,10 @@ struct AudioInput: View {
             )
 
             AudioWaveform(progress: clampedProgress)
-            .frame(maxWidth: .infinity)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 24)
-        .frame(maxWidth: .infinity)
-        .frame(height: 88)
         .background(CardBlurBackground(opacity: 0.7))
-        .clipShape(AppShape.card)
-        .appDisabledOpacity()
     }
 }
 
@@ -52,22 +47,8 @@ private struct AudioInputPreview: View {
                 progress: 0.35,
                 onPlayPause: { isPlaying.toggle() }
             )
-
-            AudioInput(
-                isPlaying: false,
-                progress: 0.65,
-                onPlayPause: {}
-            )
-
-            AudioInput(
-                isPlaying: true,
-                progress: 0.35,
-                onPlayPause: {}
-            )
-            .disabled(true)
         }
-        .padding(.horizontal, 24)
-        .padding(.vertical, 24)
+        .padding()
         .background(.green)
     }
 }

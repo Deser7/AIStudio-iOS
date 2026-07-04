@@ -29,7 +29,6 @@ struct ProButton: View {
             .fixedSize(horizontal: true, vertical: false)
         }
         .buttonStyle(.plain)
-        .appDisabledOpacity()
     }
 }
 

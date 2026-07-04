@@ -51,7 +51,6 @@ struct GradientIconButton: View {
             .clipShape(Circle())
         }
         .buttonStyle(.plain)
-        .appDisabledOpacity()
     }
 
     @ViewBuilder

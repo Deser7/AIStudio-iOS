@@ -35,7 +35,6 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
         .background { background() }
         .clipShape(AppShape.card)
         .overlay { border() }
-        .appDisabledOpacity()
     }
 }
 

@@ -51,7 +51,6 @@ struct Addendum: View {
             }
         }
         .frame(width: size, height: size)
-        .appDisabledOpacity()
     }
 
     @ViewBuilder

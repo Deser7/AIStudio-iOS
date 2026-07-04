@@ -62,7 +62,6 @@ struct ComposerInput: View {
         .frame(minHeight: minHeight)
         .background(CardBlurBackground(shape: shape, opacity: 0.7))
         .clipShape(shape)
-        .appDisabledOpacity()
     }
 
     private var textLayout: some View {

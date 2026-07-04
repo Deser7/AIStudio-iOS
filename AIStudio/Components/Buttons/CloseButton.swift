@@ -35,7 +35,6 @@ struct CloseButton: View {
             .frame(width: size, height: size)
         }
         .buttonStyle(.plain)
-        .appDisabledOpacity()
     }
 
     @ViewBuilder

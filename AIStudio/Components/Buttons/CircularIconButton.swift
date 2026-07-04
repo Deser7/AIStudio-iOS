@@ -41,7 +41,6 @@ struct CircularIconButton: View {
                 }
         }
         .buttonStyle(.plain)
-        .appDisabledOpacity()
     }
 
     @ViewBuilder

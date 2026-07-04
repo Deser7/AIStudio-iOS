@@ -175,7 +175,6 @@ struct AIResponseBubble: View {
             icon()
         }
         .buttonStyle(.plain)
-        .appDisabledOpacity()
     }
 }
 
