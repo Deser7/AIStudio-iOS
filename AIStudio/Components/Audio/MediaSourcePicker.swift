@@ -11,10 +11,12 @@ struct MediaSourcePicker: View {
     let onSelect: (MediaSourceOption) -> Void
 
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 0) {
             Capsule()
-                .fill(.white.opacity(0.3))
+                .fill(.white.opacity(0.15))
                 .frame(width: 36, height: 5)
+                .padding(.top, 8)
+                .padding(.bottom, 16)
 
             VStack(spacing: 12) {
                 ForEach(MediaSourceOption.allCases) { option in
@@ -24,21 +26,15 @@ struct MediaSourcePicker: View {
                 }
             }
         }
-        .frame(width: 358)
+        .padding(.horizontal, 16)
+        .padding(.bottom, 24)
+        .frame(maxWidth: .infinity)
     }
 }
 
 #Preview {
     ZStack(alignment: .bottom) {
-        Color.background
-            .ignoresSafeArea()
-
         MediaSourcePicker { _ in }
-            .padding(.top, 16)
-            .padding(.horizontal, 16)
-            .padding(.bottom, 24)
-            .background(.card, in: AppShape.card)
-            .padding(.horizontal, 24)
-            .padding(.bottom, 24)
+            .background(Color.background)
     }
 }

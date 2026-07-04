@@ -43,10 +43,11 @@ struct MediaSourceOptionRow: View {
                     subtitle: option.subtitle,
                     style: .sourceOption
                 )
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.leading, 24)
             .padding([.vertical, .trailing], 16)
-            .frame(width: 358, height: 95, alignment: .leading)
+            .frame(maxWidth: .infinity, minHeight: 95, alignment: .leading)
             .background(CardBlurBackground(opacity: 0.6))
             .clipShape(AppShape.card)
         }
