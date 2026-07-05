@@ -24,13 +24,13 @@ struct ChatEmptyState: View {
                 Text("Your ")
                     .foregroundColor(.white)
 
-                gradientText("AI assistant")
+                gradientText("AI assistant ")
+                
+                Text("for anything")
+                    .foregroundColor(.white)
             }
-
-            Text("for anything")
-                .foregroundColor(.white)
         }
-        .typography(style: .bold28)
+        .typography(style: .semiBold20)
         .tracking(0.4)
     }
 
