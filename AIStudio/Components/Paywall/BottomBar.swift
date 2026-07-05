@@ -40,6 +40,7 @@ struct BottomBar: View {
 
             Text(cancelText)
                 .font(.system(size: 12, weight: .regular))
+                .tracking(-0.43)
                 .foregroundStyle(secondaryColor)
         }
     }
@@ -62,6 +63,7 @@ struct BottomBar: View {
         Button(action: action) {
             Text(title)
                 .font(.system(size: 11, weight: .regular))
+                .tracking(0.06)
                 .foregroundStyle(secondaryColor)
         }
         .buttonStyle(.plain)

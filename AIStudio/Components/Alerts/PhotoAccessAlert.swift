@@ -10,59 +10,83 @@ import SwiftUI
 struct PhotoAccessAlert: View {
     let onCancel: () -> Void
     let onAllow: () -> Void
-
+    
     private var alertShape: RoundedRectangle {
         RoundedRectangle(cornerRadius: 14, style: .continuous)
     }
-
+    
     var body: some View {
-        ZStack {
-            Color.black.opacity(0.5)
-                .ignoresSafeArea()
-
-            VStack(spacing: 0) {
-                VStack(spacing: 8) {
-                    Text("Allow access to photos?")
-                        .typography(style: .semiBold20)
-                        .foregroundStyle(.white)
-                        .multilineTextAlignment(.center)
-
-                    Text("To upload an image, the app needs access to your photo gallery.")
-                        .typography(style: .regular16)
-                        .foregroundStyle(.white.opacity(0.8))
-                        .multilineTextAlignment(.center)
-                }
-                .padding(.horizontal, 16)
-                .padding(.top, 20)
-                .padding(.bottom, 16)
-
-                Divider()
-                    .overlay(Color.white.opacity(0.1))
-
-                HStack(spacing: 0) {
-                    alertButton(title: "Cancel", action: onCancel)
-
-                    Divider()
-                        .frame(width: 0.5)
-                        .overlay(Color.white.opacity(0.1))
-
-                    alertButton(title: "Allow", action: onAllow)
-                }
-                .frame(height: 44)
+        VStack(spacing: 0) {
+            VStack(spacing: 4) {
+                Text("Allow access to photos?")
+                    .font(.system(size: 17, weight: .semibold))
+                    .tracking(-0.4)
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.center)
+                
+                Text("To upload an image, the app needs access to your photo gallery.")
+                    .font(.system(size: 13, weight: .regular))
+                    .tracking(-0.4)
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.center)
             }
-            .background {
-                CardBlurBackground(shape: alertShape, opacity: 0.9)
+            .padding(.horizontal, 16)
+            .padding(.top, 19)
+            .padding(.bottom, 15)
+            
+            separator
+                .frame(height: 1.33)
+
+            HStack(spacing: 0) {
+                alertButton(
+                    title: "Cancel",
+                    font: .system(size: 17, weight: .regular),
+                    action: onCancel
+                )
+
+                separator
+                    .frame(width: 1.33)
+
+                alertButton(
+                    title: "Allow",
+                    font: .system(size: 17, weight: .semibold),
+                    action: onAllow
+                )
             }
-            .clipShape(alertShape)
-            .padding(.horizontal, 40)
+            .frame(height: 44)
         }
+        .frame(width: 270)
+        .background { alertBackground }
+        .clipShape(alertShape)
     }
-
-    private func alertButton(title: String, action: @escaping () -> Void) -> some View {
+    
+    private var alertBackground: some View {
+        ZStack {
+            alertShape
+                .fill(.regularMaterial)
+            
+            alertShape
+                .fill(.alert.opacity(0.82))
+        }
+        .allowsHitTesting(false)
+    }
+    
+    private var separator: some View {
+        Rectangle()
+            .fill(.separate.opacity(0.65))
+    }
+    
+    private func alertButton(
+        title: String,
+        font: Font,
+        action: @escaping () -> Void
+    ) -> some View {
         Button(action: action) {
             Text(title)
-                .typography(style: .regular16)
-                .foregroundStyle(Color.aiBlue)
+                .font(font)
+                .tracking(-0.4)
+                .lineSpacing(5)
+                .foregroundStyle(.blue)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .buttonStyle(.plain)
