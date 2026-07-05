@@ -12,7 +12,7 @@ struct VideoGeneratingView: View {
 
     var body: some View {
         ZStack {
-            Color.background
+            Color.black
                 .ignoresSafeArea()
 
             VStack {
