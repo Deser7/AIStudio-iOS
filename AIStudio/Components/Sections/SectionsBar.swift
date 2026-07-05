@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// Горизонтальный ряд чипов секций (Figma «Sections»).
 struct SectionsBar: View {
     let sections: [String]
     @Binding var selection: String

@@ -64,8 +64,6 @@ final class ChatViewModel: ObservableObject {
         }
     }
 
-    func regenerateTapped() {}
-
     func importTapped() {}
 
     func microTapped() {}

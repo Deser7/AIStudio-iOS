@@ -9,10 +9,15 @@ import SwiftUI
 
 struct ChatView: View {
     @StateObject private var viewModel: ChatViewModel
+    @Binding var navigationPath: NavigationPath
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isComposerFocused: Bool
 
-    init(viewModel: ChatViewModel = ChatViewModel()) {
+    init(
+        navigationPath: Binding<NavigationPath>,
+        viewModel: ChatViewModel = ChatViewModel()
+    ) {
+        _navigationPath = navigationPath
         _viewModel = StateObject(wrappedValue: viewModel)
     }
 
@@ -27,7 +32,10 @@ struct ChatView: View {
                     style: .aiChat,
                     preset: .main,
                     onBack: { dismiss() },
-                    onRegenerate: viewModel.regenerateTapped
+                    onRegenerate: {
+                        isComposerFocused = false
+                        navigationPath.append(AppRoute.chatHistory)
+                    }
                 )
 
                 content
@@ -118,6 +126,6 @@ struct ChatView: View {
 
 #Preview("Empty") {
     NavigationStack {
-        ChatView()
+        ChatView(navigationPath: .constant(NavigationPath()))
     }
 }

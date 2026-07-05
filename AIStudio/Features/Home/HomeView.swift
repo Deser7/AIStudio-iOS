@@ -22,7 +22,9 @@ struct HomeView: View {
                 .navigationDestination(for: AppRoute.self) { route in
                     switch route {
                     case .chat:
-                        ChatView()
+                        ChatView(navigationPath: $navigationPath)
+                    case .chatHistory:
+                        ChatHistoryView()
                     }
                 }
         }

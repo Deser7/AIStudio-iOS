@@ -6,7 +6,6 @@
 //
 
 import Combine
-import Foundation
 
 final class HomeViewModel: ObservableObject {
     let title = "Your AI tools,\nready to go"

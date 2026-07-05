@@ -1,0 +1,69 @@
+//
+//  ChatHistoryItem.swift
+//  AIStudio
+//
+//  Created by Андрей Спиридонов on 05.07.2026.
+//
+
+import Foundation
+
+struct ChatHistoryItem: Identifiable, Hashable, Sendable {
+    let id: UUID
+    let title: String
+    let time: String
+
+    init(
+        id: UUID = UUID(),
+        title: String,
+        time: String
+    ) {
+        self.id = id
+        self.title = title
+        self.time = time
+    }
+}
+
+struct ChatHistorySection: Identifiable, Hashable, Sendable {
+    let id: String
+    let title: String
+    let items: [ChatHistoryItem]
+}
+
+enum ChatHistoryStub {
+    static let sections: [ChatHistorySection] = [
+        ChatHistorySection(
+            id: "today",
+            title: "Today",
+            items: [
+                ChatHistoryItem(
+                    title: "Hello, this is a test recording....",
+                    time: "5:32 AM"
+                ),
+                ChatHistoryItem(
+                    title: "Hello, this is a test recording....",
+                    time: "5:32 AM"
+                )
+            ]
+        ),
+        ChatHistorySection(
+            id: "yesterday",
+            title: "Yesterday",
+            items: [
+                ChatHistoryItem(
+                    title: "Hello, this is a test recording....",
+                    time: "5:32 AM"
+                )
+            ]
+        ),
+        ChatHistorySection(
+            id: "march-4",
+            title: "March 4",
+            items: [
+                ChatHistoryItem(
+                    title: "Hello, this is a test recording....",
+                    time: "5:32 AM"
+                )
+            ]
+        )
+    ]
+}

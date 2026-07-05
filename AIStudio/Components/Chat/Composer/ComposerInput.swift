@@ -63,7 +63,7 @@ struct ComposerInput: View {
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
         .frame(minHeight: minHeight)
-        .background(CardBlurBackground(shape: shape, opacity: 0.7))
+        .background(CardBlurBackground(shape: shape, opacity: 1))
         .clipShape(shape)
         .onAppear {
             guard autofocus else { return }
