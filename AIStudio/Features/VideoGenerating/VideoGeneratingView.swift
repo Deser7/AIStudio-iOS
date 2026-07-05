@@ -10,8 +10,6 @@ import SwiftUI
 struct VideoGeneratingView: View {
     @Environment(\.dismiss) private var dismiss
 
-    private static let imageAspectRatio: CGFloat = 316 / 444
-
     var body: some View {
         ZStack {
             Color.background
@@ -37,11 +35,7 @@ struct VideoGeneratingView: View {
     }
 
     private var generatingImage: some View {
-        Image("Generating")
-            .resizable()
-            .scaledToFit()
-            .frame(maxWidth: .infinity)
-            .aspectRatio(Self.imageAspectRatio, contentMode: .fit)
+        GeneratingImageView()
             .padding(.horizontal, 16)
     }
 
