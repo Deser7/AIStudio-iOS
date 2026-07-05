@@ -56,7 +56,23 @@ struct VideoGenerationView: View {
                 .scrollIndicators(.hidden)
                 .frame(maxHeight: .infinity)
             }
+
+            if viewModel.isPhotoAccessAlertPresented {
+                PhotoAccessAlert(
+                    onCancel: {
+                        viewModel.photoAccessCancelled()
+                        dismiss()
+                    },
+                    onAllow: {
+                        Task {
+                            await viewModel.photoAccessAllowed()
+                        }
+                    }
+                )
+                .transition(.opacity)
+            }
         }
+        .animation(.easeInOut(duration: 0.2), value: viewModel.isPhotoAccessAlertPresented)
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
     }
@@ -69,6 +85,12 @@ struct VideoGenerationView: View {
                 } label: {
                     TitleCard(title: template.title)
                         .frame(maxWidth: .infinity)
+                        .overlay {
+                            if viewModel.isSelected(template) {
+                                AppShape.card
+                                    .stroke(AppGradient.main, lineWidth: 2)
+                            }
+                        }
                 }
                 .buttonStyle(.plain)
             }
