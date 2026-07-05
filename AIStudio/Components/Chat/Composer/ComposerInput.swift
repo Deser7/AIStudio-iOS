@@ -18,7 +18,7 @@ struct ComposerInput: View {
     var placeholder = "How can I help you?"
     var autofocus = false
     @Binding var text: String
-    @FocusState private var isTextFieldFocused: Bool
+    var isFocused: FocusState<Bool>.Binding
     let onImport: () -> Void
     let onMicro: () -> Void
     let onSend: () -> Void
@@ -67,7 +67,7 @@ struct ComposerInput: View {
         .clipShape(shape)
         .onAppear {
             guard autofocus else { return }
-            isTextFieldFocused = true
+            isFocused.wrappedValue = true
         }
     }
 
@@ -115,7 +115,7 @@ struct ComposerInput: View {
         .typography(style: .regular16)
         .foregroundColor(.white)
         .tint(.white)
-        .focused($isTextFieldFocused)
+        .focused(isFocused)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
@@ -139,6 +139,7 @@ struct ComposerInput: View {
 private struct ComposerInputPreviewContainer: View {
     @State private var mode: ComposerInputMode
     @Binding var text: String
+    @FocusState private var isFocused: Bool
 
     init(mode: ComposerInputMode = .text, text: Binding<String>) {
         _mode = State(initialValue: mode)
@@ -149,6 +150,7 @@ private struct ComposerInputPreviewContainer: View {
         ComposerInput(
             mode: mode,
             text: $text,
+            isFocused: $isFocused,
             onImport: { mode = .attachmentLoading },
             onMicro: { mode = .recording(progress: 0.45) },
             onSend: {},
