@@ -33,13 +33,10 @@ struct ChatNavigationBar: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .frame(minHeight: 75)
             .background {
-                CardBlurBackground(shape: Rectangle(), opacity: 0.4)
-                    .ignoresSafeArea(edges: .top)
-            }
-            .overlay(alignment: .bottom) {
-                Rectangle()
-                    .fill(.white.opacity(0.1))
-                    .frame(height: 0.5)
+                if style != .centeredTitle {
+                    CardBlurBackground(shape: Rectangle(), opacity: 0.4)
+                        .ignoresSafeArea(edges: .top)
+                }
             }
     }
     
@@ -146,64 +143,79 @@ struct ChatNavigationBar: View {
 }
 
 #Preview("AI Chat") {
-    VStack {
-        ChatNavigationBar(
-            title: "AI Chat",
-            subtitle: "26.03.2026",
-            style: .aiChat,
-            preset: .main,
-            onBack: {},
-            onRegenerate: {}
-        )
+    ZStack {
+        AppGradient.background.ignoresSafeArea()
+        VStack(spacing: 0) {
+            ChatNavigationBar(
+                title: "AI Chat",
+                subtitle: "26.03.2026",
+                style: .aiChat,
+                preset: .main,
+                onBack: {},
+                onRegenerate: {}
+            )
+            Spacer()
+        }
     }
-    Spacer()
 }
 
 #Preview("AI ChatBlue") {
-    VStack {
-        ChatNavigationBar(
-            title: "AI Chat",
-            subtitle: "26.03.2026",
-            style: .aiChat,
-            preset: .blue,
-            onBack: {},
-            onRegenerate: {}
-        )
+    ZStack {
+        AppGradient.background.ignoresSafeArea()
+        VStack(spacing: 0) {
+            ChatNavigationBar(
+                title: "AI Chat",
+                subtitle: "26.03.2026",
+                style: .aiChat,
+                preset: .blue,
+                onBack: {},
+                onRegenerate: {}
+            )
+            Spacer()
+        }
     }
-    Spacer()
 }
 
 #Preview("AI Video") {
-    VStack {
-        ChatNavigationBar(
-            title: "AI Video",
-            style: .aiVideo,
-            preset: .main,
-            onBack: {},
-            onRegenerate: {}
-        )
+    ZStack {
+        AppGradient.background.ignoresSafeArea()
+        VStack(spacing: 0) {
+            ChatNavigationBar(
+                title: "AI Video",
+                style: .aiVideo,
+                preset: .main,
+                onBack: {},
+                onRegenerate: {}
+            )
+            Spacer()
+        }
     }
-    Spacer()
 }
 
 #Preview("Settings") {
-    VStack {
-        ChatNavigationBar(
-            title: "Settings",
-            style: .centeredTitle,
-            onBack: {}
-        )
+    ZStack {
+        AppGradient.background.ignoresSafeArea()
+        VStack(spacing: 0) {
+            ChatNavigationBar(
+                title: "Settings",
+                style: .centeredTitle,
+                onBack: {}
+            )
+            Spacer()
+        }
     }
-    Spacer()
 }
 
 #Preview("Clay Fool") {
-    VStack {
-        ChatNavigationBar(
-            title: "Clay Fool",
-            style: .centeredTitle,
-            onBack: {}
-        )
+    ZStack {
+        AppGradient.background.ignoresSafeArea()
+        VStack(spacing: 0) {
+            ChatNavigationBar(
+                title: "Clay Fool",
+                style: .centeredTitle,
+                onBack: {}
+            )
+            Spacer()
+        }
     }
-    Spacer()
 }
