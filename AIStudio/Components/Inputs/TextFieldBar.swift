@@ -19,6 +19,19 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
         HStack(spacing: 16) {
             icon()
 
+            inputField
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity)
+        .frame(height: 56)
+        .background { background() }
+        .clipShape(AppShape.card)
+        .overlay { border() }
+    }
+
+    @ViewBuilder
+    private var inputField: some View {
+        if isEnabled {
             TextField(
                 "",
                 text: $text,
@@ -29,14 +42,13 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
             .typography(style: .regular16)
             .foregroundColor(.white)
             .tint(.white)
-            .disabled(!isEnabled)
+        } else {
+            Text(text.isEmpty ? placeholder : text)
+                .typography(style: .regular16)
+                .foregroundColor(text.isEmpty ? .white.opacity(0.5) : .white)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .allowsHitTesting(false)
         }
-        .padding(16)
-        .frame(maxWidth: .infinity)
-        .frame(height: 56)
-        .background { background() }
-        .clipShape(AppShape.card)
-        .overlay { border() }
     }
 }
 

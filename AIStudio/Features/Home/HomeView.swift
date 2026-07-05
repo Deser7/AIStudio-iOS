@@ -87,10 +87,9 @@ struct HomeView: View {
     }
 
     private var promptInput: some View {
-        Button {
-            navigationPath.append(AppRoute.chat)
-        } label: {
+        NavigationLink(value: AppRoute.chat) {
             AppInput(isEnabled: false, text: .constant(""))
+                .contentShape(AppShape.card)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text("Ask anything"))
