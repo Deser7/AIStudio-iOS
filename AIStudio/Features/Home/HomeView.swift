@@ -25,6 +25,8 @@ struct HomeView: View {
                         ChatView(navigationPath: $navigationPath)
                     case .chatHistory:
                         ChatHistoryView()
+                    case .videoGeneration:
+                        VideoGenerationView(navigationPath: $navigationPath)
                     }
                 }
         }
@@ -98,7 +100,7 @@ struct HomeView: View {
 
     private var functionsSection: some View {
         FunctionsSection(
-            onVideoTap: viewModel.videoTapped,
+            onVideoTap: { navigationPath.append(AppRoute.videoGeneration) },
             onWritingTap: viewModel.writingTapped,
             onUnderstandTap: viewModel.understandTapped
         )
