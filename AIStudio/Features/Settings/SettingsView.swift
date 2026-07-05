@@ -24,7 +24,7 @@ struct SettingsView: View {
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            AppGradient.background
+            Color.background
                 .ignoresSafeArea()
 
             ScrollView {

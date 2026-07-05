@@ -17,7 +17,8 @@ struct ChatHistoryView: View {
 
     var body: some View {
         ZStack {
-            AppGradient.background.ignoresSafeArea()
+            Color.background
+                .ignoresSafeArea()
 
             VStack(spacing: 0) {
                 ChatNavigationBar(
@@ -36,9 +37,7 @@ struct ChatHistoryView: View {
     @ViewBuilder
     private var content: some View {
         if viewModel.isEmpty {
-            Spacer(minLength: 0)
             HistoryEmptyState()
-            Spacer(minLength: 0)
         } else {
             historyList
         }

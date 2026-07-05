@@ -23,7 +23,8 @@ struct ChatView: View {
 
     var body: some View {
         ZStack {
-            AppGradient.background.ignoresSafeArea()
+            Color.background
+                .ignoresSafeArea()
 
             VStack(spacing: 0) {
                 ChatNavigationBar(
