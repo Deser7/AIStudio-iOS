@@ -61,10 +61,14 @@ struct ComposerInput: View {
             }
         }
         .padding(.horizontal, 24)
-        .padding(.vertical, 16)
+        .padding(.top, 16)
+        .padding(.bottom, 16)
         .frame(minHeight: minHeight)
-        .background(CardBlurBackground(shape: shape, opacity: 1))
-        .clipShape(shape)
+        .frame(maxWidth: .infinity)
+        .background {
+            CardBlurBackground(shape: shape, opacity: 0.7)
+                .ignoresSafeArea(edges: .bottom)
+        }
         .onAppear {
             guard autofocus else { return }
             isFocused.wrappedValue = true

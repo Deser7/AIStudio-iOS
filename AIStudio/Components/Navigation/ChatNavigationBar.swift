@@ -20,69 +20,77 @@ struct ChatNavigationBar: View {
     var preset = AppGradient.Preset.blue
     let onBack: () -> Void
     var onRegenerate: (() -> Void)?
-
+    
     private var showsRegenerateButton: Bool {
         style != .centeredTitle && onRegenerate != nil
     }
-
+    
     var body: some View {
-        Group {
-            switch style {
-            case .centeredTitle:
-                centeredContent
-            case .aiChat, .aiVideo:
-                leadingContent
+        barContent
+            .padding(.horizontal, 16)
+            .padding(.top, 8)
+            .padding(.bottom, 16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(minHeight: 75)
+            .background {
+                CardBlurBackground(shape: Rectangle(), opacity: 0.4)
+                    .ignoresSafeArea(edges: .top)
             }
-        }
-        .padding(.horizontal, 16)
-        .frame(maxWidth: .infinity)
-        .frame(height: 75)
-        .background(CardBlurBackground(shape: Rectangle(), opacity: 0.4))
-        .overlay(alignment: .bottom) {
-            Rectangle()
-                .fill(.white.opacity(0.1))
-                .frame(height: 0.5)
+            .overlay(alignment: .bottom) {
+                Rectangle()
+                    .fill(.white.opacity(0.1))
+                    .frame(height: 0.5)
+            }
+    }
+    
+    @ViewBuilder
+    private var barContent: some View {
+        switch style {
+        case .centeredTitle:
+            centeredContent
+        case .aiChat, .aiVideo:
+            leadingContent
         }
     }
-
+    
     private var leadingContent: some View {
         HStack(spacing: 10) {
             backButton
-
+            
             HStack(spacing: 10) {
                 leadingIcon
-
+                
                 titleSection
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-
+            
             Spacer(minLength: 10)
-
+            
             if showsRegenerateButton {
                 regenerateButton
             }
         }
     }
-
+    
     private var centeredContent: some View {
         ZStack {
             HStack {
                 backButton
-
+                
                 Spacer(minLength: 0)
-
+                
                 Color.clear
                     .frame(width: 44, height: 44)
             }
-
+            
             Text(title)
                 .typography(style: .semiBold20)
                 .foregroundStyle(.white)
                 .lineLimit(1)
         }
     }
-
+    
     @ViewBuilder
     private var leadingIcon: some View {
         switch style {
@@ -94,7 +102,7 @@ struct ChatNavigationBar: View {
             EmptyView()
         }
     }
-
+    
     @ViewBuilder
     private var titleSection: some View {
         switch style {
@@ -113,7 +121,7 @@ struct ChatNavigationBar: View {
             EmptyView()
         }
     }
-
+    
     private var backButton: some View {
         Button(action: onBack) {
             Image(systemName: "chevron.left")
@@ -124,7 +132,7 @@ struct ChatNavigationBar: View {
         .buttonStyle(.plain)
         .accessibilityLabel(Text("Back"))
     }
-
+    
     private var regenerateButton: some View {
         Button(action: { onRegenerate?() }) {
             RegenerateIcon()
@@ -137,8 +145,8 @@ struct ChatNavigationBar: View {
     }
 }
 
-#Preview {
-    VStack(spacing: 0) {
+#Preview("AI Chat") {
+    VStack {
         ChatNavigationBar(
             title: "AI Chat",
             subtitle: "26.03.2026",
@@ -147,7 +155,12 @@ struct ChatNavigationBar: View {
             onBack: {},
             onRegenerate: {}
         )
+    }
+    Spacer()
+}
 
+#Preview("AI ChatBlue") {
+    VStack {
         ChatNavigationBar(
             title: "AI Chat",
             subtitle: "26.03.2026",
@@ -156,7 +169,12 @@ struct ChatNavigationBar: View {
             onBack: {},
             onRegenerate: {}
         )
+    }
+    Spacer()
+}
 
+#Preview("AI Video") {
+    VStack {
         ChatNavigationBar(
             title: "AI Video",
             style: .aiVideo,
@@ -164,20 +182,28 @@ struct ChatNavigationBar: View {
             onBack: {},
             onRegenerate: {}
         )
+    }
+    Spacer()
+}
 
+#Preview("Settings") {
+    VStack {
         ChatNavigationBar(
             title: "Settings",
             style: .centeredTitle,
             onBack: {}
         )
+    }
+    Spacer()
+}
 
+#Preview("Clay Fool") {
+    VStack {
         ChatNavigationBar(
             title: "Clay Fool",
             style: .centeredTitle,
             onBack: {}
         )
-
-        Spacer()
     }
-//    .background(Color.background)
+    Spacer()
 }
