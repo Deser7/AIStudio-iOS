@@ -9,24 +9,23 @@ import Photos
 import UIKit
 
 final class PhotoLibraryAccessService: PhotoLibraryAccessProviding {
+    nonisolated init() {}
+
+    @MainActor
     var currentStatus: PhotoLibraryAuthorizationStatus {
         Self.map(PHPhotoLibrary.authorizationStatus(for: .readWrite))
     }
 
+    @MainActor
     func requestAccess() async -> PhotoLibraryAuthorizationStatus {
-        await withCheckedContinuation { continuation in
-            PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
-                continuation.resume(returning: Self.map(status))
-            }
-        }
+        let status = await PHPhotoLibrary.requestAuthorization(for: .readWrite)
+        return Self.map(status)
     }
 
+    @MainActor
     func openSettings() {
         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-
-        Task { @MainActor in
-            UIApplication.shared.open(url)
-        }
+        UIApplication.shared.open(url)
     }
 
     private static func map(_ status: PHAuthorizationStatus) -> PhotoLibraryAuthorizationStatus {

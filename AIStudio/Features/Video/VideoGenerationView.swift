@@ -17,12 +17,14 @@ struct VideoGenerationView: View {
         GridItem(.flexible())
     ]
 
-    init(
-        navigationPath: Binding<NavigationPath>,
-        viewModel: VideoGenerationViewModel = VideoGenerationViewModel()
-    ) {
+    init(navigationPath: Binding<NavigationPath>) {
         _navigationPath = navigationPath
-        _viewModel = StateObject(wrappedValue: viewModel)
+        _viewModel = StateObject(
+            wrappedValue: VideoGenerationViewModel(
+                sections: VideoTemplateStub.sections,
+                photoLibrary: PhotoLibraryAccessService()
+            )
+        )
     }
 
     var body: some View {
@@ -58,21 +60,27 @@ struct VideoGenerationView: View {
             }
 
             if viewModel.isPhotoAccessAlertPresented {
+                Color.black.opacity(0.5)
+                    .ignoresSafeArea()
+                    .transition(.opacity)
+
                 PhotoAccessAlert(
                     onCancel: {
                         viewModel.photoAccessCancelled()
-                        dismiss()
                     },
                     onAllow: {
-                        Task {
-                            await viewModel.photoAccessAllowed()
-                        }
+                        viewModel.beginPhotoAccessRequest()
                     }
                 )
                 .transition(.opacity)
             }
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.isPhotoAccessAlertPresented)
+        .onChange(of: viewModel.detailContextToOpen) { context in
+            guard let context else { return }
+            navigationPath.append(AppRoute.videoTemplateDetail(context))
+            viewModel.consumeDetailContextToOpen()
+        }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
     }
@@ -81,7 +89,9 @@ struct VideoGenerationView: View {
         LazyVGrid(columns: gridColumns, spacing: 16) {
             ForEach(viewModel.templates) { template in
                 Button {
-                    viewModel.templateTapped(template)
+                    if let context = viewModel.templateTapped(template) {
+                        navigationPath.append(AppRoute.videoTemplateDetail(context))
+                    }
                 } label: {
                     TitleCard(title: template.title)
                         .frame(maxWidth: .infinity)

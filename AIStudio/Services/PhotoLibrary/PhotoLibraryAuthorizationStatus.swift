@@ -25,7 +25,7 @@ enum PhotoLibraryAuthorizationStatus: Sendable {
 }
 
 protocol PhotoLibraryAccessProviding: Sendable {
-    var currentStatus: PhotoLibraryAuthorizationStatus { get }
-    func requestAccess() async -> PhotoLibraryAuthorizationStatus
-    func openSettings()
+    @MainActor var currentStatus: PhotoLibraryAuthorizationStatus { get }
+    @MainActor func requestAccess() async -> PhotoLibraryAuthorizationStatus
+    @MainActor func openSettings()
 }

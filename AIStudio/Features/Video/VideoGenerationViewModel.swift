@@ -14,6 +14,7 @@ final class VideoGenerationViewModel: ObservableObject {
     @Published var selectedSection: String
     @Published private(set) var isPhotoAccessAlertPresented = false
     @Published private(set) var pendingTemplate: VideoTemplate?
+    @Published private(set) var detailContextToOpen: VideoTemplateDetailContext?
 
     let sectionNames: [String]
 
@@ -25,8 +26,8 @@ final class VideoGenerationViewModel: ObservableObject {
     }
 
     init(
-        sections: [VideoTemplateSection] = VideoTemplateStub.sections,
-        photoLibrary: PhotoLibraryAccessProviding = PhotoLibraryAccessService()
+        sections: [VideoTemplateSection],
+        photoLibrary: PhotoLibraryAccessProviding
     ) {
         self.sections = sections
         self.photoLibrary = photoLibrary
@@ -34,62 +35,72 @@ final class VideoGenerationViewModel: ObservableObject {
         selectedSection = sections.first?.name ?? ""
     }
 
-    func templateTapped(_ template: VideoTemplate) {
+    @MainActor
+    @discardableResult
+    func templateTapped(_ template: VideoTemplate) -> VideoTemplateDetailContext? {
         if photoLibrary.currentStatus.isGranted {
-            startGeneration(with: template)
-            return
+            return detailContext(for: template)
         }
 
         pendingTemplate = template
         isPhotoAccessAlertPresented = true
+        return nil
     }
 
+    @MainActor
     func photoAccessCancelled() {
         isPhotoAccessAlertPresented = false
         pendingTemplate = nil
     }
 
-    func photoAccessAllowed() async {
+    @MainActor
+    func beginPhotoAccessRequest() {
+        Task {
+            let context = await photoAccessAllowed()
+            isPhotoAccessAlertPresented = false
+            detailContextToOpen = context
+        }
+    }
+
+    @MainActor
+    func consumeDetailContextToOpen() {
+        detailContextToOpen = nil
+    }
+
+    @MainActor
+    func isSelected(_ template: VideoTemplate) -> Bool {
+        pendingTemplate?.id == template.id && isPhotoAccessAlertPresented
+    }
+
+    @MainActor
+    private func photoAccessAllowed() async -> VideoTemplateDetailContext? {
+        guard let template = pendingTemplate else { return nil }
+
         let currentStatus = photoLibrary.currentStatus
 
         switch currentStatus {
         case .notDetermined:
             let status = await photoLibrary.requestAccess()
-            await MainActor.run {
-                isPhotoAccessAlertPresented = false
+            pendingTemplate = nil
 
-                if status.isGranted, let template = pendingTemplate {
-                    startGeneration(with: template)
-                }
-
-                pendingTemplate = nil
-            }
+            guard status.isGranted else { return nil }
+            return detailContext(for: template)
 
         case .denied, .restricted:
-            await MainActor.run {
-                isPhotoAccessAlertPresented = false
-                pendingTemplate = nil
-            }
+            pendingTemplate = nil
             photoLibrary.openSettings()
+            return nil
 
         case .authorized, .limited:
-            await MainActor.run {
-                isPhotoAccessAlertPresented = false
-
-                if let template = pendingTemplate {
-                    startGeneration(with: template)
-                }
-
-                pendingTemplate = nil
-            }
+            pendingTemplate = nil
+            return detailContext(for: template)
         }
     }
 
-    func isSelected(_ template: VideoTemplate) -> Bool {
-        pendingTemplate?.id == template.id && isPhotoAccessAlertPresented
-    }
-
-    private func startGeneration(with template: VideoTemplate) {
-        _ = template
+    private func detailContext(for template: VideoTemplate) -> VideoTemplateDetailContext {
+        VideoTemplateDetailContext(
+            selectedTemplate: template,
+            sectionTemplates: templates
+        )
     }
 }
