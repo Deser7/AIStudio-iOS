@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
     var placeholder: String
+    var isEnabled = true
     @Binding var text: String
     @ViewBuilder var icon: () -> Icon
     @ViewBuilder var background: () -> Background
@@ -28,6 +29,7 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
             .typography(style: .regular16)
             .foregroundColor(.white)
             .tint(.white)
+            .disabled(!isEnabled)
         }
         .padding(16)
         .frame(maxWidth: .infinity)

@@ -15,11 +15,13 @@ enum AppInputStyle {
 struct AppInput: View {
     var style: AppInputStyle = .main
     var placeholder = "Ask anything..."
+    var isEnabled = true
     @Binding var text: String
 
     var body: some View {
         TextFieldBar(
             placeholder: placeholder,
+            isEnabled: isEnabled,
             text: $text,
             icon: {
                 icon

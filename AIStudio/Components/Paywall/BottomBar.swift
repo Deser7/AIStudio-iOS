@@ -80,5 +80,6 @@ struct BottomBar: View {
         onTermsTap: {}
     )
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+    .padding()
     .background(Color.background)
 }

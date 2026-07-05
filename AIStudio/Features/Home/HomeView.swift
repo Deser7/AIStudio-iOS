@@ -10,12 +10,41 @@ import SwiftUI
 struct HomeView: View {
     @StateObject private var viewModel: HomeViewModel
     @State private var isSettingsPresented = false
+    @State private var navigationPath = NavigationPath()
 
     init(viewModel: HomeViewModel = HomeViewModel()) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
+        NavigationStack(path: $navigationPath) {
+            homeContent
+                .navigationDestination(for: AppRoute.self) { route in
+                    switch route {
+                    case .chat:
+                        ChatView()
+                    }
+                }
+        }
+        .sheet(isPresented: $isSettingsPresented) {
+            SettingsView(
+                notificationsEnabled: $viewModel.notificationsEnabled,
+                cacheSize: viewModel.cacheSize,
+                appVersion: viewModel.appVersion,
+                onRateApp: viewModel.rateAppTapped,
+                onShare: viewModel.shareTapped,
+                onUpgradePlan: viewModel.upgradePlanTapped,
+                onClearCache: viewModel.clearCacheTapped,
+                onRestorePurchases: viewModel.restorePurchasesTapped,
+                onContactUs: viewModel.contactUsTapped,
+                onPrivacyPolicy: viewModel.privacyPolicyTapped,
+                onUsagePolicy: viewModel.usagePolicyTapped
+            )
+            .presentationDragIndicator(.visible)
+        }
+    }
+
+    private var homeContent: some View {
         ZStack {
             StudioBackground()
 
@@ -38,22 +67,7 @@ struct HomeView: View {
                 }
             }
         }
-        .sheet(isPresented: $isSettingsPresented) {
-            SettingsView(
-                notificationsEnabled: $viewModel.notificationsEnabled,
-                cacheSize: viewModel.cacheSize,
-                appVersion: viewModel.appVersion,
-                onRateApp: viewModel.rateAppTapped,
-                onShare: viewModel.shareTapped,
-                onUpgradePlan: viewModel.upgradePlanTapped,
-                onClearCache: viewModel.clearCacheTapped,
-                onRestorePurchases: viewModel.restorePurchasesTapped,
-                onContactUs: viewModel.contactUsTapped,
-                onPrivacyPolicy: viewModel.privacyPolicyTapped,
-                onUsagePolicy: viewModel.usagePolicyTapped
-            )
-            .presentationDragIndicator(.visible)
-        }
+        .navigationBarHidden(true)
     }
 
     private var heroSection: some View {
@@ -71,8 +85,14 @@ struct HomeView: View {
     }
 
     private var promptInput: some View {
-        AppInput(text: $viewModel.promptText)
-            .onSubmit(viewModel.promptSubmitted)
+        Button {
+            navigationPath.append(AppRoute.chat)
+        } label: {
+            AppInput(isEnabled: false, text: .constant(""))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text("Ask anything"))
+        .accessibilityHint(Text("Opens AI Chat"))
     }
 
     private var functionsSection: some View {

@@ -1,0 +1,12 @@
+//
+//  AppRoute.swift
+//  AIStudio
+//
+//  Created by Андрей Спиридонов on 04.07.2026.
+//
+
+import Foundation
+
+enum AppRoute: Hashable {
+    case chat
+}

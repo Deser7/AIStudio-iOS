@@ -15,7 +15,10 @@ enum ComposerInputMode: Equatable {
 
 struct ComposerInput: View {
     var mode: ComposerInputMode = .text
+    var placeholder = "How can I help you?"
+    var autofocus = false
     @Binding var text: String
+    @FocusState private var isTextFieldFocused: Bool
     let onImport: () -> Void
     let onMicro: () -> Void
     let onSend: () -> Void
@@ -62,6 +65,10 @@ struct ComposerInput: View {
         .frame(minHeight: minHeight)
         .background(CardBlurBackground(shape: shape, opacity: 0.7))
         .clipShape(shape)
+        .onAppear {
+            guard autofocus else { return }
+            isTextFieldFocused = true
+        }
     }
 
     private var textLayout: some View {
@@ -99,7 +106,7 @@ struct ComposerInput: View {
         TextField(
             "",
             text: $text,
-            prompt: Text("How can I help you?")
+            prompt: Text(placeholder)
                 .font(Typography.font(style: .regular16))
                 .foregroundColor(.price),
             axis: .vertical
@@ -108,6 +115,7 @@ struct ComposerInput: View {
         .typography(style: .regular16)
         .foregroundColor(.white)
         .tint(.white)
+        .focused($isTextFieldFocused)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
