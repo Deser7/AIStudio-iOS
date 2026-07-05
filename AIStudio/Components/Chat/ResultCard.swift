@@ -12,23 +12,33 @@ struct ResultCard: View {
     let onPlay: () -> Void
 
     var body: some View {
-        ZStack {
-            Image("Result")
-                .resizable()
-                .scaledToFill()
-                .frame(width: 358, height: 611)
-                .clipped()
-        }
-        .frame(width: 358, height: 611)
-        .clipShape(AppShape.card)
-        .overlay(alignment: .topTrailing) {
-            ReplaceButton(action: onReplace)
-                .padding(.top, 16)
-                .padding(.trailing, 16)
-        }
+        Color.clear
+            .aspectRatio(358 / 611, contentMode: .fit)
+            .frame(maxWidth: .infinity)
+            .overlay {
+                Image("Result")
+                    .resizable()
+                    .scaledToFill()
+            }
+            .clipShape(AppShape.card)
+            .overlay(alignment: .topTrailing) {
+                ReplaceButton(action: onReplace)
+                    .padding(.top, 16)
+                    .padding(.trailing, 16)
+            }
+            .overlay {
+                Button(action: onPlay) {
+                    PlayIcon()
+                        .fill(.white)
+                        .frame(width: 80, height: 80)
+                }
+                .buttonStyle(.plain)
+            }
     }
 }
 
 #Preview {
     ResultCard(onReplace: {}, onPlay: {})
+        .padding()
+        .background(Color.background)
 }

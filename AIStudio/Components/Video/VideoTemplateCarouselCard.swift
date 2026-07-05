@@ -8,19 +8,16 @@
 import SwiftUI
 
 struct VideoTemplateCarouselCard: View {
-    private static let cornerRadius: CGFloat = 16
-    private static let aspectRatio: CGFloat = 331 / 311
-
     var body: some View {
         Color.clear
-            .aspectRatio(Self.aspectRatio, contentMode: .fit)
+            .aspectRatio(331 / 311, contentMode: .fit)
             .overlay {
                 Image("Card")
                     .resizable()
                     .scaledToFill()
             }
             .clipShape(
-                RoundedRectangle(cornerRadius: Self.cornerRadius, style: .continuous)
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
             )
     }
 }

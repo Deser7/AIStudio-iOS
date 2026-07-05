@@ -21,7 +21,15 @@ struct VideoTemplateExpandableSetting<Option: SelectionMenuOption>: View {
                 if isExpanded {
                     optionsPopover
                         .frame(width: 175)
-                        .transition(.opacity.combined(with: .scale(scale: 0.96, anchor: .bottomTrailing)))
+                        .transition(
+                            .opacity
+                                .combined(
+                                    with: .scale(
+                                        scale: 0.96,
+                                        anchor: .bottomTrailing
+                                    )
+                                )
+                        )
                 }
             }
             .zIndex(isExpanded ? 1 : 0)

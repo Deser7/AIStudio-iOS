@@ -8,11 +8,20 @@
 import SwiftUI
 
 struct VideoGeneratingView: View {
+    @Binding var navigationPath: NavigationPath
     @Environment(\.dismiss) private var dismiss
+
+    @State private var didNavigateToResult = false
+
+    private let generationDelay: TimeInterval = 2.5
+
+    init(navigationPath: Binding<NavigationPath>) {
+        _navigationPath = navigationPath
+    }
 
     var body: some View {
         ZStack {
-            Color.black
+            Color.background
                 .ignoresSafeArea()
 
             VStack {
@@ -32,6 +41,9 @@ struct VideoGeneratingView: View {
         }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
+        .task(id: navigationPath.count) {
+            await runGenerationStub()
+        }
     }
 
     private var generatingImage: some View {
@@ -53,10 +65,21 @@ struct VideoGeneratingView: View {
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 16)
     }
+
+    @MainActor
+    private func runGenerationStub() async {
+        didNavigateToResult = false
+
+        try? await Task.sleep(nanoseconds: UInt64(generationDelay * 1_000_000_000))
+
+        guard !didNavigateToResult else { return }
+        didNavigateToResult = true
+        navigationPath.append(AppRoute.videoResult)
+    }
 }
 
 #Preview {
     NavigationStack {
-        VideoGeneratingView()
+        VideoGeneratingView(navigationPath: .constant(NavigationPath()))
     }
 }

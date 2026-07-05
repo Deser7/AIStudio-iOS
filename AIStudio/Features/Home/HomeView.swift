@@ -33,7 +33,9 @@ struct HomeView: View {
                             context: context
                         )
                     case .videoGenerating:
-                        VideoGeneratingView()
+                        VideoGeneratingView(navigationPath: $navigationPath)
+                    case .videoResult:
+                        VideoResultView(navigationPath: $navigationPath)
                     }
                 }
         }

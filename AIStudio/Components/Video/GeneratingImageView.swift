@@ -28,7 +28,7 @@ struct GeneratingImageView: View {
     }
 
     private func scale(at date: Date) -> CGFloat {
-        1 + 0.035 * sin(phase(at: date))
+        0.9 + 0.04 * sin(phase(at: date))
     }
 
     private func opacity(at date: Date) -> CGFloat {
@@ -38,6 +38,6 @@ struct GeneratingImageView: View {
 
 #Preview {
     GeneratingImageView()
-        .padding(.horizontal, 16)
+        .padding()
         .background(Color.background)
 }
