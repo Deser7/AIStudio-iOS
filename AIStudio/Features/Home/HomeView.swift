@@ -28,7 +28,12 @@ struct HomeView: View {
                     case .videoGeneration:
                         VideoGenerationView(navigationPath: $navigationPath)
                     case let .videoTemplateDetail(context):
-                        VideoTemplateDetailView(context: context)
+                        VideoTemplateDetailView(
+                            navigationPath: $navigationPath,
+                            context: context
+                        )
+                    case .videoGenerating:
+                        VideoGeneratingView()
                     }
                 }
         }

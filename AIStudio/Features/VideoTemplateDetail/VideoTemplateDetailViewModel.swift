@@ -80,8 +80,4 @@ final class VideoTemplateDetailViewModel: ObservableObject {
         selectedPhoto = nil
         photoState = .none
     }
-
-    func createTapped() {
-        guard isCreateEnabled else { return }
-    }
 }

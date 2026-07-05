@@ -10,12 +10,17 @@ import SwiftUI
 
 struct VideoTemplateDetailView: View {
     @StateObject private var viewModel: VideoTemplateDetailViewModel
+    @Binding var navigationPath: NavigationPath
     @Environment(\.dismiss) private var dismiss
 
     @State private var selectedPhotoItem: PhotosPickerItem?
     @State private var isPhotoPickerPresented = false
 
-    init(context: VideoTemplateDetailContext) {
+    init(
+        navigationPath: Binding<NavigationPath>,
+        context: VideoTemplateDetailContext
+    ) {
+        _navigationPath = navigationPath
         _viewModel = StateObject(
             wrappedValue: VideoTemplateDetailViewModel(context: context)
         )
@@ -46,7 +51,7 @@ struct VideoTemplateDetailView: View {
                 Spacer(minLength: 24)
 
                 SectionButton(title: "Create", style: .primary) {
-                    viewModel.createTapped()
+                    navigationPath.append(AppRoute.videoGenerating)
                 }
                 .disabled(!viewModel.isCreateEnabled)
                 .padding(.horizontal, 16)
@@ -138,6 +143,7 @@ struct VideoTemplateDetailView: View {
 #Preview {
     NavigationStack {
         VideoTemplateDetailView(
+            navigationPath: .constant(NavigationPath()),
             context: VideoTemplateDetailContext(
                 selectedTemplate: VideoTemplate(title: "Clay Fool"),
                 sectionTemplates: [
