@@ -8,25 +8,14 @@
 import Foundation
 
 struct VideoTemplate: Identifiable, Hashable, Sendable {
-    let id: UUID
+    let id: UUID = UUID()
     let title: String
-
-    nonisolated init(id: UUID = UUID(), title: String) {
-        self.id = id
-        self.title = title
-    }
 }
 
 struct VideoTemplateSection: Identifiable, Hashable, Sendable {
     let id: String
     let name: String
     let templates: [VideoTemplate]
-
-    nonisolated init(id: String, name: String, templates: [VideoTemplate]) {
-        self.id = id
-        self.name = name
-        self.templates = templates
-    }
 }
 
 enum VideoTemplateStub: Sendable {

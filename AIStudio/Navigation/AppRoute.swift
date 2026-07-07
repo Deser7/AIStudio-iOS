@@ -11,6 +11,7 @@ enum AppRoute: Hashable {
     case chat
     case chatHistory
     case videoGeneration
+    case videoHistory
     case videoTemplateDetail(VideoTemplateDetailContext)
     case videoGenerating
     case videoResult

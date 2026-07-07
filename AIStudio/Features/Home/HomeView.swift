@@ -29,6 +29,8 @@ struct HomeView: View {
                         ChatHistoryView()
                     case .videoGeneration:
                         VideoGenerationView(navigationPath: $navigationPath)
+                    case .videoHistory:
+                        VideoHistoryView()
                     case let .videoTemplateDetail(context):
                         VideoTemplateDetailView(
                             navigationPath: $navigationPath,

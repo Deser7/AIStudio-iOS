@@ -41,7 +41,7 @@ struct VideoGenerationView: View {
                     preset: .main,
                     onBack: { dismiss() },
                     onRegenerate: {
-                        navigationPath.append(AppRoute.chatHistory)
+                        navigationPath.append(AppRoute.videoHistory)
                     }
                 )
 

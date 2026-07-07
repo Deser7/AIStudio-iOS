@@ -104,29 +104,28 @@ struct VideoTemplateCarousel: View {
 }
 
 #Preview {
-    struct PreviewContainer: View {
-        private let firstID = UUID()
-        private let secondID = UUID()
-        private let thirdID = UUID()
+    VideoTemplateCarouselPreview()
+}
 
-        @State private var selection: UUID
+private struct VideoTemplateCarouselPreview: View {
+    private let templates: [VideoTemplate]
+    @State private var selection: UUID
 
-        init() {
-            _selection = State(initialValue: secondID)
-        }
-
-        var body: some View {
-            VideoTemplateCarousel(
-                templates: [
-                    VideoTemplate(id: firstID, title: "First"),
-                    VideoTemplate(id: secondID, title: "Clay Fool"),
-                    VideoTemplate(id: thirdID, title: "Third")
-                ],
-                selection: $selection
-            )
-            .background(Color.background)
-        }
+    init() {
+        let templates = [
+            VideoTemplate(title: "First"),
+            VideoTemplate(title: "Clay Fool"),
+            VideoTemplate(title: "Third")
+        ]
+        self.templates = templates
+        _selection = State(initialValue: templates[1].id)
     }
 
-    return PreviewContainer()
+    var body: some View {
+        VideoTemplateCarousel(
+            templates: templates,
+            selection: $selection
+        )
+        .background(Color.background)
+    }
 }
