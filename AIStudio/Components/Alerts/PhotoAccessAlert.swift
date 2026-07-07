@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct PhotoAccessAlert: View {
+    var title: String = "Allow access to photos?"
+    var message: String = "To upload an image, the app needs access to your photo gallery."
+    var primaryButtonTitle: String = "Allow"
     let onCancel: () -> Void
-    let onAllow: () -> Void
+    let onPrimary: () -> Void
     
     private var alertShape: RoundedRectangle {
         RoundedRectangle(cornerRadius: 14, style: .continuous)
@@ -18,13 +21,13 @@ struct PhotoAccessAlert: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 4) {
-                Text("Allow access to photos?")
+                Text(title)
                     .font(.system(size: 17, weight: .semibold))
                     .tracking(-0.4)
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
                 
-                Text("To upload an image, the app needs access to your photo gallery.")
+                Text(message)
                     .font(.system(size: 13, weight: .regular))
                     .tracking(-0.4)
                     .foregroundStyle(.white)
@@ -48,9 +51,9 @@ struct PhotoAccessAlert: View {
                     .frame(width: 1.33)
 
                 alertButton(
-                    title: "Allow",
+                    title: primaryButtonTitle,
                     font: .system(size: 17, weight: .semibold),
-                    action: onAllow
+                    action: onPrimary
                 )
             }
             .frame(height: 44)
@@ -96,6 +99,6 @@ struct PhotoAccessAlert: View {
 #Preview {
     ZStack {
         Color.background.ignoresSafeArea()
-        PhotoAccessAlert(onCancel: {}, onAllow: {})
+        PhotoAccessAlert(onCancel: {}, onPrimary: {})
     }
 }

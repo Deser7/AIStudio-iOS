@@ -8,7 +8,13 @@
 import SwiftUI
 
 struct VideoResultView: View {
+    @StateObject private var viewModel: VideoResultViewModel
     @Binding var navigationPath: NavigationPath
+
+    init(navigationPath: Binding<NavigationPath>) {
+        _navigationPath = navigationPath
+        _viewModel = StateObject(wrappedValue: VideoResultViewModel())
+    }
 
     var body: some View {
         ZStack {
@@ -34,26 +40,78 @@ struct VideoResultView: View {
                     .padding(.horizontal, 8)
                     .padding(.bottom)
             }
+            .allowsHitTesting(viewModel.overlay == .none)
+
+            overlayContent
         }
+        .animation(.easeInOut(duration: 0.2), value: viewModel.overlay)
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
+        .sheet(isPresented: $viewModel.isShareSheetPresented) {
+            ActivityShareSheet(items: [viewModel.resultVideoURL])
+        }
     }
 
     private var actionButtons: some View {
         HStack(spacing: 16) {
-            SectionButton(title: "Share", style: .secondary) {}
-            SectionButton(title: "Download", style: .primary) {}
+            SectionButton(title: "Share", style: .secondary) {
+                viewModel.shareTapped()
+            }
+            SectionButton(title: "Download", style: .primary) {
+                viewModel.downloadTapped()
+            }
         }
     }
 
+    @ViewBuilder
+    private var overlayContent: some View {
+        switch viewModel.overlay {
+        case .none:
+            EmptyView()
+
+        case .saving:
+            scrim
+
+        case .savedNotification:
+            ZStack {
+                scrim
+                    .onTapGesture(perform: viewModel.dismissNotification)
+
+                AppNotification(
+                    content: .videoSaved(message: viewModel.savedNotificationMessage)
+                )
+                .onTapGesture(perform: viewModel.dismissNotification)
+            }
+
+        case .photoAccessSettings:
+            ZStack {
+                scrim
+
+                PhotoAccessAlert(
+                    title: "Photo access required",
+                    message: "Allow access in Settings to save videos to your gallery.",
+                    primaryButtonTitle: "Open Settings",
+                    onCancel: viewModel.photoAccessSettingsCancelled,
+                    onPrimary: viewModel.openPhotoSettings
+                )
+            }
+        }
+    }
+
+    private var scrim: some View {
+        Color.black.opacity(0.5)
+            .ignoresSafeArea()
+            .transition(.opacity)
+    }
+
     private func popToTemplateDetail() {
-        guard navigationPath.count >= 2 else { return }
-        navigationPath.removeLast(2)
+        guard !navigationPath.isEmpty else { return }
+        navigationPath.removeLast()
     }
 
     private func regenerateVideo() {
-        guard navigationPath.count >= 2 else { return }
-        navigationPath.removeLast(2)
+        guard !navigationPath.isEmpty else { return }
+        navigationPath.removeLast()
         navigationPath.append(AppRoute.videoGenerating)
     }
 }

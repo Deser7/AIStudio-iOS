@@ -68,7 +68,7 @@ struct VideoGenerationView: View {
                     onCancel: {
                         viewModel.photoAccessCancelled()
                     },
-                    onAllow: {
+                    onPrimary: {
                         viewModel.beginPhotoAccessRequest()
                     }
                 )

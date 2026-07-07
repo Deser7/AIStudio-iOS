@@ -74,6 +74,7 @@ struct VideoGeneratingView: View {
 
         guard !didNavigateToResult else { return }
         didNavigateToResult = true
+        navigationPath.removeLast()
         navigationPath.append(AppRoute.videoResult)
     }
 }
