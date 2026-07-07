@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ChatView: View {
-    @StateObject private var viewModel: ChatViewModel
+    @State private var viewModel: ChatViewModel
     @Binding var navigationPath: NavigationPath
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isComposerFocused: Bool
@@ -18,10 +18,12 @@ struct ChatView: View {
         viewModel: ChatViewModel = ChatViewModel()
     ) {
         _navigationPath = navigationPath
-        _viewModel = StateObject(wrappedValue: viewModel)
+        _viewModel = State(initialValue: viewModel)
     }
 
     var body: some View {
+        @Bindable var viewModel = viewModel
+
         ZStack {
             Color.background
                 .ignoresSafeArea()
@@ -72,7 +74,7 @@ struct ChatView: View {
                 .padding(.horizontal, 24)
                 .padding(.vertical, 16)
             }
-            .onChange(of: viewModel.messages.last?.id) { _ in
+            .onChange(of: viewModel.messages.last?.id) {
                 scrollToBottom(using: proxy)
             }
         }

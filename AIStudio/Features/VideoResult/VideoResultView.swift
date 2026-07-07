@@ -8,15 +8,17 @@
 import SwiftUI
 
 struct VideoResultView: View {
-    @StateObject private var viewModel: VideoResultViewModel
+    @State private var viewModel: VideoResultViewModel
     @Binding var navigationPath: NavigationPath
 
     init(navigationPath: Binding<NavigationPath>) {
         _navigationPath = navigationPath
-        _viewModel = StateObject(wrappedValue: VideoResultViewModel())
+        _viewModel = State(initialValue: VideoResultViewModel())
     }
 
     var body: some View {
+        @Bindable var viewModel = viewModel
+
         ZStack {
             Color.background
                 .ignoresSafeArea()

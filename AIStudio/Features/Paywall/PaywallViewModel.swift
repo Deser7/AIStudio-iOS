@@ -5,16 +5,17 @@
 //  Created by Андрей Спиридонов on 30.06.2026.
 //
 
-import Combine
 import Foundation
+import Observation
 
-final class PaywallViewModel: ObservableObject {
+@Observable
+final class PaywallViewModel {
     let title = "Create anything you want"
     let unlockButtonTitle = "Unlock now"
     let cancelText = "Cancel Anytime"
 
-    @Published var selectedPlanID: String
-    @Published var isCloseButtonVisible = false
+    var selectedPlanID: String
+    var isCloseButtonVisible = false
 
     let benefits: [PaywallBenefit]
     let plans: [PricingPlanItem]

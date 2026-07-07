@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ChatHistoryView: View {
-    @StateObject private var viewModel: ChatHistoryViewModel
+    @State private var viewModel: ChatHistoryViewModel
     @Environment(\.dismiss) private var dismiss
 
     init(viewModel: ChatHistoryViewModel = ChatHistoryViewModel()) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+        _viewModel = State(initialValue: viewModel)
     }
 
     var body: some View {

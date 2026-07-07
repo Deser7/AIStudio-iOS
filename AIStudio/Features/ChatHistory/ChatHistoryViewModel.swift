@@ -5,12 +5,13 @@
 //  Created by Андрей Спиридонов on 05.07.2026.
 //
 
-import Combine
+import Observation
 
-final class ChatHistoryViewModel: ObservableObject {
+@Observable
+final class ChatHistoryViewModel {
     let title = "AI Chat History"
 
-    @Published private(set) var sections: [ChatHistorySection]
+    private(set) var sections: [ChatHistorySection]
 
     var isEmpty: Bool {
         sections.allSatisfy(\.items.isEmpty)

@@ -5,8 +5,8 @@
 //  Created by Андрей Спиридонов on 05.07.2026.
 //
 
-import Combine
 import Foundation
+import Observation
 import UIKit
 
 enum VideoTemplateExpandedSetting: Equatable {
@@ -21,15 +21,16 @@ enum VideoTemplatePhotoState: Equatable {
 }
 
 @MainActor
-final class VideoTemplateDetailViewModel: ObservableObject {
+@Observable
+final class VideoTemplateDetailViewModel {
     let sectionTemplates: [VideoTemplate]
 
-    @Published var selectedTemplateID: UUID
-    @Published var aspectRatio: AspectRatio = .landscape16x9
-    @Published var videoQuality: VideoQuality = .p1080
-    @Published private(set) var photoState: VideoTemplatePhotoState = .none
-    @Published private(set) var selectedPhoto: UIImage?
-    @Published var expandedSetting: VideoTemplateExpandedSetting?
+    var selectedTemplateID: UUID
+    var aspectRatio: AspectRatio = .landscape16x9
+    var videoQuality: VideoQuality = .p1080
+    private(set) var photoState: VideoTemplatePhotoState = .none
+    private(set) var selectedPhoto: UIImage?
+    var expandedSetting: VideoTemplateExpandedSetting?
 
     var navigationTitle: String {
         selectedTemplate.title

@@ -5,8 +5,8 @@
 //  Created by Андрей Спиридонов on 06.07.2026.
 //
 
-import Combine
 import Foundation
+import Observation
 
 enum VideoResultOverlay: Equatable {
     case none
@@ -16,9 +16,10 @@ enum VideoResultOverlay: Equatable {
 }
 
 @MainActor
-final class VideoResultViewModel: ObservableObject {
-    @Published private(set) var overlay: VideoResultOverlay = .none
-    @Published var isShareSheetPresented = false
+@Observable
+final class VideoResultViewModel {
+    private(set) var overlay: VideoResultOverlay = .none
+    var isShareSheetPresented = false
 
     let resultVideoURL: URL
     let savedNotificationMessage = "Video has been saved to your gallery"

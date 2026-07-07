@@ -8,15 +8,17 @@
 import SwiftUI
 
 struct HomeView: View {
-    @StateObject private var viewModel: HomeViewModel
+    @State private var viewModel: HomeViewModel
     @State private var isSettingsPresented = false
     @State private var navigationPath = NavigationPath()
 
     init(viewModel: HomeViewModel = HomeViewModel()) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+        _viewModel = State(initialValue: viewModel)
     }
 
     var body: some View {
+        @Bindable var viewModel = viewModel
+
         NavigationStack(path: $navigationPath) {
             homeContent
                 .navigationDestination(for: AppRoute.self) { route in

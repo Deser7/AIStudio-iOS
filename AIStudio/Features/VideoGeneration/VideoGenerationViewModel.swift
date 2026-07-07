@@ -5,16 +5,17 @@
 //  Created by Андрей Спиридонов on 05.07.2026.
 //
 
-import Combine
 import Foundation
+import Observation
 
-final class VideoGenerationViewModel: ObservableObject {
+@Observable
+final class VideoGenerationViewModel {
     let title = "AI Video"
 
-    @Published var selectedSection: String
-    @Published private(set) var isPhotoAccessAlertPresented = false
-    @Published private(set) var pendingTemplate: VideoTemplate?
-    @Published private(set) var detailContextToOpen: VideoTemplateDetailContext?
+    var selectedSection: String
+    private(set) var isPhotoAccessAlertPresented = false
+    private(set) var pendingTemplate: VideoTemplate?
+    private(set) var detailContextToOpen: VideoTemplateDetailContext?
 
     let sectionNames: [String]
 

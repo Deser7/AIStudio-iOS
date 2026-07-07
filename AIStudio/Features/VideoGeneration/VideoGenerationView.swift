@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct VideoGenerationView: View {
-    @StateObject private var viewModel: VideoGenerationViewModel
+    @State private var viewModel: VideoGenerationViewModel
     @Binding var navigationPath: NavigationPath
     @Environment(\.dismiss) private var dismiss
 
@@ -19,8 +19,8 @@ struct VideoGenerationView: View {
 
     init(navigationPath: Binding<NavigationPath>) {
         _navigationPath = navigationPath
-        _viewModel = StateObject(
-            wrappedValue: VideoGenerationViewModel(
+        _viewModel = State(
+            initialValue: VideoGenerationViewModel(
                 sections: VideoTemplateStub.sections,
                 photoLibrary: PhotoLibraryAccessService()
             )
@@ -28,6 +28,8 @@ struct VideoGenerationView: View {
     }
 
     var body: some View {
+        @Bindable var viewModel = viewModel
+
         ZStack {
             Color.background
                 .ignoresSafeArea()
@@ -76,7 +78,7 @@ struct VideoGenerationView: View {
             }
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.isPhotoAccessAlertPresented)
-        .onChange(of: viewModel.detailContextToOpen) { context in
+        .onChange(of: viewModel.detailContextToOpen) { _, context in
             guard let context else { return }
             navigationPath.append(AppRoute.videoTemplateDetail(context))
             viewModel.consumeDetailContextToOpen()

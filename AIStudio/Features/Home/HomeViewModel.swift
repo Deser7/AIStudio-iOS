@@ -5,15 +5,16 @@
 //  Created by Андрей Спиридонов on 03.07.2026.
 //
 
-import Combine
+import Observation
 
-final class HomeViewModel: ObservableObject {
+@Observable
+final class HomeViewModel {
     let title = "Your AI tools,\nready to go"
     let cacheSize = "5 MB"
     let appVersion = "1.0.0"
 
-    @Published var promptText = ""
-    @Published var notificationsEnabled = false
+    var promptText = ""
+    var notificationsEnabled = false
 
     private let onVideoTap: () -> Void
     private let onWritingTap: () -> Void

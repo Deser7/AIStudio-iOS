@@ -5,14 +5,15 @@
 //  Created by Андрей Спиридонов on 04.07.2026.
 //
 
-import Combine
 import Foundation
+import Observation
 
-final class ChatViewModel: ObservableObject {
+@Observable
+final class ChatViewModel {
     let title = "AI Chat"
 
-    @Published var promptText = ""
-    @Published private(set) var messages: [ChatMessage] = []
+    var promptText = ""
+    private(set) var messages: [ChatMessage] = []
 
     var subtitle: String {
         Self.dateFormatter.string(from: Date())

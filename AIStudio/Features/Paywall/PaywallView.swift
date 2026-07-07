@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct PaywallView: View {
-    @StateObject private var viewModel: PaywallViewModel
+    @State private var viewModel: PaywallViewModel
 
     init(viewModel: PaywallViewModel = PaywallViewModel()) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+        _viewModel = State(initialValue: viewModel)
     }
 
     var body: some View {
+        @Bindable var viewModel = viewModel
+
         ZStack(alignment: .topLeading) {
             StudioBackground()
 

@@ -9,7 +9,7 @@ import PhotosUI
 import SwiftUI
 
 struct VideoTemplateDetailView: View {
-    @StateObject private var viewModel: VideoTemplateDetailViewModel
+    @State private var viewModel: VideoTemplateDetailViewModel
     @Binding var navigationPath: NavigationPath
     @Environment(\.dismiss) private var dismiss
 
@@ -21,12 +21,14 @@ struct VideoTemplateDetailView: View {
         context: VideoTemplateDetailContext
     ) {
         _navigationPath = navigationPath
-        _viewModel = StateObject(
-            wrappedValue: VideoTemplateDetailViewModel(context: context)
+        _viewModel = State(
+            initialValue: VideoTemplateDetailViewModel(context: context)
         )
     }
 
     var body: some View {
+        @Bindable var viewModel = viewModel
+
         ZStack {
             Color.background
                 .ignoresSafeArea()
@@ -65,7 +67,7 @@ struct VideoTemplateDetailView: View {
             selection: $selectedPhotoItem,
             matching: .images
         )
-        .onChange(of: selectedPhotoItem) { newItem in
+        .onChange(of: selectedPhotoItem) { _, newItem in
             Task {
                 await loadPhoto(from: newItem)
             }
