@@ -20,3 +20,6 @@ build/
 
 # Cursor / IDE
 .idea/
+
+# Local secrets (copy from Secrets.example.plist)
+AIStudio/Resources/Secrets.plist

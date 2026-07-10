@@ -33,7 +33,9 @@ final class ChatViewModel {
         }
     }
 
+    private var chatID: String?
     private var generationTask: Task<Void, Never>?
+    private let chatService: any ChatServing
 
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -41,7 +43,9 @@ final class ChatViewModel {
         return formatter
     }()
 
-    private static let generationDelay: Duration = .seconds(2)
+    init(chatService: any ChatServing = RemoteChatService()) {
+        self.chatService = chatService
+    }
 
     deinit {
         generationTask?.cancel()
@@ -54,14 +58,21 @@ final class ChatViewModel {
         promptText = ""
 
         let generatingID = UUID()
+        let activeChatID = chatID ?? UUID().uuidString.lowercased()
+        if chatID == nil {
+            chatID = activeChatID
+        }
+
         messages.append(.user(text: trimmed))
         messages.append(.generating(id: generatingID))
 
         generationTask?.cancel()
-        generationTask = Task { @MainActor [weak self] in
-            try? await Task.sleep(for: Self.generationDelay)
-            guard !Task.isCancelled else { return }
-            self?.completeGeneration(generatingID: generatingID)
+        generationTask = Task { [weak self] in
+            await self?.generateReply(
+                chatID: activeChatID,
+                text: trimmed,
+                generatingID: generatingID
+            )
         }
     }
 
@@ -73,11 +84,43 @@ final class ChatViewModel {
 
     func refreshResponseTapped() {}
 
-    @MainActor
-    private func completeGeneration(generatingID: UUID) {
+    private func generateReply(
+        chatID: String,
+        text: String,
+        generatingID: UUID
+    ) async {
+        do {
+            let result = try await chatService.sendMessage(chatID: chatID, text: text)
+            guard !Task.isCancelled else { return }
+            self.chatID = result.chatID
+            completeGeneration(
+                generatingID: generatingID,
+                content: AIResponseContent(
+                    title: "",
+                    paragraphs: [result.assistantMessage],
+                    bullets: []
+                )
+            )
+        } catch {
+            guard !Task.isCancelled else { return }
+            failGeneration(
+                generatingID: generatingID,
+                message: error.localizedDescription
+            )
+        }
+    }
+
+    private func completeGeneration(generatingID: UUID, content: AIResponseContent) {
         messages.removeAll {
             if case let .generating(id) = $0 { id == generatingID } else { false }
         }
-        messages.append(.assistant(content: ChatStub.welcomeEmail))
+        messages.append(.assistant(content: content))
+    }
+
+    private func failGeneration(generatingID: UUID, message: String) {
+        messages.removeAll {
+            if case let .generating(id) = $0 { id == generatingID } else { false }
+        }
+        messages.append(.error(text: message))
     }
 }

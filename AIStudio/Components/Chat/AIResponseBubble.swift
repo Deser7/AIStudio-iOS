@@ -49,7 +49,9 @@ struct AIResponseBubble: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            titleView
+            if !content.title.isEmpty {
+                titleView
+            }
             bodyView
             divider
             actionBar

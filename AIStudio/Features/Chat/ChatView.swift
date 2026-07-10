@@ -115,6 +115,12 @@ struct ChatView: View {
                 onRefresh: viewModel.refreshResponseTapped
             )
             .frame(maxWidth: .infinity, alignment: .leading)
+
+        case let .error(_, text):
+            Text(text)
+                .typography(style: .regular16)
+                .foregroundStyle(.error)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
