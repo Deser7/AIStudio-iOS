@@ -108,11 +108,11 @@ struct ChatView: View {
             AIResponseIndicator()
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-        case let .assistant(_, content):
+        case let .assistant(id, content):
             AIResponseBubble(
                 content: content,
-                onCopy: viewModel.copyResponseTapped,
-                onRefresh: viewModel.refreshResponseTapped
+                onCopy: { viewModel.copyResponseTapped(id) },
+                onRefresh: { viewModel.refreshResponseTapped(id) }
             )
             .frame(maxWidth: .infinity, alignment: .leading)
 

@@ -7,6 +7,7 @@
 
 import Foundation
 import Observation
+import UIKit
 
 @Observable
 final class ChatViewModel {
@@ -58,33 +59,75 @@ final class ChatViewModel {
         promptText = ""
 
         let generatingID = UUID()
-        let activeChatID = chatID ?? UUID().uuidString.lowercased()
-        if chatID == nil {
-            chatID = activeChatID
-        }
+        let activeChatID = resolvedChatID()
 
         messages.append(.user(text: trimmed))
         messages.append(.generating(id: generatingID))
 
-        let history = makeHistory()
-
-        generationTask?.cancel()
-        generationTask = Task { [weak self] in
-            await self?.generateReply(
-                chatID: activeChatID,
-                history: history,
-                generatingID: generatingID
-            )
-        }
+        startGeneration(
+            chatID: activeChatID,
+            history: makeHistory(),
+            generatingID: generatingID
+        )
     }
 
     func importTapped() {}
 
     func microTapped() {}
 
-    func copyResponseTapped() {}
+    func copyResponseTapped(_ messageID: UUID) {
+        guard case let .assistant(_, content) = messages.first(where: { $0.id == messageID }) else {
+            return
+        }
+        UIPasteboard.general.string = plainText(from: content)
+    }
 
-    func refreshResponseTapped() {}
+    func refreshResponseTapped(_ messageID: UUID) {
+        guard !isGenerating else { return }
+        guard let assistantIndex = messages.firstIndex(where: { $0.id == messageID }),
+              case .assistant = messages[assistantIndex],
+              assistantIndex > 0,
+              case .user = messages[assistantIndex - 1]
+        else {
+            return
+        }
+
+        messages.removeSubrange(assistantIndex...)
+
+        let generatingID = UUID()
+        let activeChatID = resolvedChatID()
+        messages.append(.generating(id: generatingID))
+
+        startGeneration(
+            chatID: activeChatID,
+            history: makeHistory(),
+            generatingID: generatingID
+        )
+    }
+
+    private func resolvedChatID() -> String {
+        if let chatID {
+            return chatID
+        }
+        let newID = UUID().uuidString.lowercased()
+        chatID = newID
+        return newID
+    }
+
+    private func startGeneration(
+        chatID: String,
+        history: [ChatHistoryMessage],
+        generatingID: UUID
+    ) {
+        generationTask?.cancel()
+        generationTask = Task { [weak self] in
+            await self?.generateReply(
+                chatID: chatID,
+                history: history,
+                generatingID: generatingID
+            )
+        }
+    }
 
     private func generateReply(
         chatID: String,

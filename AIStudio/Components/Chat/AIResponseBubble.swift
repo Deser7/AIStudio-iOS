@@ -24,27 +24,11 @@ struct AIResponseBubble: View {
     let onCopy: () -> Void
     let onRefresh: () -> Void
 
-    @Environment(\.displayScale) private var displayScale
+    @State private var showsCopyConfirmation = false
+    @State private var copyConfirmationResetTask: Task<Void, Never>?
 
-    private var iconStrokeWidth: CGFloat {
-        (24 * 9 / 100).pixelAligned(to: displayScale)
-    }
-
-    private var dividerHeight: CGFloat {
-        max(1, 1 / displayScale)
-            .pixelAligned(to: displayScale)
-    }
-
-    private var dividerColor: Color {
-        Color(.divider)
-            .opacity(0.1)
-    }
-
-    private var bubbleShape: AIResponseBubbleShape {
-        AIResponseBubbleShape(
-            cornerRadius: AppShape.cornerRadius,
-            bottomTrailingRadius: 4
-        )
+    private var actionIconStrokeStyle: StrokeStyle {
+        StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round)
     }
 
     var body: some View {
@@ -58,8 +42,10 @@ struct AIResponseBubble: View {
         }
         .padding(16)
         .frame(width: 302, alignment: .leading)
-        .background(CardBlurBackground(shape: bubbleShape, opacity: 0.5))
-        .clipShape(bubbleShape)
+        .background(CardBlurBackground(opacity: 0.5))
+        .onDisappear {
+            copyConfirmationResetTask?.cancel()
+        }
     }
 
     private var bodyTextColor: Color {
@@ -126,40 +112,25 @@ struct AIResponseBubble: View {
 
     private var divider: some View {
         Rectangle()
-            .fill(dividerColor)
+            .fill(.white.opacity(0.1))
             .frame(maxWidth: .infinity)
-            .frame(height: dividerHeight)
+            .frame(height: 1)
     }
 
     private var actionBar: some View {
         HStack {
             actionButton {
-                CopyIcon()
-                    .stroke(
-                        .white,
-                        style: StrokeStyle(
-                            lineWidth: iconStrokeWidth,
-                            lineCap: .round,
-                            lineJoin: .round
-                        )
-                    )
-                    .frame(width: 24, height: 24)
+                copyActionIcon
             } action: {
                 onCopy()
+                confirmCopy()
             }
 
             Spacer(minLength: 0)
 
             actionButton {
                 RefreshIcon()
-                    .stroke(
-                        .white,
-                        style: StrokeStyle(
-                            lineWidth: iconStrokeWidth,
-                            lineCap: .round,
-                            lineJoin: .round
-                        )
-                    )
+                    .stroke(.white, style: actionIconStrokeStyle)
                     .frame(width: 24, height: 24)
             } action: {
                 onRefresh()
@@ -167,6 +138,22 @@ struct AIResponseBubble: View {
         }
         .frame(height: 24)
         .opacity(0.5)
+    }
+
+    @ViewBuilder
+    private var copyActionIcon: some View {
+        ZStack {
+            if showsCopyConfirmation {
+                CheckIcon()
+                    .fill(.white)
+                    .transition(.scale(scale: 0.6).combined(with: .opacity))
+            } else {
+                CopyIcon()
+                    .stroke(.white, style: actionIconStrokeStyle)
+                    .transition(.scale(scale: 0.6).combined(with: .opacity))
+            }
+        }
+        .frame(width: 24, height: 24)
     }
 
     private func actionButton<Icon: View>(
@@ -178,20 +165,22 @@ struct AIResponseBubble: View {
         }
         .buttonStyle(.plain)
     }
-}
 
-private struct AIResponseBubbleShape: Shape {
-    var cornerRadius: CGFloat
-    var bottomTrailingRadius: CGFloat
+    private func confirmCopy() {
+        copyConfirmationResetTask?.cancel()
 
-    func path(in rect: CGRect) -> Path {
-        UnevenRoundedRectangle(
-            topLeadingRadius: cornerRadius,
-            bottomLeadingRadius: cornerRadius,
-            bottomTrailingRadius: bottomTrailingRadius,
-            topTrailingRadius: cornerRadius,
-            style: .continuous
-        ).path(in: rect)
+        withAnimation(.spring(response: 0.28, dampingFraction: 0.72)) {
+            showsCopyConfirmation = true
+        }
+
+        copyConfirmationResetTask = Task { @MainActor in
+            try? await Task.sleep(for: .seconds(1.5))
+            guard !Task.isCancelled else { return }
+
+            withAnimation(.spring(response: 0.28, dampingFraction: 0.72)) {
+                showsCopyConfirmation = false
+            }
+        }
     }
 }
 
