@@ -5,12 +5,14 @@
 //  Created by Андрей Спиридонов on 03.07.2026.
 //
 
+import SwiftData
 import SwiftUI
 
 struct HomeView: View {
     @State private var viewModel: HomeViewModel
     @State private var isSettingsPresented = false
     @State private var navigationPath = NavigationPath()
+    @Environment(\.modelContext) private var modelContext
 
     init(viewModel: HomeViewModel = HomeViewModel()) {
         _viewModel = State(initialValue: viewModel)
@@ -24,9 +26,24 @@ struct HomeView: View {
                 .navigationDestination(for: AppRoute.self) { route in
                     switch route {
                     case .chat:
-                        ChatView(navigationPath: $navigationPath)
+                        ChatView(
+                            sessionID: nil,
+                            navigationPath: $navigationPath,
+                            modelContext: modelContext
+                        )
+                        .id("new-chat")
+                    case let .chatSession(id):
+                        ChatView(
+                            sessionID: id,
+                            navigationPath: $navigationPath,
+                            modelContext: modelContext
+                        )
+                        .id(id)
                     case .chatHistory:
-                        ChatHistoryView()
+                        ChatHistoryView(
+                            navigationPath: $navigationPath,
+                            modelContext: modelContext
+                        )
                     case .videoGeneration:
                         VideoGenerationView(navigationPath: $navigationPath)
                     case .videoHistory:
@@ -122,5 +139,7 @@ struct HomeView: View {
 }
 
 #Preview {
+    let container = ChatHistoryPreviewSupport.container()
     HomeView()
+        .modelContainer(container)
 }

@@ -9,6 +9,7 @@ import Foundation
 
 enum AppRoute: Hashable {
     case chat
+    case chatSession(UUID)
     case chatHistory
     case videoGeneration
     case videoHistory

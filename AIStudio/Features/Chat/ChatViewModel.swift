@@ -9,15 +9,17 @@ import Foundation
 import Observation
 import UIKit
 
+@MainActor
 @Observable
 final class ChatViewModel {
     let title = "AI Chat"
 
     var promptText = ""
     private(set) var messages: [ChatMessage] = []
+    private(set) var subtitleDate: Date = .now
 
     var subtitle: String {
-        Self.dateFormatter.string(from: Date())
+        Self.dateFormatter.string(from: subtitleDate)
     }
 
     var showsEmptyState: Bool {
@@ -34,9 +36,11 @@ final class ChatViewModel {
         }
     }
 
+    private let sessionID: UUID
     private var chatID: String?
     private var generationTask: Task<Void, Never>?
     private let chatService: any ChatServing
+    private let repository: ChatHistoryRepository
 
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -44,12 +48,23 @@ final class ChatViewModel {
         return formatter
     }()
 
-    init(chatService: any ChatServing = GeminiChatService()) {
-        self.chatService = chatService
-    }
+    init(
+        sessionID: UUID? = nil,
+        chatService: (any ChatServing)? = nil,
+        repository: ChatHistoryRepository
+    ) {
+        self.chatService = chatService ?? GeminiChatService()
+        self.repository = repository
 
-    deinit {
-        generationTask?.cancel()
+        if let sessionID, let session = repository.session(id: sessionID) {
+            self.sessionID = sessionID
+            self.chatID = sessionID.uuidString.lowercased()
+            self.messages = session.messages
+            self.subtitleDate = session.updatedAt
+        } else {
+            self.sessionID = sessionID ?? UUID()
+            self.chatID = self.sessionID.uuidString.lowercased()
+        }
     }
 
     func sendTapped() {
@@ -109,7 +124,7 @@ final class ChatViewModel {
         if let chatID {
             return chatID
         }
-        let newID = UUID().uuidString.lowercased()
+        let newID = sessionID.uuidString.lowercased()
         chatID = newID
         return newID
     }
@@ -199,6 +214,7 @@ final class ChatViewModel {
             if case let .generating(id) = $0 { id == generatingID } else { false }
         }
         messages.append(.assistant(content: content))
+        persist()
     }
 
     private func failGeneration(generatingID: UUID, message: String) {
@@ -206,5 +222,20 @@ final class ChatViewModel {
             if case let .generating(id) = $0 { id == generatingID } else { false }
         }
         messages.append(.error(text: message))
+        persist()
+    }
+
+    private func persist() {
+        let fallbackTitle = messages.lazy.compactMap { message -> String? in
+            if case let .user(_, text) = message { return text }
+            return nil
+        }.first ?? "New Chat"
+
+        repository.upsert(
+            id: sessionID,
+            fallbackTitle: fallbackTitle,
+            messages: messages
+        )
+        subtitleDate = .now
     }
 }

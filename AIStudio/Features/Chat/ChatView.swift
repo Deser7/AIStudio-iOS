@@ -5,6 +5,7 @@
 //  Created by Андрей Спиридонов on 04.07.2026.
 //
 
+import SwiftData
 import SwiftUI
 
 struct ChatView: View {
@@ -14,11 +15,17 @@ struct ChatView: View {
     @FocusState private var isComposerFocused: Bool
 
     init(
+        sessionID: UUID? = nil,
         navigationPath: Binding<NavigationPath>,
-        viewModel: ChatViewModel = ChatViewModel()
+        modelContext: ModelContext
     ) {
         _navigationPath = navigationPath
-        _viewModel = State(initialValue: viewModel)
+        _viewModel = State(
+            initialValue: ChatViewModel(
+                sessionID: sessionID,
+                repository: ChatHistoryRepository(modelContext: modelContext)
+            )
+        )
     }
 
     var body: some View {
@@ -134,7 +141,12 @@ struct ChatView: View {
 }
 
 #Preview("Empty") {
+    let container = ChatHistoryPreviewSupport.container()
     NavigationStack {
-        ChatView(navigationPath: .constant(NavigationPath()))
+        ChatView(
+            navigationPath: .constant(NavigationPath()),
+            modelContext: container.mainContext
+        )
     }
+    .modelContainer(container)
 }

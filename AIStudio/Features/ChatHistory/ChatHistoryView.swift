@@ -5,14 +5,27 @@
 //  Created by Андрей Спиридонов on 05.07.2026.
 //
 
+import SwiftData
 import SwiftUI
 
 struct ChatHistoryView: View {
     @State private var viewModel: ChatHistoryViewModel
+    @Binding var navigationPath: NavigationPath
     @Environment(\.dismiss) private var dismiss
 
-    init(viewModel: ChatHistoryViewModel = ChatHistoryViewModel()) {
-        _viewModel = State(initialValue: viewModel)
+    @State private var renameItem: ChatHistoryItem?
+    @State private var renameText = ""
+
+    init(
+        navigationPath: Binding<NavigationPath>,
+        modelContext: ModelContext
+    ) {
+        _navigationPath = navigationPath
+        _viewModel = State(
+            initialValue: ChatHistoryViewModel(
+                repository: ChatHistoryRepository(modelContext: modelContext)
+            )
+        )
     }
 
     var body: some View {
@@ -32,6 +45,26 @@ struct ChatHistoryView: View {
         }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
+        .alert(
+            "Rename",
+            isPresented: Binding(
+                get: { renameItem != nil },
+                set: { if !$0 { renameItem = nil } }
+            )
+        ) {
+            TextField("Title", text: $renameText)
+            Button("Cancel", role: .cancel) {
+                renameItem = nil
+            }
+            Button("Save") {
+                guard let renameItem else { return }
+                viewModel.rename(renameItem, to: renameText)
+                self.renameItem = nil
+            }
+        }
+        .onAppear {
+            viewModel.reload()
+        }
     }
 
     @ViewBuilder
@@ -68,22 +101,47 @@ struct ChatHistoryView: View {
                     HistoryCard(
                         title: item.title,
                         subtitle: item.time,
-                        action: { viewModel.itemTapped(item) }
+                        action: { openChat(item) }
                     )
+                    .contextMenu {
+                        Button("Rename") {
+                            renameText = item.title
+                            renameItem = item
+                        }
+                        Button("Delete", role: .destructive) {
+                            viewModel.delete(item)
+                        }
+                    }
                 }
             }
         }
     }
+
+    private func openChat(_ item: ChatHistoryItem) {
+        var path = NavigationPath()
+        path.append(AppRoute.chatSession(item.id))
+        navigationPath = path
+    }
 }
 
 #Preview("With History") {
+    let container = ChatHistoryPreviewSupport.container(seedSample: true)
     NavigationStack {
-        ChatHistoryView()
+        ChatHistoryView(
+            navigationPath: .constant(NavigationPath()),
+            modelContext: container.mainContext
+        )
     }
+    .modelContainer(container)
 }
 
 #Preview("Empty") {
+    let container = ChatHistoryPreviewSupport.container()
     NavigationStack {
-        ChatHistoryView(viewModel: ChatHistoryViewModel(sections: []))
+        ChatHistoryView(
+            navigationPath: .constant(NavigationPath()),
+            modelContext: container.mainContext
+        )
     }
+    .modelContainer(container)
 }
