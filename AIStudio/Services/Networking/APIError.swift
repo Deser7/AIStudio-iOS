@@ -6,31 +6,43 @@
 import Foundation
 
 enum APIError: Error, LocalizedError, Sendable {
-    case missingBearerToken
+    case missingAPIKey
     case invalidURL
     case invalidResponse
+    case emptyResponse
+    case unauthorized
+    case rateLimited
+    case network
     case httpStatus(Int, String?)
     case decoding(Error, String?)
 
     var errorDescription: String? {
         switch self {
-        case .missingBearerToken:
-            "Missing API token. Add BearerToken to Secrets.plist."
+        case .missingAPIKey:
+            "API key is missing."
         case .invalidURL:
-            "Invalid request URL."
+            "Something went wrong. Please try again."
         case .invalidResponse:
-            "Invalid server response."
-        case let .httpStatus(code, message):
-            message?.isEmpty == false ? message : "Request failed (\(code))."
-        case let .decoding(error, body):
-            [
-                "Failed to decode server response.",
-                error.localizedDescription,
-                body
-            ]
-            .compactMap { $0 }
-            .filter { !$0.isEmpty }
-            .joined(separator: "\n")
+            "Something went wrong. Please try again."
+        case .emptyResponse:
+            "Empty response from AI."
+        case .unauthorized:
+            "Invalid API key."
+        case .rateLimited:
+            "API limit reached. Try again later."
+        case .network:
+            "No internet connection."
+        case let .httpStatus(code, _):
+            switch code {
+            case 401, 403:
+                "Invalid API key."
+            case 429:
+                "API limit reached. Try again later."
+            default:
+                "Something went wrong. Please try again."
+            }
+        case .decoding:
+            "Something went wrong. Please try again."
         }
     }
 }

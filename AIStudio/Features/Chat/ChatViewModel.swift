@@ -43,7 +43,7 @@ final class ChatViewModel {
         return formatter
     }()
 
-    init(chatService: any ChatServing = RemoteChatService()) {
+    init(chatService: any ChatServing = GeminiChatService()) {
         self.chatService = chatService
     }
 
@@ -66,11 +66,13 @@ final class ChatViewModel {
         messages.append(.user(text: trimmed))
         messages.append(.generating(id: generatingID))
 
+        let history = makeHistory()
+
         generationTask?.cancel()
         generationTask = Task { [weak self] in
             await self?.generateReply(
                 chatID: activeChatID,
-                text: trimmed,
+                history: history,
                 generatingID: generatingID
             )
         }
@@ -86,11 +88,14 @@ final class ChatViewModel {
 
     private func generateReply(
         chatID: String,
-        text: String,
+        history: [ChatHistoryMessage],
         generatingID: UUID
     ) async {
         do {
-            let result = try await chatService.sendMessage(chatID: chatID, text: text)
+            let result = try await chatService.sendMessage(
+                chatID: chatID,
+                history: history
+            )
             guard !Task.isCancelled else { return }
             self.chatID = result.chatID
             completeGeneration(
@@ -105,9 +110,45 @@ final class ChatViewModel {
             guard !Task.isCancelled else { return }
             failGeneration(
                 generatingID: generatingID,
-                message: error.localizedDescription
+                message: userFacingMessage(for: error)
             )
         }
+    }
+
+    private func makeHistory() -> [ChatHistoryMessage] {
+        messages.compactMap { message in
+            switch message {
+            case let .user(_, text):
+                ChatHistoryMessage(role: .user, text: text)
+            case let .assistant(_, content):
+                ChatHistoryMessage(role: .model, text: plainText(from: content))
+            case .generating, .error:
+                nil
+            }
+        }
+    }
+
+    private func plainText(from content: AIResponseContent) -> String {
+        var parts: [String] = []
+        if !content.title.isEmpty {
+            parts.append(content.title)
+        }
+        parts.append(contentsOf: content.paragraphs)
+        for bullet in content.bullets {
+            parts.append("• \(bullet.emphasis) \(bullet.text)")
+        }
+        parts.append(contentsOf: content.closingParagraphs)
+        return parts.joined(separator: "\n\n")
+    }
+
+    private func userFacingMessage(for error: Error) -> String {
+        if let apiError = error as? APIError {
+            return apiError.localizedDescription
+        }
+        if error is URLError {
+            return APIError.network.localizedDescription
+        }
+        return "Something went wrong. Please try again."
     }
 
     private func completeGeneration(generatingID: UUID, content: AIResponseContent) {

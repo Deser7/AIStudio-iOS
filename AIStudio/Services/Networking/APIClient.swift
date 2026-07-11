@@ -21,15 +21,26 @@ struct HTTPAPIClient: APIClient {
     }
 
     func send<Response: Decodable>(_ request: URLRequest) async throws -> Response {
-        let (data, response) = try await session.data(for: request)
+        let data: Data
+        let response: URLResponse
+
+        do {
+            (data, response) = try await session.data(for: request)
+        } catch let error as URLError {
+            switch error.code {
+            case .notConnectedToInternet, .networkConnectionLost, .timedOut, .cannotFindHost, .cannotConnectToHost, .dnsLookupFailed:
+                throw APIError.network
+            default:
+                throw APIError.network
+            }
+        }
 
         guard let http = response as? HTTPURLResponse else {
             throw APIError.invalidResponse
         }
 
         guard (200..<300).contains(http.statusCode) else {
-            let message = String(data: data, encoding: .utf8)
-            throw APIError.httpStatus(http.statusCode, message)
+            throw Self.mapHTTPStatus(http.statusCode, data: data)
         }
 
         do {
@@ -37,6 +48,18 @@ struct HTTPAPIClient: APIClient {
         } catch {
             let body = String(data: data, encoding: .utf8)
             throw APIError.decoding(error, body)
+        }
+    }
+
+    private static func mapHTTPStatus(_ code: Int, data: Data) -> APIError {
+        switch code {
+        case 401, 403:
+            return .unauthorized
+        case 429:
+            return .rateLimited
+        default:
+            let message = String(data: data, encoding: .utf8)
+            return .httpStatus(code, message)
         }
     }
 }

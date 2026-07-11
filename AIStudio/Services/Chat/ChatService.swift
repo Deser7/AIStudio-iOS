@@ -5,16 +5,29 @@
 
 import Foundation
 
+struct ChatHistoryMessage: Sendable, Equatable {
+    enum Role: String, Sendable {
+        case user
+        case model
+    }
+
+    let role: Role
+    let text: String
+}
+
 struct SendChatMessageResult: Sendable {
     let chatID: String
     let assistantMessage: String
 }
 
 protocol ChatServing: Sendable {
-    func sendMessage(chatID: String, text: String) async throws -> SendChatMessageResult
+    func sendMessage(
+        chatID: String,
+        history: [ChatHistoryMessage]
+    ) async throws -> SendChatMessageResult
 }
 
-struct RemoteChatService: ChatServing {
+struct GeminiChatService: ChatServing {
     private let client: any APIClient
     private let configuration: APIConfiguration
 
@@ -26,47 +39,82 @@ struct RemoteChatService: ChatServing {
         self.configuration = configuration
     }
 
-    func sendMessage(chatID: String, text: String) async throws -> SendChatMessageResult {
-        let token = APICredentials.bearerToken
-        guard !token.isEmpty else { throw APIError.missingBearerToken }
+    func sendMessage(
+        chatID: String,
+        history: [ChatHistoryMessage]
+    ) async throws -> SendChatMessageResult {
+        let apiKey = APICredentials.geminiAPIKey
+        guard !apiKey.isEmpty else { throw APIError.missingAPIKey }
 
-        var components = URLComponents(
-            url: configuration.baseURL
-                .appending(path: "dola")
-                .appending(path: "chats")
-                .appending(path: chatID)
-                .appending(path: "messages"),
-            resolvingAgainstBaseURL: false
+        guard
+            let url = URL(
+                string: "\(configuration.baseURL.absoluteString)/models/\(configuration.model):generateContent"
+            )
+        else {
+            throw APIError.invalidURL
+        }
+
+        let requestBody = GeminiGenerateContentRequest(
+            contents: history.map { message in
+                GeminiGenerateContentRequest.Content(
+                    role: message.role.rawValue,
+                    parts: [.init(text: message.text)]
+                )
+            }
         )
-        components?.queryItems = [
-            URLQueryItem(name: "user_id", value: configuration.userID),
-            URLQueryItem(name: "app_id", value: configuration.appID)
-        ]
-
-        guard let url = components?.url else { throw APIError.invalidURL }
-
-        let encoder = JSONEncoder()
-        encoder.keyEncodingStrategy = .convertToSnakeCase
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(apiKey, forHTTPHeaderField: "x-goog-api-key")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try encoder.encode(SendDolaMessageRequest(message: text))
+        request.httpBody = try JSONEncoder().encode(requestBody)
 
-        let response: SendDolaMessageResponse = try await client.send(request)
+        let response: GeminiGenerateContentResponse = try await client.send(request)
+
+        let text = response.candidates?
+            .first?
+            .content?
+            .parts?
+            .compactMap(\.text)
+            .joined()
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard let text, !text.isEmpty else {
+            throw APIError.emptyResponse
+        }
+
         return SendChatMessageResult(
-            chatID: response.chatId,
-            assistantMessage: response.assistantMessage
+            chatID: chatID,
+            assistantMessage: text
         )
     }
 }
 
-private struct SendDolaMessageRequest: Encodable {
-    let message: String
+private struct GeminiGenerateContentRequest: Encodable {
+    let contents: [Content]
+
+    struct Content: Encodable {
+        let role: String
+        let parts: [Part]
+    }
+
+    struct Part: Encodable {
+        let text: String
+    }
 }
 
-private struct SendDolaMessageResponse: Decodable {
-    let chatId: String
-    let assistantMessage: String
+private struct GeminiGenerateContentResponse: Decodable {
+    let candidates: [Candidate]?
+
+    struct Candidate: Decodable {
+        let content: Content?
+    }
+
+    struct Content: Decodable {
+        let parts: [Part]?
+    }
+
+    struct Part: Decodable {
+        let text: String?
+    }
 }
