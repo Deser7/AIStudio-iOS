@@ -41,11 +41,11 @@ struct ChatEmptyState: View {
     }
 
     private func gradientText(_ string: String) -> some View {
-        Text(string)
+        Text(key: string)
             .foregroundColor(.clear)
             .background(AppGradient.main)
             .mask {
-                Text(string)
+                Text(key: string)
             }
     }
 }
