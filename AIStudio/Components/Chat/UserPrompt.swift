@@ -10,6 +10,8 @@ import SwiftUI
 struct UserPrompt: View {
     var text: String
     var image: Image?
+    var onCopy: (() -> Void)?
+    var onEdit: (() -> Void)?
 
     private var hasPhoto: Bool {
         image != nil
@@ -43,6 +45,19 @@ struct UserPrompt: View {
         .frame(width: 302, alignment: .leading)
         .background(AppGradient.main)
         .clipShape(bubbleShape)
+        .contentShape(bubbleShape)
+        .contextMenu {
+            if let onCopy {
+                Button("Copy", systemImage: "doc.on.doc") {
+                    onCopy()
+                }
+            }
+            if let onEdit {
+                Button("Edit", systemImage: "pencil") {
+                    onEdit()
+                }
+            }
+        }
     }
 
     private var messageText: some View {
@@ -121,11 +136,17 @@ private struct UserPromptPreview: View {
             .background(.card)
             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
 
-            UserPrompt(text: text)
+            UserPrompt(
+                text: text,
+                onCopy: {},
+                onEdit: {}
+            )
 
             UserPrompt(
                 text: text,
-                image: Image(systemName: "person.crop.rectangle.fill")
+                image: Image(systemName: "person.crop.rectangle.fill"),
+                onCopy: {},
+                onEdit: {}
             )
         }
         .padding(24)

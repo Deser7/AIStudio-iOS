@@ -36,6 +36,7 @@ final class ChatViewModel {
 
     private let sessionID: UUID
     private var chatID: String?
+    private var editingUserMessageID: UUID?
     private var generationTask: Task<Void, Never>?
     private let chatService: any ChatServing
     private let repository: ChatHistoryRepository
@@ -84,6 +85,12 @@ final class ChatViewModel {
 
         promptText = ""
 
+        if let editingID = editingUserMessageID {
+            editingUserMessageID = nil
+            resendEditedPrompt(id: editingID, text: trimmed)
+            return
+        }
+
         let userID = UUID()
         let generatingID = UUID()
         let activeChatID = resolvedChatID()
@@ -103,6 +110,22 @@ final class ChatViewModel {
 
     func microTapped() {}
 
+    func copyUserPromptTapped(_ messageID: UUID) {
+        guard case let .user(_, text) = messages.first(where: { $0.id == messageID }) else {
+            return
+        }
+        UIPasteboard.general.string = text
+    }
+
+    func editUserPromptTapped(_ messageID: UUID) {
+        guard !isGenerating else { return }
+        guard case let .user(_, text) = messages.first(where: { $0.id == messageID }) else {
+            return
+        }
+        editingUserMessageID = messageID
+        promptText = text
+    }
+
     func copyResponseTapped(_ messageID: UUID) {
         guard case let .assistant(_, content) = messages.first(where: { $0.id == messageID }) else {
             return
@@ -120,12 +143,38 @@ final class ChatViewModel {
             return
         }
 
+        editingUserMessageID = nil
+
         messages.removeSubrange(assistantIndex...)
 
         let generatingID = UUID()
         let activeChatID = resolvedChatID()
         messages.append(.generating(id: generatingID))
         requestScrollPin(to: userID)
+
+        startGeneration(
+            chatID: activeChatID,
+            history: makeHistory(),
+            generatingID: generatingID
+        )
+    }
+
+    private func resendEditedPrompt(id: UUID, text: String) {
+        guard let index = messages.firstIndex(where: { $0.id == id }),
+              case .user = messages[index]
+        else {
+            return
+        }
+
+        messages[index] = .user(id: id, text: text)
+        if index + 1 < messages.count {
+            messages.removeSubrange((index + 1)...)
+        }
+
+        let generatingID = UUID()
+        let activeChatID = resolvedChatID()
+        messages.append(.generating(id: generatingID))
+        requestScrollPin(to: id)
 
         startGeneration(
             chatID: activeChatID,

@@ -123,9 +123,16 @@ struct ChatView: View {
     @ViewBuilder
     private func messageView(for message: ChatMessage) -> some View {
         switch message {
-        case let .user(_, text):
-            UserPrompt(text: text)
-                .frame(maxWidth: .infinity, alignment: .trailing)
+        case let .user(id, text):
+            UserPrompt(
+                text: text,
+                onCopy: { viewModel.copyUserPromptTapped(id) },
+                onEdit: {
+                    viewModel.editUserPromptTapped(id)
+                    isComposerFocused = true
+                }
+            )
+            .frame(maxWidth: .infinity, alignment: .trailing)
 
         case .generating:
             AIResponseIndicator()
