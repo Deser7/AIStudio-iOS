@@ -9,12 +9,16 @@ import SwiftUI
 
 struct UserPrompt: View {
     var text: String
-    var image: Image?
+    var images: [Image] = []
     var onCopy: (() -> Void)?
     var onEdit: (() -> Void)?
 
     private var hasPhoto: Bool {
-        image != nil
+        !images.isEmpty
+    }
+
+    private var hasText: Bool {
+        !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     private var bubbleShape: UserPromptBubbleShape {
@@ -24,22 +28,35 @@ struct UserPrompt: View {
         )
     }
 
+    private let thumbnailColumns = [
+        GridItem(.flexible(), spacing: 8),
+        GridItem(.flexible(), spacing: 8),
+        GridItem(.flexible(), spacing: 8)
+    ]
+
     var body: some View {
-        VStack(alignment: .leading, spacing: hasPhoto ? 9 : 0) {
-            if let image {
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 100, height: 100)
-                    .clipShape(
-                        RoundedRectangle(
-                            cornerRadius: 16,
-                            style: .continuous
-                        )
-                    )
+        VStack(alignment: .leading, spacing: hasPhoto && hasText ? 9 : 0) {
+            if hasPhoto {
+                LazyVGrid(columns: thumbnailColumns, spacing: 8) {
+                    ForEach(Array(images.enumerated()), id: \.offset) { _, image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 90)
+                            .clipShape(
+                                RoundedRectangle(
+                                    cornerRadius: 16,
+                                    style: .continuous
+                                )
+                            )
+                    }
+                }
             }
 
-            messageText
+            if hasText {
+                messageText
+            }
         }
         .padding(contentPadding)
         .frame(width: 302, alignment: .leading)
@@ -47,7 +64,7 @@ struct UserPrompt: View {
         .clipShape(bubbleShape)
         .contentShape(bubbleShape)
         .contextMenu {
-            if let onCopy {
+            if let onCopy, hasText {
                 Button("Copy", systemImage: "doc.on.doc") {
                     onCopy()
                 }
@@ -144,7 +161,18 @@ private struct UserPromptPreview: View {
 
             UserPrompt(
                 text: text,
-                image: Image(systemName: "person.crop.rectangle.fill"),
+                images: [
+                    Image(systemName: "person.crop.rectangle.fill"),
+                    Image(systemName: "photo"),
+                    Image(systemName: "camera.fill")
+                ],
+                onCopy: {},
+                onEdit: {}
+            )
+
+            UserPrompt(
+                text: "",
+                images: [Image(systemName: "photo")],
                 onCopy: {},
                 onEdit: {}
             )

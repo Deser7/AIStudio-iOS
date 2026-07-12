@@ -31,6 +31,7 @@ struct AIStudioApp: App {
             HomeView()
                 .environment(languageStore)
                 .environment(\.locale, languageStore.locale)
+                .preferredColorScheme(.dark)
         }
         .modelContainer(modelContainer)
     }

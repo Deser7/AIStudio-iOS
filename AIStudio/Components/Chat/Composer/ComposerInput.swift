@@ -10,22 +10,37 @@ import SwiftUI
 enum ComposerInputMode: Equatable {
     case text
     case recording(progress: CGFloat)
-    case attachmentLoading
+    case attachment(isLoading: Bool)
+}
+
+struct ComposerAttachmentPreview: Identifiable, Equatable {
+    let id: UUID
+    let image: Image
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 struct ComposerInput: View {
     var mode: ComposerInputMode = .text
     var placeholder = "How can I help you?"
     var autofocus = false
+    var attachments: [ComposerAttachmentPreview] = []
+    var maxAttachments = 10
     @Binding var text: String
     var isFocused: FocusState<Bool>.Binding
-    let onImport: () -> Void
+    let onCamera: () -> Void
+    let onPhotos: () -> Void
+    let onFiles: () -> Void
+    let onRemoveAttachment: (UUID) -> Void
     let onMicro: () -> Void
     let onSend: () -> Void
     let onCancelRecording: () -> Void
     let onConfirmRecording: () -> Void
 
     private let buttonSize: CGFloat = 40
+    private let addendumSize: CGFloat = 100
 
     private var shape: UnevenRoundedRectangle {
         UnevenRoundedRectangle(
@@ -38,14 +53,18 @@ struct ComposerInput: View {
     }
 
     private var showsSend: Bool {
-        !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !attachments.isEmpty
+    }
+
+    private var canAddMoreAttachments: Bool {
+        attachments.count < maxAttachments
     }
 
     private var minHeight: CGFloat {
         switch mode {
         case .text: 88
         case .recording: 131
-        case .attachmentLoading: 229
+        case .attachment: 229
         }
     }
 
@@ -56,8 +75,8 @@ struct ComposerInput: View {
                 textLayout
             case let .recording(progress):
                 recordingLayout(progress: progress)
-            case .attachmentLoading:
-                attachmentLayout
+            case let .attachment(isLoading):
+                attachmentLayout(isLoading: isLoading)
             }
         }
         .padding(.horizontal, 24)
@@ -93,9 +112,28 @@ struct ComposerInput: View {
         }
     }
 
-    private var attachmentLayout: some View {
+    private func attachmentLayout(isLoading: Bool) -> some View {
         VStack(alignment: .leading, spacing: 16) {
-            Addendum(size: 100, content: .loading)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(alignment: .center, spacing: 12) {
+                    ForEach(attachments) { item in
+                        Addendum(
+                            size: addendumSize,
+                            content: .photo(item.image) {
+                                onRemoveAttachment(item.id)
+                            }
+                        )
+                    }
+
+                    if isLoading {
+                        Addendum(size: addendumSize, content: .loading)
+                    } else if canAddMoreAttachments {
+                        importMenu {
+                            Addendum(size: addendumSize, content: .addLabel)
+                        }
+                    }
+                }
+            }
 
             HStack(alignment: .center, spacing: 16) {
                 textField
@@ -129,10 +167,23 @@ struct ComposerInput: View {
             GradientIconButton(size: buttonSize, icon: .generation, action: onSend)
         } else {
             HStack(spacing: 16) {
-                CircularIconButton(size: buttonSize, icon: .photo, action: onImport)
+                importMenu {
+                    CircularIconButton(size: buttonSize, icon: .photo)
+                }
                 CircularIconButton(size: buttonSize, icon: .micro, action: onMicro)
             }
         }
+    }
+
+    private func importMenu<MenuLabel: View>(
+        @ViewBuilder label: @escaping () -> MenuLabel
+    ) -> some View {
+        ComposerImportMenu(
+            onCamera: onCamera,
+            onPhotos: onPhotos,
+            onFiles: onFiles,
+            label: label
+        )
     }
 }
 
@@ -142,20 +193,59 @@ struct ComposerInput: View {
 
 private struct ComposerInputPreviewContainer: View {
     @State private var mode: ComposerInputMode
+    @State private var attachments: [ComposerAttachmentPreview]
     @Binding var text: String
     @FocusState private var isFocused: Bool
 
-    init(mode: ComposerInputMode = .text, text: Binding<String>) {
+    init(
+        mode: ComposerInputMode = .text,
+        attachments: [ComposerAttachmentPreview] = [],
+        text: Binding<String>
+    ) {
         _mode = State(initialValue: mode)
+        _attachments = State(initialValue: attachments)
         _text = text
     }
 
     var body: some View {
         ComposerInput(
             mode: mode,
+            attachments: attachments,
             text: $text,
             isFocused: $isFocused,
-            onImport: { mode = .attachmentLoading },
+            onCamera: {
+                mode = .attachment(isLoading: false)
+                attachments = [
+                    ComposerAttachmentPreview(
+                        id: UUID(),
+                        image: Image(systemName: "camera")
+                    )
+                ]
+            },
+            onPhotos: {
+                mode = .attachment(isLoading: false)
+                attachments = [
+                    ComposerAttachmentPreview(
+                        id: UUID(),
+                        image: Image(systemName: "photo")
+                    )
+                ]
+            },
+            onFiles: {
+                mode = .attachment(isLoading: false)
+                attachments = [
+                    ComposerAttachmentPreview(
+                        id: UUID(),
+                        image: Image(systemName: "doc")
+                    )
+                ]
+            },
+            onRemoveAttachment: { id in
+                attachments.removeAll { $0.id == id }
+                if attachments.isEmpty {
+                    mode = .text
+                }
+            },
             onMicro: { mode = .recording(progress: 0.45) },
             onSend: {},
             onCancelRecording: { mode = .text },

@@ -50,6 +50,7 @@ struct PersistedChatMessage: Codable, Sendable {
     var id: UUID
     var kind: PersistedChatMessageKind
     var text: String?
+    var imageFileNames: [String]?
     var assistant: PersistedAIResponseContent?
 }
 
@@ -60,17 +61,30 @@ enum ChatMessagePersistenceMapper {
     static func encode(_ messages: [ChatMessage]) -> Data {
         let payload: [PersistedChatMessage] = messages.compactMap { message in
             switch message {
-            case let .user(id, text):
-                PersistedChatMessage(id: id, kind: .user, text: text, assistant: nil)
+            case let .user(id, text, imageFileNames):
+                PersistedChatMessage(
+                    id: id,
+                    kind: .user,
+                    text: text,
+                    imageFileNames: imageFileNames.isEmpty ? nil : imageFileNames,
+                    assistant: nil
+                )
             case let .assistant(id, content):
                 PersistedChatMessage(
                     id: id,
                     kind: .assistant,
                     text: nil,
+                    imageFileNames: nil,
                     assistant: PersistedAIResponseContent(content)
                 )
             case let .error(id, text):
-                PersistedChatMessage(id: id, kind: .error, text: text, assistant: nil)
+                PersistedChatMessage(
+                    id: id,
+                    kind: .error,
+                    text: text,
+                    imageFileNames: nil,
+                    assistant: nil
+                )
             case .generating:
                 nil
             }
@@ -88,8 +102,10 @@ enum ChatMessagePersistenceMapper {
         return payload.compactMap { message in
             switch message.kind {
             case .user:
-                guard let text = message.text else { return nil }
-                return .user(id: message.id, text: text)
+                let text = message.text ?? ""
+                let imageFileNames = message.imageFileNames ?? []
+                guard !text.isEmpty || !imageFileNames.isEmpty else { return nil }
+                return .user(id: message.id, text: text, imageFileNames: imageFileNames)
             case .assistant:
                 guard let assistant = message.assistant else { return nil }
                 return .assistant(id: message.id, content: assistant.asAIResponseContent)

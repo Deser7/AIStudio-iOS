@@ -16,24 +16,32 @@ enum CircularIconButtonIcon {
 struct CircularIconButton: View {
     var size: CGFloat
     let icon: CircularIconButtonIcon
-    let action: () -> Void
+    var action: (() -> Void)?
 
     private var iconSize: CGFloat { size * 24 / 40 }
     private var borderWidth: CGFloat { size * 1 / 40 }
     private var strokeWidth: CGFloat { iconSize * 9 / 100 }
 
     var body: some View {
-        Button(action: action) {
-            iconView
-                .frame(width: iconSize, height: iconSize)
-                .padding(12)
-                .frame(width: size, height: size)
-                .overlay {
-                    Circle()
-                        .strokeBorder(.white.opacity(0.1), lineWidth: borderWidth)
-                }
+        if let action {
+            Button(action: action) {
+                iconContent
+            }
+            .buttonStyle(.plain)
+        } else {
+            iconContent
         }
-        .buttonStyle(.plain)
+    }
+
+    private var iconContent: some View {
+        iconView
+            .frame(width: iconSize, height: iconSize)
+            .padding(12)
+            .frame(width: size, height: size)
+            .overlay {
+                Circle()
+                    .strokeBorder(.white.opacity(0.1), lineWidth: borderWidth)
+            }
     }
 
     @ViewBuilder

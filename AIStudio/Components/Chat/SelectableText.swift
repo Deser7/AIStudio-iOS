@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UIKit
 
 /// Non-editable text with native iOS selection (double-tap / handles).
 struct SelectableText: UIViewRepresentable {

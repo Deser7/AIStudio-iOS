@@ -9,6 +9,7 @@ import SwiftUI
 
 enum AddendumContent {
     case add(() -> Void)
+    case addLabel
     case loading
     case photo(Image, onClose: () -> Void)
 }
@@ -30,7 +31,7 @@ struct Addendum: View {
                 }
                 .buttonStyle(.plain)
 
-            case .loading:
+            case .addLabel, .loading:
                 tileContent
 
             case let .photo(image, onClose):
@@ -59,7 +60,7 @@ struct Addendum: View {
             }
 
             switch content {
-            case .add:
+            case .add, .addLabel:
                 PlusIcon()
                     .fill(.white)
                     .frame(width: 32, height: 32)
@@ -72,7 +73,7 @@ struct Addendum: View {
         .frame(width: size, height: size)
         .clipShape(shape)
         .overlay {
-            if case .add = content {
+            if showsAddBorder {
                 shape
                     .strokeBorder(
                         AppGradient.main,
@@ -80,6 +81,13 @@ struct Addendum: View {
                     )
                     .allowsHitTesting(false)
             }
+        }
+    }
+
+    private var showsAddBorder: Bool {
+        switch content {
+        case .add, .addLabel: true
+        case .loading, .photo: false
         }
     }
 }

@@ -5,6 +5,11 @@
 
 import Foundation
 
+struct ChatInlineImage: Sendable, Equatable {
+    let mimeType: String
+    let data: Data
+}
+
 struct ChatHistoryMessage: Sendable, Equatable {
     enum Role: String, Sendable {
         case user
@@ -12,7 +17,14 @@ struct ChatHistoryMessage: Sendable, Equatable {
     }
 
     let role: Role
-    let text: String
+    let text: String?
+    let images: [ChatInlineImage]
+
+    init(role: Role, text: String?, images: [ChatInlineImage] = []) {
+        self.role = role
+        self.text = text
+        self.images = images
+    }
 }
 
 protocol ChatServing: Sendable {
@@ -26,6 +38,7 @@ struct GeminiChatService: ChatServing {
     private let session: URLSession
     private let configuration: APIConfiguration
     private let decoder: JSONDecoder
+    private let encoder: JSONEncoder
 
     init(
         session: URLSession = .shared,
@@ -35,6 +48,8 @@ struct GeminiChatService: ChatServing {
         self.configuration = configuration
         decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
+        encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
     }
 
     func streamMessage(
@@ -76,7 +91,7 @@ struct GeminiChatService: ChatServing {
             contents: history.map { message in
                 GeminiGenerateContentRequest.Content(
                     role: message.role.rawValue,
-                    parts: [.init(text: message.text)]
+                    parts: Self.parts(for: message)
                 )
             }
         )
@@ -85,7 +100,7 @@ struct GeminiChatService: ChatServing {
         request.httpMethod = "POST"
         request.setValue(apiKey, forHTTPHeaderField: "x-goog-api-key")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONEncoder().encode(requestBody)
+        request.httpBody = try encoder.encode(requestBody)
 
         let bytes: URLSession.AsyncBytes
         let response: URLResponse
@@ -153,6 +168,31 @@ struct GeminiChatService: ChatServing {
         }
     }
 
+    private static func parts(for message: ChatHistoryMessage) -> [GeminiGenerateContentRequest.Part] {
+        var parts: [GeminiGenerateContentRequest.Part] = []
+
+        if let text = message.text?.trimmingCharacters(in: .whitespacesAndNewlines), !text.isEmpty {
+            parts.append(.init(text: text))
+        }
+
+        for image in message.images {
+            parts.append(
+                .init(
+                    inlineData: .init(
+                        mimeType: image.mimeType,
+                        data: image.data.base64EncodedString()
+                    )
+                )
+            )
+        }
+
+        if parts.isEmpty {
+            parts.append(.init(text: ""))
+        }
+
+        return parts
+    }
+
     private func mapHTTPStatus(_ code: Int, data: Data) -> APIError {
         switch code {
         case 401, 403:
@@ -175,7 +215,38 @@ private struct GeminiGenerateContentRequest: Encodable {
     }
 
     struct Part: Encodable {
-        let text: String
+        var text: String?
+        var inlineData: InlineData?
+
+        init(text: String) {
+            self.text = text
+            inlineData = nil
+        }
+
+        init(inlineData: InlineData) {
+            text = nil
+            self.inlineData = inlineData
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            if let text {
+                try container.encode(text, forKey: .text)
+            }
+            if let inlineData {
+                try container.encode(inlineData, forKey: .inlineData)
+            }
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case text
+            case inlineData
+        }
+
+        struct InlineData: Encodable {
+            let mimeType: String
+            let data: String
+        }
     }
 }
 
