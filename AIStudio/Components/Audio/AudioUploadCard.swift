@@ -17,17 +17,8 @@ struct AudioUploadCard: View {
     var state: AudioUploadState = .idle
     let onTap: () -> Void
 
-    @Environment(\.displayScale) private var displayScale
-
-    private var borderWidth: CGFloat {
-        max(1, 1 / displayScale)
-            .pixelAligned(to: displayScale)
-    }
-
-    private var iconStrokeWidth: CGFloat {
-        max(2, 1 / displayScale)
-            .pixelAligned(to: displayScale)
-    }
+    private let borderWidth: CGFloat = 1
+    private let iconStrokeWidth: CGFloat = 2
 
     private var supportedFormatsSubtitle: String {
         "MP3 • WAV • M4A • MP4 • MOV\nMax file size: 100 MB"

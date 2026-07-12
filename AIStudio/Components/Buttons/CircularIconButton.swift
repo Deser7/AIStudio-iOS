@@ -18,16 +18,9 @@ struct CircularIconButton: View {
     let icon: CircularIconButtonIcon
     let action: () -> Void
 
-    @Environment(\.displayScale) private var displayScale
-
     private var iconSize: CGFloat { size * 24 / 40 }
-    private var borderWidth: CGFloat {
-        max(size * 1 / 40, 1 / displayScale)
-            .pixelAligned(to: displayScale)
-    }
-    private var strokeWidth: CGFloat {
-        (iconSize * 9 / 100).pixelAligned(to: displayScale)
-    }
+    private var borderWidth: CGFloat { size * 1 / 40 }
+    private var strokeWidth: CGFloat { iconSize * 9 / 100 }
 
     var body: some View {
         Button(action: action) {

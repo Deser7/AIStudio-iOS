@@ -11,12 +11,6 @@ struct ReplaceButton: View {
     var title: String = "Replace"
     let action: () -> Void
 
-    @Environment(\.displayScale) private var displayScale
-
-    private var strokeWidth: CGFloat {
-        CGFloat(2.16).pixelAligned(to: displayScale)
-    }
-
     var body: some View {
         Button(action: action) {
             HStack(spacing: 8) {
@@ -24,7 +18,7 @@ struct ReplaceButton: View {
                     .stroke(
                         .white,
                         style: StrokeStyle(
-                            lineWidth: strokeWidth,
+                            lineWidth: 2.16,
                             lineCap: .round,
                             lineJoin: .round
                         )
@@ -47,5 +41,4 @@ struct ReplaceButton: View {
 #Preview {
     ReplaceButton(action: {})
         .padding(24)
-//        .background(Color.background)
 }

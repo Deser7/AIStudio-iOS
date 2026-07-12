@@ -19,18 +19,11 @@ enum AspectRatio: CaseIterable, Hashable, Sendable {
         case .square1x1: "1:1"
         }
     }
-
-    @ViewBuilder
-    func icon(isSelected: Bool) -> some View {
-        AspectRatioIcon(ratio: self, isSelected: isSelected)
-    }
 }
 
 struct AspectRatioIcon: View {
     let ratio: AspectRatio
     var isSelected: Bool
-
-    @Environment(\.displayScale) private var displayScale
 
     private var iconSize: CGSize {
         switch ratio {
@@ -43,18 +36,9 @@ struct AspectRatioIcon: View {
         }
     }
 
-    private var strokeWidth: CGFloat {
-        max(1, 1 / displayScale)
-            .pixelAligned(to: displayScale)
-    }
-
-    private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 4, style: .continuous)
-    }
-
     var body: some View {
-        shape
-            .stroke(strokeStyle, lineWidth: strokeWidth)
+        RoundedRectangle(cornerRadius: 4, style: .continuous)
+            .stroke(strokeStyle, lineWidth: 1)
             .frame(width: iconSize.width, height: iconSize.height)
     }
 

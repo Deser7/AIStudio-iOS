@@ -22,18 +22,11 @@ struct SettingsContents: View {
     var onPrivacyPolicy: () -> Void
     var onUsagePolicy: () -> Void
 
-    @Environment(\.displayScale) private var displayScale
-
     private var isRussian: Binding<Bool> {
         Binding(
             get: { languageStore.preference == .russian },
             set: { languageStore.preference = $0 ? .russian : .english }
         )
-    }
-
-    private var separatorHeight: CGFloat {
-        max(0.33, 1 / displayScale)
-            .pixelAligned(to: displayScale)
     }
 
     var body: some View {
@@ -127,7 +120,7 @@ struct SettingsContents: View {
     private var rowSeparator: some View {
         Rectangle()
             .fill(.white.opacity(0.1))
-            .frame(height: separatorHeight)
+            .frame(height: 0.5)
             .padding(.leading, 56)
     }
 }

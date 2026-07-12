@@ -31,12 +31,9 @@ struct GradientIconButton: View {
     var icon: GradientIconButtonIcon = .generation
     let action: () -> Void
 
-    @Environment(\.displayScale) private var displayScale
-
     private var iconFrameSize: CGSize { icon.iconFrameSize(relativeTo: size) }
     private var strokeWidth: CGFloat {
-        (min(iconFrameSize.width, iconFrameSize.height) * 1 / 10)
-            .pixelAligned(to: displayScale)
+        min(iconFrameSize.width, iconFrameSize.height) * 1 / 10
     }
 
     var body: some View {
