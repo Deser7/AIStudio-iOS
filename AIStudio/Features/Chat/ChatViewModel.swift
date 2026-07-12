@@ -17,6 +17,10 @@ final class ChatViewModel {
     var promptText = ""
     private(set) var messages: [ChatMessage] = []
     private(set) var subtitleDate: Date = .now
+    private(set) var isGenerating = false
+    private(set) var streamingAssistantID: UUID?
+    private(set) var scrollPinUserMessageID: UUID?
+    private(set) var scrollPinToken: UInt = 0
 
     var subtitle: String {
         Self.dateFormatter.string(from: subtitleDate)
@@ -30,23 +34,30 @@ final class ChatViewModel {
         messages.isEmpty ? "Ask anything..." : "How can I help you?"
     }
 
-    var isGenerating: Bool {
-        messages.contains {
-            if case .generating = $0 { true } else { false }
-        }
-    }
-
     private let sessionID: UUID
     private var chatID: String?
     private var generationTask: Task<Void, Never>?
     private let chatService: any ChatServing
     private let repository: ChatHistoryRepository
 
+    private var revealPendingText = ""
+    private var revealDisplayedText = ""
+    private var revealAssistantID: UUID?
+    private var revealStreamFinished = false
+    private var revealTask: Task<Void, Never>?
+    private var revealCompletionContinuation: CheckedContinuation<Void, Never>?
+
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
         return formatter
     }()
+
+    /// Block appearance (no typing): larger chunks + pause for fade.
+    private static let revealTick: Duration = .milliseconds(420)
+    private static let revealIdlePoll: Duration = .milliseconds(40)
+    private static let revealMinCharactersPerBlock = 48
+    private static let revealMaxCharactersPerBlock = 110
 
     init(
         sessionID: UUID? = nil,
@@ -73,11 +84,13 @@ final class ChatViewModel {
 
         promptText = ""
 
+        let userID = UUID()
         let generatingID = UUID()
         let activeChatID = resolvedChatID()
 
-        messages.append(.user(text: trimmed))
+        messages.append(.user(id: userID, text: trimmed))
         messages.append(.generating(id: generatingID))
+        requestScrollPin(to: userID)
 
         startGeneration(
             chatID: activeChatID,
@@ -102,7 +115,7 @@ final class ChatViewModel {
         guard let assistantIndex = messages.firstIndex(where: { $0.id == messageID }),
               case .assistant = messages[assistantIndex],
               assistantIndex > 0,
-              case .user = messages[assistantIndex - 1]
+              case let .user(userID, _) = messages[assistantIndex - 1]
         else {
             return
         }
@@ -112,12 +125,18 @@ final class ChatViewModel {
         let generatingID = UUID()
         let activeChatID = resolvedChatID()
         messages.append(.generating(id: generatingID))
+        requestScrollPin(to: userID)
 
         startGeneration(
             chatID: activeChatID,
             history: makeHistory(),
             generatingID: generatingID
         )
+    }
+
+    private func requestScrollPin(to userMessageID: UUID) {
+        scrollPinUserMessageID = userMessageID
+        scrollPinToken &+= 1
     }
 
     private func resolvedChatID() -> String {
@@ -135,6 +154,8 @@ final class ChatViewModel {
         generatingID: UUID
     ) {
         generationTask?.cancel()
+        resetRevealState()
+        isGenerating = true
         generationTask = Task { [weak self] in
             await self?.generateReply(
                 chatID: chatID,
@@ -149,28 +170,294 @@ final class ChatViewModel {
         history: [ChatHistoryMessage],
         generatingID: UUID
     ) async {
+        defer {
+            isGenerating = false
+            generationTask = nil
+        }
+
+        var assembled = ""
+        var didShowAssistant = false
+
         do {
-            let result = try await chatService.sendMessage(
-                chatID: chatID,
-                history: history
-            )
+            for try await delta in chatService.streamMessage(chatID: chatID, history: history) {
+                guard !Task.isCancelled else { return }
+
+                assembled += delta
+
+                if !didShowAssistant {
+                    didShowAssistant = true
+                    replaceGeneratingWithAssistant(generatingID: generatingID, text: "")
+                    beginReveal(assistantID: generatingID)
+                }
+
+                enqueueReveal(delta)
+            }
+
             guard !Task.isCancelled else { return }
-            self.chatID = result.chatID
-            completeGeneration(
-                generatingID: generatingID,
+
+            if assembled.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                failGeneration(
+                    generatingID: generatingID,
+                    message: APIError.emptyResponse.localizedDescription
+                )
+            } else {
+                await finishRevealAndPersist()
+            }
+        } catch is CancellationError {
+            return
+        } catch let urlError as URLError where urlError.code == .cancelled {
+            return
+        } catch {
+            guard !Task.isCancelled else { return }
+
+            if assembled.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                failGeneration(
+                    generatingID: generatingID,
+                    message: userFacingMessage(for: error)
+                )
+            } else {
+                await finishRevealAndPersist()
+            }
+        }
+    }
+
+    private func beginReveal(assistantID: UUID) {
+        revealAssistantID = assistantID
+        streamingAssistantID = assistantID
+        revealPendingText = ""
+        revealDisplayedText = ""
+        revealStreamFinished = false
+        startRevealLoopIfNeeded()
+    }
+
+    private func enqueueReveal(_ delta: String) {
+        revealPendingText += delta
+        startRevealLoopIfNeeded()
+    }
+
+    private func finishRevealAndPersist() async {
+        revealStreamFinished = true
+        await waitForRevealCatchUp()
+
+        if let assistantID = revealAssistantID {
+            revealDisplayedText = revealPendingText
+            updateAssistant(id: assistantID, text: revealPendingText)
+        }
+        persist()
+        resetRevealState()
+    }
+
+    private func waitForRevealCatchUp() async {
+        if revealDisplayedText.count >= revealPendingText.count {
+            return
+        }
+
+        startRevealLoopIfNeeded()
+
+        await withCheckedContinuation { continuation in
+            if revealDisplayedText.count >= revealPendingText.count {
+                continuation.resume()
+                return
+            }
+
+            revealCompletionContinuation = continuation
+
+            // Loop may have finished between the check and storing the continuation.
+            if revealTask == nil, revealDisplayedText.count >= revealPendingText.count {
+                revealCompletionContinuation = nil
+                continuation.resume()
+            }
+        }
+    }
+
+    private func startRevealLoopIfNeeded() {
+        guard revealTask == nil else { return }
+
+        revealTask = Task { [weak self] in
+            await self?.runRevealLoop()
+        }
+    }
+
+    private func runRevealLoop() async {
+        defer {
+            revealTask = nil
+            resumeRevealCompletionIfNeeded()
+        }
+
+        while !Task.isCancelled {
+            let pending = revealPendingText
+            let displayed = revealDisplayedText
+
+            if displayed.count >= pending.count {
+                if revealStreamFinished {
+                    return
+                }
+                try? await Task.sleep(for: Self.revealIdlePoll)
+                continue
+            }
+
+            guard let assistantID = revealAssistantID else { return }
+
+            guard let next = Self.nextRevealText(
+                displayed: displayed,
+                full: pending,
+                streamFinished: revealStreamFinished
+            ) else {
+                if revealStreamFinished {
+                    return
+                }
+                try? await Task.sleep(for: Self.revealIdlePoll)
+                continue
+            }
+
+            revealDisplayedText = next
+            updateAssistant(id: assistantID, text: next)
+
+            if next.count >= pending.count, revealStreamFinished {
+                return
+            }
+
+            try? await Task.sleep(for: Self.revealTick)
+        }
+    }
+
+    private func resumeRevealCompletionIfNeeded() {
+        guard revealStreamFinished,
+              revealDisplayedText.count >= revealPendingText.count,
+              let continuation = revealCompletionContinuation
+        else { return }
+
+        revealCompletionContinuation = nil
+        continuation.resume()
+    }
+
+    private func resetRevealState() {
+        revealTask?.cancel()
+        revealTask = nil
+        revealPendingText = ""
+        revealDisplayedText = ""
+        revealAssistantID = nil
+        streamingAssistantID = nil
+        revealStreamFinished = false
+        if let continuation = revealCompletionContinuation {
+            revealCompletionContinuation = nil
+            continuation.resume()
+        }
+    }
+
+    /// Reveals sentence/clause-sized blocks only — never character typing.
+    /// Returns `nil` when we should wait for more buffered text.
+    private static func nextRevealText(
+        displayed: String,
+        full: String,
+        streamFinished: Bool
+    ) -> String? {
+        guard displayed.count < full.count else { return full }
+
+        let start = full.index(full.startIndex, offsetBy: displayed.count)
+        let remaining = full[start...]
+
+        if streamFinished {
+            return full
+        }
+
+        if let sentenceEnd = firstSentenceEnd(in: remaining),
+           full.distance(from: start, to: sentenceEnd) >= 1
+        {
+            return String(full[..<sentenceEnd])
+        }
+
+        let buffered = remaining.count
+        let minimum = displayed.isEmpty ? 24 : revealMinCharactersPerBlock
+        guard buffered >= minimum else {
+            return nil
+        }
+
+        let hardLimit = min(buffered, revealMaxCharactersPerBlock)
+        var index = full.index(start, offsetBy: hardLimit)
+
+        // Prefer breaking on whitespace so blocks look natural.
+        if index < full.endIndex, !full[index].isWhitespace {
+            if let space = full[..<index].lastIndex(where: \.isWhitespace),
+               space > start
+            {
+                index = full.index(after: space)
+            }
+        } else if index < full.endIndex, full[index].isWhitespace {
+            while index < full.endIndex, full[index].isWhitespace {
+                index = full.index(after: index)
+            }
+        }
+
+        guard index > start else { return nil }
+        return String(full[..<index])
+    }
+
+    private static func firstSentenceEnd(in text: Substring) -> String.Index? {
+        var index = text.startIndex
+        var seenContent = false
+
+        while index < text.endIndex {
+            let character = text[index]
+            if !character.isWhitespace {
+                seenContent = true
+            }
+
+            if seenContent, isSentenceTerminator(character) {
+                var end = text.index(after: index)
+                while end < text.endIndex, isSentenceTerminator(text[end]) {
+                    end = text.index(after: end)
+                }
+                while end < text.endIndex, text[end].isWhitespace {
+                    end = text.index(after: end)
+                    break
+                }
+                return end
+            }
+
+            if character == "\n" {
+                let end = text.index(after: index)
+                if seenContent {
+                    return end
+                }
+            }
+
+            index = text.index(after: index)
+        }
+
+        return nil
+    }
+
+    private static func isSentenceTerminator(_ character: Character) -> Bool {
+        character == "." || character == "!" || character == "?" || character == "…"
+    }
+
+    private func replaceGeneratingWithAssistant(generatingID: UUID, text: String) {
+        messages.removeAll {
+            if case let .generating(id) = $0 { id == generatingID } else { false }
+        }
+        messages.append(
+            .assistant(
+                id: generatingID,
                 content: AIResponseContent(
                     title: "",
-                    paragraphs: [result.assistantMessage],
+                    paragraphs: [text],
                     bullets: []
                 )
             )
-        } catch {
-            guard !Task.isCancelled else { return }
-            failGeneration(
-                generatingID: generatingID,
-                message: userFacingMessage(for: error)
+        )
+    }
+
+    private func updateAssistant(id: UUID, text: String) {
+        guard let index = messages.firstIndex(where: { $0.id == id }) else { return }
+        messages[index] = .assistant(
+            id: id,
+            content: AIResponseContent(
+                title: "",
+                paragraphs: [text],
+                bullets: []
             )
-        }
+        )
     }
 
     private func makeHistory() -> [ChatHistoryMessage] {
@@ -209,18 +496,12 @@ final class ChatViewModel {
         return "Something went wrong. Please try again."
     }
 
-    private func completeGeneration(generatingID: UUID, content: AIResponseContent) {
-        messages.removeAll {
-            if case let .generating(id) = $0 { id == generatingID } else { false }
-        }
-        messages.append(.assistant(content: content))
-        persist()
-    }
-
     private func failGeneration(generatingID: UUID, message: String) {
+        resetRevealState()
         messages.removeAll {
             if case let .generating(id) = $0 { id == generatingID } else { false }
         }
+        messages.removeAll { $0.id == generatingID }
         messages.append(.error(text: message))
         persist()
     }

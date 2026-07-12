@@ -15,40 +15,58 @@ struct ChatHistoryMessage: Sendable, Equatable {
     let text: String
 }
 
-struct SendChatMessageResult: Sendable {
-    let chatID: String
-    let assistantMessage: String
-}
-
 protocol ChatServing: Sendable {
-    func sendMessage(
+    func streamMessage(
         chatID: String,
         history: [ChatHistoryMessage]
-    ) async throws -> SendChatMessageResult
+    ) -> AsyncThrowingStream<String, Error>
 }
 
 struct GeminiChatService: ChatServing {
-    private let client: any APIClient
+    private let session: URLSession
     private let configuration: APIConfiguration
+    private let decoder: JSONDecoder
 
     init(
-        client: any APIClient = HTTPAPIClient(),
+        session: URLSession = .shared,
         configuration: APIConfiguration = .live
     ) {
-        self.client = client
+        self.session = session
         self.configuration = configuration
+        decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
     }
 
-    func sendMessage(
-        chatID: String,
+    func streamMessage(
+        chatID _: String,
         history: [ChatHistoryMessage]
-    ) async throws -> SendChatMessageResult {
+    ) -> AsyncThrowingStream<String, Error> {
+        AsyncThrowingStream { continuation in
+            let task = Task {
+                do {
+                    try await stream(history: history, continuation: continuation)
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+
+            continuation.onTermination = { _ in
+                task.cancel()
+            }
+        }
+    }
+
+    private func stream(
+        history: [ChatHistoryMessage],
+        continuation: AsyncThrowingStream<String, Error>.Continuation
+    ) async throws {
         let apiKey = APICredentials.geminiAPIKey
         guard !apiKey.isEmpty else { throw APIError.missingAPIKey }
 
         guard
             let url = URL(
-                string: "\(configuration.baseURL.absoluteString)/models/\(configuration.model):generateContent"
+                string: "\(configuration.baseURL.absoluteString)/models/\(configuration.model):streamGenerateContent?alt=sse"
             )
         else {
             throw APIError.invalidURL
@@ -69,24 +87,82 @@ struct GeminiChatService: ChatServing {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = try JSONEncoder().encode(requestBody)
 
-        let response: GeminiGenerateContentResponse = try await client.send(request)
+        let bytes: URLSession.AsyncBytes
+        let response: URLResponse
 
-        let text = response.candidates?
-            .first?
-            .content?
-            .parts?
-            .compactMap(\.text)
-            .joined()
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-
-        guard let text, !text.isEmpty else {
-            throw APIError.emptyResponse
+        do {
+            (bytes, response) = try await session.bytes(for: request)
+        } catch let error as URLError {
+            switch error.code {
+            case .notConnectedToInternet, .networkConnectionLost, .timedOut,
+                 .cannotFindHost, .cannotConnectToHost, .dnsLookupFailed:
+                throw APIError.network
+            default:
+                throw APIError.network
+            }
         }
 
-        return SendChatMessageResult(
-            chatID: chatID,
-            assistantMessage: text
-        )
+        guard let http = response as? HTTPURLResponse else {
+            throw APIError.invalidResponse
+        }
+
+        guard (200..<300).contains(http.statusCode) else {
+            var errorData = Data()
+            for try await byte in bytes {
+                errorData.append(byte)
+                if errorData.count > 8_192 { break }
+            }
+            throw mapHTTPStatus(http.statusCode, data: errorData)
+        }
+
+        var yieldedAny = false
+
+        for try await line in bytes.lines {
+            try Task.checkCancellation()
+
+            guard line.hasPrefix("data:") else { continue }
+            let payload = line.dropFirst(5).trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !payload.isEmpty, payload != "[DONE]" else {
+                if payload == "[DONE]" { break }
+                continue
+            }
+
+            guard let jsonData = payload.data(using: .utf8) else { continue }
+
+            let chunk: GeminiGenerateContentResponse
+            do {
+                chunk = try decoder.decode(GeminiGenerateContentResponse.self, from: jsonData)
+            } catch {
+                throw APIError.decoding(error, payload)
+            }
+
+            let text = chunk.candidates?
+                .first?
+                .content?
+                .parts?
+                .compactMap(\.text)
+                .joined()
+
+            guard let text, !text.isEmpty else { continue }
+            yieldedAny = true
+            continuation.yield(text)
+        }
+
+        guard yieldedAny else {
+            throw APIError.emptyResponse
+        }
+    }
+
+    private func mapHTTPStatus(_ code: Int, data: Data) -> APIError {
+        switch code {
+        case 401, 403:
+            return .unauthorized
+        case 429:
+            return .rateLimited
+        default:
+            let message = String(data: data, encoding: .utf8)
+            return .httpStatus(code, message)
+        }
     }
 }
 

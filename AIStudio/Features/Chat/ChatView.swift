@@ -13,6 +13,7 @@ struct ChatView: View {
     @Binding var navigationPath: NavigationPath
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isComposerFocused: Bool
+    @State private var userInterruptedScroll = false
 
     init(
         sessionID: UUID? = nil,
@@ -49,6 +50,13 @@ struct ChatView: View {
                 )
 
                 content
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .contentShape(Rectangle())
+                    .simultaneousGesture(
+                        TapGesture().onEnded {
+                            isComposerFocused = false
+                        }
+                    )
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -81,8 +89,16 @@ struct ChatView: View {
                 .padding(.horizontal, 24)
                 .padding(.vertical, 16)
             }
-            .onChange(of: viewModel.messages.last?.id) {
-                scrollToBottom(using: proxy)
+            .scrollDismissesKeyboard(.interactively)
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 8)
+                    .onChanged { _ in
+                        userInterruptedScroll = true
+                    }
+            )
+            .onChange(of: viewModel.scrollPinToken) {
+                userInterruptedScroll = false
+                pinToPromptStart(using: proxy)
             }
         }
     }
@@ -118,6 +134,7 @@ struct ChatView: View {
         case let .assistant(id, content):
             AIResponseBubble(
                 content: content,
+                isStreaming: viewModel.streamingAssistantID == id,
                 onCopy: { viewModel.copyResponseTapped(id) },
                 onRefresh: { viewModel.refreshResponseTapped(id) }
             )
@@ -131,11 +148,13 @@ struct ChatView: View {
         }
     }
 
-    private func scrollToBottom(using proxy: ScrollViewProxy) {
-        guard let lastID = viewModel.messages.last?.id else { return }
+    private func pinToPromptStart(using proxy: ScrollViewProxy) {
+        guard !userInterruptedScroll,
+              let userID = viewModel.scrollPinUserMessageID
+        else { return }
 
         withAnimation(.easeOut(duration: 0.25)) {
-            proxy.scrollTo(lastID, anchor: .bottom)
+            proxy.scrollTo(userID, anchor: .top)
         }
     }
 }
