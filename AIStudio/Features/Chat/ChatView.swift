@@ -39,28 +39,14 @@ struct ChatView: View {
             Color.background
                 .ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                ChatNavigationBar(
-                    title: viewModel.title,
-                    subtitle: viewModel.subtitle,
-                    style: .aiChat,
-                    preset: .main,
-                    onBack: { dismiss() },
-                    onRegenerate: {
+            content
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .contentShape(Rectangle())
+                .simultaneousGesture(
+                    TapGesture().onEnded {
                         isComposerFocused = false
-                        navigationPath.append(AppRoute.chatHistory)
                     }
                 )
-
-                content
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .contentShape(Rectangle())
-                    .simultaneousGesture(
-                        TapGesture().onEnded {
-                            isComposerFocused = false
-                        }
-                    )
-            }
 
             if let alert = viewModel.mediaAccessAlert {
                 Color.black.opacity(0.5)
@@ -74,6 +60,19 @@ struct ChatView: View {
         .animation(.easeInOut(duration: 0.2), value: viewModel.mediaAccessAlert)
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
+        .safeAreaInset(edge: .top, spacing: 0) {
+            ChatNavigationBar(
+                title: viewModel.title,
+                subtitle: viewModel.subtitle,
+                style: .aiChat,
+                preset: .main,
+                onBack: { dismiss() },
+                onRegenerate: {
+                    isComposerFocused = false
+                    navigationPath.append(AppRoute.chatHistory)
+                }
+            )
+        }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             composer
         }
