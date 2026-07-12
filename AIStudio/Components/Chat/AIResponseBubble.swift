@@ -96,17 +96,30 @@ struct AIResponseBubble: View {
                 .frame(width: 4, height: 4)
                 .padding(.top, 6)
 
-            Text(
-                Typography.emphasizedText(
-                    bullet.emphasis,
-                    suffix: bullet.text,
-                    style: .regular16,
-                    color: bodyTextColor
-                )
-            )
-            .tracking(0)
-            .lineSpacing(0)
-            .multilineTextAlignment(.leading)
+            Group {
+                if isStreaming {
+                    Text(
+                        Typography.emphasizedText(
+                            bullet.emphasis,
+                            suffix: bullet.text,
+                            style: .regular16,
+                            color: bodyTextColor
+                        )
+                    )
+                    .tracking(0)
+                    .lineSpacing(0)
+                    .multilineTextAlignment(.leading)
+                } else {
+                    SelectableText(
+                        attributedText: Typography.emphasizedAttributedString(
+                            bullet.emphasis,
+                            suffix: bullet.text,
+                            style: .regular16,
+                            color: bodyTextColor
+                        )
+                    )
+                }
+            }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
@@ -199,16 +212,13 @@ private struct FadingStreamingParagraph: View {
     private static let fadeDuration: Animation = .easeOut(duration: 0.4)
 
     var body: some View {
-        (
-            Text(committed)
-                .foregroundStyle(color)
-            + Text(incoming)
-                .foregroundStyle(color.opacity(incomingOpacity))
-        )
-        .typography(style: .regular16)
-        .tracking(0)
-        .lineSpacing(0)
-        .multilineTextAlignment(.leading)
+        Group {
+            if isStreaming {
+                fadingText
+            } else {
+                SelectableText(text, style: .regular16, color: color)
+            }
+        }
         .frame(maxWidth: .infinity, alignment: .leading)
         .onAppear {
             commitFully(text)
@@ -221,6 +231,19 @@ private struct FadingStreamingParagraph: View {
                 commitFully(text)
             }
         }
+    }
+
+    private var fadingText: some View {
+        (
+            Text(committed)
+                .foregroundStyle(color)
+            + Text(incoming)
+                .foregroundStyle(color.opacity(incomingOpacity))
+        )
+        .typography(style: .regular16)
+        .tracking(0)
+        .lineSpacing(0)
+        .multilineTextAlignment(.leading)
     }
 
     private func applyTextChange(_ newValue: String) {

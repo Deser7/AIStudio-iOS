@@ -61,17 +61,17 @@ struct UserPrompt: View {
     }
 
     private var messageText: some View {
-        Text(text)
-            .typography(style: .regular16)
-            .foregroundStyle(.white)
-            .tracking(0)
-            .lineSpacing(0)
-            .multilineTextAlignment(.leading)
-            .frame(
-                maxWidth: hasPhoto ? .infinity : 270,
-                alignment: .leading
-            )
-            .fixedSize(horizontal: false, vertical: true)
+        SelectableText(
+            text,
+            style: .regular16,
+            color: .white,
+            allowsLongPressSelection: false
+        )
+        .frame(
+            maxWidth: hasPhoto ? .infinity : 270,
+            alignment: .leading
+        )
+        .fixedSize(horizontal: false, vertical: true)
     }
 
     private var contentPadding: EdgeInsets {

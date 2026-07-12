@@ -106,6 +106,22 @@ enum Typography {
         style: Style = .regular16,
         color: Color
     ) -> AttributedString {
+        AttributedString(
+            emphasizedAttributedString(
+                emphasis,
+                suffix: suffix,
+                style: style,
+                color: color
+            )
+        )
+    }
+
+    static func emphasizedAttributedString(
+        _ emphasis: String,
+        suffix: String,
+        style: Style = .regular16,
+        color: Color
+    ) -> NSAttributedString {
         let uiColor = UIColor(color)
         let mutable = NSMutableAttributedString(
             string: emphasis,
@@ -117,10 +133,21 @@ enum Typography {
                 attributes: textAttributes(style: style, color: uiColor)
             )
         )
-        return AttributedString(mutable)
+        return mutable
     }
 
-    fileprivate static func uiFont(style: Style) -> UIFont {
+    static func attributedString(
+        _ string: String,
+        style: Style,
+        color: Color
+    ) -> NSAttributedString {
+        NSAttributedString(
+            string: string,
+            attributes: textAttributes(style: style, color: UIColor(color))
+        )
+    }
+
+    static func uiFont(style: Style) -> UIFont {
         UIFont(name: style.postScriptName, size: style.fontSize)
             ?? .systemFont(ofSize: style.fontSize, weight: uiWeight(for: style))
     }
@@ -142,7 +169,6 @@ enum Typography {
         style: Style,
         color: UIColor
     ) -> [NSAttributedString.Key: Any] {
-        _ = style.fontSize
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = style.lineHeight
         paragraphStyle.maximumLineHeight = style.lineHeight
