@@ -19,15 +19,15 @@ struct PricingPlanCard: View {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 0) {
-                        Text(periodLabel)
+                        Text(key: periodLabel)
                             .typography(style: .medium16)
 
-                        Text("/ week")
+                        Text(key: "/ week")
                             .typography(style: .regular16)
                     }
                     .foregroundStyle(.white)
 
-                    Text(price)
+                    Text(verbatim: price)
                         .typography(style: .regular14)
                         .foregroundStyle(.price)
                 }
@@ -35,7 +35,7 @@ struct PricingPlanCard: View {
                 Spacer()
 
                 if let badge {
-                    Text(badge)
+                    Text(key: badge)
                         .typography(style: .medium14)
                         .foregroundStyle(.white)
                         .textCase(.uppercase)

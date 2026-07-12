@@ -47,7 +47,7 @@ struct PaywallView: View {
     }
 
     private var titleSection: some View {
-        Text(viewModel.title)
+        Text(key: viewModel.title)
             .typography(style: .bold34)
             .foregroundStyle(.white)
             .multilineTextAlignment(.center)

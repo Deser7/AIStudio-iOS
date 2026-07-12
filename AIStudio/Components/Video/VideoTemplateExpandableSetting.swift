@@ -14,61 +14,30 @@ struct VideoTemplateExpandableSetting<Option: SelectionMenuOption>: View {
     let isExpanded: Bool
     let onToggle: () -> Void
     let onSelect: (Option) -> Void
+    var onDismissOutside: () -> Void = {}
 
     var body: some View {
         triggerRow
-            .overlay(alignment: .bottomTrailing) {
-                if isExpanded {
-                    optionsPopover
-                        .frame(width: 175)
-                        .transition(
-                            .opacity
-                                .combined(
-                                    with: .scale(
-                                        scale: 0.96,
-                                        anchor: .bottomTrailing
-                                    )
-                                )
-                        )
-                }
-            }
-            .zIndex(isExpanded ? 1 : 0)
-            .animation(.easeInOut(duration: 0.2), value: isExpanded)
-    }
-
-    private var optionsPopover: some View {
-        VStack(spacing: 0) {
-            ForEach(Array(options.enumerated()), id: \.element.id) { index, option in
-                if index > 0 {
-                    rowSeparator
-                }
-
-                SelectionMenuRow(
-                    title: option.title,
-                    isSelected: selection == option
-                ) {
-                    onSelect(option)
-                } trailing: {
-                    option.trailingContent(isSelected: selection == option)
-                }
-            }
-        }
-        .background {
-            CardBlurBackground(opacity: 0.4)
-        }
+            .selectionMenuPopover(
+                isExpanded: isExpanded,
+                options: options,
+                selection: selection,
+                onSelect: onSelect,
+                onDismissOutside: onDismissOutside
+            )
     }
 
     private var triggerRow: some View {
         Button(action: onToggle) {
             HStack {
-                Text(title)
+                Text(key: title)
                     .typography(style: .medium16)
                     .foregroundStyle(.white.opacity(0.6))
 
                 Spacer(minLength: 12)
 
                 if !isExpanded {
-                    Text(selection.title)
+                    Text(key: selection.title)
                         .typography(style: .medium16)
                         .foregroundStyle(.white)
                 }
@@ -82,12 +51,6 @@ struct VideoTemplateExpandableSetting<Option: SelectionMenuOption>: View {
             }
         }
         .buttonStyle(.plain)
-    }
-
-    private var rowSeparator: some View {
-        Rectangle()
-            .fill(.white.opacity(0.1))
-            .frame(height: 0.5)
     }
 }
 
@@ -113,7 +76,8 @@ private struct FormatSettingPreview: View {
             onSelect: { option in
                 selection = option
                 expanded = false
-            }
+            },
+            onDismissOutside: { expanded = false }
         )
         .padding(.horizontal, 16)
         .padding(.top, 120)
@@ -136,7 +100,8 @@ private struct QualitySettingPreview: View {
             onSelect: { option in
                 selection = option
                 expanded = false
-            }
+            },
+            onDismissOutside: { expanded = false }
         )
         .padding(.horizontal, 16)
         .padding(.top, 120)

@@ -24,6 +24,16 @@ final class ChatHistoryRepository {
         return formatter
     }()
 
+    private static func localizedTime(from date: Date) -> String {
+        timeFormatter.locale = LanguageStore.resolvedLocale
+        return timeFormatter.string(from: date)
+    }
+
+    private static func localizedSectionDate(from date: Date) -> String {
+        sectionDateFormatter.locale = LanguageStore.resolvedLocale
+        return sectionDateFormatter.string(from: date)
+    }
+
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
     }
@@ -87,7 +97,7 @@ final class ChatHistoryRepository {
             let item = ChatHistoryItem(
                 id: session.id,
                 title: session.title,
-                time: Self.timeFormatter.string(from: session.updatedAt)
+                time: Self.localizedTime(from: session.updatedAt)
             )
 
             if let index = grouped.firstIndex(where: { $0.key == day }) {
@@ -133,6 +143,6 @@ final class ChatHistoryRepository {
         if calendar.isDateInYesterday(date) {
             return "Yesterday"
         }
-        return sectionDateFormatter.string(from: date)
+        return localizedSectionDate(from: date)
     }
 }

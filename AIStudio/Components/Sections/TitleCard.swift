@@ -34,7 +34,7 @@ struct TitleCard: View {
                 endPoint: .bottom
             )
 
-            Text(title)
+            Text(key: title)
                 .typography(style: .regular16)
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)

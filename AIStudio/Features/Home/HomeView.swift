@@ -60,7 +60,7 @@ struct HomeView: View {
                     }
                 }
         }
-        .sheet(isPresented: $isSettingsPresented) {
+        .fullScreenCover(isPresented: $isSettingsPresented) {
             SettingsView(
                 notificationsEnabled: $viewModel.notificationsEnabled,
                 cacheSize: viewModel.cacheSize,
@@ -74,7 +74,6 @@ struct HomeView: View {
                 onPrivacyPolicy: viewModel.privacyPolicyTapped,
                 onUsagePolicy: viewModel.usagePolicyTapped
             )
-            .presentationDragIndicator(.visible)
         }
     }
 
@@ -110,7 +109,7 @@ struct HomeView: View {
                 .fill(AppGradient.main)
                 .frame(width: 60, height: 60)
 
-            Text(viewModel.title)
+            Text(key: viewModel.title)
                 .typography(style: .bold28)
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
@@ -141,5 +140,7 @@ struct HomeView: View {
 #Preview {
     let container = ChatHistoryPreviewSupport.container()
     HomeView()
+        .environment(LanguageStore.shared)
+        .environment(\.locale, LanguageStore.shared.locale)
         .modelContainer(container)
 }

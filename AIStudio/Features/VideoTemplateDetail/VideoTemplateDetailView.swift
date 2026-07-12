@@ -86,7 +86,8 @@ struct VideoTemplateDetailView: View {
                 selection: $viewModel.aspectRatio,
                 isExpanded: viewModel.expandedSetting == .format,
                 onToggle: { viewModel.toggleSetting(.format) },
-                onSelect: { viewModel.selectAspectRatio($0) }
+                onSelect: { viewModel.selectAspectRatio($0) },
+                onDismissOutside: { viewModel.expandedSetting = nil }
             )
 
             VideoTemplateExpandableSetting(
@@ -95,7 +96,8 @@ struct VideoTemplateDetailView: View {
                 selection: $viewModel.videoQuality,
                 isExpanded: viewModel.expandedSetting == .quality,
                 onToggle: { viewModel.toggleSetting(.quality) },
-                onSelect: { viewModel.selectVideoQuality($0) }
+                onSelect: { viewModel.selectVideoQuality($0) },
+                onDismissOutside: { viewModel.expandedSetting = nil }
             )
         }
         .frame(maxWidth: .infinity, alignment: .leading)

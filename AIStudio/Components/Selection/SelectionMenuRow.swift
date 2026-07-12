@@ -16,7 +16,7 @@ struct SelectionMenuRow<Trailing: View>: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 0) {
-                Text(title)
+                Text(key: title)
                     .typography(style: .regular16)
                     .foregroundStyle(titleStyle)
                     .tracking(0)

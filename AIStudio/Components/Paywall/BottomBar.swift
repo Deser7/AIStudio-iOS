@@ -38,7 +38,7 @@ struct BottomBar: View {
                 .foregroundStyle(.price)
                 .frame(width: 24, height: 24)
 
-            Text(cancelText)
+            Text(key: cancelText)
                 .font(.system(size: 12, weight: .regular))
                 .tracking(-0.43)
                 .foregroundStyle(secondaryColor)
@@ -61,7 +61,7 @@ struct BottomBar: View {
 
     private func linkButton(_ title: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Text(title)
+            Text(key: title)
                 .font(.system(size: 11, weight: .regular))
                 .tracking(0.06)
                 .foregroundStyle(secondaryColor)

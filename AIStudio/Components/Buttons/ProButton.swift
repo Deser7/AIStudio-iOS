@@ -14,7 +14,7 @@ struct ProButton: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 4) {
-                Text(title)
+                Text(key: title)
                     .typography(style: .regular16)
                     .foregroundStyle(Color.background)
                     .lineLimit(1)

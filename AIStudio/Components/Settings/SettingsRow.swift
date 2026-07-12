@@ -31,7 +31,7 @@ struct SettingsRow<Icon: View, Trailing: View>: View {
             icon()
                 .frame(width: 28, height: 22)
 
-            Text(title)
+            Text(key: title)
                 .typography(style: .regular16)
                 .foregroundStyle(.white)
                 .tracking(0)

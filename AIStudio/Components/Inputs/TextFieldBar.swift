@@ -35,17 +35,23 @@ struct TextFieldBar<Icon: View, Background: View, Border: View>: View {
             TextField(
                 "",
                 text: $text,
-                prompt: Text(placeholder)
+                prompt: Text(key: placeholder)
                     .font(Typography.font(style: .regular16))
                     .foregroundColor(.white.opacity(0.5))
             )
             .typography(style: .regular16)
             .foregroundColor(.white)
             .tint(.white)
-        } else {
-            Text(text.isEmpty ? placeholder : text)
+        } else if text.isEmpty {
+            Text(key: placeholder)
                 .typography(style: .regular16)
-                .foregroundColor(text.isEmpty ? .white.opacity(0.5) : .white)
+                .foregroundColor(.white.opacity(0.5))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .allowsHitTesting(false)
+        } else {
+            Text(verbatim: text)
+                .typography(style: .regular16)
+                .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .allowsHitTesting(false)
         }

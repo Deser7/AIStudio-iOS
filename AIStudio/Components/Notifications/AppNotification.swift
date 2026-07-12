@@ -47,7 +47,7 @@ struct AppNotification: View {
     private var textContent: some View {
         switch content {
         case .textCopied(let message), .videoSaved(let message):
-            Text(message)
+            Text(key: message)
                 .typography(style: .regular16)
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
@@ -56,12 +56,12 @@ struct AppNotification: View {
 
         case let .fileTooLarge(title, subtitle):
             VStack(spacing: 4) {
-                Text(title)
+                Text(key: title)
                     .typography(style: .semiBold16)
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
 
-                Text(subtitle)
+                Text(key: subtitle)
                     .typography(style: .regular14)
                     .foregroundStyle(.white.opacity(0.5))
                     .multilineTextAlignment(.center)

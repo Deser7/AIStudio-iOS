@@ -10,6 +10,8 @@ import SwiftUI
 
 @main
 struct AIStudioApp: App {
+    @State private var languageStore = LanguageStore.shared
+
     private let modelContainer: ModelContainer = {
         let schema = Schema([ChatSessionEntity.self])
         let configuration = ModelConfiguration("ChatHistory", schema: schema)
@@ -27,6 +29,8 @@ struct AIStudioApp: App {
     var body: some Scene {
         WindowGroup {
             HomeView()
+                .environment(languageStore)
+                .environment(\.locale, languageStore.locale)
         }
         .modelContainer(modelContainer)
     }

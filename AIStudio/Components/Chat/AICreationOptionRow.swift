@@ -45,13 +45,13 @@ struct AICreationOptionRow: View {
                     .frame(width: 24, height: 24)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(option.title)
+                    Text(key: option.title)
                         .typography(style: .semiBold16)
                         .foregroundStyle(.white)
                         .tracking(0)
                         .lineLimit(1)
 
-                    Text(option.subtitle)
+                    Text(key: option.subtitle)
                         .typography(style: .regular14)
                         .foregroundStyle(.white.opacity(0.5))
                         .tracking(0)

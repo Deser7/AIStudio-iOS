@@ -129,7 +129,7 @@ struct OnboardingTitleSection: View {
             alignment: style.horizontalAlignment,
             spacing: hasSubtitle ? style.spacing : 0
         ) {
-            Text(title)
+            Text(key: title)
                 .typography(style: style.titleTypography)
                 .tracking(style.titleTracking)
                 .foregroundStyle(.white)
@@ -141,7 +141,7 @@ struct OnboardingTitleSection: View {
                 )
 
             if hasSubtitle {
-                Text(subtitle)
+                Text(key: subtitle)
                     .typography(style: style.subtitleTypography)
                     .tracking(style.subtitleTracking)
                     .foregroundStyle(style.subtitleColor)

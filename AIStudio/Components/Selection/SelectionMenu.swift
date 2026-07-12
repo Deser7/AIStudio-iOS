@@ -26,7 +26,7 @@ extension AspectRatio: Identifiable, SelectionMenuOption {
     }
 }
 
-enum VideoQuality: String, CaseIterable, Identifiable, SelectionMenuOption, Sendable {
+enum VideoQuality: String, CaseIterable, SelectionMenuOption, Sendable {
     case p540 = "540p"
     case p720 = "720p"
     case p1080 = "1080p"
@@ -39,13 +39,6 @@ enum VideoQuality: String, CaseIterable, Identifiable, SelectionMenuOption, Send
 struct SelectionMenu<Option: SelectionMenuOption>: View {
     let options: [Option]
     @Binding var selection: Option
-
-    @Environment(\.displayScale) private var displayScale
-
-    private var separatorHeight: CGFloat {
-        max(0.5, 1 / displayScale)
-            .pixelAligned(to: displayScale)
-    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -72,7 +65,7 @@ struct SelectionMenu<Option: SelectionMenuOption>: View {
     private var rowSeparator: some View {
         Rectangle()
             .fill(.white.opacity(0.1))
-            .frame(height: separatorHeight)
+            .frame(height: 1)
     }
 }
 

@@ -14,7 +14,7 @@ struct SettingsSection<Rows: View>: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(title)
+            Text(key: title)
                 .typography(style: .regular16)
                 .foregroundStyle(.price)
                 .textCase(.none)
@@ -23,8 +23,7 @@ struct SettingsSection<Rows: View>: View {
             VStack(spacing: 0) {
                 rows()
             }
-            .background(.card)
-            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .background(.card, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
         }
     }
 }

@@ -12,7 +12,7 @@ struct SettingsRowDetail: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            Text(text)
+            Text(key: text)
                 .font(.system(size: 17, weight: .regular))
                 .foregroundStyle(.white.opacity(0.4))
 

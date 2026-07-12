@@ -17,12 +17,10 @@ enum APIError: Error, LocalizedError, Sendable {
     case decoding(Error, String?)
 
     var errorDescription: String? {
-        switch self {
+        let key: String.LocalizationValue = switch self {
         case .missingAPIKey:
             "API key is missing."
-        case .invalidURL:
-            "Something went wrong. Please try again."
-        case .invalidResponse:
+        case .invalidURL, .invalidResponse, .decoding:
             "Something went wrong. Please try again."
         case .emptyResponse:
             "Empty response from AI."
@@ -41,8 +39,8 @@ enum APIError: Error, LocalizedError, Sendable {
             default:
                 "Something went wrong. Please try again."
             }
-        case .decoding:
-            "Something went wrong. Please try again."
         }
+
+        return String(localized: key, locale: LanguageStore.resolvedLocale)
     }
 }

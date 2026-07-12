@@ -34,7 +34,7 @@ struct BenefitRow: View {
             iconView
                 .frame(width: iconSize, height: iconSize)
 
-            Text(title)
+            Text(key: title)
                 .typography(style: style)
                 .foregroundStyle(.white)
                 .lineLimit(1)

@@ -32,5 +32,4 @@ struct SettingsButton: View {
 #Preview {
     SettingsButton(action: {})
         .padding(24)
-//        .background(Color.background)
 }

@@ -110,7 +110,7 @@ struct ComposerInput: View {
         TextField(
             "",
             text: $text,
-            prompt: Text(placeholder)
+            prompt: Text(key: placeholder)
                 .font(Typography.font(style: .regular16))
                 .foregroundColor(.price),
             axis: .vertical

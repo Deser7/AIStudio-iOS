@@ -14,7 +14,7 @@ struct SectionChip: View {
 
     var body: some View {
         Button(action: action) {
-            Text(title)
+            Text(key: title)
                 .typography(style: .regular14)
                 .foregroundStyle(.white.opacity(isSelected ? 1 : 0.5))
                 .tracking(0)

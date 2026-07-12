@@ -21,7 +21,7 @@ struct SectionButton: View {
 
     var body: some View {
         Button(action: action) {
-            Text(title)
+            Text(key: title)
                 .typography(style: .semiBold16)
                 .foregroundStyle(isEnabled ? .white : .black.opacity(0.3))
                 .padding(.horizontal, 12)

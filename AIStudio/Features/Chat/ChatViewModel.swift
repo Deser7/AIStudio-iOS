@@ -23,7 +23,8 @@ final class ChatViewModel {
     private(set) var scrollPinToken: UInt = 0
 
     var subtitle: String {
-        Self.dateFormatter.string(from: subtitleDate)
+        Self.dateFormatter.locale = LanguageStore.resolvedLocale
+        return Self.dateFormatter.string(from: subtitleDate)
     }
 
     var showsEmptyState: Bool {
@@ -542,7 +543,7 @@ final class ChatViewModel {
         if error is URLError {
             return APIError.network.localizedDescription
         }
-        return "Something went wrong. Please try again."
+        return L10n.string("Something went wrong. Please try again.")
     }
 
     private func failGeneration(generatingID: UUID, message: String) {
@@ -559,7 +560,7 @@ final class ChatViewModel {
         let fallbackTitle = messages.lazy.compactMap { message -> String? in
             if case let .user(_, text) = message { return text }
             return nil
-        }.first ?? "New Chat"
+        }.first ?? L10n.string("New Chat")
 
         repository.upsert(
             id: sessionID,

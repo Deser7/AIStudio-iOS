@@ -92,7 +92,7 @@ struct ChatHistoryView: View {
     private func sectionView(for section: ChatHistorySection) -> some View {
         if !section.items.isEmpty {
             VStack(alignment: .leading, spacing: 8) {
-                Text(section.title)
+                Text(key: section.title)
                     .typography(style: .semiBold20)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)

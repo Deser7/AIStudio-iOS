@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SettingsContents: View {
+    @Environment(LanguageStore.self) private var languageStore
+
     @Binding var notificationsEnabled: Bool
     var cacheSize: String
     var appVersion: String
@@ -22,6 +24,13 @@ struct SettingsContents: View {
 
     @Environment(\.displayScale) private var displayScale
 
+    private var isRussian: Binding<Bool> {
+        Binding(
+            get: { languageStore.preference == .russian },
+            set: { languageStore.preference = $0 ? .russian : .english }
+        )
+    }
+
     private var separatorHeight: CGFloat {
         max(0.33, 1 / displayScale)
             .pixelAligned(to: displayScale)
@@ -33,7 +42,7 @@ struct SettingsContents: View {
             purchasesSection
             infoSection
 
-            Text("App Version: \(appVersion)")
+            (Text(key: "App Version:") + Text(verbatim: " \(appVersion)"))
                 .typography(style: .regular16)
                 .foregroundStyle(.price)
                 .frame(maxWidth: .infinity)
@@ -54,6 +63,14 @@ struct SettingsContents: View {
     private var purchasesSection: some View {
         SettingsSection(title: "Purchases & Actions") {
             settingsRow(title: "Upgrade plan", icon: "sparkles", action: onUpgradePlan)
+
+            rowSeparator
+
+            SettingsRow(title: "Language") {
+                settingsIcon("globe")
+            } trailing: {
+                AppToggle(isOn: isRussian)
+            }
 
             rowSeparator
 
@@ -141,5 +158,6 @@ private struct SettingsContentsPreview: View {
             .padding(.vertical, 24)
         }
         .background(Color.background)
+        .environment(LanguageStore.shared)
     }
 }

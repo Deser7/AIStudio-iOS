@@ -21,13 +21,13 @@ struct PhotoAccessAlert: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 4) {
-                Text(title)
+                Text(key: title)
                     .font(.system(size: 17, weight: .semibold))
                     .tracking(-0.4)
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
                 
-                Text(message)
+                Text(key: message)
                     .font(.system(size: 13, weight: .regular))
                     .tracking(-0.4)
                     .foregroundStyle(.white)
@@ -85,7 +85,7 @@ struct PhotoAccessAlert: View {
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
-            Text(title)
+            Text(key: title)
                 .font(font)
                 .tracking(-0.4)
                 .lineSpacing(5)

@@ -71,7 +71,7 @@ struct AIVideoCard: View {
 
     private var readinessBadge: some View {
         HStack(spacing: 8) {
-            Text("Ready in seconds")
+            Text(key: "Ready in seconds")
                 .typography(style: .regular12)
                 .foregroundStyle(.white)
                 .tracking(0.06)

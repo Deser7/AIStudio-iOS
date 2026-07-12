@@ -75,5 +75,6 @@ private struct SettingsViewPreview: View {
             onPrivacyPolicy: {},
             onUsagePolicy: {}
         )
+        .environment(LanguageStore.shared)
     }
 }
