@@ -8,21 +8,13 @@
 import SwiftUI
 
 struct AIResponseIndicator: View {
-    /// Пауза на каждой точке перед переходом к следующей.
-    private let stepDuration: TimeInterval = 0.33
-    /// Длительность crossfade градиент ↔ неактивная заливка.
-    private let transitionDuration: TimeInterval = 0.5
-
+    
     @State private var activeIndex = 0
 
     private let sizes: [CGFloat] = [19, 15, 10]
 
     private var bubbleShape: AIResponseBubbleShape {
         AIResponseBubbleShape(cornerRadius: AppShape.cornerRadius)
-    }
-
-    private var inactiveDotColor: Color {
-        .white.opacity(0.1)
     }
 
     var body: some View {
@@ -46,7 +38,7 @@ struct AIResponseIndicator: View {
 
         return ZStack {
             Circle()
-                .fill(inactiveDotColor)
+                .fill(.white.opacity(0.1))
 
             Circle()
                 .fill(AppGradient.main)
@@ -58,9 +50,9 @@ struct AIResponseIndicator: View {
     @MainActor
     private func runTypingAnimation() async {
         while !Task.isCancelled {
-            try? await Task.sleep(for: .seconds(stepDuration))
+            try? await Task.sleep(for: .seconds(0.33))
 
-            withAnimation(.easeInOut(duration: transitionDuration)) {
+            withAnimation(.easeInOut(duration: 0.5)) {
                 activeIndex = (activeIndex + 1) % 3
             }
         }
