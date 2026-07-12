@@ -75,7 +75,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "AI Чат"
+            "value": "ИИ Чат"
           }
         }
       }
@@ -92,7 +92,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "История AI Чата"
+            "value": "История ИИ Чата"
           }
         }
       }
@@ -109,7 +109,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "AI Видео"
+            "value": "ИИ Видео"
           }
         }
       }
@@ -126,7 +126,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "История AI Видео"
+            "value": "История ИИ Видео"
           }
         }
       }
@@ -483,7 +483,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Создавайте контент с AI-шаблонами"
+            "value": "Создавайте контент с ИИ-шаблонами"
           }
         }
       }
@@ -602,7 +602,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Пустой ответ от AI."
+            "value": "Пустой ответ от ИИ."
           }
         }
       }
@@ -1045,7 +1045,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Открывает AI Чат"
+            "value": "Открывает ИИ Чат"
           }
         }
       }
@@ -1589,7 +1589,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Поговорить с AI"
+            "value": "Поговорить с ИИ"
           }
         }
       }
@@ -1981,7 +1981,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ваши AI-инструменты,\nготовы к работе"
+            "value": "Ваши ИИ-инструменты,\nготовы к работе"
           }
         }
       }
