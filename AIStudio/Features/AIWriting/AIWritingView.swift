@@ -33,9 +33,12 @@ struct AIWritingView: View {
                             text: $viewModel.inputText
                         )
 
-                        VStack(spacing: 16) {
-                            TextResultCard(text: viewModel.resultText)
+                        TextResultCard(
+                            text: viewModel.resultText,
+                            isWaiting: viewModel.isGenerating && viewModel.resultText.isEmpty
+                        )
 
+                        VStack(spacing: 16) {
                             actionGrid
 
                             settingsSection

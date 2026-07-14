@@ -9,29 +9,39 @@ import SwiftUI
 
 struct TextResultCard: View {
     let text: String
+    var isWaiting = false
     var placeholder = "Your result will appear here..."
 
     var body: some View {
         Group {
-            if text.isEmpty {
+            if isWaiting {
+                AIResponseIndicator(showsBackground: false)
+            } else if text.isEmpty {
                 Text(key: placeholder)
+                    .typography(style: .regular16)
+                    .foregroundStyle(.white.opacity(0.3))
             } else {
-                Text(verbatim: text)
+                SelectableText(text, style: .regular16, color: .white)
             }
         }
-        .typography(style: .regular16)
-        .foregroundStyle(text.isEmpty ? .white.opacity(0.3) : .white)
         .frame(maxWidth: .infinity, minHeight: 106, alignment: .topLeading)
         .padding(.top, 24)
         .padding([.horizontal, .bottom], 16)
         .frame(maxWidth: .infinity)
         .frame(height: 162, alignment: .top)
         .background(CardBlurBackground(opacity: 0.6))
+        .animation(.easeInOut(duration: 0.2), value: isWaiting)
     }
 }
 
 #Preview("Empty") {
     TextResultCard(text: "")
+        .padding(24)
+        .background(Color.background)
+}
+
+#Preview("Waiting") {
+    TextResultCard(text: "", isWaiting: true)
         .padding(24)
         .background(Color.background)
 }

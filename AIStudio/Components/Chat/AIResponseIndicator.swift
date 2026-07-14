@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct AIResponseIndicator: View {
-    
+    var showsBackground = true
+
     @State private var activeIndex = 0
 
     private let sizes: [CGFloat] = [19, 15, 10]
@@ -18,6 +19,21 @@ struct AIResponseIndicator: View {
     }
 
     var body: some View {
+        Group {
+            if showsBackground {
+                dots
+                    .padding(16)
+                    .frame(height: 51)
+                    .background(CardBlurBackground(shape: bubbleShape, opacity: 0.5))
+                    .clipShape(bubbleShape)
+            } else {
+                dots
+            }
+        }
+        .task { await runTypingAnimation() }
+    }
+
+    private var dots: some View {
         HStack(alignment: .center, spacing: 4) {
             ForEach(0..<3, id: \.self) { dotIndex in
                 dot(
@@ -26,11 +42,6 @@ struct AIResponseIndicator: View {
                 )
             }
         }
-        .padding(16)
-        .frame(height: 51)
-        .background(CardBlurBackground(shape: bubbleShape, opacity: 0.5))
-        .clipShape(bubbleShape)
-        .task { await runTypingAnimation() }
     }
 
     private func dot(at index: Int, isActive: Bool) -> some View {
