@@ -259,7 +259,6 @@
 				DEVELOPMENT_TEAM = N6VGRZ79KB;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "To take a photo for chat, the app needs access to the camera.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "To save and upload media, the app needs access to your photo gallery.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "To save and upload media, the app needs access to your photo gallery.";
 				INFOPLIST_KEY_UIAppFonts = "Inter-Regular.ttf Inter-Medium.ttf Inter-SemiBold.ttf Inter-Bold.ttf";
@@ -300,7 +299,6 @@
 				DEVELOPMENT_TEAM = N6VGRZ79KB;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "To take a photo for chat, the app needs access to the camera.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "To save and upload media, the app needs access to your photo gallery.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "To save and upload media, the app needs access to your photo gallery.";
 				INFOPLIST_KEY_UIAppFonts = "Inter-Regular.ttf Inter-Medium.ttf Inter-SemiBold.ttf Inter-Bold.ttf";

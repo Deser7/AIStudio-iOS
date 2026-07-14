@@ -30,7 +30,6 @@ struct ComposerInput: View {
     var maxAttachments = 10
     @Binding var text: String
     var isFocused: FocusState<Bool>.Binding
-    let onCamera: () -> Void
     let onPhotos: () -> Void
     let onFiles: () -> Void
     let onRemoveAttachment: (UUID) -> Void
@@ -179,7 +178,6 @@ struct ComposerInput: View {
         @ViewBuilder label: @escaping () -> MenuLabel
     ) -> some View {
         ComposerImportMenu(
-            onCamera: onCamera,
             onPhotos: onPhotos,
             onFiles: onFiles,
             label: label
@@ -213,15 +211,6 @@ private struct ComposerInputPreviewContainer: View {
             attachments: attachments,
             text: $text,
             isFocused: $isFocused,
-            onCamera: {
-                mode = .attachment(isLoading: false)
-                attachments = [
-                    ComposerAttachmentPreview(
-                        id: UUID(),
-                        image: Image(systemName: "camera")
-                    )
-                ]
-            },
             onPhotos: {
                 mode = .attachment(isLoading: false)
                 attachments = [

@@ -21,11 +21,9 @@ struct PendingChatAttachment: Identifiable, Equatable {
 
 enum ChatMediaAccessAlert: Equatable {
     case photoLibrary
-    case camera
 }
 
 enum ChatImportSource: Equatable {
-    case camera
     case gallery
     case files
 }
@@ -49,7 +47,6 @@ final class ChatViewModel {
     private(set) var isAttachmentLoading = false
     private(set) var isPhotoPickerPresented = false
     private(set) var openSettingsEvent: UUID?
-    private(set) var isCameraPickerPresented = false
     private(set) var isFileImporterPresented = false
     private(set) var mediaAccessAlert: ChatMediaAccessAlert?
 
@@ -86,7 +83,6 @@ final class ChatViewModel {
     private let chatService: any ChatServing
     private let repository: ChatHistoryRepository
     private let photoLibrary: PhotoLibraryAccessProviding
-    private let cameraAccess: CameraAccessProviding
 
     private var revealPendingText = ""
     private var revealDisplayedText = ""
@@ -111,13 +107,11 @@ final class ChatViewModel {
         sessionID: UUID? = nil,
         chatService: (any ChatServing)? = nil,
         repository: ChatHistoryRepository,
-        photoLibrary: PhotoLibraryAccessProviding = PhotoLibraryAccessService(),
-        cameraAccess: CameraAccessProviding = CameraAccessService()
+        photoLibrary: PhotoLibraryAccessProviding = PhotoLibraryAccessService()
     ) {
         self.chatService = chatService ?? GeminiChatService()
         self.repository = repository
         self.photoLibrary = photoLibrary
-        self.cameraAccess = cameraAccess
 
         if let sessionID, let session = repository.session(id: sessionID) {
             self.sessionID = sessionID
@@ -163,8 +157,6 @@ final class ChatViewModel {
     func importSourceSelected(_ source: ChatImportSource) {
         guard remainingAttachmentSlots > 0, !isGenerating else { return }
         switch source {
-        case .camera:
-            beginCameraImport()
         case .gallery:
             beginGalleryImport()
         case .files:
@@ -191,8 +183,6 @@ final class ChatViewModel {
             switch source {
             case .gallery:
                 await resolveGalleryAccess()
-            case .camera:
-                await resolveCameraAccess()
             case .files:
                 mediaAccessAlert = nil
                 pendingImportSource = nil
@@ -202,10 +192,6 @@ final class ChatViewModel {
 
     func photoPickerDismissed() {
         isPhotoPickerPresented = false
-    }
-
-    func cameraPickerDismissed() {
-        isCameraPickerPresented = false
     }
 
     func fileImporterDismissed() {
@@ -322,17 +308,6 @@ final class ChatViewModel {
         mediaAccessAlert = .photoLibrary
     }
 
-    private func beginCameraImport() {
-        guard cameraAccess.isCameraAvailable else { return }
-
-        if cameraAccess.currentStatus.isGranted {
-            isCameraPickerPresented = true
-            return
-        }
-        pendingImportSource = .camera
-        mediaAccessAlert = .camera
-    }
-
     private func resolveGalleryAccess() async {
         let currentStatus = photoLibrary.currentStatus
 
@@ -353,29 +328,6 @@ final class ChatViewModel {
             mediaAccessAlert = nil
             pendingImportSource = nil
             isPhotoPickerPresented = true
-        }
-    }
-
-    private func resolveCameraAccess() async {
-        let currentStatus = cameraAccess.currentStatus
-
-        switch currentStatus {
-        case .notDetermined:
-            let status = await cameraAccess.requestAccess()
-            mediaAccessAlert = nil
-            pendingImportSource = nil
-            guard status.isGranted else { return }
-            isCameraPickerPresented = true
-
-        case .denied, .restricted:
-            mediaAccessAlert = nil
-            pendingImportSource = nil
-            openSettingsEvent = UUID()
-
-        case .authorized:
-            mediaAccessAlert = nil
-            pendingImportSource = nil
-            isCameraPickerPresented = true
         }
     }
 

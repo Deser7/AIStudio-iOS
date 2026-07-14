@@ -14,10 +14,6 @@ struct PhotoAccessAlert: View {
     let onCancel: () -> Void
     let onPrimary: () -> Void
     
-    private var alertShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 14, style: .continuous)
-    }
-    
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 4) {
@@ -59,19 +55,7 @@ struct PhotoAccessAlert: View {
             .frame(height: 44)
         }
         .frame(width: 270)
-        .background { alertBackground }
-        .clipShape(alertShape)
-    }
-    
-    private var alertBackground: some View {
-        ZStack {
-            alertShape
-                .fill(.regularMaterial)
-            
-            alertShape
-                .fill(.alert.opacity(0.82))
-        }
-        .allowsHitTesting(false)
+        .background { CardBlurBackground(opacity: 0.82) }
     }
     
     private var separator: some View {

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ComposerImportMenu<MenuLabel: View>: View {
-    let onCamera: () -> Void
     let onPhotos: () -> Void
     let onFiles: () -> Void
     @ViewBuilder let label: () -> MenuLabel
@@ -21,13 +20,6 @@ struct ComposerImportMenu<MenuLabel: View>: View {
                     Text(key: "Files")
                 } icon: {
                     Image(systemName: "paperclip")
-                }
-            }
-            Button(action: onCamera) {
-                Label {
-                    Text(key: "Camera")
-                } icon: {
-                    Image(systemName: "camera")
                 }
             }
             Button(action: onPhotos) {
@@ -45,7 +37,6 @@ struct ComposerImportMenu<MenuLabel: View>: View {
 
 #Preview {
     ComposerImportMenu(
-        onCamera: {},
         onPhotos: {},
         onFiles: {}
     ) {

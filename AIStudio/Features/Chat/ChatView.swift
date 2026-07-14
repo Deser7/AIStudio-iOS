@@ -33,8 +33,6 @@ struct ChatView: View {
     }
 
     var body: some View {
-        @Bindable var viewModel = viewModel
-
         ZStack {
             Color.background
                 .ignoresSafeArea()
@@ -109,23 +107,6 @@ struct ChatView: View {
                 await loadFiles(from: result)
             }
         }
-        .fullScreenCover(
-            isPresented: Binding(
-                get: { viewModel.isCameraPickerPresented },
-                set: { if !$0 { viewModel.cameraPickerDismissed() } }
-            )
-        ) {
-            CameraPicker(
-                onImage: { image in
-                    viewModel.appendAttachments([image])
-                    viewModel.cameraPickerDismissed()
-                },
-                onCancel: {
-                    viewModel.cameraPickerDismissed()
-                }
-            )
-            .ignoresSafeArea()
-        }
     }
 
     @ViewBuilder
@@ -133,13 +114,6 @@ struct ChatView: View {
         switch alert {
         case .photoLibrary:
             PhotoAccessAlert(
-                onCancel: viewModel.mediaAccessCancelled,
-                onPrimary: viewModel.beginMediaAccessRequest
-            )
-        case .camera:
-            PhotoAccessAlert(
-                title: "Allow access to camera?",
-                message: "To take a photo, the app needs access to the camera.",
                 onCancel: viewModel.mediaAccessCancelled,
                 onPrimary: viewModel.beginMediaAccessRequest
             )
@@ -194,7 +168,6 @@ struct ChatView: View {
             maxAttachments: ChatViewModel.maxAttachments,
             text: $viewModel.promptText,
             isFocused: $isComposerFocused,
-            onCamera: { viewModel.importSourceSelected(.camera) },
             onPhotos: { viewModel.importSourceSelected(.gallery) },
             onFiles: { viewModel.importSourceSelected(.files) },
             onRemoveAttachment: viewModel.removeAttachment,
