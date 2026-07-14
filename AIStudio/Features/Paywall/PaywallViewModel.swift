@@ -39,7 +39,7 @@ final class PaywallViewModel {
     ) {
         self.benefits = benefits
         self.plans = plans
-        self.selectedPlanID = plans.first(where: { $0.badge != nil })?.id ?? plans[0].id
+        self.selectedPlanID = plans.first(where: { $0.badgeDiscount != nil })?.id ?? plans[0].id
         self.onClose = onClose
         self.onUnlock = onUnlock
         self.onPrivacyPolicy = onPrivacyPolicy
@@ -117,13 +117,13 @@ private extension PaywallViewModel {
             id: "year",
             periodLabel: "Year $1.27",
             price: "$ 69.99",
-            badge: "SAVE 80%"
+            badgeDiscount: 0.8
         ),
         PricingPlanItem(
             id: "month",
             periodLabel: "Month $1.99",
             price: "$ 7.99",
-            badge: nil
+            badgeDiscount: nil
         )
     ]
 }

@@ -10,7 +10,7 @@ import SwiftUI
 struct PricingPlanCard: View {
     let periodLabel: String
     let price: String
-    var badge: String? = nil
+    var badgeDiscount: Double? = nil
     var isSelected: Bool = false
     let action: () -> Void
 
@@ -34,15 +34,8 @@ struct PricingPlanCard: View {
 
                 Spacer()
 
-                if let badge {
-                    Text(key: badge)
-                        .typography(style: .medium14)
-                        .foregroundStyle(.white)
-                        .textCase(.uppercase)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
-                        .background(AppGradient.main)
-                        .clipShape(Capsule())
+                if let badgeDiscount {
+                    discountBadge(discount: badgeDiscount)
                 }
             }
             .padding(.horizontal, 16)
@@ -53,6 +46,20 @@ struct PricingPlanCard: View {
             .overlay { borderOverlay }
         }
         .buttonStyle(.plain)
+    }
+
+    private func discountBadge(discount: Double) -> some View {
+        HStack(spacing: 4) {
+            Text(key: "SAVE")
+            Text(discount, format: .percent.precision(.fractionLength(0)))
+        }
+        .typography(style: .medium14)
+        .foregroundStyle(.white)
+        .textCase(.uppercase)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(AppGradient.main)
+        .clipShape(Capsule())
     }
 
     @ViewBuilder
@@ -83,7 +90,7 @@ struct PricingPlanCard: View {
             PricingPlanCard(
                 periodLabel: "Year $1.27",
                 price: "$ 69.99",
-                badge: "SAVE 80%",
+                badgeDiscount: 0.8,
                 isSelected: true,
                 action: {}
             )

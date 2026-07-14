@@ -105,8 +105,18 @@ struct AIWritingView: View {
     }
 }
 
-#Preview {
+#Preview("English") {
     NavigationStack {
         AIWritingView()
     }
+    .environment(LanguageStore.shared)
+    .environment(\.locale, Locale(identifier: "en"))
+}
+
+#Preview("Russian") {
+    NavigationStack {
+        AIWritingView()
+    }
+    .environment(LanguageStore.shared)
+    .environment(\.locale, Locale(identifier: "ru"))
 }

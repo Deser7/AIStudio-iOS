@@ -11,5 +11,6 @@ struct PricingPlanItem: Identifiable, Equatable {
     let id: String
     let periodLabel: String
     let price: String
-    let badge: String?
+    /// Discount as a fraction, e.g. `0.8` for 80%.
+    let badgeDiscount: Double?
 }

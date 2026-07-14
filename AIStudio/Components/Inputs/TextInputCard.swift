@@ -52,11 +52,17 @@ struct TextInputCard: View {
     @ViewBuilder
     private var editor: some View {
         if isReadOnly {
-            Text(text.isEmpty ? placeholder : text)
-                .typography(style: .regular16)
-                .foregroundStyle(text.isEmpty ? AnyShapeStyle(secondaryColor) : AnyShapeStyle(.white))
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .frame(height: 106, alignment: .top)
+            Group {
+                if text.isEmpty {
+                    Text(key: placeholder)
+                } else {
+                    Text(verbatim: text)
+                }
+            }
+            .typography(style: .regular16)
+            .foregroundStyle(text.isEmpty ? AnyShapeStyle(secondaryColor) : AnyShapeStyle(.white))
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .frame(height: 106, alignment: .top)
         } else {
             TextField(
                 "",
@@ -76,7 +82,7 @@ struct TextInputCard: View {
     }
 
     private var characterCounter: some View {
-        Text("\(text.count)/\(characterLimit)")
+        Text(verbatim: "\(text.count)/\(characterLimit)")
             .typography(style: .regular16)
             .foregroundColor(isOverLimit ? .error : secondaryColor)
     }

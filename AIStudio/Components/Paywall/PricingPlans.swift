@@ -18,7 +18,7 @@ struct PricingPlans: View {
                 PricingPlanCard(
                     periodLabel: plan.periodLabel,
                     price: plan.price,
-                    badge: plan.badge,
+                    badgeDiscount: plan.badgeDiscount,
                     isSelected: selectedPlanID == plan.id
                 ) {
                     selectedPlanID = plan.id
@@ -37,13 +37,13 @@ struct PricingPlans: View {
                 id: "month",
                 periodLabel: "Month $1.99",
                 price: "$ 7.99",
-                badge: nil
+                badgeDiscount: nil
             ),
             PricingPlanItem(
                 id: "year",
                 periodLabel: "Year $1.27",
                 price: "$ 69.99",
-                badge: "SAVE 80%"
+                badgeDiscount: 0.8
             )
         ]
 
