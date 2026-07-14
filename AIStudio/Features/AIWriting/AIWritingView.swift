@@ -44,9 +44,16 @@ struct AIWritingView: View {
                     }
                     .padding(.horizontal, 16)
                     .padding(.bottom, 24)
+                    .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle())
+                    .simultaneousGesture(
+                        TapGesture().onEnded { dismissKeyboard() }
+                    )
                 }
+                .scrollDismissesKeyboard(.immediately)
 
                 SectionButton(title: "Generate", style: .primary) {
+                    dismissKeyboard()
                     viewModel.generateTapped()
                 }
                 .disabled(!viewModel.isGenerateEnabled)
@@ -56,6 +63,15 @@ struct AIWritingView: View {
         }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
+    }
+
+    private func dismissKeyboard() {
+        UIApplication.shared.sendAction(
+            #selector(UIResponder.resignFirstResponder),
+            to: nil,
+            from: nil,
+            for: nil
+        )
     }
 
     private var actionGrid: some View {

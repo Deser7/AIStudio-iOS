@@ -30,8 +30,18 @@ struct ChatHistoryMessage: Sendable, Equatable {
 protocol ChatServing: Sendable {
     func streamMessage(
         chatID: String,
-        history: [ChatHistoryMessage]
+        history: [ChatHistoryMessage],
+        systemInstruction: String?
     ) -> AsyncThrowingStream<String, Error>
+}
+
+extension ChatServing {
+    func streamMessage(
+        chatID: String,
+        history: [ChatHistoryMessage]
+    ) -> AsyncThrowingStream<String, Error> {
+        streamMessage(chatID: chatID, history: history, systemInstruction: nil)
+    }
 }
 
 struct GeminiChatService: ChatServing {
@@ -54,12 +64,17 @@ struct GeminiChatService: ChatServing {
 
     func streamMessage(
         chatID _: String,
-        history: [ChatHistoryMessage]
+        history: [ChatHistoryMessage],
+        systemInstruction: String?
     ) -> AsyncThrowingStream<String, Error> {
         AsyncThrowingStream { continuation in
             let task = Task {
                 do {
-                    try await stream(history: history, continuation: continuation)
+                    try await stream(
+                        history: history,
+                        systemInstruction: systemInstruction,
+                        continuation: continuation
+                    )
                     continuation.finish()
                 } catch {
                     continuation.finish(throwing: error)
@@ -74,6 +89,7 @@ struct GeminiChatService: ChatServing {
 
     private func stream(
         history: [ChatHistoryMessage],
+        systemInstruction: String?,
         continuation: AsyncThrowingStream<String, Error>.Continuation
     ) async throws {
         let apiKey = APICredentials.geminiAPIKey
@@ -87,7 +103,20 @@ struct GeminiChatService: ChatServing {
             throw APIError.invalidURL
         }
 
+        let trimmedInstruction = systemInstruction?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let instruction: GeminiGenerateContentRequest.Content? =
+            if let trimmedInstruction, !trimmedInstruction.isEmpty {
+                GeminiGenerateContentRequest.Content(
+                    role: nil,
+                    parts: [.init(text: trimmedInstruction)]
+                )
+            } else {
+                nil
+            }
+
         let requestBody = GeminiGenerateContentRequest(
+            systemInstruction: instruction,
             contents: history.map { message in
                 GeminiGenerateContentRequest.Content(
                     role: message.role.rawValue,
@@ -207,11 +236,34 @@ struct GeminiChatService: ChatServing {
 }
 
 private struct GeminiGenerateContentRequest: Encodable {
+    let systemInstruction: Content?
     let contents: [Content]
 
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(systemInstruction, forKey: .systemInstruction)
+        try container.encode(contents, forKey: .contents)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case systemInstruction
+        case contents
+    }
+
     struct Content: Encodable {
-        let role: String
+        let role: String?
         let parts: [Part]
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(role, forKey: .role)
+            try container.encode(parts, forKey: .parts)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case role
+            case parts
+        }
     }
 
     struct Part: Encodable {
