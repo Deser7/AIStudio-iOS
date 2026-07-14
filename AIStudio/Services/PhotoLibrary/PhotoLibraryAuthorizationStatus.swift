@@ -5,7 +5,6 @@
 //  Created by Андрей Спиридонов on 05.07.2026.
 //
 
-
 enum PhotoLibraryAuthorizationStatus: Sendable {
     case notDetermined
     case denied

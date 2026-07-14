@@ -5,7 +5,6 @@
 //  Created by Андрей Спиридонов on 30.06.2026.
 //
 
-
 import SwiftUI
 
 struct PricingPlans: View {
