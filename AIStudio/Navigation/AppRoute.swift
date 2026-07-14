@@ -16,4 +16,5 @@ enum AppRoute: Hashable {
     case videoTemplateDetail(VideoTemplateDetailContext)
     case videoGenerating
     case videoResult
+    case aiWriting
 }

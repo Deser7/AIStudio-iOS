@@ -98,12 +98,16 @@ struct TextSelectionOption: SelectionMenuOption, Hashable, Sendable {
         TextSelectionOption(title: "Original"),
         TextSelectionOption(title: "English"),
         TextSelectionOption(title: "Spanish"),
+        TextSelectionOption(title: "German"),
+        TextSelectionOption(title: "Italian"),
+        TextSelectionOption(title: "French"),
     ]
 
     static let styleSamples: [TextSelectionOption] = [
         TextSelectionOption(title: "Original"),
         TextSelectionOption(title: "Professional"),
         TextSelectionOption(title: "Casual"),
+        TextSelectionOption(title: "Friendly"),
     ]
 }
 

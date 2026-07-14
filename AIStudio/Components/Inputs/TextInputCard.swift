@@ -9,10 +9,13 @@ import SwiftUI
 
 struct TextInputCard: View {
     var characterLimit: Int = 400
+    var isReadOnly: Bool = false
+    var showsCharacterCounter: Bool = true
+    var placeholder: String = "Paste or write your text here..."
     @Binding var text: String
 
     private var isOverLimit: Bool {
-        text.count > characterLimit
+        !isReadOnly && text.count > characterLimit
     }
 
     private var secondaryColor: Color {
@@ -28,12 +31,15 @@ struct TextInputCard: View {
         VStack(spacing: 0) {
             editor
 
-            characterCounter
-                .frame(maxWidth: .infinity, alignment: .trailing)
+            if showsCharacterCounter {
+                characterCounter
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
         }
         .padding(.top, 24)
         .padding([.horizontal, .bottom], 16)
-        .frame(width: 342, height: 162, alignment: .top)
+        .frame(maxWidth: .infinity)
+        .frame(height: 162, alignment: .top)
         .background(CardBlurBackground(opacity: 0.6))
         .overlay {
             if isOverLimit {
@@ -43,21 +49,30 @@ struct TextInputCard: View {
         }
     }
 
+    @ViewBuilder
     private var editor: some View {
-        TextField(
-            "",
-            text: $text,
-            prompt: Text("Paste or write your text here...")
-                .font(Typography.font(style: .regular16))
-                .foregroundColor(secondaryColor),
-            axis: .vertical
-        )
-        .lineLimit(editorLineLimit)
-        .typography(style: .regular16)
-        .foregroundColor(.white)
-        .tint(.white)
-        .frame(height: 106, alignment: .top)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        if isReadOnly {
+            Text(text.isEmpty ? placeholder : text)
+                .typography(style: .regular16)
+                .foregroundStyle(text.isEmpty ? AnyShapeStyle(secondaryColor) : AnyShapeStyle(.white))
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .frame(height: 106, alignment: .top)
+        } else {
+            TextField(
+                "",
+                text: $text,
+                prompt: Text(key: placeholder)
+                    .font(Typography.font(style: .regular16))
+                    .foregroundColor(secondaryColor),
+                axis: .vertical
+            )
+            .lineLimit(editorLineLimit)
+            .typography(style: .regular16)
+            .foregroundColor(.white)
+            .tint(.white)
+            .frame(height: 106, alignment: .top)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
 
     private var characterCounter: some View {

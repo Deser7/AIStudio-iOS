@@ -57,6 +57,8 @@ struct HomeView: View {
                         VideoGeneratingView(navigationPath: $navigationPath)
                     case .videoResult:
                         VideoResultView(navigationPath: $navigationPath)
+                    case .aiWriting:
+                        AIWritingView()
                     }
                 }
         }
@@ -130,7 +132,7 @@ struct HomeView: View {
     private var functionsSection: some View {
         FunctionsSection(
             onVideoTap: { navigationPath.append(AppRoute.videoGeneration) },
-            onWritingTap: viewModel.writingTapped,
+            onWritingTap: { navigationPath.append(AppRoute.aiWriting) },
             onUnderstandTap: viewModel.understandTapped
         )
         .frame(maxWidth: .infinity, alignment: .center)

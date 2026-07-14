@@ -15,6 +15,8 @@ struct VideoTemplateExpandableSetting<Option: SelectionMenuOption>: View {
     let onToggle: () -> Void
     let onSelect: (Option) -> Void
     var onDismissOutside: () -> Void = {}
+    var showsChevron: Bool = false
+    var valueUsesGradient: Bool = false
 
     var body: some View {
         triggerRow
@@ -39,7 +41,13 @@ struct VideoTemplateExpandableSetting<Option: SelectionMenuOption>: View {
                 if !isExpanded {
                     Text(key: selection.title)
                         .typography(style: .medium16)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(valueStyle)
+
+                    if showsChevron {
+                        chevron
+                    }
+                } else if showsChevron {
+                    chevron
                 }
             }
             .padding(.horizontal, 16)
@@ -51,6 +59,19 @@ struct VideoTemplateExpandableSetting<Option: SelectionMenuOption>: View {
             }
         }
         .buttonStyle(.plain)
+    }
+
+    private var valueStyle: AnyShapeStyle {
+        valueUsesGradient
+            ? AnyShapeStyle(AppGradient.main)
+            : AnyShapeStyle(.white)
+    }
+
+    private var chevron: some View {
+        Image(systemName: "chevron.down")
+            .font(.system(size: 12, weight: .semibold))
+            .foregroundStyle(.white.opacity(0.6))
+            .rotationEffect(.degrees(isExpanded ? 180 : 0))
     }
 }
 
