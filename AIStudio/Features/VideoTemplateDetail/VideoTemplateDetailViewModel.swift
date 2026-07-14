@@ -7,7 +7,6 @@
 
 import Foundation
 import Observation
-import UIKit
 
 enum VideoTemplateExpandedSetting: Equatable {
     case format
@@ -29,7 +28,7 @@ final class VideoTemplateDetailViewModel {
     var aspectRatio: AspectRatio = .landscape16x9
     var videoQuality: VideoQuality = .p1080
     private(set) var photoState: VideoTemplatePhotoState = .none
-    private(set) var selectedPhoto: UIImage?
+    private(set) var selectedPhotoData: Data?
     var expandedSetting: VideoTemplateExpandedSetting?
 
     var navigationTitle: String {
@@ -42,7 +41,7 @@ final class VideoTemplateDetailViewModel {
     }
 
     var isCreateEnabled: Bool {
-        photoState == .loaded && selectedPhoto != nil
+        photoState == .loaded && selectedPhotoData != nil
     }
 
     init(context: VideoTemplateDetailContext) {
@@ -72,13 +71,13 @@ final class VideoTemplateDetailViewModel {
         photoState = .loading
     }
 
-    func setPhoto(_ image: UIImage) {
-        selectedPhoto = image
+    func setPhoto(_ data: Data) {
+        selectedPhotoData = data
         photoState = .loaded
     }
 
     func resetPhoto() {
-        selectedPhoto = nil
+        selectedPhotoData = nil
         photoState = .none
     }
 }

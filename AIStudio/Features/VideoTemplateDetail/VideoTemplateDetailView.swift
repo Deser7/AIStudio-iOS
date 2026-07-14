@@ -115,7 +115,8 @@ struct VideoTemplateDetailView: View {
             Addendum(size: addendumSize, content: .loading)
 
         case .loaded:
-            if let uiImage = viewModel.selectedPhoto {
+            if let data = viewModel.selectedPhotoData,
+               let uiImage = UIImage(data: data) {
                 Addendum(
                     size: addendumSize,
                     content: .photo(Image(uiImage: uiImage)) {
@@ -134,13 +135,13 @@ struct VideoTemplateDetailView: View {
 
         guard
             let data = try? await item.loadTransferable(type: Data.self),
-            let uiImage = UIImage(data: data)
+            UIImage(data: data) != nil
         else {
             viewModel.resetPhoto()
             return
         }
 
-        viewModel.setPhoto(uiImage)
+        viewModel.setPhoto(data)
     }
 }
 
