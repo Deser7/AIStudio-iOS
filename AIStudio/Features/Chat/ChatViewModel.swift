@@ -7,11 +7,10 @@
 
 import Foundation
 import Observation
-import UIKit
 
-struct PendingChatAttachment: Identifiable, Equatable {
+struct PendingChatAttachment: Identifiable, Equatable, Sendable {
     let id: UUID
-    let image: UIImage
+    let imageData: Data
     var existingFileName: String?
 
     static func == (lhs: Self, rhs: Self) -> Bool {
@@ -206,15 +205,16 @@ final class ChatViewModel {
         isAttachmentLoading = false
     }
 
-    func appendAttachments(_ images: [UIImage]) {
+    func appendAttachments(_ imageDataList: [Data]) {
         let slots = remainingAttachmentSlots
         guard slots > 0 else {
             isAttachmentLoading = false
             return
         }
 
-        let limited = images.prefix(slots).map {
-            PendingChatAttachment(id: UUID(), image: $0, existingFileName: nil)
+        let limited = imageDataList.prefix(slots).compactMap { data -> PendingChatAttachment? in
+            guard let jpegData = ChatImageEncoder.jpegData(from: data) else { return nil }
+            return PendingChatAttachment(id: UUID(), imageData: jpegData, existingFileName: nil)
         }
         pendingAttachments.append(contentsOf: limited)
         isAttachmentLoading = false
@@ -226,11 +226,11 @@ final class ChatViewModel {
 
     func microTapped() {}
 
-    func copyUserPromptTapped(_ messageID: UUID) {
+    func copyUserPromptTapped(_ messageID: UUID) -> String? {
         guard case let .user(_, text, _) = messages.first(where: { $0.id == messageID }) else {
-            return
+            return nil
         }
-        UIPasteboard.general.string = text
+        return text
     }
 
     func editUserPromptTapped(_ messageID: UUID) {
@@ -242,35 +242,29 @@ final class ChatViewModel {
         editingUserMessageID = messageID
         promptText = text
         pendingAttachments = imageFileNames.compactMap { fileName in
-            guard
-                let data = ChatImageStore.loadData(sessionID: sessionID, fileName: fileName),
-                let image = UIImage(data: data)
-            else {
+            guard let data = ChatImageStore.loadData(sessionID: sessionID, fileName: fileName) else {
                 return nil
             }
             return PendingChatAttachment(
                 id: UUID(),
-                image: image,
+                imageData: data,
                 existingFileName: fileName
             )
         }
     }
 
-    func images(for message: ChatMessage) -> [UIImage] {
+    func imageData(for message: ChatMessage) -> [Data] {
         guard case let .user(_, _, imageFileNames) = message else { return [] }
         return imageFileNames.compactMap { fileName in
-            guard let data = ChatImageStore.loadData(sessionID: sessionID, fileName: fileName) else {
-                return nil
-            }
-            return UIImage(data: data)
+            ChatImageStore.loadData(sessionID: sessionID, fileName: fileName)
         }
     }
 
-    func copyResponseTapped(_ messageID: UUID) {
+    func copyResponseTapped(_ messageID: UUID) -> String? {
         guard case let .assistant(_, content) = messages.first(where: { $0.id == messageID }) else {
-            return
+            return nil
         }
-        UIPasteboard.general.string = plainText(from: content)
+        return plainText(from: content)
     }
 
     func refreshResponseTapped(_ messageID: UUID) {
@@ -336,8 +330,7 @@ final class ChatViewModel {
             if let existing = attachment.existingFileName {
                 return existing
             }
-            guard let data = ChatImageEncoder.jpegData(from: attachment.image) else { return nil }
-            return try? ChatImageStore.saveJPEG(sessionID: sessionID, data: data)
+            return try? ChatImageStore.saveJPEG(sessionID: sessionID, data: attachment.imageData)
         }
     }
 

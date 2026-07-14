@@ -162,8 +162,9 @@ struct ChatView: View {
             mode: viewModel.composerMode,
             placeholder: viewModel.composerPlaceholder,
             autofocus: viewModel.showsEmptyState,
-            attachments: viewModel.pendingAttachments.map {
-                ComposerAttachmentPreview(id: $0.id, image: Image(uiImage: $0.image))
+            attachments: viewModel.pendingAttachments.compactMap { attachment in
+                guard let uiImage = UIImage(data: attachment.imageData) else { return nil }
+                return ComposerAttachmentPreview(id: attachment.id, image: Image(uiImage: uiImage))
             },
             maxAttachments: ChatViewModel.maxAttachments,
             text: $viewModel.promptText,
@@ -187,8 +188,8 @@ struct ChatView: View {
         case let .user(id, text, _):
             UserPrompt(
                 text: text,
-                images: viewModel.images(for: message).map(Image.init(uiImage:)),
-                onCopy: { viewModel.copyUserPromptTapped(id) },
+                images: images(from: viewModel.imageData(for: message)),
+                onCopy: { copyToPasteboard(viewModel.copyUserPromptTapped(id)) },
                 onEdit: {
                     viewModel.editUserPromptTapped(id)
                     isComposerFocused = true
@@ -204,7 +205,7 @@ struct ChatView: View {
             AIResponseBubble(
                 content: content,
                 isStreaming: viewModel.streamingAssistantID == id,
-                onCopy: { viewModel.copyResponseTapped(id) },
+                onCopy: { copyToPasteboard(viewModel.copyResponseTapped(id)) },
                 onRefresh: { viewModel.refreshResponseTapped(id) }
             )
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -221,18 +222,15 @@ struct ChatView: View {
         viewModel.beginAttachmentLoading()
         viewModel.photoPickerDismissed()
 
-        var images: [UIImage] = []
+        var imageDataList: [Data] = []
         for item in items {
-            guard
-                let data = try? await item.loadTransferable(type: Data.self),
-                let image = UIImage(data: data)
-            else {
+            guard let data = try? await item.loadTransferable(type: Data.self) else {
                 continue
             }
-            images.append(image)
+            imageDataList.append(data)
         }
 
-        viewModel.appendAttachments(images)
+        viewModel.appendAttachments(imageDataList)
     }
 
     private func loadFiles(from result: Result<[URL], Error>) async {
@@ -242,7 +240,7 @@ struct ChatView: View {
 
         viewModel.beginAttachmentLoading()
 
-        var images: [UIImage] = []
+        var imageDataList: [Data] = []
         for url in urls.prefix(viewModel.remainingAttachmentSlots) {
             let accessed = url.startAccessingSecurityScopedResource()
             defer {
@@ -251,16 +249,24 @@ struct ChatView: View {
                 }
             }
 
-            guard
-                let data = try? Data(contentsOf: url),
-                let image = UIImage(data: data)
-            else {
+            guard let data = try? Data(contentsOf: url) else {
                 continue
             }
-            images.append(image)
+            imageDataList.append(data)
         }
 
-        viewModel.appendAttachments(images)
+        viewModel.appendAttachments(imageDataList)
+    }
+
+    private func images(from dataList: [Data]) -> [Image] {
+        dataList.compactMap { data in
+            UIImage(data: data).map(Image.init(uiImage:))
+        }
+    }
+
+    private func copyToPasteboard(_ string: String?) {
+        guard let string else { return }
+        UIPasteboard.general.string = string
     }
 
     private func pinToPromptStart(using proxy: ScrollViewProxy) {

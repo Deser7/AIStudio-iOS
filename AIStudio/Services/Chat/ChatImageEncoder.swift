@@ -11,10 +11,11 @@ enum ChatImageEncoder {
     static let mimeType = "image/jpeg"
 
     static func jpegData(
-        from image: UIImage,
+        from imageData: Data,
         maxDimension: CGFloat = 1_536,
         quality: CGFloat = 0.8
     ) -> Data? {
+        guard let image = UIImage(data: imageData) else { return nil }
         let scaled = scaledImage(image, maxDimension: maxDimension)
         return scaled.jpegData(compressionQuality: quality)
     }
