@@ -6,7 +6,6 @@
 //
 
 import AVFoundation
-import UIKit
 
 enum CameraAuthorizationStatus: Sendable {
     case notDetermined
@@ -23,7 +22,6 @@ protocol CameraAccessProviding: Sendable {
     @MainActor var currentStatus: CameraAuthorizationStatus { get }
     @MainActor var isCameraAvailable: Bool { get }
     @MainActor func requestAccess() async -> CameraAuthorizationStatus
-    @MainActor func openSettings()
 }
 
 final class CameraAccessService: CameraAccessProviding {
@@ -36,19 +34,17 @@ final class CameraAccessService: CameraAccessProviding {
 
     @MainActor
     var isCameraAvailable: Bool {
-        UIImagePickerController.isSourceTypeAvailable(.camera)
+        !AVCaptureDevice.DiscoverySession(
+            deviceTypes: [.builtInWideAngleCamera],
+            mediaType: .video,
+            position: .unspecified
+        ).devices.isEmpty
     }
 
     @MainActor
     func requestAccess() async -> CameraAuthorizationStatus {
         let granted = await AVCaptureDevice.requestAccess(for: .video)
         return granted ? .authorized : .denied
-    }
-
-    @MainActor
-    func openSettings() {
-        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-        UIApplication.shared.open(url)
     }
 
     private static func map(_ status: AVAuthorizationStatus) -> CameraAuthorizationStatus {

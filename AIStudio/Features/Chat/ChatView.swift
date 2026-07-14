@@ -8,12 +8,12 @@
 import PhotosUI
 import SwiftData
 import SwiftUI
-import UniformTypeIdentifiers
 
 struct ChatView: View {
     @State private var viewModel: ChatViewModel
     @Binding var navigationPath: NavigationPath
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @FocusState private var isComposerFocused: Bool
     @State private var userInterruptedScroll = false
     @State private var selectedPhotoItems: [PhotosPickerItem] = []
@@ -58,6 +58,11 @@ struct ChatView: View {
             }
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.mediaAccessAlert)
+        .onChange(of: viewModel.openSettingsEvent) { _, event in
+            guard event != nil else { return }
+            openURL(AppSettings.url)
+            viewModel.consumeOpenSettingsEvent()
+        }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .safeAreaInset(edge: .top, spacing: 0) {

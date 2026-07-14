@@ -5,7 +5,6 @@
 //  Created by Андрей Спиридонов on 05.07.2026.
 //
 
-import Foundation
 
 enum PhotoLibraryAuthorizationStatus: Sendable {
     case notDetermined
@@ -27,5 +26,4 @@ enum PhotoLibraryAuthorizationStatus: Sendable {
 protocol PhotoLibraryAccessProviding: Sendable {
     @MainActor var currentStatus: PhotoLibraryAuthorizationStatus { get }
     @MainActor func requestAccess() async -> PhotoLibraryAuthorizationStatus
-    @MainActor func openSettings()
 }

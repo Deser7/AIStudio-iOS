@@ -16,6 +16,7 @@ final class VideoGenerationViewModel {
     private(set) var isPhotoAccessAlertPresented = false
     private(set) var pendingTemplate: VideoTemplate?
     private(set) var detailContextToOpen: VideoTemplateDetailContext?
+    private(set) var openSettingsEvent: UUID?
 
     let sectionNames: [String]
 
@@ -69,6 +70,11 @@ final class VideoGenerationViewModel {
     }
 
     @MainActor
+    func consumeOpenSettingsEvent() {
+        openSettingsEvent = nil
+    }
+
+    @MainActor
     func isSelected(_ template: VideoTemplate) -> Bool {
         pendingTemplate?.id == template.id && isPhotoAccessAlertPresented
     }
@@ -89,7 +95,7 @@ final class VideoGenerationViewModel {
 
         case .denied, .restricted:
             pendingTemplate = nil
-            photoLibrary.openSettings()
+            openSettingsEvent = UUID()
             return nil
 
         case .authorized, .limited:

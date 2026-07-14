@@ -6,7 +6,6 @@
 //
 
 import Photos
-import UIKit
 
 final class PhotoLibraryAccessService: PhotoLibraryAccessProviding {
     nonisolated init() {}
@@ -20,12 +19,6 @@ final class PhotoLibraryAccessService: PhotoLibraryAccessProviding {
     func requestAccess() async -> PhotoLibraryAuthorizationStatus {
         let status = await PHPhotoLibrary.requestAuthorization(for: .readWrite)
         return Self.map(status)
-    }
-
-    @MainActor
-    func openSettings() {
-        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-        UIApplication.shared.open(url)
     }
 
     private static func map(_ status: PHAuthorizationStatus) -> PhotoLibraryAuthorizationStatus {

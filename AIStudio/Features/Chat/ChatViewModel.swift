@@ -48,6 +48,7 @@ final class ChatViewModel {
     private(set) var pendingAttachments: [PendingChatAttachment] = []
     private(set) var isAttachmentLoading = false
     private(set) var isPhotoPickerPresented = false
+    private(set) var openSettingsEvent: UUID?
     private(set) var isCameraPickerPresented = false
     private(set) var isFileImporterPresented = false
     private(set) var mediaAccessAlert: ChatMediaAccessAlert?
@@ -174,6 +175,10 @@ final class ChatViewModel {
     func mediaAccessCancelled() {
         mediaAccessAlert = nil
         pendingImportSource = nil
+    }
+
+    func consumeOpenSettingsEvent() {
+        openSettingsEvent = nil
     }
 
     func beginMediaAccessRequest() {
@@ -342,7 +347,7 @@ final class ChatViewModel {
         case .denied, .restricted:
             mediaAccessAlert = nil
             pendingImportSource = nil
-            photoLibrary.openSettings()
+            openSettingsEvent = UUID()
 
         case .authorized, .limited:
             mediaAccessAlert = nil
@@ -365,7 +370,7 @@ final class ChatViewModel {
         case .denied, .restricted:
             mediaAccessAlert = nil
             pendingImportSource = nil
-            cameraAccess.openSettings()
+            openSettingsEvent = UUID()
 
         case .authorized:
             mediaAccessAlert = nil

@@ -57,11 +57,6 @@ final class VideoResultViewModel {
         overlay = .none
     }
 
-    func openPhotoSettings() {
-        photoLibrary.openSettings()
-        overlay = .none
-    }
-
     private func performDownload() async {
         let status = await resolvedPhotoAccessStatus()
 

@@ -11,6 +11,7 @@ struct VideoGenerationView: View {
     @State private var viewModel = VideoGenerationViewModel()
     @Binding var navigationPath: NavigationPath
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
 
     private let gridColumns = [
         GridItem(.flexible(), spacing: 16),
@@ -68,6 +69,11 @@ struct VideoGenerationView: View {
             }
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.isPhotoAccessAlertPresented)
+        .onChange(of: viewModel.openSettingsEvent) { _, event in
+            guard event != nil else { return }
+            openURL(AppSettings.url)
+            viewModel.consumeOpenSettingsEvent()
+        }
         .onChange(of: viewModel.detailContextToOpen) { _, context in
             guard let context else { return }
             navigationPath.append(AppRoute.videoTemplateDetail(context))

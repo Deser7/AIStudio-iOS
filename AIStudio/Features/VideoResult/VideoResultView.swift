@@ -10,6 +10,7 @@ import SwiftUI
 struct VideoResultView: View {
     @State private var viewModel = VideoResultViewModel()
     @Binding var navigationPath: NavigationPath
+    @Environment(\.openURL) private var openURL
 
     var body: some View {
 
@@ -94,7 +95,10 @@ struct VideoResultView: View {
                     message: "Allow access in Settings to save videos to your gallery.",
                     primaryButtonTitle: "Open Settings",
                     onCancel: viewModel.photoAccessSettingsCancelled,
-                    onPrimary: viewModel.openPhotoSettings
+                    onPrimary: {
+                        viewModel.photoAccessSettingsCancelled()
+                        openURL(AppSettings.url)
+                    }
                 )
             }
         }
