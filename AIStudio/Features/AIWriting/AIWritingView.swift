@@ -10,6 +10,7 @@ import SwiftUI
 struct AIWritingView: View {
     @State private var viewModel = AIWritingViewModel()
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var isInputFocused: Bool
 
     var body: some View {
 
@@ -28,50 +29,37 @@ struct AIWritingView: View {
                     VStack(spacing: 16) {
                         TextInputCard(
                             characterLimit: viewModel.characterLimit,
+                            isFocused: $isInputFocused,
                             text: $viewModel.inputText
                         )
 
-                        TextInputCard(
-                            isReadOnly: true,
-                            showsCharacterCounter: false,
-                            placeholder: "Your result will appear here...",
-                            text: $viewModel.resultText
+                        VStack(spacing: 16) {
+                            TextResultCard(text: viewModel.resultText)
+
+                            actionGrid
+
+                            settingsSection
+                        }
+                        .frame(maxWidth: .infinity)
+                        .contentShape(Rectangle())
+                        .simultaneousGesture(
+                            TapGesture().onEnded { isInputFocused = false }
                         )
-
-                        actionGrid
-
-                        settingsSection
+                        
+                        SectionButton(title: "Generate", style: .primary) {
+                            isInputFocused = false
+                            viewModel.generateTapped()
+                        }
+                        .disabled(!viewModel.isGenerateEnabled)
                     }
                     .padding(.horizontal, 16)
                     .padding(.bottom, 24)
-                    .frame(maxWidth: .infinity)
-                    .contentShape(Rectangle())
-                    .simultaneousGesture(
-                        TapGesture().onEnded { dismissKeyboard() }
-                    )
                 }
                 .scrollDismissesKeyboard(.immediately)
-
-                SectionButton(title: "Generate", style: .primary) {
-                    dismissKeyboard()
-                    viewModel.generateTapped()
-                }
-                .disabled(!viewModel.isGenerateEnabled)
-                .padding(.horizontal, 16)
-                .padding(.bottom, 16)
             }
         }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
-    }
-
-    private func dismissKeyboard() {
-        UIApplication.shared.sendAction(
-            #selector(UIResponder.resignFirstResponder),
-            to: nil,
-            from: nil,
-            for: nil
-        )
     }
 
     private var actionGrid: some View {

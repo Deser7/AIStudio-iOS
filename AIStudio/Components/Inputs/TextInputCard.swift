@@ -9,32 +9,34 @@ import SwiftUI
 
 struct TextInputCard: View {
     var characterLimit: Int = 400
-    var isReadOnly: Bool = false
-    var showsCharacterCounter: Bool = true
-    var placeholder: String = "Paste or write your text here..."
+    var placeholder = "Paste or write your text here..."
+    var isFocused: FocusState<Bool>.Binding
     @Binding var text: String
 
     private var isOverLimit: Bool {
-        !isReadOnly && text.count > characterLimit
-    }
-
-    private var secondaryColor: Color {
-        .white.opacity(0.3)
-    }
-
-    private var editorLineLimit: ClosedRange<Int> {
-        let visibleLines = max(Int(106 / 16), 1)
-        return visibleLines...50
+        text.count > characterLimit
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            editor
+        VStack(alignment: .trailing, spacing: 0) {
+            TextField(
+                "",
+                text: $text,
+                prompt: Text(key: placeholder)
+                    .font(Typography.font(style: .regular16))
+                    .foregroundColor(.white.opacity(0.3)),
+                axis: .vertical
+            )
+            .lineLimit(6...50)
+            .typography(style: .regular16)
+            .foregroundColor(.white)
+            .tint(.white)
+            .focused(isFocused)
+            .frame(maxWidth: .infinity, minHeight: 106, alignment: .topLeading)
 
-            if showsCharacterCounter {
-                characterCounter
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-            }
+            Text(verbatim: "\(text.count)/\(characterLimit)")
+                .typography(style: .regular16)
+                .foregroundColor(isOverLimit ? .error : .white.opacity(0.3))
         }
         .padding(.top, 24)
         .padding([.horizontal, .bottom], 16)
@@ -48,91 +50,36 @@ struct TextInputCard: View {
             }
         }
     }
-
-    @ViewBuilder
-    private var editor: some View {
-        if isReadOnly {
-            Group {
-                if text.isEmpty {
-                    Text(key: placeholder)
-                } else {
-                    Text(verbatim: text)
-                }
-            }
-            .typography(style: .regular16)
-            .foregroundStyle(text.isEmpty ? AnyShapeStyle(secondaryColor) : AnyShapeStyle(.white))
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .frame(height: 106, alignment: .top)
-        } else {
-            TextField(
-                "",
-                text: $text,
-                prompt: Text(key: placeholder)
-                    .font(Typography.font(style: .regular16))
-                    .foregroundColor(secondaryColor),
-                axis: .vertical
-            )
-            .lineLimit(editorLineLimit)
-            .typography(style: .regular16)
-            .foregroundColor(.white)
-            .tint(.white)
-            .frame(height: 106, alignment: .top)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-    }
-
-    private var characterCounter: some View {
-        Text(verbatim: "\(text.count)/\(characterLimit)")
-            .typography(style: .regular16)
-            .foregroundColor(isOverLimit ? .error : secondaryColor)
-    }
 }
 
 #Preview("Empty") {
-    TextInputCardEmptyPreview()
+    TextInputCardPreview(text: "")
 }
 
 #Preview("Typing") {
-    TextInputCardTypingPreview()
+    TextInputCardPreview(text: "Hi! Can you help me write")
 }
 
 #Preview("Over limit") {
-    TextInputCardOverLimitPreview()
-}
-
-private struct TextInputCardPreviewContainer: View {
-    @Binding var text: String
-
-    var body: some View {
-        TextInputCard(text: $text)
-            .padding(24)
-//            .background(Color.background)
-    }
-}
-
-private struct TextInputCardEmptyPreview: View {
-    @State private var text = ""
-
-    var body: some View {
-        TextInputCardPreviewContainer(text: $text)
-    }
-}
-
-private struct TextInputCardTypingPreview: View {
-    @State private var text = "Hi! Can you help me write"
-
-    var body: some View {
-        TextInputCardPreviewContainer(text: $text)
-    }
-}
-
-private struct TextInputCardOverLimitPreview: View {
-    @State private var text = String(
-        repeating: "I am writing to inform you that the project deadline has been moved to next Friday. Please adjust your schedule accordingly and let me ",
-        count: 4
+    TextInputCardPreview(
+        text: String(
+            repeating: "I am writing to inform you that the project deadline has been moved to next Friday. Please adjust your schedule accordingly and let me ",
+            count: 4
+        )
     )
+}
+
+private struct TextInputCardPreview: View {
+    @State private var text: String
+    @FocusState private var isFocused: Bool
+
+    init(text: String) {
+        _text = State(initialValue: text)
+    }
 
     var body: some View {
-        TextInputCardPreviewContainer(text: $text)
+        TextInputCard(isFocused: $isFocused, text: $text)
+            .padding(24)
+            .background(Color.background)
     }
 }

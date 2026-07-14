@@ -6,7 +6,6 @@
 //
 
 import AVFoundation
-import Foundation
 
 enum ResultVideoStubError: Error {
     case writerSetupFailed

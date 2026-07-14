@@ -3,7 +3,6 @@
 //  AIStudio
 //
 
-import Foundation
 
 enum WritingPromptBuilder {
     static func systemInstruction(
