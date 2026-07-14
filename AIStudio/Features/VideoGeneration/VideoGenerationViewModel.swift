@@ -27,8 +27,8 @@ final class VideoGenerationViewModel {
     }
 
     init(
-        sections: [VideoTemplateSection],
-        photoLibrary: PhotoLibraryAccessProviding
+        sections: [VideoTemplateSection] = VideoTemplateStub.sections,
+        photoLibrary: PhotoLibraryAccessProviding = PhotoLibraryAccessService()
     ) {
         self.sections = sections
         self.photoLibrary = photoLibrary

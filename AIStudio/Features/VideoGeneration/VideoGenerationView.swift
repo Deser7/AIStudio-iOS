@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct VideoGenerationView: View {
-    @State private var viewModel: VideoGenerationViewModel
+    @State private var viewModel = VideoGenerationViewModel()
     @Binding var navigationPath: NavigationPath
     @Environment(\.dismiss) private var dismiss
 
@@ -16,16 +16,6 @@ struct VideoGenerationView: View {
         GridItem(.flexible(), spacing: 16),
         GridItem(.flexible())
     ]
-
-    init(navigationPath: Binding<NavigationPath>) {
-        _navigationPath = navigationPath
-        _viewModel = State(
-            initialValue: VideoGenerationViewModel(
-                sections: VideoTemplateStub.sections,
-                photoLibrary: PhotoLibraryAccessService()
-            )
-        )
-    }
 
     var body: some View {
         @Bindable var viewModel = viewModel

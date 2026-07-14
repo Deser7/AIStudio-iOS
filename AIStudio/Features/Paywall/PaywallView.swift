@@ -8,11 +8,7 @@
 import SwiftUI
 
 struct PaywallView: View {
-    @State private var viewModel: PaywallViewModel
-
-    init(viewModel: PaywallViewModel = PaywallViewModel()) {
-        _viewModel = State(initialValue: viewModel)
-    }
+    @State private var viewModel = PaywallViewModel()
 
     var body: some View {
         @Bindable var viewModel = viewModel

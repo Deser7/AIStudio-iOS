@@ -9,14 +9,10 @@ import SwiftData
 import SwiftUI
 
 struct HomeView: View {
-    @State private var viewModel: HomeViewModel
+    @State private var viewModel = HomeViewModel()
     @State private var isSettingsPresented = false
     @State private var navigationPath = NavigationPath()
     @Environment(\.modelContext) private var modelContext
-
-    init(viewModel: HomeViewModel = HomeViewModel()) {
-        _viewModel = State(initialValue: viewModel)
-    }
 
     var body: some View {
         @Bindable var viewModel = viewModel
