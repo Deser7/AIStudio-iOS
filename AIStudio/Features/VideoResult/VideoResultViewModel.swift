@@ -19,8 +19,7 @@ enum VideoResultOverlay: Equatable {
 @Observable
 final class VideoResultViewModel {
     private(set) var overlay: VideoResultOverlay = .none
-    var isShareSheetPresented = false
-
+    
     let resultVideoURL: URL
     let savedNotificationMessage = "Video has been saved to your gallery"
 
@@ -46,11 +45,6 @@ final class VideoResultViewModel {
         Task {
             await performDownload()
         }
-    }
-
-    func shareTapped() {
-        guard overlay == .none else { return }
-        isShareSheetPresented = true
     }
 
     func dismissNotification() {

@@ -8,16 +8,10 @@
 import SwiftUI
 
 struct VideoResultView: View {
-    @State private var viewModel: VideoResultViewModel
+    @State private var viewModel = VideoResultViewModel()
     @Binding var navigationPath: NavigationPath
 
-    init(navigationPath: Binding<NavigationPath>) {
-        _navigationPath = navigationPath
-        _viewModel = State(initialValue: VideoResultViewModel())
-    }
-
     var body: some View {
-        @Bindable var viewModel = viewModel
 
         ZStack {
             Color.background
@@ -49,16 +43,22 @@ struct VideoResultView: View {
         .animation(.easeInOut(duration: 0.2), value: viewModel.overlay)
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
-        .sheet(isPresented: $viewModel.isShareSheetPresented) {
-            ActivityShareSheet(items: [viewModel.resultVideoURL])
-        }
     }
 
     private var actionButtons: some View {
         HStack(spacing: 16) {
-            SectionButton(title: "Share", style: .secondary) {
-                viewModel.shareTapped()
+            ShareLink(item: viewModel.resultVideoURL) {
+                Text(key: "Share")
+                    .typography(style: .semiBold16)
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 12)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
+                    .background(Color.card)
+                    .clipShape(Capsule())
             }
+            .buttonStyle(.plain)
+
             SectionButton(title: "Download", style: .primary) {
                 viewModel.downloadTapped()
             }
