@@ -20,8 +20,8 @@ enum MediaSourceOption: CaseIterable, Sendable {
     
     var subtitle: String {
         switch self {
-        case .files: "Upload an audio or video file"
-        case .gallery: "Select a video from your gallery"
+        case .files: "Upload any file"
+        case .gallery: "Select a photo or video from your gallery"
         }
     }
 }
@@ -42,7 +42,7 @@ struct MediaSourceOptionRow: View {
                     style: .sourceOption
                 )
             }
-            .padding(.leading, 24)
+            .padding(.horizontal, 24)
             .frame(maxWidth: .infinity, minHeight: 95, alignment: .leading)
             .background(CardBlurBackground(opacity: 0.6))
         }

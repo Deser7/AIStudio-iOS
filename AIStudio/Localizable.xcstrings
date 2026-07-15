@@ -1465,19 +1465,19 @@
         }
       }
     },
-    "Select a video from your gallery": {
+    "Select a photo or video from your gallery": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Select a video from your gallery"
+            "value": "Select a photo or video from your gallery"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Выберите видео из галереи"
+            "value": "Выберите фото или видео из галереи"
           }
         }
       }
@@ -1840,19 +1840,19 @@
         }
       }
     },
-    "Upload an audio or video file": {
+    "Upload any file": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Upload an audio or video file"
+            "value": "Upload any file"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Загрузите аудио- или видеофайл"
+            "value": "Загрузите любой файл"
           }
         }
       }

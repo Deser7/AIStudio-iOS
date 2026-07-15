@@ -30,6 +30,7 @@ struct ComposerInput: View {
     var maxAttachments = 10
     @Binding var text: String
     var isFocused: FocusState<Bool>.Binding
+    @Binding var isImportMenuExpanded: Bool
     let onPhotos: () -> Void
     let onFiles: () -> Void
     let onRemoveAttachment: (UUID) -> Void
@@ -98,6 +99,20 @@ struct ComposerInput: View {
             textField
             trailingActions
         }
+        .composerImportPopover(
+            isExpanded: $isImportMenuExpanded,
+            trailingInset: importMenuTrailingInset,
+            onGallery: onPhotos,
+            onFiles: onFiles
+        )
+        .onChange(of: showsSend) { _, showsSend in
+            guard showsSend else { return }
+            isImportMenuExpanded = false
+        }
+    }
+
+    private var importMenuTrailingInset: CGFloat {
+        buttonSize * 2 + 16
     }
 
     private func recordingLayout(progress: CGFloat) -> some View {
@@ -127,9 +142,10 @@ struct ComposerInput: View {
                     if isLoading {
                         Addendum(size: addendumSize, content: .loading)
                     } else if canAddMoreAttachments {
-                        importMenu {
+                        Button(action: onPhotos) {
                             Addendum(size: addendumSize, content: .addLabel)
                         }
+                        .buttonStyle(.plain)
                     }
                 }
             }
@@ -166,22 +182,16 @@ struct ComposerInput: View {
             GradientIconButton(size: buttonSize, icon: .generation, action: onSend)
         } else {
             HStack(spacing: 16) {
-                importMenu {
+                ComposerImportMenu(
+                    isExpanded: $isImportMenuExpanded,
+                    onPhotos: onPhotos,
+                    onFiles: onFiles
+                ) {
                     CircularIconButton(size: buttonSize, icon: .photo)
                 }
                 CircularIconButton(size: buttonSize, icon: .micro, action: onMicro)
             }
         }
-    }
-
-    private func importMenu<MenuLabel: View>(
-        @ViewBuilder label: @escaping () -> MenuLabel
-    ) -> some View {
-        ComposerImportMenu(
-            onPhotos: onPhotos,
-            onFiles: onFiles,
-            label: label
-        )
     }
 }
 
@@ -192,6 +202,7 @@ struct ComposerInput: View {
 private struct ComposerInputPreviewContainer: View {
     @State private var mode: ComposerInputMode
     @State private var attachments: [ComposerAttachmentPreview]
+    @State private var isImportMenuExpanded = false
     @Binding var text: String
     @FocusState private var isFocused: Bool
 
@@ -211,6 +222,7 @@ private struct ComposerInputPreviewContainer: View {
             attachments: attachments,
             text: $text,
             isFocused: $isFocused,
+            isImportMenuExpanded: $isImportMenuExpanded,
             onPhotos: {
                 mode = .attachment(isLoading: false)
                 attachments = [

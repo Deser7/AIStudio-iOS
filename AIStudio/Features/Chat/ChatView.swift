@@ -17,6 +17,7 @@ struct ChatView: View {
     @FocusState private var isComposerFocused: Bool
     @State private var userInterruptedScroll = false
     @State private var selectedPhotoItems: [PhotosPickerItem] = []
+    @State private var isImportMenuExpanded = false
 
     init(
         sessionID: UUID? = nil,
@@ -54,8 +55,18 @@ struct ChatView: View {
                 mediaAccessAlert(for: alert)
                     .transition(.opacity)
             }
+
+            if isImportMenuExpanded {
+                OutsideTapDismissOverlay {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        isImportMenuExpanded = false
+                    }
+                }
+                .transition(.opacity)
+            }
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.mediaAccessAlert)
+        .animation(.easeInOut(duration: 0.2), value: isImportMenuExpanded)
         .onChange(of: viewModel.openSettingsEvent) { _, event in
             guard event != nil else { return }
             openURL(AppSettings.url)
@@ -169,6 +180,7 @@ struct ChatView: View {
             maxAttachments: ChatViewModel.maxAttachments,
             text: $viewModel.promptText,
             isFocused: $isComposerFocused,
+            isImportMenuExpanded: $isImportMenuExpanded,
             onPhotos: { viewModel.importSourceSelected(.gallery) },
             onFiles: { viewModel.importSourceSelected(.files) },
             onRemoveAttachment: viewModel.removeAttachment,
