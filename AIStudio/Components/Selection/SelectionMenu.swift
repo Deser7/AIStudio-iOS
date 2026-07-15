@@ -7,35 +7,6 @@
 
 import SwiftUI
 
-protocol SelectionMenuOption: Identifiable, Hashable {
-    var title: String { get }
-    func trailingContent(isSelected: Bool) -> AnyView
-}
-
-extension SelectionMenuOption {
-    func trailingContent(isSelected: Bool) -> AnyView {
-        AnyView(EmptyView())
-    }
-}
-
-extension AspectRatio: Identifiable, SelectionMenuOption {
-    var id: Self { self }
-
-    func trailingContent(isSelected: Bool) -> AnyView {
-        AnyView(AspectRatioIcon(ratio: self, isSelected: isSelected))
-    }
-}
-
-enum VideoQuality: String, CaseIterable, SelectionMenuOption, Sendable {
-    case p540 = "540p"
-    case p720 = "720p"
-    case p1080 = "1080p"
-    case k4 = "4K"
-
-    var id: String { rawValue }
-    var title: String { rawValue }
-}
-
 struct SelectionMenu<Option: SelectionMenuOption>: View {
     let options: [Option]
     @Binding var selection: Option
@@ -88,27 +59,6 @@ struct SelectionMenu<Option: SelectionMenuOption>: View {
         options: TextSelectionOption.languageSamples,
         initial: TextSelectionOption.languageSamples[0]
     )
-}
-
-struct TextSelectionOption: SelectionMenuOption, Hashable, Sendable {
-    let title: String
-    var id: String { title }
-
-    static let languageSamples: [TextSelectionOption] = [
-        TextSelectionOption(title: "Original"),
-        TextSelectionOption(title: "English"),
-        TextSelectionOption(title: "Spanish"),
-        TextSelectionOption(title: "German"),
-        TextSelectionOption(title: "Italian"),
-        TextSelectionOption(title: "French"),
-    ]
-
-    static let styleSamples: [TextSelectionOption] = [
-        TextSelectionOption(title: "Original"),
-        TextSelectionOption(title: "Professional"),
-        TextSelectionOption(title: "Casual"),
-        TextSelectionOption(title: "Friendly"),
-    ]
 }
 
 private struct SelectionMenuPreview<Option: SelectionMenuOption>: View {
