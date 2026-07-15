@@ -1,0 +1,15 @@
+//
+//  PaywallBenefitIcon.swift
+//  AIStudio
+//
+//  Created by Андрей Спиридонов on 30.06.2026.
+//
+
+import Foundation
+
+enum PaywallBenefitIcon: String, CaseIterable {
+    case generate
+    case magicPencil
+    case prompt
+    case magic
+}

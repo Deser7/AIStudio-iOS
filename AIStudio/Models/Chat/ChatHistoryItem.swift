@@ -8,23 +8,7 @@
 import Foundation
 
 struct ChatHistoryItem: Identifiable, Hashable, Sendable {
-    let id: UUID
+    let id: UUID = UUID()
     let title: String
     let time: String
-
-    init(
-        id: UUID = UUID(),
-        title: String,
-        time: String
-    ) {
-        self.id = id
-        self.title = title
-        self.time = time
-    }
-}
-
-struct ChatHistorySection: Identifiable, Hashable, Sendable {
-    let id: String
-    let title: String
-    let items: [ChatHistoryItem]
 }

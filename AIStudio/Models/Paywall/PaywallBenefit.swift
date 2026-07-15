@@ -7,13 +7,6 @@
 
 import Foundation
 
-enum PaywallBenefitIcon: String, CaseIterable {
-    case generate
-    case magicPencil
-    case prompt
-    case magic
-}
-
 struct PaywallBenefit: Identifiable, Equatable {
     let id: String
     let title: String
