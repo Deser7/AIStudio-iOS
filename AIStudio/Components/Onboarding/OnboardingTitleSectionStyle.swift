@@ -27,7 +27,7 @@ extension OnboardingTitleSectionStyle {
         }
     }
 
-    var titleTypography: Typography.Style {
+    var titleTypography: TypographyStyle {
         switch self {
         case .onboarding:
             .bold28
@@ -43,7 +43,7 @@ extension OnboardingTitleSectionStyle {
         }
     }
 
-    var subtitleTypography: Typography.Style {
+    var subtitleTypography: TypographyStyle {
         switch self {
         case .onboarding:
             .regular16

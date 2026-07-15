@@ -60,11 +60,11 @@ struct AudioWaveform: View {
     }
 
     private func segmentStart(in totalWidth: CGFloat, at index: Int) -> CGFloat {
-        totalWidth * EqualizerIcon.Layout.segmentStart(at: index)
+        totalWidth * EqualizerIconLayout.segmentStart(at: index)
     }
 
     private func segmentWidth(in totalWidth: CGFloat, at index: Int) -> CGFloat {
-        totalWidth * (EqualizerIcon.Layout.segmentEnd(at: index) - EqualizerIcon.Layout.segmentStart(at: index))
+        totalWidth * (EqualizerIconLayout.segmentEnd(at: index) - EqualizerIconLayout.segmentStart(at: index))
     }
 
     private func segmentPlayedWidth(index: Int, totalWidth: CGFloat) -> CGFloat {

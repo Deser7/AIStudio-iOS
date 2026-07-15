@@ -15,7 +15,7 @@ struct SelectableText: UIViewRepresentable {
 
     init(
         _ text: String,
-        style: Typography.Style = .regular16,
+        style: TypographyStyle = .regular16,
         color: Color,
         isSelectable: Bool = true,
         allowsLongPressSelection: Bool = true

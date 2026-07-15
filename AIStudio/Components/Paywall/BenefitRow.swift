@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BenefitRow: View {
     let title: String
-    var style: Typography.Style = .medium16
+    var style: TypographyStyle = .medium16
     var icon: PaywallBenefitIcon = .generate
 
     private var fontSize: CGFloat { style.fontSize }

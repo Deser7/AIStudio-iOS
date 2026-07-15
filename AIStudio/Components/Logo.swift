@@ -8,14 +8,9 @@
 import SwiftUI
 
 struct Logo: View {
-    enum Icon {
-        case generate
-        case magic
-    }
-
     var size: CGFloat
-    var preset = AppGradient.Preset.main
-    var icon: Icon = .generate
+    var preset = AppGradientPreset.main
+    var icon: LogoIcon = .generate
     var iconColor: Color = .white
 
     private var iconSize: CGFloat { size * 44 / 72 }
@@ -48,7 +43,7 @@ struct Logo: View {
     let size: CGFloat = 40
 
     HStack(spacing: 16) {
-        ForEach(AppGradient.Preset.allCases, id: \.self) { preset in
+        ForEach(AppGradientPreset.allCases, id: \.self) { preset in
             VStack(spacing: 8) {
                 Logo(size: size, preset: preset, icon: .generate)
                 Logo(size: size, preset: preset, icon: .magic)

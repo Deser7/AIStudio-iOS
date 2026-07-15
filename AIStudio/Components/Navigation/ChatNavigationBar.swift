@@ -11,7 +11,7 @@ struct ChatNavigationBar: View {
     let title: String
     var subtitle: String = ""
     var style: ChatNavigationBarStyle = .aiChat
-    var preset = AppGradient.Preset.blue
+    var preset = AppGradientPreset.blue
     let onBack: () -> Void
     var onRegenerate: (() -> Void)?
     

@@ -8,13 +8,8 @@
 import SwiftUI
 
 struct SectionButton: View {
-    enum Style {
-        case primary
-        case secondary
-    }
-
     let title: String
-    var style: Style = .primary
+    var style: SectionButtonStyle = .primary
     let action: () -> Void
 
     @Environment(\.isEnabled) private var isEnabled

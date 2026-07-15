@@ -8,94 +8,15 @@
 import SwiftUI
 
 enum Typography {
-    enum Style: CaseIterable {
-        case regular12
-        case regular14
-        case regular16
-        case regular20
-        case medium12
-        case medium14
-        case medium16
-        case medium20
-        case semiBold14
-        case semiBold16
-        case semiBold20
-        case semiBold24
-        case bold16
-        case bold28
-        case bold34
-
-        var fontSize: CGFloat {
-            switch self {
-            case .regular12, .medium12: 12
-            case .regular14, .medium14, .semiBold14: 14
-            case .regular16, .medium16, .semiBold16, .bold16: 16
-            case .regular20, .medium20, .semiBold20: 20
-            case .semiBold24: 24
-            case .bold28: 28
-            case .bold34: 34
-            }
-        }
-
-        var lineHeight: CGFloat {
-            switch self {
-            case .regular14: 14
-            case .regular16: 16
-            case .semiBold20: 20
-            case .bold34: 41
-            default: fontSize
-            }
-        }
-
-        var weightTitle: String {
-            switch self {
-            case .regular12, .regular14, .regular16, .regular20:
-                "Regular"
-            case .medium12, .medium14, .medium16, .medium20:
-                "Medium"
-            case .semiBold14, .semiBold16, .semiBold20, .semiBold24:
-                "Semi Bold"
-            case .bold16, .bold28, .bold34:
-                "Bold"
-            }
-        }
-
-        fileprivate var postScriptName: String {
-            switch self {
-            case .regular12, .regular14, .regular16, .regular20:
-                "Inter-Regular"
-            case .medium12, .medium14, .medium16, .medium20:
-                "Inter-Medium"
-            case .semiBold14, .semiBold16, .semiBold20, .semiBold24:
-                "Inter-SemiBold"
-            case .bold16, .bold28, .bold34:
-                "Inter-Bold"
-            }
-        }
-
-        fileprivate var boldVariant: Style {
-            switch fontSize {
-            case 12: .bold16
-            case 14: .bold16
-            case 16: .bold16
-            case 20: .bold28
-            case 24: .bold28
-            case 28: .bold28
-            case 34: .bold34
-            default: .bold16
-            }
-        }
-    }
-
     /// Figma type scale для preview.
-    static let previewGroups: [(weight: String, styles: [Style])] = [
+    static let previewGroups: [(weight: String, styles: [TypographyStyle])] = [
         ("Semi Bold", [.semiBold14, .semiBold16, .semiBold20]),
         ("Medium", [.medium12, .medium16, .medium20]),
         ("Regular", [.regular14, .regular16, .regular20]),
         ("Bold", [.bold28, .bold34])
     ]
 
-    static func font(style: Style) -> Font {
+    static func font(style: TypographyStyle) -> Font {
         Font(uiFont(style: style))
     }
 
@@ -103,7 +24,7 @@ enum Typography {
     static func emphasizedText(
         _ emphasis: String,
         suffix: String,
-        style: Style = .regular16,
+        style: TypographyStyle = .regular16,
         color: Color
     ) -> AttributedString {
         AttributedString(
@@ -119,7 +40,7 @@ enum Typography {
     static func emphasizedAttributedString(
         _ emphasis: String,
         suffix: String,
-        style: Style = .regular16,
+        style: TypographyStyle = .regular16,
         color: Color
     ) -> NSAttributedString {
         let uiColor = UIColor(color)
@@ -138,7 +59,7 @@ enum Typography {
 
     static func attributedString(
         _ string: String,
-        style: Style,
+        style: TypographyStyle,
         color: Color
     ) -> NSAttributedString {
         NSAttributedString(
@@ -147,12 +68,12 @@ enum Typography {
         )
     }
 
-    static func uiFont(style: Style) -> UIFont {
+    static func uiFont(style: TypographyStyle) -> UIFont {
         UIFont(name: style.postScriptName, size: style.fontSize)
             ?? .systemFont(ofSize: style.fontSize, weight: uiWeight(for: style))
     }
 
-    private static func uiWeight(for style: Style) -> UIFont.Weight {
+    private static func uiWeight(for style: TypographyStyle) -> UIFont.Weight {
         switch style {
         case .regular12, .regular14, .regular16, .regular20:
             .regular
@@ -166,7 +87,7 @@ enum Typography {
     }
 
     private static func textAttributes(
-        style: Style,
+        style: TypographyStyle,
         color: UIColor
     ) -> [NSAttributedString.Key: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
@@ -183,7 +104,7 @@ enum Typography {
 }
 
 private struct TypographyModifier: ViewModifier {
-    let style: Typography.Style
+    let style: TypographyStyle
     let lineHeight: CGFloat
 
     func body(content: Content) -> some View {
@@ -195,7 +116,7 @@ private struct TypographyModifier: ViewModifier {
 
 extension View {
     func typography(
-        style: Typography.Style,
+        style: TypographyStyle,
         lineHeight: CGFloat? = nil
     ) -> some View {
         modifier(

@@ -8,13 +8,8 @@
 import SwiftUI
 
 struct CloseButton: View {
-    enum Style {
-        case surface
-        case light
-    }
-
     var size: CGFloat
-    var style: Style = .surface
+    var style: CloseButtonStyle = .surface
     let action: () -> Void
 
     private var backgroundColor: Color {
