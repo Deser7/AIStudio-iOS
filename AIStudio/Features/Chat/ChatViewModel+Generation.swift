@@ -39,7 +39,11 @@ extension ChatViewModel {
         var didShowAssistant = false
 
         do {
-            for try await delta in chatService.streamMessage(chatID: chatID, history: history) {
+            for try await delta in chatService.streamMessage(
+                chatID: chatID,
+                history: history,
+                systemInstruction: nil
+            ) {
                 guard !Task.isCancelled else { return }
 
                 assembled += delta

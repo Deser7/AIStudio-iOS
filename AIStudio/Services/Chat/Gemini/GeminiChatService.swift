@@ -1,50 +1,11 @@
 //
-//  ChatService.swift
+//  GeminiChatService.swift
 //  AIStudio
 //
 //  Created by Андрей Спиридонов on 15.07.2026.
 //
 
 import Foundation
-
-struct ChatInlineImage: Sendable, Equatable {
-    let mimeType: String
-    let data: Data
-}
-
-struct ChatHistoryMessage: Sendable, Equatable {
-    enum Role: String, Sendable {
-        case user
-        case model
-    }
-
-    let role: Role
-    let text: String?
-    let images: [ChatInlineImage]
-
-    init(role: Role, text: String?, images: [ChatInlineImage] = []) {
-        self.role = role
-        self.text = text
-        self.images = images
-    }
-}
-
-protocol ChatServing: Sendable {
-    func streamMessage(
-        chatID: String,
-        history: [ChatHistoryMessage],
-        systemInstruction: String?
-    ) -> AsyncThrowingStream<String, Error>
-}
-
-extension ChatServing {
-    func streamMessage(
-        chatID: String,
-        history: [ChatHistoryMessage]
-    ) -> AsyncThrowingStream<String, Error> {
-        streamMessage(chatID: chatID, history: history, systemInstruction: nil)
-    }
-}
 
 struct GeminiChatService: ChatServing {
     private let session: URLSession
@@ -107,9 +68,9 @@ struct GeminiChatService: ChatServing {
 
         let trimmedInstruction = systemInstruction?
             .trimmingCharacters(in: .whitespacesAndNewlines)
-        let instruction: GeminiGenerateContentRequest.Content? =
+        let instruction: GeminiRequestContent? =
             if let trimmedInstruction, !trimmedInstruction.isEmpty {
-                GeminiGenerateContentRequest.Content(
+                GeminiRequestContent(
                     role: nil,
                     parts: [.init(text: trimmedInstruction)]
                 )
@@ -120,7 +81,7 @@ struct GeminiChatService: ChatServing {
         let requestBody = GeminiGenerateContentRequest(
             systemInstruction: instruction,
             contents: history.map { message in
-                GeminiGenerateContentRequest.Content(
+                GeminiRequestContent(
                     role: message.role.rawValue,
                     parts: Self.parts(for: message)
                 )
@@ -199,8 +160,8 @@ struct GeminiChatService: ChatServing {
         }
     }
 
-    private static func parts(for message: ChatHistoryMessage) -> [GeminiGenerateContentRequest.Part] {
-        var parts: [GeminiGenerateContentRequest.Part] = []
+    private static func parts(for message: ChatHistoryMessage) -> [GeminiRequestPart] {
+        var parts: [GeminiRequestPart] = []
 
         if let text = message.text?.trimmingCharacters(in: .whitespacesAndNewlines), !text.isEmpty {
             parts.append(.init(text: text))
@@ -234,88 +195,5 @@ struct GeminiChatService: ChatServing {
             let message = String(data: data, encoding: .utf8)
             return .httpStatus(code, message)
         }
-    }
-}
-
-private struct GeminiGenerateContentRequest: Encodable {
-    let systemInstruction: Content?
-    let contents: [Content]
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(systemInstruction, forKey: .systemInstruction)
-        try container.encode(contents, forKey: .contents)
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case systemInstruction
-        case contents
-    }
-
-    struct Content: Encodable {
-        let role: String?
-        let parts: [Part]
-
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encodeIfPresent(role, forKey: .role)
-            try container.encode(parts, forKey: .parts)
-        }
-
-        enum CodingKeys: String, CodingKey {
-            case role
-            case parts
-        }
-    }
-
-    struct Part: Encodable {
-        var text: String?
-        var inlineData: InlineData?
-
-        init(text: String) {
-            self.text = text
-            inlineData = nil
-        }
-
-        init(inlineData: InlineData) {
-            text = nil
-            self.inlineData = inlineData
-        }
-
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            if let text {
-                try container.encode(text, forKey: .text)
-            }
-            if let inlineData {
-                try container.encode(inlineData, forKey: .inlineData)
-            }
-        }
-
-        enum CodingKeys: String, CodingKey {
-            case text
-            case inlineData
-        }
-
-        struct InlineData: Encodable {
-            let mimeType: String
-            let data: String
-        }
-    }
-}
-
-private struct GeminiGenerateContentResponse: Decodable {
-    let candidates: [Candidate]?
-
-    struct Candidate: Decodable {
-        let content: Content?
-    }
-
-    struct Content: Decodable {
-        let parts: [Part]?
-    }
-
-    struct Part: Decodable {
-        let text: String?
     }
 }
