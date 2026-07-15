@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum AvatarButtonKind {
-    case ai
-    case user
-}
-
 struct AvatarButton: View {
     var kind: AvatarButtonKind
     let action: () -> Void

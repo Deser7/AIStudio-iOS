@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum AppInputStyle {
-    case main
-    case search
-}
-
 struct AppInput: View {
     var style: AppInputStyle = .main
     var placeholder = "Ask anything..."

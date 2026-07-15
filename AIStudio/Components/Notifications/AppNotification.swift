@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-enum AppNotificationContent {
-    case textCopied(message: String)
-    case videoSaved(message: String)
-    case fileTooLarge(title: String, subtitle: String)
-}
-
 struct AppNotification: View {
     let content: AppNotificationContent
     

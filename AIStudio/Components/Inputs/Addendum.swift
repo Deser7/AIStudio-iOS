@@ -7,13 +7,6 @@
 
 import SwiftUI
 
-enum AddendumContent {
-    case add(() -> Void)
-    case addLabel
-    case loading
-    case photo(Image, onClose: () -> Void)
-}
-
 struct Addendum: View {
     var size: CGFloat
     var content: AddendumContent

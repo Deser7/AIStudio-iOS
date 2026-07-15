@@ -7,17 +7,6 @@
 
 import SwiftUI
 
-struct OutsideTapDismissOverlay: View {
-    let onDismiss: () -> Void
-
-    var body: some View {
-        Color.black.opacity(0.001)
-            .ignoresSafeArea()
-            .contentShape(Rectangle())
-            .onTapGesture(perform: onDismiss)
-    }
-}
-
 struct ComposerImportMenu<MenuLabel: View>: View {
     @Binding var isExpanded: Bool
     let onPhotos: () -> Void

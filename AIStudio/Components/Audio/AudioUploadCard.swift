@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-enum AudioUploadState: Sendable {
-    case idle
-    case loading
-    case error
-}
-
 struct AudioUploadCard: View {
     var state: AudioUploadState = .idle
     let onTap: () -> Void

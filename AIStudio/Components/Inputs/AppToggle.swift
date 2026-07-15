@@ -35,12 +35,6 @@ struct AppToggle: View {
     }
 }
 
-struct AppToggleStyle: ToggleStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        AppToggle(isOn: configuration.$isOn)
-    }
-}
-
 #Preview {
     AppTogglePreview()
 }

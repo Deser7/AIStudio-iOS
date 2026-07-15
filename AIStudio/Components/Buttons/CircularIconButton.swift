@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-enum CircularIconButtonIcon {
-    case photo
-    case micro
-    case cross
-}
-
 struct CircularIconButton: View {
     var size: CGFloat
     let icon: CircularIconButtonIcon

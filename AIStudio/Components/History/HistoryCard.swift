@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum HistoryCardVariant {
-    case `default`
-    case variant2
-}
-
 struct HistoryCard: View {
     let title: String
     let subtitle: String

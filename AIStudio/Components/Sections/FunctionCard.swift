@@ -7,25 +7,6 @@
 
 import SwiftUI
 
-enum FunctionCardOption: Sendable {
-    case fixWriting
-    case understandFaster
-
-    var title: String {
-        switch self {
-        case .fixWriting: "Fix & Improve\nWriting"
-        case .understandFaster: "Understand\nFaster"
-        }
-    }
-
-    var subtitle: String {
-        switch self {
-        case .fixWriting: "Rewrite • Fix grammar"
-        case .understandFaster: "Summarize • Key points"
-        }
-    }
-}
-
 struct FunctionCard: View {
     let option: FunctionCardOption
     let action: () -> Void

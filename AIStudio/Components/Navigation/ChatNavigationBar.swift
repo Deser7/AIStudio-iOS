@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-enum ChatNavigationBarStyle {
-    case aiChat
-    case aiVideo
-    case centeredTitle
-}
-
 struct ChatNavigationBar: View {
     let title: String
     var subtitle: String = ""

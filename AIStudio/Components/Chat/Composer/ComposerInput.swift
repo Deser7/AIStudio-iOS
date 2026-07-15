@@ -7,21 +7,6 @@
 
 import SwiftUI
 
-enum ComposerInputMode: Equatable {
-    case text
-    case recording(progress: CGFloat)
-    case attachment(isLoading: Bool)
-}
-
-struct ComposerAttachmentPreview: Identifiable, Equatable {
-    let id: UUID
-    let image: Image
-
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
 struct ComposerInput: View {
     var mode: ComposerInputMode = .text
     var placeholder = "How can I help you?"
