@@ -126,7 +126,7 @@ struct ChatNavigationBar: View {
     
     private var regenerateButton: some View {
         Button(action: { onRegenerate?() }) {
-            RegenerateIcon()
+            HistoryIcon()
                 .fill(.white)
                 .frame(width: 24, height: 24)
                 .frame(width: 44, height: 44)

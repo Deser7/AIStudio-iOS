@@ -1,5 +1,5 @@
 //
-//  RegenerateIcon.swift
+//  HistoryIcon.swift
 //  AIStudio
 //
 //  Created by Андрей Спиридонов on 24.06.2026.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RegenerateIcon: Shape {
+struct HistoryIcon: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
         let width = rect.size.width
@@ -92,7 +92,7 @@ struct RegenerateIcon: Shape {
 }
 
 #Preview {
-    RegenerateIcon()
+    HistoryIcon()
         .fill(.black)
         .frame(width: 48, height: 48)
 }
