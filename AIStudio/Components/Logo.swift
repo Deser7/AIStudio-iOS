@@ -9,8 +9,8 @@ import SwiftUI
 
 struct Logo: View {
     var size: CGFloat
-    var preset = AppGradientPreset.main
-    var icon: LogoIcon = .generate
+    var preset: AppGradientPreset
+    var icon: LogoIcon
     var iconColor: Color = .white
 
     private var iconSize: CGFloat { size * 44 / 72 }
@@ -35,19 +35,50 @@ struct Logo: View {
         case .magic:
             MagicIcon()
                 .fill(iconColor)
+        case .marketer:
+            MarketerIcon()
+                .fill(iconColor)
+        case .doctor:
+            DoctorIcon()
+                .fill(iconColor)
+        case .copywriter:
+            CopywriterIcon()
+                .fill(iconColor)
+        case .languageTeacher:
+            LanguageTeacherIcon()
+                .fill(iconColor)
+        case .contentCreator:
+            ContentCreatorIcon()
+                .fill(iconColor)
+        case .fitnessCoach:
+            FitnessCoachIcon()
+                .fill(iconColor)
+        case .designer:
+            DesignerIcon()
+                .fill(iconColor)
+        case .programmer:
+            ProgrammerIcon()
+                .fill(iconColor)
         }
     }
 }
 
 #Preview {
     let size: CGFloat = 40
+    let items: [(LogoIcon, AppGradientPreset)] = [
+        (.marketer, .blue),
+        (.doctor, .pink),
+        (.copywriter, .blue),
+        (.languageTeacher, .green),
+        (.contentCreator, .purple),
+        (.fitnessCoach, .pink),
+        (.designer, .purple),
+        (.programmer, .green),
+    ]
 
-    HStack(spacing: 16) {
-        ForEach(AppGradientPreset.allCases, id: \.self) { preset in
-            VStack(spacing: 8) {
-                Logo(size: size, preset: preset, icon: .generate)
-                Logo(size: size, preset: preset, icon: .magic)
-            }
+    LazyVGrid(columns: [GridItem(.adaptive(minimum: size))], spacing: 16) {
+        ForEach(Array(items.enumerated()), id: \.offset) { _, item in
+            Logo(size: size, preset: item.1, icon: item.0)
         }
     }
     .padding(24)

@@ -50,7 +50,7 @@ struct HistoryCard: View {
                 .fill(AppGradient.main)
                 .frame(width: 28, height: 28)
         case .variant2:
-            Logo(size: 32, preset: .blue)
+            Logo(size: 32, preset: .blue, icon: .generate)
                 .frame(width: 32, height: 32)
                 .clipShape(Circle())
         }
