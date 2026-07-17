@@ -59,7 +59,8 @@ extension ChatViewModel {
         repository.upsert(
             id: sessionID,
             fallbackTitle: fallbackTitle,
-            messages: messages
+            messages: messages,
+            direction: selectedDirection
         )
         subtitleDate = .now
     }

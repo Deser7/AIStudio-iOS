@@ -22,13 +22,13 @@ struct AiChatRow<Icon: View>: View {
                     .frame(width: 40, height: 40)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(title)
+                    Text(key: title)
                         .typography(style: .semiBold16)
                         .foregroundStyle(.white)
                         .tracking(0)
                         .lineLimit(1)
 
-                    Text(subtitle)
+                    Text(key: subtitle)
                         .typography(style: .regular12)
                         .foregroundStyle(.white.opacity(0.5))
                         .tracking(0)
@@ -66,7 +66,7 @@ struct AiChatRow<Icon: View>: View {
                         .fill(.white.opacity(0.5))
                         .frame(width: 12, height: 12)
 
-                    Text(viewsText)
+                    Text(key: viewsText)
                         .typography(style: .regular12)
                         .foregroundStyle(.white.opacity(0.5))
                         .tracking(0)
@@ -81,7 +81,7 @@ struct AiChatRow<Icon: View>: View {
             }
 
             if let author {
-                Text(author)
+                Text(key: author)
                     .typography(style: .regular12)
                     .foregroundStyle(.white.opacity(0.5))
                     .tracking(0)

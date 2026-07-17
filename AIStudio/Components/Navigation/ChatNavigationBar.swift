@@ -12,7 +12,9 @@ struct ChatNavigationBar: View {
     var subtitle: String = ""
     var style: ChatNavigationBarStyle = .aiChat
     var preset = AppGradientPreset.blue
+    var logoIcon: LogoIcon = .generate
     let onBack: () -> Void
+    var onTitleTap: (() -> Void)?
     var onRegenerate: (() -> Void)?
     
     private var showsRegenerateButton: Bool {
@@ -48,19 +50,34 @@ struct ChatNavigationBar: View {
         HStack(spacing: 10) {
             backButton
             
-            HStack(spacing: 10) {
-                leadingIcon
-                
-                titleSection
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            titleTapTarget
+                .frame(maxWidth: .infinity, alignment: .leading)
             
             Spacer(minLength: 10)
             
             if showsRegenerateButton {
                 regenerateButton
             }
+        }
+    }
+
+    @ViewBuilder
+    private var titleTapTarget: some View {
+        let content = HStack(spacing: 10) {
+            leadingIcon
+
+            titleSection
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+
+        if let onTitleTap {
+            Button(action: onTitleTap) {
+                content
+            }
+            .buttonStyle(.plain)
+            .accessibilityHint(Text("Choose chat direction"))
+        } else {
+            content
         }
     }
     
@@ -86,7 +103,7 @@ struct ChatNavigationBar: View {
     private var leadingIcon: some View {
         switch style {
         case .aiChat:
-            Logo(size: 32, preset: preset, icon: .generate)
+            Logo(size: 32, preset: preset, icon: logoIcon)
         case .aiVideo:
             Logo(size: 32, preset: preset, icon: .magic)
         case .centeredTitle:

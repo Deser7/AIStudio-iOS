@@ -38,33 +38,52 @@ final class ChatHistoryRepository {
         self.modelContext = modelContext
     }
 
-    func session(id: UUID) -> (title: String, updatedAt: Date, messages: [ChatMessage])? {
+    func session(id: UUID) -> (
+        title: String,
+        updatedAt: Date,
+        messages: [ChatMessage],
+        direction: ChatDirection
+    )? {
         guard let entity = fetchEntity(id: id) else { return nil }
         return (
             entity.title,
             entity.updatedAt,
-            ChatMessagePersistenceMapper.decode(entity.messagesData)
+            ChatMessagePersistenceMapper.decode(entity.messagesData),
+            entity.direction
         )
     }
 
-    func upsert(id: UUID, fallbackTitle: String, messages: [ChatMessage]) {
+    func upsert(
+        id: UUID,
+        fallbackTitle: String,
+        messages: [ChatMessage],
+        direction: ChatDirection = .aiChat
+    ) {
         let data = ChatMessagePersistenceMapper.encode(messages)
         guard !data.isEmpty else { return }
 
         if let entity = fetchEntity(id: id) {
             entity.updatedAt = .now
             entity.messagesData = data
+            entity.directionRawValue = direction.rawValue
         } else {
             modelContext.insert(
                 ChatSessionEntity(
                     id: id,
                     title: fallbackTitle,
                     updatedAt: .now,
-                    messagesData: data
+                    messagesData: data,
+                    directionRawValue: direction.rawValue
                 )
             )
         }
 
+        save()
+    }
+
+    func updateDirection(id: UUID, direction: ChatDirection) {
+        guard let entity = fetchEntity(id: id) else { return }
+        entity.directionRawValue = direction.rawValue
         save()
     }
 
@@ -146,3 +165,4 @@ final class ChatHistoryRepository {
         return localizedSectionDate(from: date)
     }
 }
+

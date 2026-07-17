@@ -42,7 +42,7 @@ extension ChatViewModel {
             for try await delta in chatService.streamMessage(
                 chatID: chatID,
                 history: history,
-                systemInstruction: nil
+                systemInstruction: selectedDirection.systemInstruction
             ) {
                 guard !Task.isCancelled else { return }
 

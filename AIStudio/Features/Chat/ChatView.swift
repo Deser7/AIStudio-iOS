@@ -18,6 +18,7 @@ struct ChatView: View {
     @State private var userInterruptedScroll = false
     @State private var selectedPhotoItems: [PhotosPickerItem] = []
     @State private var isImportMenuExpanded = false
+    @State private var isDirectionMenuExpanded = false
 
     init(
         sessionID: UUID? = nil,
@@ -38,14 +39,18 @@ struct ChatView: View {
             Color.background
                 .ignoresSafeArea()
 
-            content
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .contentShape(Rectangle())
-                .simultaneousGesture(
-                    TapGesture().onEnded {
-                        isComposerFocused = false
-                    }
-                )
+            Group {
+                if viewModel.showsEmptyState {
+                    content
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            isComposerFocused = false
+                        }
+                } else {
+                    content
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             if let alert = viewModel.mediaAccessAlert {
                 Color.black.opacity(0.5)
@@ -64,9 +69,34 @@ struct ChatView: View {
                 }
                 .transition(.opacity)
             }
+
+            if isDirectionMenuExpanded {
+                ZStack(alignment: .top) {
+                    OutsideTapDismissOverlay {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            isDirectionMenuExpanded = false
+                        }
+                    }
+
+                    ChatDirectionMenu { direction in
+                        viewModel.selectDirection(direction)
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            isDirectionMenuExpanded = false
+                        }
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.top, 8)
+                }
+                .transition(
+                    .opacity.combined(
+                        with: .scale(scale: 0.96, anchor: .top)
+                    )
+                )
+            }
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.mediaAccessAlert)
         .animation(.easeInOut(duration: 0.2), value: isImportMenuExpanded)
+        .animation(.easeInOut(duration: 0.2), value: isDirectionMenuExpanded)
         .onChange(of: viewModel.openSettingsEvent) { _, event in
             guard event != nil else { return }
             openURL(AppSettings.url)
@@ -79,10 +109,19 @@ struct ChatView: View {
                 title: viewModel.title,
                 subtitle: viewModel.subtitle,
                 style: .aiChat,
-                preset: .main,
+                preset: viewModel.selectedDirection.gradientPreset,
+                logoIcon: viewModel.selectedDirection.logoIcon,
                 onBack: { dismiss() },
+                onTitleTap: {
+                    isComposerFocused = false
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        isImportMenuExpanded = false
+                        isDirectionMenuExpanded.toggle()
+                    }
+                },
                 onRegenerate: {
                     isComposerFocused = false
+                    isDirectionMenuExpanded = false
                     navigationPath.append(AppRoute.chatHistory)
                 }
             )
