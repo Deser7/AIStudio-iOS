@@ -20,6 +20,10 @@ struct ChatNavigationBar: View {
     private var showsRegenerateButton: Bool {
         style != .centeredTitle && onRegenerate != nil
     }
+
+    private var isTitleTappable: Bool {
+        onTitleTap != nil && style == .aiChat
+    }
     
     var body: some View {
         barContent
@@ -65,17 +69,17 @@ struct ChatNavigationBar: View {
     private var titleTapTarget: some View {
         let content = HStack(spacing: 10) {
             leadingIcon
-
+            
             titleSection
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
 
-        if let onTitleTap {
-            Button(action: onTitleTap) {
+        if isTitleTappable {
+            Button(action: { onTitleTap?() }) {
                 content
             }
             .buttonStyle(.plain)
-            .accessibilityHint(Text("Choose chat direction"))
+            .accessibilityLabel(Text(key: title))
         } else {
             content
         }

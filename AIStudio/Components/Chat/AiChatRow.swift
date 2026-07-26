@@ -66,7 +66,7 @@ struct AiChatRow<Icon: View>: View {
                         .fill(.white.opacity(0.5))
                         .frame(width: 12, height: 12)
 
-                    Text(key: viewsText)
+                    Text(viewsText)
                         .typography(style: .regular12)
                         .foregroundStyle(.white.opacity(0.5))
                         .tracking(0)
@@ -81,7 +81,7 @@ struct AiChatRow<Icon: View>: View {
             }
 
             if let author {
-                Text(key: author)
+                Text(author)
                     .typography(style: .regular12)
                     .foregroundStyle(.white.opacity(0.5))
                     .tracking(0)

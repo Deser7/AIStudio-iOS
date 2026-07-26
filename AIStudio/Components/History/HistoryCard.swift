@@ -14,32 +14,32 @@ struct HistoryCard: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
-            HStack(spacing: 24) {
-                historyIcon
+        HStack(spacing: 24) {
+            historyIcon
 
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(title)
-                        .typography(style: .semiBold16)
-                        .foregroundStyle(.white)
-                        .tracking(0)
-                        .lineLimit(1)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .typography(style: .semiBold16)
+                    .foregroundStyle(.white)
+                    .tracking(0)
+                    .lineLimit(1)
 
-                    Text(subtitle)
-                        .typography(style: .regular14)
-                        .foregroundStyle(.white.opacity(0.5))
-                        .tracking(0)
-                        .lineLimit(1)
-                        .multilineTextAlignment(.leading)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                Text(subtitle)
+                    .typography(style: .regular14)
+                    .foregroundStyle(.white.opacity(0.5))
+                    .tracking(0)
+                    .lineLimit(1)
+                    .multilineTextAlignment(.leading)
             }
-            .padding(.horizontal, 24)
-            .padding(.vertical, 16)
-            .frame(width: 358, height: 72, alignment: .leading)
-            .background(CardBlurBackground(opacity: 0.4))
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .buttonStyle(.plain)
+        .padding(.horizontal, 24)
+        .padding(.vertical, 16)
+        .frame(width: 358, height: 72, alignment: .leading)
+        .background(CardBlurBackground(opacity: 0.4))
+        .contentShape(Rectangle())
+        .onTapGesture(perform: action)
+        .accessibilityAddTraits(.isButton)
     }
 
     @ViewBuilder

@@ -15,6 +15,7 @@ struct ChatHistoryView: View {
 
     @State private var renameItem: ChatHistoryItem?
     @State private var renameText = ""
+    @State private var actionsItem: ChatHistoryItem?
 
     init(
         navigationPath: Binding<NavigationPath>,
@@ -32,6 +33,7 @@ struct ChatHistoryView: View {
         ZStack {
             Color.background
                 .ignoresSafeArea()
+                .allowsHitTesting(false)
 
             VStack(spacing: 0) {
                 ChatNavigationBar(
@@ -60,6 +62,29 @@ struct ChatHistoryView: View {
                 guard let renameItem else { return }
                 viewModel.rename(renameItem, to: renameText)
                 self.renameItem = nil
+            }
+        }
+        .confirmationDialog(
+            actionsItem?.title ?? "",
+            isPresented: Binding(
+                get: { actionsItem != nil },
+                set: { if !$0 { actionsItem = nil } }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button("Rename") {
+                guard let actionsItem else { return }
+                renameText = actionsItem.title
+                renameItem = actionsItem
+                self.actionsItem = nil
+            }
+            Button("Delete", role: .destructive) {
+                guard let actionsItem else { return }
+                viewModel.delete(actionsItem)
+                self.actionsItem = nil
+            }
+            Button("Cancel", role: .cancel) {
+                actionsItem = nil
             }
         }
         .onAppear {
@@ -103,14 +128,8 @@ struct ChatHistoryView: View {
                         subtitle: item.time,
                         action: { openChat(item) }
                     )
-                    .contextMenu {
-                        Button("Rename") {
-                            renameText = item.title
-                            renameItem = item
-                        }
-                        Button("Delete", role: .destructive) {
-                            viewModel.delete(item)
-                        }
+                    .onLongPressGesture {
+                        actionsItem = item
                     }
                 }
             }
@@ -118,9 +137,16 @@ struct ChatHistoryView: View {
     }
 
     private func openChat(_ item: ChatHistoryItem) {
-        var path = NavigationPath()
-        path.append(AppRoute.chatSession(item.id))
-        navigationPath = path
+        let sessionID = item.id
+        // contextMenu was removed on purpose: replacing NavigationPath while a
+        // UIContextMenuInteraction is attached leaves an invisible hit overlay.
+        var transaction = Transaction()
+        transaction.disablesAnimations = true
+        withTransaction(transaction) {
+            var path = NavigationPath()
+            path.append(AppRoute.chatSession(sessionID))
+            navigationPath = path
+        }
     }
 }
 

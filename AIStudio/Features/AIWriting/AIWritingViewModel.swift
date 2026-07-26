@@ -36,7 +36,7 @@ final class AIWritingViewModel {
     }
 
     init(chatService: (any ChatServing)? = nil) {
-        self.chatService = chatService ?? GeminiChatService()
+        self.chatService = chatService ?? FailoverChatService.live
     }
 
     func selectAction(_ action: WritingAction) {

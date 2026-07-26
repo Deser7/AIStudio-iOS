@@ -2,7 +2,7 @@
 //  ChatDirectionMenu.swift
 //  AIStudio
 //
-//  Created by Андрей Спиридонов on 17.07.2026.
+//  Created by Наташа Спиридонова on 17.07.2026.
 //
 
 import SwiftUI
@@ -15,12 +15,13 @@ struct ChatDirectionMenu: View {
             ForEach(ChatDirection.allCases) { direction in
                 AiChatRow(
                     title: direction.title,
-                    subtitle: direction.subtitle,
-                    action: { onSelect(direction) }
+                    subtitle: direction.subtitle
                 ) {
+                    onSelect(direction)
+                } icon: {
                     Logo(
                         size: 40,
-                        preset: direction.gradientPreset,
+                        preset: direction.logoPreset,
                         icon: direction.logoIcon
                     )
                 }

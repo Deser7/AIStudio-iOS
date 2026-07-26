@@ -32,10 +32,11 @@ enum ChatImportSource: Equatable {
 final class ChatViewModel {
     static let maxAttachments = 10
 
+    var selectedDirection: ChatDirection = .aiChat
+
     var promptText = ""
     var messages: [ChatMessage] = []
     var subtitleDate: Date = .now
-    var selectedDirection: ChatDirection = .aiChat
     var isGenerating = false
     var streamingAssistantID: UUID?
     var scrollPinUserMessageID: UUID?
@@ -52,6 +53,14 @@ final class ChatViewModel {
         selectedDirection.title
     }
 
+    var navigationLogoIcon: LogoIcon {
+        selectedDirection.logoIcon
+    }
+
+    var navigationLogoPreset: AppGradientPreset {
+        selectedDirection.logoPreset
+    }
+
     var subtitle: String {
         Self.dateFormatter.locale = LanguageStore.resolvedLocale
         return Self.dateFormatter.string(from: subtitleDate)
@@ -62,7 +71,7 @@ final class ChatViewModel {
     }
 
     var composerPlaceholder: String {
-        selectedDirection.placeholder
+        selectedDirection.composerPlaceholder
     }
 
     var composerMode: ComposerInputMode {
@@ -122,6 +131,7 @@ final class ChatViewModel {
     }
 
     func selectDirection(_ direction: ChatDirection) {
+        guard selectedDirection != direction else { return }
         selectedDirection = direction
         repository.updateDirection(id: sessionID, direction: direction)
     }

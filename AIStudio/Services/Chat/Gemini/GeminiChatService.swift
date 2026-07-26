@@ -14,7 +14,7 @@ struct GeminiChatService: ChatServing {
     private let encoder: JSONEncoder
 
     init(
-        session: URLSession = .shared,
+        session: URLSession = .aiChat,
         configuration: APIConfiguration = .live
     ) {
         self.session = session

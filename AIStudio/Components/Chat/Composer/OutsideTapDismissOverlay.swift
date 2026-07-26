@@ -11,7 +11,7 @@ struct OutsideTapDismissOverlay: View {
     let onDismiss: () -> Void
 
     var body: some View {
-        Color.black.opacity(0.001)
+        Color.clear
             .ignoresSafeArea()
             .contentShape(Rectangle())
             .onTapGesture(perform: onDismiss)

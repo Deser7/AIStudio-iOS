@@ -13,6 +13,6 @@ struct APIConfiguration: Sendable {
 
     static let live = APIConfiguration(
         baseURL: URL(string: "https://generativelanguage.googleapis.com/v1beta")!,
-        model: "gemini-flash-latest"
+        model: "gemini-3.1-flash-lite"
     )
 }

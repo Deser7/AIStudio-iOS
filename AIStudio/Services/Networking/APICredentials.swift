@@ -8,15 +8,19 @@
 import Foundation
 
 enum APICredentials {
-    static var geminiAPIKey: String {
+    static var geminiAPIKey: String { string(for: "GeminiAPIKey") }
+    static var cerebrasAPIKey: String { string(for: "CerebrasAPIKey") }
+    static var openRouterAPIKey: String { string(for: "OpenRouterAPIKey") }
+
+    private static func string(for key: String) -> String {
         guard
             let url = Bundle.main.url(forResource: "Secrets", withExtension: "plist"),
             let values = NSDictionary(contentsOf: url),
-            let key = values["GeminiAPIKey"] as? String
+            let value = values[key] as? String
         else {
             return ""
         }
 
-        return key.trimmingCharacters(in: .whitespacesAndNewlines)
+        return value.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }

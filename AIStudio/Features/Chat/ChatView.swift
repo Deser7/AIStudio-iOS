@@ -39,18 +39,14 @@ struct ChatView: View {
             Color.background
                 .ignoresSafeArea()
 
-            Group {
-                if viewModel.showsEmptyState {
-                    content
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            isComposerFocused = false
-                        }
-                } else {
-                    content
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            content
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .contentShape(Rectangle())
+                .simultaneousGesture(
+                    TapGesture().onEnded {
+                        isComposerFocused = false
+                    }
+                )
 
             if let alert = viewModel.mediaAccessAlert {
                 Color.black.opacity(0.5)
@@ -69,24 +65,17 @@ struct ChatView: View {
                 }
                 .transition(.opacity)
             }
-
+        }
+        .overlay(alignment: .top) {
             if isDirectionMenuExpanded {
-                ZStack(alignment: .top) {
-                    OutsideTapDismissOverlay {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            isDirectionMenuExpanded = false
-                        }
+                ChatDirectionMenu { direction in
+                    viewModel.selectDirection(direction)
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        isDirectionMenuExpanded = false
                     }
-
-                    ChatDirectionMenu { direction in
-                        viewModel.selectDirection(direction)
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            isDirectionMenuExpanded = false
-                        }
-                    }
-                    .padding(.horizontal, 24)
-                    .padding(.top, 8)
                 }
+                .padding(.horizontal, 24)
+                .padding(.top, 8)
                 .transition(
                     .opacity.combined(
                         with: .scale(scale: 0.96, anchor: .top)
@@ -102,6 +91,18 @@ struct ChatView: View {
             openURL(AppSettings.url)
             viewModel.consumeOpenSettingsEvent()
         }
+        .onChange(of: isImportMenuExpanded) { _, isExpanded in
+            guard isExpanded, isDirectionMenuExpanded else { return }
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isDirectionMenuExpanded = false
+            }
+        }
+        .onChange(of: isComposerFocused) { _, isFocused in
+            guard isFocused, isDirectionMenuExpanded else { return }
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isDirectionMenuExpanded = false
+            }
+        }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .safeAreaInset(edge: .top, spacing: 0) {
@@ -109,19 +110,25 @@ struct ChatView: View {
                 title: viewModel.title,
                 subtitle: viewModel.subtitle,
                 style: .aiChat,
-                preset: viewModel.selectedDirection.gradientPreset,
-                logoIcon: viewModel.selectedDirection.logoIcon,
-                onBack: { dismiss() },
+                preset: viewModel.navigationLogoPreset,
+                logoIcon: viewModel.navigationLogoIcon,
+                onBack: {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        isDirectionMenuExpanded = false
+                    }
+                    dismiss()
+                },
                 onTitleTap: {
                     isComposerFocused = false
                     withAnimation(.easeInOut(duration: 0.2)) {
-                        isImportMenuExpanded = false
                         isDirectionMenuExpanded.toggle()
                     }
                 },
                 onRegenerate: {
                     isComposerFocused = false
-                    isDirectionMenuExpanded = false
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        isDirectionMenuExpanded = false
+                    }
                     navigationPath.append(AppRoute.chatHistory)
                 }
             )

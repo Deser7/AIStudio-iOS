@@ -45,4 +45,16 @@ enum APIError: Error, LocalizedError, Sendable {
 
         return String(localized: key, locale: LanguageStore.resolvedLocale)
     }
+
+    /// Retryable provider failures — not client validation (4xx except 401/403/429).
+    var isFailoverEligible: Bool {
+        switch self {
+        case .rateLimited, .network, .missingAPIKey, .unauthorized, .emptyResponse:
+            true
+        case let .httpStatus(code, _):
+            code == 429 || code >= 500
+        case .invalidURL, .invalidResponse, .decoding:
+            false
+        }
+    }
 }
