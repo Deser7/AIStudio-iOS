@@ -15,6 +15,7 @@ enum ChatDirection: String, CaseIterable, Identifiable, Sendable, Hashable {
     case languageTeacher
     case contentCreator
     case fitnessCoach
+    case programmer
 
     var id: Self { self }
 
@@ -27,6 +28,7 @@ enum ChatDirection: String, CaseIterable, Identifiable, Sendable, Hashable {
         case .languageTeacher: "Language teacher"
         case .contentCreator: "Content creator"
         case .fitnessCoach: "Fitness coach"
+        case .programmer: "Programmer"
         }
     }
 
@@ -39,6 +41,7 @@ enum ChatDirection: String, CaseIterable, Identifiable, Sendable, Hashable {
         case .languageTeacher: "Learn and improve languages"
         case .contentCreator: "Posts, videos, content ideas"
         case .fitnessCoach: "Training plans and motivation"
+        case .programmer: "Code, debug, architecture tips"
         }
     }
 
@@ -51,6 +54,7 @@ enum ChatDirection: String, CaseIterable, Identifiable, Sendable, Hashable {
         case .languageTeacher: "Ask about languages..."
         case .contentCreator: "Ask about content ideas..."
         case .fitnessCoach: "Ask about training and fitness..."
+        case .programmer: "Ask about code and programming..."
         }
     }
 
@@ -63,18 +67,20 @@ enum ChatDirection: String, CaseIterable, Identifiable, Sendable, Hashable {
         case .languageTeacher: .languageTeacher
         case .contentCreator: .contentCreator
         case .fitnessCoach: .fitnessCoach
+        case .programmer: .programmer
         }
     }
 
     var logoPreset: AppGradientPreset {
         switch self {
-        case .aiChat: .blue
+        case .aiChat: .main
         case .marketer: .blue
         case .doctor: .pink
         case .copywriter: .blue
         case .languageTeacher: .green
         case .contentCreator: .purple
         case .fitnessCoach: .pink
+        case .programmer: .green
         }
     }
 
@@ -126,6 +132,14 @@ enum ChatDirection: String, CaseIterable, Identifiable, Sendable, Hashable {
             Help with training plans, exercise form cues, recovery habits, and motivation.
             Prioritize safety and progressive overload. Ask about experience, equipment, and limitations when needed.
             Do not provide medical treatment advice; suggest professional care for pain or injury.
+            """
+        case .programmer:
+            """
+            You are an experienced software engineer and programming mentor.
+            Help with code, debugging, architecture, algorithms, and best practices.
+            Provide clear explanations, working examples, and step-by-step reasoning.
+            Ask clarifying questions when language, framework, or constraints are unclear.
+            Prefer safe, maintainable solutions over clever hacks.
             """
         }
     }
