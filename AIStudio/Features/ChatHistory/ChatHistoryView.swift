@@ -125,7 +125,9 @@ struct ChatHistoryView: View {
                 ForEach(section.items) { item in
                     HistoryCard(
                         title: item.title,
-                        subtitle: item.time,
+                        subtitle: item.preview,
+                        variant: .variant2,
+                        direction: item.direction,
                         action: { openChat(item) }
                     )
                     .onLongPressGesture {

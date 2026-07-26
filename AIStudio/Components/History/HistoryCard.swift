@@ -11,6 +11,7 @@ struct HistoryCard: View {
     let title: String
     let subtitle: String
     var variant: HistoryCardVariant = .default
+    var direction: ChatDirection = .aiChat
     let action: () -> Void
 
     var body: some View {
@@ -50,7 +51,7 @@ struct HistoryCard: View {
                 .fill(AppGradient.main)
                 .frame(width: 28, height: 28)
         case .variant2:
-            Logo(size: 32, preset: .blue, icon: .generate)
+            Logo(size: 32, preset: direction.logoPreset, icon: direction.logoIcon)
                 .frame(width: 32, height: 32)
                 .clipShape(Circle())
         }
@@ -70,6 +71,7 @@ struct HistoryCard: View {
             title: "Marketing for “FitApp”",
             subtitle: "Ideas for launch, positioning, and pr...",
             variant: .variant2,
+            direction: .marketer,
             action: {}
         )
     }

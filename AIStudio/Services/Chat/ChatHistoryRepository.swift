@@ -12,22 +12,11 @@ import SwiftData
 final class ChatHistoryRepository {
     private let modelContext: ModelContext
 
-    private static let timeFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        return formatter
-    }()
-
     private static let sectionDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM d"
         return formatter
     }()
-
-    private static func localizedTime(from date: Date) -> String {
-        timeFormatter.locale = LanguageStore.resolvedLocale
-        return timeFormatter.string(from: date)
-    }
 
     private static func localizedSectionDate(from date: Date) -> String {
         sectionDateFormatter.locale = LanguageStore.resolvedLocale
@@ -114,7 +103,8 @@ final class ChatHistoryRepository {
             let item = ChatHistoryItem(
                 id: session.id,
                 title: session.title,
-                time: Self.localizedTime(from: session.updatedAt)
+                preview: Self.preview(from: session.messagesData),
+                direction: ChatDirection(rawValue: session.directionRawValue ?? "") ?? .aiChat
             )
 
             if let index = grouped.firstIndex(where: { $0.key == day }) {
@@ -161,5 +151,22 @@ final class ChatHistoryRepository {
             return "Yesterday"
         }
         return localizedSectionDate(from: date)
+    }
+
+    private static func preview(from messagesData: Data) -> String {
+        for message in ChatMessagePersistenceMapper.decode(messagesData) {
+            if case let .assistant(_, content) = message {
+                let parts = [content.title]
+                    + content.paragraphs
+                    + content.bullets.map { "\($0.emphasis) \($0.text)".trimmingCharacters(in: .whitespaces) }
+                    + content.closingParagraphs
+                let text = parts
+                    .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                    .filter { !$0.isEmpty }
+                    .joined(separator: " ")
+                if !text.isEmpty { return text }
+            }
+        }
+        return ""
     }
 }

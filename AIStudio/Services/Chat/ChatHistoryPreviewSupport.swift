@@ -19,17 +19,18 @@ enum ChatHistoryPreviewSupport {
             let repository = ChatHistoryRepository(modelContext: container.mainContext)
             repository.upsert(
                 id: UUID(),
-                fallbackTitle: "Hello, this is a test recording....",
+                fallbackTitle: "Marketing for “FitApp”",
                 messages: [
-                    .user(text: "Hello, this is a test recording...."),
+                    .user(text: "Marketing for “FitApp”"),
                     .assistant(
                         content: AIResponseContent(
                             title: "",
-                            paragraphs: ["Preview assistant reply"],
+                            paragraphs: ["Ideas for launch, positioning, and pricing"],
                             bullets: []
                         )
                     )
-                ]
+                ],
+                direction: .marketer
             )
         }
 
