@@ -38,8 +38,6 @@ extension ChatViewModel {
         )
     }
 
-    func microTapped() {}
-
     func copyUserPromptTapped(_ messageID: UUID) -> String? {
         guard case let .user(_, text, _) = messages.first(where: { $0.id == messageID }) else {
             return nil

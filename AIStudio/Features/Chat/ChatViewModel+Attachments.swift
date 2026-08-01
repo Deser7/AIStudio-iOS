@@ -28,6 +28,11 @@ extension ChatViewModel {
     }
 
     func beginMediaAccessRequest() {
+        if mediaAccessAlert == .microphone {
+            Task { await resolveMicrophoneAccess() }
+            return
+        }
+
         guard let source = pendingImportSource else {
             mediaAccessAlert = nil
             return

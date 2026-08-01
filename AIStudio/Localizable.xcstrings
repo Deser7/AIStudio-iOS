@@ -194,6 +194,23 @@
         }
       }
     },
+    "Allow access to microphone?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow access to microphone?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разрешить доступ к микрофону?"
+          }
+        }
+      }
+    },
     "Animate • Templates" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2301,6 +2318,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Чтобы загрузить изображение, приложению нужен доступ к галерее."
+          }
+        }
+      }
+    },
+    "To convert speech to text, the app needs access to the microphone and speech recognition." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To convert speech to text, the app needs access to the microphone and speech recognition."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Чтобы преобразовать речь в текст, приложению нужен доступ к микрофону и распознаванию речи."
           }
         }
       }

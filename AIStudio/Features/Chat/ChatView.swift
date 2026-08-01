@@ -103,6 +103,9 @@ struct ChatView: View {
                 isDirectionMenuExpanded = false
             }
         }
+        .onDisappear {
+            viewModel.cancelRecording()
+        }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .safeAreaInset(edge: .top, spacing: 0) {
@@ -174,6 +177,13 @@ struct ChatView: View {
                 onCancel: viewModel.mediaAccessCancelled,
                 onPrimary: viewModel.beginMediaAccessRequest
             )
+        case .microphone:
+            PhotoAccessAlert(
+                title: "Allow access to microphone?",
+                message: "To convert speech to text, the app needs access to the microphone and speech recognition.",
+                onCancel: viewModel.mediaAccessCancelled,
+                onPrimary: viewModel.beginMediaAccessRequest
+            )
         }
     }
 
@@ -230,13 +240,16 @@ struct ChatView: View {
             onPhotos: { viewModel.importSourceSelected(.gallery) },
             onFiles: { viewModel.importSourceSelected(.files) },
             onRemoveAttachment: viewModel.removeAttachment,
-            onMicro: viewModel.microTapped,
+            onMicro: {
+                isComposerFocused = false
+                viewModel.microTapped()
+            },
             onSend: {
                 isComposerFocused = false
                 viewModel.sendTapped()
             },
-            onCancelRecording: {},
-            onConfirmRecording: {}
+            onCancelRecording: viewModel.cancelRecording,
+            onConfirmRecording: viewModel.confirmRecording
         )
     }
 

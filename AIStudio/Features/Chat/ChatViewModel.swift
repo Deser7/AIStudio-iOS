@@ -7,6 +7,7 @@
 
 import Foundation
 import Observation
+import CoreGraphics
 
 struct PendingChatAttachment: Identifiable, Equatable, Sendable {
     let id: UUID
@@ -20,6 +21,7 @@ struct PendingChatAttachment: Identifiable, Equatable, Sendable {
 
 enum ChatMediaAccessAlert: Equatable {
     case photoLibrary
+    case microphone
 }
 
 enum ChatImportSource: Equatable {
@@ -49,6 +51,10 @@ final class ChatViewModel {
     var isFileImporterPresented = false
     var mediaAccessAlert: ChatMediaAccessAlert?
 
+    var isRecording = false
+    var recordingLevel: CGFloat = 0
+    var draftTranscript = ""
+
     var title: String {
         selectedDirection.title
     }
@@ -75,7 +81,9 @@ final class ChatViewModel {
     }
 
     var composerMode: ComposerInputMode {
-        if isAttachmentLoading || !pendingAttachments.isEmpty {
+        if isRecording {
+            .recording(progress: recordingLevel)
+        } else if isAttachmentLoading || !pendingAttachments.isEmpty {
             .attachment(isLoading: isAttachmentLoading)
         } else {
             .text
@@ -94,6 +102,7 @@ final class ChatViewModel {
     let chatService: any ChatServing
     let repository: ChatHistoryRepository
     let photoLibrary: PhotoLibraryAccessProviding
+    let speechCapture: any SpeechCapturing
 
     var revealPendingText = ""
     var revealDisplayedText = ""
@@ -112,11 +121,13 @@ final class ChatViewModel {
         sessionID: UUID? = nil,
         chatService: (any ChatServing)? = nil,
         repository: ChatHistoryRepository,
-        photoLibrary: PhotoLibraryAccessProviding = PhotoLibraryAccessService()
+        photoLibrary: PhotoLibraryAccessProviding = PhotoLibraryAccessService(),
+        speechCapture: (any SpeechCapturing)? = nil
     ) {
         self.chatService = chatService ?? GeminiChatService()
         self.repository = repository
         self.photoLibrary = photoLibrary
+        self.speechCapture = speechCapture ?? SpeechCaptureService()
 
         if let sessionID, let session = repository.session(id: sessionID) {
             self.sessionID = sessionID

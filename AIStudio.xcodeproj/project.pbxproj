@@ -259,8 +259,10 @@
 				DEVELOPMENT_TEAM = N6VGRZ79KB;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "To convert speech to text, the app needs access to the microphone.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "To save and upload media, the app needs access to your photo gallery.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "To save and upload media, the app needs access to your photo gallery.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "To convert speech to text, the app needs access to speech recognition.";
 				INFOPLIST_KEY_UIAppFonts = "Inter-Regular.ttf Inter-Medium.ttf Inter-SemiBold.ttf Inter-Bold.ttf";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -299,8 +301,10 @@
 				DEVELOPMENT_TEAM = N6VGRZ79KB;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "To convert speech to text, the app needs access to the microphone.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "To save and upload media, the app needs access to your photo gallery.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "To save and upload media, the app needs access to your photo gallery.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "To convert speech to text, the app needs access to speech recognition.";
 				INFOPLIST_KEY_UIAppFonts = "Inter-Regular.ttf Inter-Medium.ttf Inter-SemiBold.ttf Inter-Bold.ttf";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
