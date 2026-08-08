@@ -17,4 +17,5 @@ enum AppRoute: Hashable {
     case videoGenerating
     case videoResult
     case aiWriting
+    case understandFaster
 }

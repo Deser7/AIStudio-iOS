@@ -12,6 +12,8 @@ struct HomeView: View {
     @State private var viewModel = HomeViewModel()
     @State private var isSettingsPresented = false
     @State private var navigationPath = NavigationPath()
+    @State private var isUnderstandImporterPresented = false
+    @State private var understandImportError: String?
     @Environment(\.modelContext) private var modelContext
 
     var body: some View {
@@ -55,8 +57,32 @@ struct HomeView: View {
                         VideoResultView(navigationPath: $navigationPath)
                     case .aiWriting:
                         AIWritingView()
+                    case .understandFaster:
+                        UnderstandFasterView()
                     }
                 }
+        }
+        .fileImporter(
+            isPresented: $isUnderstandImporterPresented,
+            allowedContentTypes: UnderstandFileImportSupport.allowedContentTypes,
+            allowsMultipleSelection: true
+        ) { result in
+            handleUnderstandImport(result)
+        }
+        .alert(
+            "Couldn't import files",
+            isPresented: Binding(
+                get: { understandImportError != nil },
+                set: { if !$0 { understandImportError = nil } }
+            )
+        ) {
+            Button("OK", role: .cancel) {
+                understandImportError = nil
+            }
+        } message: {
+            if let understandImportError {
+                Text(understandImportError)
+            }
         }
         .fullScreenCover(isPresented: $isSettingsPresented) {
             SettingsView(
@@ -129,9 +155,20 @@ struct HomeView: View {
         FunctionsSection(
             onVideoTap: { navigationPath.append(AppRoute.videoGeneration) },
             onWritingTap: { navigationPath.append(AppRoute.aiWriting) },
-            onUnderstandTap: viewModel.understandTapped
+            onUnderstandTap: { isUnderstandImporterPresented = true }
         )
         .frame(maxWidth: .infinity, alignment: .center)
+    }
+
+    private func handleUnderstandImport(_ result: Result<[URL], Error>) {
+        switch UnderstandFileImportSupport.load(from: result) {
+        case let .success(files):
+            UnderstandFasterSession.enqueue(files)
+            navigationPath.append(AppRoute.understandFaster)
+        case let .failure(error):
+            guard error != .cancelled else { return }
+            understandImportError = L10n.string(String.LocalizationValue(error.messageKey))
+        }
     }
 }
 

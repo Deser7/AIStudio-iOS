@@ -7,7 +7,6 @@
 
 import Foundation
 import Observation
-import CoreGraphics
 
 struct PendingChatAttachment: Identifiable, Equatable, Sendable {
     let id: UUID
